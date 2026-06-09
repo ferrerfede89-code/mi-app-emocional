@@ -4,99 +4,121 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>App Emocional V3</title>
+<title>App Emocional V4</title>
 
 <style>
 body {
   margin:0;
-  font-family: -apple-system, BlinkMacSystemFont;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-  height:100vh;
+  font-family: -apple-system;
+  text-align:center;
+  padding:20px;
   transition: background 1s;
 }
 
 #circle {
-  width:200px;
-  height:200px;
+  width:180px;
+  height:180px;
   border-radius:50%;
   background:#6dd5ed;
   display:flex;
   align-items:center;
   justify-content:center;
-  font-size:22px;
+  margin:auto;
   color:white;
+  font-size:20px;
   transition: all 2s ease;
 }
 
 button {
-  margin-top:20px;
-  padding:10px 20px;
+  margin:10px;
+  padding:10px;
   border:none;
   border-radius:10px;
-  font-size:16px;
+  font-size:18px;
 }
 
-#moodLog {
+#stats {
   margin-top:20px;
-  font-size:14px;
+}
+
+.bar {
+  height:20px;
+  margin:5px;
+  background:#ccc;
+  border-radius:10px;
 }
 </style>
 </head>
 
 <body>
 
+<h2>Respirar</h2>
 <div id="circle">Tocar</div>
 
 <div>
-  <button onclick="setMood('🙂 Bien')">🙂</button>
-  <button onclick="setMood('😐 Normal')">😐</button>
-  <button onclick="setMood('😔 Mal')">😔</button>
+  <button onclick="setMood('bien')">🙂</button>
+  <button onclick="setMood('normal')">😐</button>
+  <button onclick="setMood('mal')">😔</button>
 </div>
 
-<div id="moodLog"></div>
+<div id="stats"></div>
 
 <script>
 let inhaling = true;
 
 document.getElementById("circle").onclick = () => {
-  const circle = document.getElementById("circle");
+  const c = document.getElementById("circle");
 
   if(inhaling){
-    circle.style.transform = "scale(1.5)";
-    circle.innerText = "Inhalar";
+    c.style.transform = "scale(1.5)";
+    c.innerText = "Inhalar";
     document.body.style.background = "#89f7fe";
   } else {
-    circle.style.transform = "scale(1)";
-    circle.innerText = "Exhalar";
+    c.style.transform = "scale(1)";
+    c.innerText = "Exhalar";
     document.body.style.background = "#66a6ff";
   }
 
-  if (navigator.vibrate) navigator.vibrate(50);
-
+  if(navigator.vibrate) navigator.vibrate(50);
   inhaling = !inhaling;
 };
 
 function setMood(mood){
-  const time = new Date().toLocaleTimeString();
-  const entry = `${time} - ${mood}`;
+  let data = JSON.parse(localStorage.getItem("moods")) || {};
+  let today = new Date().toISOString().split("T")[0];
 
-  let logs = JSON.parse(localStorage.getItem("moods")) || [];
-  logs.push(entry);
+  if(!data[today]) data[today] = [];
+  data[today].push(mood);
 
-  localStorage.setItem("moods", JSON.stringify(logs));
-  renderMoods();
+  localStorage.setItem("moods", JSON.stringify(data));
+  renderStats();
 }
 
-function renderMoods(){
-  let logs = JSON.parse(localStorage.getItem("moods")) || [];
-  document.getElementById("moodLog").innerHTML =
-    "<b>Hoy:</b><br>" + logs.slice(-5).reverse().join("<br>");
+function renderStats(){
+  let data = JSON.parse(localStorage.getItem("moods")) || {};
+  let today = new Date().toISOString().split("T")[0];
+  let moods = data[today] || [];
+
+  let counts = {bien:0, normal:0, mal:0};
+
+  moods.forEach(m => counts[m]++);
+
+  let total = moods.length || 1;
+
+  document.getElementById("stats").innerHTML = `
+    <h3>Hoy</h3>
+    🙂 Bien (${counts.bien})
+    <div class="bar" style="width:${counts.bien/total*100}%; background:#4caf50;"></div>
+
+    😐 Normal (${counts.normal})
+    <div class="bar" style="width:${counts.normal/total*100}%; background:#ff9800;"></div>
+
+    😔 Mal (${counts.mal})
+    <div class="bar" style="width:${counts.mal/total*100}%; background:#f44336;"></div>
+  `;
 }
 
-renderMoods();
+renderStats();
 </script>
 
 </body>
