@@ -9,42 +9,61 @@
 <style>
 body {
   margin:0;
-  font-family: -apple-system;
-  text-align:center;
+  font-family: -apple-system, BlinkMacSystemFont;
+  background: linear-gradient(180deg, #89f7fe, #66a6ff);
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  height:100vh;
+  color:#222;
+}
+
+.container {
+  background:white;
   padding:20px;
-  transition: background 1s;
+  border-radius:20px;
+  width:90%;
+  max-width:350px;
+  text-align:center;
+  box-shadow:0 10px 30px rgba(0,0,0,0.1);
 }
 
 #circle {
-  width:180px;
-  height:180px;
+  width:150px;
+  height:150px;
   border-radius:50%;
-  background:#6dd5ed;
+  background:linear-gradient(135deg, #6dd5ed, #2193b0);
   display:flex;
   align-items:center;
   justify-content:center;
-  margin:auto;
+  margin:20px auto;
   color:white;
-  font-size:20px;
+  font-size:18px;
   transition: all 2s ease;
 }
 
-button {
-  margin:10px;
-  padding:10px;
+.buttons button {
+  margin:5px;
+  padding:12px;
   border:none;
-  border-radius:10px;
-  font-size:18px;
+  border-radius:12px;
+  font-size:20px;
+  background:#f0f0f0;
+}
+
+.buttons button:active {
+  transform: scale(0.95);
 }
 
 #stats {
-  margin-top:20px;
+  margin-top:15px;
+  text-align:left;
 }
 
 .bar {
-  height:20px;
-  margin:5px;
-  background:#ccc;
+  height:10px;
+  margin:5px 0 10px 0;
   border-radius:10px;
 }
 </style>
