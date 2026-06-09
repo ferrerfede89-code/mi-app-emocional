@@ -114,7 +114,58 @@ body {
 }
 </style>
 </head>
+<div id="breathingScreen" style="
+display:none;
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:linear-gradient(180deg,#dff7f8,#72b7f5);
+z-index:9999;
+justify-content:center;
+align-items:center;
+flex-direction:column;
+text-align:center;
+">
 
+<div id="breathingCircle" style="
+width:220px;
+height:220px;
+border-radius:50%;
+background:radial-gradient(circle,#8bdff2,#4b9fe1);
+display:flex;
+align-items:center;
+justify-content:center;
+color:white;
+font-size:28px;
+transition:all 4s ease;
+box-shadow:0 20px 40px rgba(0,0,0,.15);
+">
+Inhalar
+</div>
+
+<div id="breathingMessage" style="
+margin-top:30px;
+font-size:22px;
+padding:20px;
+max-width:320px;
+">
+Respiremos juntos
+</div>
+
+<button onclick="closeBreathing()" style="
+margin-top:40px;
+padding:14px 24px;
+border:none;
+border-radius:20px;
+font-size:16px;
+background:white;
+">
+Volver
+</button>
+
+</div>
 <body>
 <div class="app">
 
