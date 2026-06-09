@@ -292,6 +292,55 @@ function renderStats() {
 }
 
 renderStats();
+  let breathingInterval;
+
+function openBreathing(){
+
+document.getElementById("breathingScreen").style.display="flex";
+
+const circle=document.getElementById("breathingCircle");
+const text=document.getElementById("breathingMessage");
+
+const messages=[
+"Estoy acá.",
+"No hace falta apurarse.",
+"Podemos quedarnos un momento.",
+"Un paso a la vez.",
+"Solamente respirá."
+];
+
+let inhale=true;
+
+breathingInterval=setInterval(()=>{
+
+if(inhale){
+
+circle.style.transform="scale(1.35)";
+circle.innerText="Inhalar";
+
+}else{
+
+circle.style.transform="scale(1)";
+circle.innerText="Exhalar";
+
+}
+
+text.innerText=
+messages[Math.floor(Math.random()*messages.length)];
+
+inhale=!inhale;
+
+},4000);
+
+}
+
+function closeBreathing(){
+
+clearInterval(breathingInterval);
+
+document.getElementById("breathingScreen").style.display="none";
+
+}
 </script>
 </body>
 </html>
