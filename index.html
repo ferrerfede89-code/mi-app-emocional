@@ -4,148 +4,100 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>App Emocional V2</title>
+<title>App Emocional V3</title>
+
 <style>
 body {
-    margin: 0;
-    overflow: hidden;
-    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
-    background: radial-gradient(circle at center, #1e1b4b, #0f172a);
-    color: white;
-}
-
-#app {
-    width: 100vw;
-    height: 100vh;
-    position: relative;
-    touch-action: none;
+  margin:0;
+  font-family: -apple-system, BlinkMacSystemFont;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  height:100vh;
+  transition: background 1s;
 }
 
 #circle {
-    width: 140px;
-    height: 140px;
-    border-radius: 50%;
-    background: rgba(255,255,255,0.08);
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%) scale(0.8);
-    transition: transform 0.2s ease-out;
+  width:200px;
+  height:200px;
+  border-radius:50%;
+  background:#6dd5ed;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:22px;
+  color:white;
+  transition: all 2s ease;
 }
 
-#text {
-    position: absolute;
-    width: 100%;
-    text-align: center;
-    top: 65%;
-    opacity: 0.8;
+button {
+  margin-top:20px;
+  padding:10px 20px;
+  border:none;
+  border-radius:10px;
+  font-size:16px;
 }
 
-.particles {
-    position: absolute;
-    width: 6px;
-    height: 6px;
-    background: white;
-    border-radius: 50%;
-    pointer-events: none;
-    opacity: 0.7;
+#moodLog {
+  margin-top:20px;
+  font-size:14px;
 }
 </style>
 </head>
+
 <body>
 
-<div id="app">
-    <div id="circle"></div>
-    <div id="text">Mantené para respirar</div>
+<div id="circle">Tocar</div>
+
+<div>
+  <button onclick="setMood('🙂 Bien')">🙂</button>
+  <button onclick="setMood('😐 Normal')">😐</button>
+  <button onclick="setMood('😔 Mal')">😔</button>
 </div>
 
+<div id="moodLog"></div>
+
 <script>
-let circle = document.getElementById("circle");
-let text = document.getElementById("text");
-let app = document.getElementById("app");
+let inhaling = true;
 
-let holding = false;
+document.getElementById("circle").onclick = () => {
+  const circle = document.getElementById("circle");
 
-// HOLD (breathing)
-app.addEventListener("touchstart", () => {
-    holding = true;
-    text.innerText = "Inhalá...";
-    breathe();
-});
+  if(inhaling){
+    circle.style.transform = "scale(1.5)";
+    circle.innerText = "Inhalar";
+    document.body.style.background = "#89f7fe";
+  } else {
+    circle.style.transform = "scale(1)";
+    circle.innerText = "Exhalar";
+    document.body.style.background = "#66a6ff";
+  }
 
-app.addEventListener("touchend", () => {
-    holding = false;
-    circle.style.transform = "translate(-50%, -50%) scale(0.8)";
-    text.innerText = "Exhalá...";
-});
+  if (navigator.vibrate) navigator.vibrate(50);
 
-// Breathing animation
-function breathe() {
-    if (!holding) return;
-    circle.style.transform = "translate(-50%, -50%) scale(1.4)";
-    setTimeout(() => {
-        if (holding) {
-            circle.style.transform = "translate(-50%, -50%) scale(0.8)";
-            setTimeout(breathe, 800);
-        }
-    }, 800);
+  inhaling = !inhaling;
+};
+
+function setMood(mood){
+  const time = new Date().toLocaleTimeString();
+  const entry = `${time} - ${mood}`;
+
+  let logs = JSON.parse(localStorage.getItem("moods")) || [];
+  logs.push(entry);
+
+  localStorage.setItem("moods", JSON.stringify(logs));
+  renderMoods();
 }
 
-// TAP (release)
-app.addEventListener("click", (e) => {
-    for (let i = 0; i < 12; i++) {
-        let p = document.createElement("div");
-        p.className = "particles";
-        p.style.left = e.clientX + "px";
-        p.style.top = e.clientY + "px";
-        document.body.appendChild(p);
-
-        let angle = Math.random() * 2 * Math.PI;
-        let dist = Math.random() * 80;
-
-        let x = Math.cos(angle) * dist;
-        let y = Math.sin(angle) * dist;
-
-        p.animate([
-            { transform: "translate(0,0)", opacity: 0.8 },
-            { transform: `translate(${x}px, ${y}px)`, opacity: 0 }
-        ], {
-            duration: 600,
-            easing: "ease-out"
-        });
-
-        setTimeout(() => p.remove(), 600);
-    }
-});
-
-// SWIPE (color change)
-let startX = 0;
-
-app.addEventListener("touchstart", (e) => {
-    startX = e.touches[0].clientX;
-});
-
-app.addEventListener("touchmove", (e) => {
-    let x = e.touches[0].clientX;
-    let diff = x - startX;
-
-    let hue = 240 + diff / 2;
-    document.body.style.background = `hsl(${hue}, 40%, 15%)`;
-});
-
-// SHAKE (mobile only)
-if (window.DeviceMotionEvent) {
-    window.addEventListener("devicemotion", function(event) {
-        let acc = event.accelerationIncludingGravity;
-        let total = Math.abs(acc.x) + Math.abs(acc.y) + Math.abs(acc.z);
-        if (total > 30) {
-            text.innerText = "Soltalo...";
-            document.body.style.background = "#111";
-        }
-    });
+function renderMoods(){
+  let logs = JSON.parse(localStorage.getItem("moods")) || [];
+  document.getElementById("moodLog").innerHTML =
+    "<b>Hoy:</b><br>" + logs.slice(-5).reverse().join("<br>");
 }
+
+renderMoods();
 </script>
 
 </body>
 </html>
-<!-- update -->
