@@ -1,142 +1,246 @@
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>App Emocional V4</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>App Emocional V6</title>
 
 <style>
 body {
-  margin:0;
-  font-family: -apple-system, BlinkMacSystemFont;
-  background: linear-gradient(180deg, #89f7fe, #66a6ff);
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-  height:100vh;
-  color:#222;
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  background: linear-gradient(180deg, #dff7f8, #72b7f5);
+  min-height: 100vh;
+  color: #1f2937;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-.container {
-  background:white;
-  padding:20px;
-  border-radius:20px;
-  width:90%;
-  max-width:350px;
-  text-align:center;
-  box-shadow:0 10px 30px rgba(0,0,0,0.1);
+.app {
+  width: 92%;
+  max-width: 390px;
+  background: rgba(255,255,255,0.88);
+  border-radius: 32px;
+  padding: 26px;
+  box-shadow: 0 20px 45px rgba(0,0,0,0.12);
+}
+
+.presence {
+  text-align: center;
+  font-size: 15px;
+  color: #64748b;
+  margin-bottom: 18px;
 }
 
 #circle {
-  width:150px;
-  height:150px;
-  border-radius:50%;
-  background:linear-gradient(135deg, #6dd5ed, #2193b0);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  margin:20px auto;
-  color:white;
-  font-size:18px;
-  transition: all 2s ease;
+  width: 170px;
+  height: 170px;
+  border-radius: 50%;
+  margin: 0 auto 18px;
+  background: radial-gradient(circle, #8bdff2, #4b9fe1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 20px;
+  transition: transform 2s ease, background 1s;
+  box-shadow: 0 18px 35px rgba(75,159,225,0.35);
 }
 
-.buttons button {
-  margin:5px;
-  padding:12px;
-  border:none;
-  border-radius:12px;
-  font-size:20px;
-  background:#f0f0f0;
+.message {
+  text-align: center;
+  font-size: 18px;
+  margin-bottom: 24px;
+  line-height: 1.4;
 }
 
-.buttons button:active {
-  transform: scale(0.95);
+.section-title {
+  font-weight: 700;
+  margin-bottom: 12px;
 }
 
-#stats {
-  margin-top:15px;
-  text-align:left;
+.actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 24px;
+}
+
+.action {
+  border: none;
+  border-radius: 18px;
+  background: #f1f5f9;
+  padding: 14px 8px;
+  font-size: 14px;
+}
+
+.action span {
+  display: block;
+  font-size: 24px;
+  margin-bottom: 5px;
+}
+
+.moods {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin: 12px 0 22px;
+}
+
+.moods button {
+  border: none;
+  border-radius: 999px;
+  padding: 10px 16px;
+  font-size: 22px;
+  background: #eef2f7;
+}
+
+.stats {
+  background: #f8fafc;
+  border-radius: 22px;
+  padding: 18px;
 }
 
 .bar {
-  height:10px;
-  margin:5px 0 10px 0;
-  border-radius:10px;
+  height: 10px;
+  border-radius: 20px;
+  margin: 6px 0 14px;
+}
+
+.small {
+  font-size: 14px;
+  color: #64748b;
 }
 </style>
 </head>
 
 <body>
-<div class="container">
+<div class="app">
 
-<div>
-  <button onclick="setMood('bien')">🙂</button>
-  <button onclick="setMood('normal')">😐</button>
-  <button onclick="setMood('mal')">😔</button>
+  <div class="presence">Estoy acá.</div>
+
+  <div id="circle">Tocar</div>
+
+  <div class="message" id="message">
+    No hace falta resolver todo ahora.
+  </div>
+
+  <div class="section-title">¿Qué necesitás ahora?</div>
+
+  <div class="actions">
+    <button class="action" onclick="setAction('respirar')">
+      <span>🫁</span>Respirar
+    </button>
+    <button class="action" onclick="setAction('liberar')">
+      <span>🔥</span>Liberar
+    </button>
+    <button class="action" onclick="setAction('conectar')">
+      <span>🫂</span>Conectar
+    </button>
+  </div>
+
+  <div class="section-title">¿Cómo estás hoy?</div>
+
+  <div class="moods">
+    <button onclick="setMood('bien')">🙂</button>
+    <button onclick="setMood('normal')">😐</button>
+    <button onclick="setMood('mal')">😔</button>
+  </div>
+
+  <div class="stats" id="stats"></div>
+
 </div>
-
-<div id="stats"></div>
 
 <script>
 let inhaling = true;
 
+const messages = [
+  "No hace falta resolver todo ahora.",
+  "Podemos quedarnos un momento.",
+  "Respiremos primero.",
+  "Esto que sentís también puede bajar.",
+  "Un paso pequeño alcanza."
+];
+
 document.getElementById("circle").onclick = () => {
   const c = document.getElementById("circle");
 
-  if(inhaling){
-    c.style.transform = "scale(1.5)";
+  if (inhaling) {
+    c.style.transform = "scale(1.35)";
     c.innerText = "Inhalar";
-    document.body.style.background = "#89f7fe";
+    document.body.style.background = "linear-gradient(180deg, #dff7f8, #72b7f5)";
   } else {
     c.style.transform = "scale(1)";
     c.innerText = "Exhalar";
-    document.body.style.background = "#66a6ff";
+    document.body.style.background = "linear-gradient(180deg, #e9e4ff, #8ec5fc)";
   }
 
-  if(navigator.vibrate) navigator.vibrate(50);
+  document.getElementById("message").innerText =
+    messages[Math.floor(Math.random() * messages.length)];
+
+  if (navigator.vibrate) navigator.vibrate(50);
   inhaling = !inhaling;
 };
 
-function setMood(mood){
+function setAction(action) {
+  const message = document.getElementById("message");
+
+  if (action === "respirar") {
+    message.innerText = "Apoyá el dedo. Vamos despacio.";
+  }
+
+  if (action === "liberar") {
+    message.innerText = "Podés soltar un poco de eso acá.";
+    document.body.style.background = "linear-gradient(180deg, #fee2e2, #93c5fd)";
+  }
+
+  if (action === "conectar") {
+    message.innerText = "No tenés que atravesarlo solo.";
+    document.body.style.background = "linear-gradient(180deg, #ede9fe, #bfdbfe)";
+  }
+
+  if (navigator.vibrate) navigator.vibrate(80);
+}
+
+function setMood(mood) {
   let data = JSON.parse(localStorage.getItem("moods")) || {};
   let today = new Date().toISOString().split("T")[0];
 
-  if(!data[today]) data[today] = [];
+  if (!data[today]) data[today] = [];
   data[today].push(mood);
 
   localStorage.setItem("moods", JSON.stringify(data));
   renderStats();
 }
 
-function renderStats(){
+function renderStats() {
   let data = JSON.parse(localStorage.getItem("moods")) || {};
   let today = new Date().toISOString().split("T")[0];
   let moods = data[today] || [];
 
-  let counts = {bien:0, normal:0, mal:0};
-
+  let counts = { bien: 0, normal: 0, mal: 0 };
   moods.forEach(m => counts[m]++);
 
   let total = moods.length || 1;
 
   document.getElementById("stats").innerHTML = `
-    <h3>Hoy</h3>
+    <div class="section-title">Hoy</div>
+
     🙂 Bien (${counts.bien})
-    <div class="bar" style="width:${counts.bien/total*100}%; background:#4caf50;"></div>
+    <div class="bar" style="width:${counts.bien / total * 100}%; background:#4caf50;"></div>
 
     😐 Normal (${counts.normal})
-    <div class="bar" style="width:${counts.normal/total*100}%; background:#ff9800;"></div>
+    <div class="bar" style="width:${counts.normal / total * 100}%; background:#ff9800;"></div>
 
     😔 Mal (${counts.mal})
-    <div class="bar" style="width:${counts.mal/total*100}%; background:#f44336;"></div>
+    <div class="bar" style="width:${counts.mal / total * 100}%; background:#f44336;"></div>
+
+    <div class="small">Esto no mide tu valor. Solo registra cómo viene el día.</div>
   `;
 }
 
 renderStats();
 </script>
-</div>
 </body>
 </html>
