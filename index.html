@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>App Emocional V19</title>
+<title>App Emocional V22</title>
 
 <style>
 body {
@@ -304,6 +304,33 @@ body, .app, #circle, .action, .stats, .softButton, .moods button {
   background: #f8fafc;
 }
 
+
+.chatBubble {
+  border-radius: 20px;
+  padding: 12px 14px;
+  margin: 10px 0;
+  line-height: 1.45;
+  font-size: 16px;
+}
+
+.userBubble {
+  background: rgba(255,255,255,0.88);
+  text-align: right;
+}
+
+.companionBubble {
+  background: rgba(255,255,255,0.62);
+  text-align: left;
+}
+
+.diaryEntry {
+  background: rgba(255,255,255,0.82);
+  border-radius: 20px;
+  padding: 14px;
+  margin: 12px 0;
+  line-height: 1.45;
+}
+
 </style>
 </head>
 
@@ -371,6 +398,12 @@ text-align:center;
     </button>
     <button class="action" onclick="openAtmosphere()">
       <span>🎵</span>Ambiente
+    </button>
+    <button class="action" onclick="openTalk()">
+      <span>💬</span>Hablar
+    </button>
+    <button class="action" onclick="openDiary()">
+      <span>📖</span>Diario
     </button>
     <button class="action" onclick="openSupport()" style="grid-column:1/3;">
       <span>🚨</span>Apoyo rápido
@@ -652,6 +685,65 @@ overflow:auto;
 
   <br>
   <button onclick="closeSupport()" class="softButton">Volver</button>
+</div>
+
+
+<div id="talkScreen" class="fullscreen" style="
+background:linear-gradient(180deg,#f8fafc,#dbeafe);
+overflow:auto;
+">
+  <h1 id="talkEmoji">💬</h1>
+  <h2 id="talkTitle">Estoy acá.</h2>
+
+  <p id="talkIntro" style="font-size:17px;line-height:1.45;">
+    Escribí una frase. No tiene que estar ordenada.
+  </p>
+
+  <div id="chatLog" style="margin:18px 0;"></div>
+
+  <textarea id="talkInput" class="textBox" placeholder="¿Qué está pesando hoy?"></textarea>
+
+  <button onclick="sendTalk()" class="softButton" style="margin-top:16px;">
+    Enviar
+  </button>
+
+  <button onclick="saveTalkToDiary()" class="softButton" style="margin-top:16px;">
+    Guardar en diario
+  </button>
+
+  <div id="talkSaveResult" style="margin-top:14px;font-weight:bold;"></div>
+
+  <br><br>
+  <button onclick="closeTalk()" class="softButton">Volver</button>
+</div>
+
+<div id="diaryScreen" class="fullscreen" style="
+background:linear-gradient(180deg,#f8fafc,#c7d2fe);
+overflow:auto;
+">
+  <h1 id="diaryEmoji">📖</h1>
+  <h2>Diario emocional vivo</h2>
+
+  <p id="diaryIntro" style="font-size:17px;line-height:1.45;">
+    No es para juzgarte. Es para recordar que venís atravesando cosas.
+  </p>
+
+  <textarea id="diaryInput" class="textBox" placeholder="Hoy quiero dejar escrito..."></textarea>
+
+  <button onclick="saveDiaryEntry()" class="softButton" style="margin-top:16px;">
+    Guardar
+  </button>
+
+  <button onclick="clearDiary()" class="softButton" style="margin-top:16px;">
+    Borrar diario
+  </button>
+
+  <div id="diaryResult" style="margin-top:14px;font-weight:bold;"></div>
+
+  <div id="diaryList" style="margin-top:24px;"></div>
+
+  <br>
+  <button onclick="closeDiary()" class="softButton">Volver</button>
 </div>
 
 <script>
@@ -1287,6 +1379,194 @@ applyCompanion = function() {
 
   renderMemory();
 }
+
+
+let lastTalkText = "";
+
+function openTalk() {
+  const comp = getCompanion();
+
+  document.getElementById("talkScreen").style.display = "block";
+  document.getElementById("talkEmoji").innerText = comp ? comp.emoji : "💬";
+  document.getElementById("talkTitle").innerText =
+    comp ? comp.name + " está escuchando." : "Estoy escuchando.";
+  document.getElementById("talkIntro").innerText =
+    comp ? comp.emoji + " ¿Qué está pesando hoy?" : "¿Qué está pesando hoy?";
+
+  renderChatIntro();
+
+  if (navigator.vibrate) navigator.vibrate(50);
+}
+
+function closeTalk() {
+  document.getElementById("talkScreen").style.display = "none";
+}
+
+function renderChatIntro() {
+  const comp = getCompanion();
+  const phrase = comp ? companionTalkResponse(localStorage.getItem("companion")) : "Gracias por estar acá.";
+
+  document.getElementById("chatLog").innerHTML = `
+    <div class="chatBubble companionBubble">${phrase}</div>
+  `;
+  document.getElementById("talkSaveResult").innerText = "";
+}
+
+function sendTalk() {
+  const input = document.getElementById("talkInput");
+  const text = input.value.trim();
+
+  if (!text) {
+    document.getElementById("talkSaveResult").innerText = "Podés escribir aunque sea una palabra.";
+    return;
+  }
+
+  lastTalkText = text;
+
+  const key = localStorage.getItem("companion") || "brote";
+  const response = companionTalkResponse(key);
+
+  document.getElementById("chatLog").innerHTML += `
+    <div class="chatBubble userBubble">${escapeHTML(text)}</div>
+    <div class="chatBubble companionBubble">${response}</div>
+  `;
+
+  input.value = "";
+
+  if (navigator.vibrate) navigator.vibrate([50,30,50]);
+}
+
+function companionTalkResponse(key) {
+  const responses = {
+    brote: [
+      "🌱 Gracias por decirlo. Podemos ir lento.",
+      "🌱 No tenés que crecer hoy. Solo quedarte.",
+      "🌱 Eso que pesa puede descansar un momento acá."
+    ],
+    luna: [
+      "🌙 Gracias por ponerlo en palabras.",
+      "🌙 No hace falta resolverlo ahora.",
+      "🌙 Podemos quedarnos con eso en silencio un momento."
+    ],
+    zorro: [
+      "🦊 Lo dijiste. Eso ya es un movimiento.",
+      "🦊 No tiene que salir perfecto.",
+      "🦊 Veamos una cosa por vez."
+    ],
+    ballena: [
+      "🐳 No tenés que hundirte con eso.",
+      "🐳 Respiremos primero. Después vemos.",
+      "🐳 Podés flotar aunque algo pese."
+    ],
+    nube: [
+      "☁️ Podés soltar una parte acá.",
+      "☁️ No todo tiene que quedarse con vos.",
+      "☁️ Gracias por dejarlo salir un poco."
+    ]
+  };
+
+  const list = responses[key] || responses.brote;
+  return list[Math.floor(Math.random() * list.length)];
+}
+
+function saveTalkToDiary() {
+  if (!lastTalkText) {
+    document.getElementById("talkSaveResult").innerText = "Primero escribí algo y tocá Enviar.";
+    return;
+  }
+
+  addDiaryEntry(lastTalkText);
+  document.getElementById("talkSaveResult").innerText = "Guardado en diario.";
+
+  if (navigator.vibrate) navigator.vibrate([70,40,70]);
+}
+
+function openDiary() {
+  const comp = getCompanion();
+
+  document.getElementById("diaryScreen").style.display = "block";
+  document.getElementById("diaryEmoji").innerText = comp ? comp.emoji : "📖";
+  document.getElementById("diaryIntro").innerText =
+    comp ? comp.emoji + " puede recordar algunas cosas con vos." : "Podés dejar algo escrito.";
+  renderDiary();
+
+  if (navigator.vibrate) navigator.vibrate(50);
+}
+
+function closeDiary() {
+  document.getElementById("diaryScreen").style.display = "none";
+}
+
+function saveDiaryEntry() {
+  const input = document.getElementById("diaryInput");
+  const text = input.value.trim();
+
+  if (!text) {
+    document.getElementById("diaryResult").innerText = "Podés escribir una frase corta.";
+    return;
+  }
+
+  addDiaryEntry(text);
+  input.value = "";
+  document.getElementById("diaryResult").innerText = "Guardado.";
+  renderDiary();
+
+  if (navigator.vibrate) navigator.vibrate([60,30,60]);
+}
+
+function addDiaryEntry(text) {
+  let entries = JSON.parse(localStorage.getItem("diaryEntries")) || [];
+  const now = new Date();
+
+  entries.push({
+    text: text,
+    date: now.toLocaleDateString(),
+    time: now.toLocaleTimeString([], {hour: "2-digit", minute: "2-digit"}),
+    companion: localStorage.getItem("companion") || "brote"
+  });
+
+  localStorage.setItem("diaryEntries", JSON.stringify(entries));
+}
+
+function renderDiary() {
+  let entries = JSON.parse(localStorage.getItem("diaryEntries")) || [];
+  const list = document.getElementById("diaryList");
+
+  if (!entries.length) {
+    list.innerHTML = `<div class="diaryEntry">Todavía no hay frases guardadas.</div>`;
+    return;
+  }
+
+  list.innerHTML = entries.slice(-6).reverse().map(e => {
+    const comp = companions[e.companion] || companions.brote;
+    return `
+      <div class="diaryEntry">
+        <div><strong>${comp.emoji} ${comp.name} recuerda:</strong></div>
+        <div style="margin-top:8px;">"${escapeHTML(e.text)}"</div>
+        <div class="small" style="margin-top:8px;">${e.date} · ${e.time}</div>
+      </div>
+    `;
+  }).join("");
+}
+
+function clearDiary() {
+  localStorage.removeItem("diaryEntries");
+  renderDiary();
+  document.getElementById("diaryResult").innerText = "Diario borrado.";
+}
+
+function escapeHTML(str) {
+  return str.replace(/[&<>"']/g, function(match) {
+    return {
+      "&": "&amp;",
+      "<": "&lt;",
+      ">": "&gt;",
+      '"': "&quot;",
+      "'": "&#039;"
+    }[match];
+  });
+}
+
 
 renderStats();
 applyCompanion();
