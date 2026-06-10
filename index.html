@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>App Emocional V22</title>
+<title>App Emocional V23</title>
 
 <style>
 body {
@@ -335,6 +335,7 @@ body, .app, #circle, .action, .stats, .softButton, .moods button {
 </head>
 
 <body>
+<audio id="ambientAudio" loop></audio>
 
 <div id="companionScreen" class="fullscreen" style="
 background:linear-gradient(180deg,#f8fafc,#bfdbfe);
@@ -636,8 +637,13 @@ overflow:auto;
   font-weight:600;
   "></div>
 
+  <div style="margin-top:18px;">
+    <button onclick="playAmbient()" class="softButton">▶️ Reproducir</button>
+    <button onclick="pauseAmbient()" class="softButton">⏸️ Pausar</button>
+  </div>
+
   <p class="small" style="margin-top:18px;">
-    Por ahora es una experiencia visual. Más adelante podemos agregar audio real.
+    Si no suena, revisá que los archivos estén en la carpeta audio con los nombres correctos.
   </p>
 
   <br>
@@ -1154,19 +1160,45 @@ function showSparkMission() {
 
 
 
+
+let currentAmbient = "";
+
 function getAtmospheres() {
-  const comp = getCompanion();
   const key = localStorage.getItem("companion");
 
   const sounds = {
-    brote: ["🌱 Bosque suave", "🍃 Hojas moviéndose", "🐦 Pájaros lejanos"],
-    luna: ["🌙 Lluvia suave", "🌌 Noche tranquila", "🍃 Viento lento"],
-    zorro: ["🦊 Bosque nocturno", "🚶 Caminata suave", "🔥 Fuego lejano"],
-    ballena: ["🐳 Océano profundo", "🌊 Olas lentas", "🫧 Burbujas"],
-    nube: ["☁️ Brisa", "🌫️ Cielo tranquilo", "🌬️ Aire suave"]
+    brote: [
+      { label: "🌱 Bosque suave", file: "audio/bosque.mp3" },
+      { label: "🍃 Hojas moviéndose", file: "audio/hojas.mp3" },
+      { label: "🐦 Pájaros lejanos", file: "audio/pajaros.mp3" }
+    ],
+    luna: [
+      { label: "🌙 Lluvia suave", file: "audio/lluvia.mp3" },
+      { label: "🌌 Noche tranquila", file: "audio/noche.mp3" },
+      { label: "🍃 Viento lento", file: "audio/viento.mp3" }
+    ],
+    zorro: [
+      { label: "🦊 Bosque nocturno", file: "audio/bosque_nocturno.mp3" },
+      { label: "🚶 Caminata suave", file: "audio/pasos.mp3" },
+      { label: "🔥 Fogata lejana", file: "audio/fogata.mp3" }
+    ],
+    ballena: [
+      { label: "🐳 Océano profundo", file: "audio/oceano.mp3" },
+      { label: "🌊 Olas lentas", file: "audio/olas.mp3" },
+      { label: "🫧 Burbujas", file: "audio/burbujas.mp3" }
+    ],
+    nube: [
+      { label: "☁️ Brisa", file: "audio/brisa.mp3" },
+      { label: "🌫️ Cielo tranquilo", file: "audio/cielo.mp3" },
+      { label: "🌬️ Aire suave", file: "audio/aire.mp3" }
+    ]
   };
 
-  return sounds[key] || ["🌊 Olas suaves", "🍃 Viento suave", "🌧️ Lluvia tranquila"];
+  return sounds[key] || [
+    { label: "🌊 Olas suaves", file: "audio/olas.mp3" },
+    { label: "🍃 Viento suave", file: "audio/viento.mp3" },
+    { label: "🌧️ Lluvia tranquila", file: "audio/lluvia.mp3" }
+  ];
 }
 
 function openAtmosphere() {
@@ -1178,10 +1210,11 @@ function openAtmosphere() {
   document.getElementById("atmosphereIntro").innerText =
     comp ? comp.name + " puede quedarse con vos en este ambiente." : "Elegí un ambiente para acompañarte.";
 
-  document.getElementById("soundResult").innerText = "";
+  document.getElementById("soundResult").innerText =
+    currentAmbient ? "Ambiente activo: " + currentAmbient : "";
 
-  document.getElementById("soundOptions").innerHTML = options.map(s => `
-    <button class="soundButton" onclick="chooseAtmosphere('${s}')">${s}</button>
+  document.getElementById("soundOptions").innerHTML = options.map((s, i) => `
+    <button class="soundButton" onclick="chooseAtmosphere(${i})">${s.label}</button>
   `).join("");
 
   if (navigator.vibrate) navigator.vibrate(45);
@@ -1191,11 +1224,49 @@ function closeAtmosphere() {
   document.getElementById("atmosphereScreen").style.display = "none";
 }
 
-function chooseAtmosphere(sound) {
+function chooseAtmosphere(index) {
+  const options = getAtmospheres();
+  const sound = options[index];
+
+  if (!sound) return;
+
+  currentAmbient = sound.label;
+
+  const audio = document.getElementById("ambientAudio");
+  audio.src = sound.file;
+  audio.volume = 0.45;
+
   document.getElementById("soundResult").innerText =
-    sound + " queda acompañándote imaginariamente.";
+    "Ambiente activo: " + sound.label;
+
+  audio.play().catch(() => {
+    document.getElementById("soundResult").innerText =
+      "Elegiste " + sound.label + ". Tocá ▶️ Reproducir para activarlo.";
+  });
 
   if (navigator.vibrate) navigator.vibrate([40,30,40]);
+}
+
+function playAmbient() {
+  const audio = document.getElementById("ambientAudio");
+
+  if (!audio.src) {
+    document.getElementById("soundResult").innerText =
+      "Primero elegí un ambiente.";
+    return;
+  }
+
+  audio.play();
+  document.getElementById("soundResult").innerText =
+    "Sonando: " + (currentAmbient || "ambiente");
+}
+
+function pauseAmbient() {
+  const audio = document.getElementById("ambientAudio");
+  audio.pause();
+
+  document.getElementById("soundResult").innerText =
+    "Ambiente pausado.";
 }
 
 function openSupport() {
