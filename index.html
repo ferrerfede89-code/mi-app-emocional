@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>App Emocional V8</title>
+<title>App Emocional V10</title>
 
 <style>
 body {
@@ -145,6 +145,28 @@ body {
   border:none;
 }
 
+.companionGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-top: 22px;
+}
+
+.companionCard {
+  border: none;
+  border-radius: 24px;
+  padding: 20px 12px;
+  background: rgba(255,255,255,0.85);
+  box-shadow: 0 12px 28px rgba(0,0,0,0.08);
+  font-size: 15px;
+}
+
+.companionEmoji {
+  font-size: 34px;
+  display:block;
+  margin-bottom:8px;
+}
+
 .stayCircle {
   width: 165px;
   height: 165px;
@@ -165,8 +187,41 @@ body {
 
 <body>
 
+<div id="companionScreen" class="fullscreen" style="
+background:linear-gradient(180deg,#f8fafc,#bfdbfe);
+display:none;
+justify-content:center;
+align-items:center;
+flex-direction:column;
+text-align:center;
+">
+  <h2>Bienvenido.</h2>
+  <p style="max-width:330px;font-size:18px;line-height:1.45;">
+    No voy a acompañarte como una aplicación.<br><br>
+    Elegí quién querés que esté con vos.
+  </p>
+
+  <div class="companionGrid">
+    <button class="companionCard" onclick="chooseCompanion('brote')">
+      <span class="companionEmoji">🌱</span>Brote<br><span class="small">crecimiento lento</span>
+    </button>
+    <button class="companionCard" onclick="chooseCompanion('luna')">
+      <span class="companionEmoji">🌙</span>Luna<br><span class="small">calma y silencio</span>
+    </button>
+    <button class="companionCard" onclick="chooseCompanion('zorro')">
+      <span class="companionEmoji">🦊</span>Zorro<br><span class="small">curiosidad suave</span>
+    </button>
+    <button class="companionCard" onclick="chooseCompanion('ballena')">
+      <span class="companionEmoji">🐳</span>Ballena<br><span class="small">presencia profunda</span>
+    </button>
+    <button class="companionCard" onclick="chooseCompanion('nube')" style="grid-column:1/3;">
+      <span class="companionEmoji">☁️</span>Nube<br><span class="small">alivio y descanso</span>
+    </button>
+  </div>
+</div>
+
 <div class="app">
-  <div class="presence">Estoy acá.</div>
+  <div class="presence" id="presenceText">Estoy acá.</div>
 
   <div id="circle">Tocar</div>
 
@@ -200,6 +255,12 @@ body {
   </div>
 
   <div class="stats" id="stats"></div>
+
+  <div style="text-align:center;margin-top:14px;">
+    <button onclick="resetCompanion()" class="softButton" style="font-size:13px;padding:9px 12px;">
+      Cambiar compañero
+    </button>
+  </div>
 </div>
 
 <div id="breathingScreen" style="
@@ -239,7 +300,7 @@ text-align:center;
 
 <div id="releaseScreen" class="fullscreen" style="background:linear-gradient(180deg,#fff7ed,#fdba74);">
   <h1>🔥</h1>
-  <h2>¿Qué pesa ahora?</h2>
+  <h2 id="releaseTitle">¿Qué pesa ahora?</h2>
 
   <div style="display:flex;flex-wrap:wrap;gap:10px;margin-bottom:20px;">
     <button class="softButton" onclick="chooseTopic('Pensamientos')">Pensamientos</button>
@@ -263,7 +324,7 @@ text-align:center;
 
 <div id="connectScreen" class="fullscreen" style="background:linear-gradient(180deg,#ede9fe,#bfdbfe);">
   <h1>🫂</h1>
-  <h2>¿Quién te hace sentir seguro?</h2>
+  <h2 id="connectTitle">¿Quién te hace sentir seguro?</h2>
 
   <div style="display:flex;flex-wrap:wrap;gap:10px;margin-bottom:22px;">
     <button class="softButton" onclick="choosePerson('Mamá')">Mamá</button>
@@ -308,7 +369,7 @@ text-align:center;
 flex-direction:column;
 overflow:hidden;
 ">
-  <div style="font-size:42px;margin-bottom:20px;">🌊</div>
+  <div style="font-size:42px;margin-bottom:20px;" id="stayEmoji">🌊</div>
 
   <div id="stayMessage" style="
   font-size:28px;
@@ -344,6 +405,93 @@ let currentTopic = "";
 let selectedPerson = "";
 let selectedNeed = "";
 
+const companions = {
+  brote: {
+    emoji: "🌱",
+    name: "Brote",
+    presence: "🌱 Brote está con vos hoy.",
+    main: "No hace falta crecer hoy.",
+    breathe: "🌱 Tomemos aire despacio.",
+    release: "🌱 ¿Querés dejar algo acá?",
+    connect: "🌱 No hace falta hacerlo solo.",
+    stay: ["No hace falta crecer hoy.", "Incluso las raíces descansan.", "Podemos quedarnos así.", "Un paso pequeño alcanza.", "No tenés que florecer ahora."],
+    sub: ["Crecimiento también es descansar.", "La pausa también forma parte.", "Hoy alcanza con estar.", "No todo tiene que avanzar.", "Quedate un minuto más."]
+  },
+  luna: {
+    emoji: "🌙",
+    name: "Luna",
+    presence: "🌙 Luna sigue acá.",
+    main: "La noche también pasa.",
+    breathe: "🌙 Respiremos en silencio.",
+    release: "🌙 Podés dejarlo bajo esta luz.",
+    connect: "🌙 No tenés que atravesar la noche solo.",
+    stay: ["La noche también pasa.", "Podemos esperar juntos.", "No hace falta apurarse.", "La calma puede ser mínima.", "Estoy cerca."],
+    sub: ["No tenés que ver todo ahora.", "A veces alcanza con esperar.", "La oscuridad no exige respuestas.", "Podemos quedarnos un momento.", "Respirá si podés."]
+  },
+  zorro: {
+    emoji: "🦊",
+    name: "Zorro",
+    presence: "🦊 Zorro está cerca.",
+    main: "Probemos algo distinto.",
+    breathe: "🦊 Bajemos el ritmo un poco.",
+    release: "🦊 Veamos qué está dando vueltas.",
+    connect: "🦊 Tal vez alguien pueda acercarse.",
+    stay: ["No hace falta hacerlo perfecto.", "Podemos observar un rato.", "Algo pequeño también cuenta.", "Probemos quedarnos.", "Estoy acá, curioso y quieto."],
+    sub: ["No hay examen.", "Hagámoslo raro si hace falta.", "La curiosidad también acompaña.", "Quedarse también es un movimiento.", "No tenés que saber qué hacer."]
+  },
+  ballena: {
+    emoji: "🐳",
+    name: "Ballena",
+    presence: "🐳 Ballena está con vos hoy.",
+    main: "No tenés que hundirte más.",
+    breathe: "🐳 Tomemos aire despacio.",
+    release: "🐳 Podés soltar un poco de peso.",
+    connect: "🐳 No tenés que cargarlo solo.",
+    stay: ["No tenés que hundirte más.", "Ya estoy acá con vos.", "Podemos quedarnos en la superficie.", "Respirá despacio.", "No hace falta bajar más profundo."],
+    sub: ["La profundidad también puede sostener.", "Un minuto más es suficiente.", "No estás solo en esto.", "Dejá que el agua baje.", "Podemos flotar."]
+  },
+  nube: {
+    emoji: "☁️",
+    name: "Nube",
+    presence: "☁️ Nube está con vos.",
+    main: "Soltá un poco el peso.",
+    breathe: "☁️ Respiremos suave.",
+    release: "☁️ Podés dejarlo pasar un poco.",
+    connect: "☁️ No tenés que sostenerlo todo.",
+    stay: ["Soltá un poco el peso.", "Podemos flotar un rato.", "Nada tiene que ser duro ahora.", "No tenés que sostenerlo todo.", "Estoy suave acá."],
+    sub: ["La suavidad también es fuerza.", "Podés descansar un poco.", "No hay prisa.", "Hoy puede ser liviano por un minuto.", "Solo estar."]
+  }
+};
+
+function getCompanion() {
+  const saved = localStorage.getItem("companion");
+  return companions[saved] || null;
+}
+
+function chooseCompanion(key) {
+  localStorage.setItem("companion", key);
+  document.getElementById("companionScreen").style.display = "none";
+  applyCompanion();
+}
+
+function resetCompanion() {
+  localStorage.removeItem("companion");
+  document.getElementById("companionScreen").style.display = "flex";
+}
+
+function applyCompanion() {
+  const c = getCompanion();
+
+  if (!c) {
+    document.getElementById("companionScreen").style.display = "flex";
+    return;
+  }
+
+  document.getElementById("presenceText").innerText = c.presence;
+  document.getElementById("message").innerText = c.main;
+  document.getElementById("circle").innerText = c.emoji;
+}
+
 const messages = [
   "No hace falta resolver todo ahora.",
   "Podemos quedarnos un momento.",
@@ -353,20 +501,22 @@ const messages = [
 ];
 
 document.getElementById("circle").onclick = () => {
-  const c = document.getElementById("circle");
+  const cEl = document.getElementById("circle");
 
   if (inhaling) {
-    c.style.transform = "scale(1.35)";
-    c.innerText = "Inhalar";
+    cEl.style.transform = "scale(1.35)";
+    cEl.innerText = "Inhalar";
     document.body.style.background = "linear-gradient(180deg, #dff7f8, #72b7f5)";
   } else {
-    c.style.transform = "scale(1)";
-    c.innerText = "Exhalar";
+    cEl.style.transform = "scale(1)";
+    const comp = getCompanion();
+    cEl.innerText = comp ? comp.emoji : "Exhalar";
     document.body.style.background = "linear-gradient(180deg, #e9e4ff, #8ec5fc)";
   }
 
+  const comp = getCompanion();
   document.getElementById("message").innerText =
-    messages[Math.floor(Math.random() * messages.length)];
+    comp ? comp.main : messages[Math.floor(Math.random() * messages.length)];
 
   if (navigator.vibrate) navigator.vibrate(50);
   inhaling = !inhaling;
@@ -414,8 +564,15 @@ function openBreathing() {
 
   const circle = document.getElementById("breathingCircle");
   const text = document.getElementById("breathingMessage");
+  const comp = getCompanion();
 
-  const breathingMessages = [
+  const breathingMessages = comp ? [
+    comp.breathe,
+    "No hace falta apurarse.",
+    "Podemos quedarnos un momento.",
+    "Un paso a la vez.",
+    "Solamente respirá."
+  ] : [
     "Estoy acá.",
     "No hace falta apurarse.",
     "Podemos quedarnos un momento.",
@@ -424,6 +581,8 @@ function openBreathing() {
   ];
 
   let inhale = true;
+
+  text.innerText = breathingMessages[0];
 
   breathingInterval = setInterval(() => {
     if (inhale) {
@@ -447,6 +606,9 @@ function closeBreathing() {
 }
 
 function openRelease() {
+  const comp = getCompanion();
+  document.getElementById("releaseTitle").innerText =
+    comp ? comp.release : "¿Qué pesa ahora?";
   document.getElementById("releaseScreen").style.display = "block";
 }
 
@@ -472,6 +634,9 @@ function releaseThought() {
 }
 
 function openConnect() {
+  const comp = getCompanion();
+  document.getElementById("connectTitle").innerText =
+    comp ? comp.connect : "¿Quién te hace sentir seguro?";
   document.getElementById("connectScreen").style.display = "block";
 }
 
@@ -510,7 +675,9 @@ function prepareConnection() {
 function openStay() {
   document.getElementById("stayScreen").style.display = "flex";
 
-  const phrases = [
+  const comp = getCompanion();
+
+  const phrases = comp ? comp.stay : [
     "Estoy acá.",
     "No hace falta resolverlo ahora.",
     "Podemos quedarnos un momento.",
@@ -518,7 +685,7 @@ function openStay() {
     "Solo estar."
   ];
 
-  const subPhrases = [
+  const subPhrases = comp ? comp.sub : [
     "Podés quedarte un minuto.",
     "No hay nada que demostrar.",
     "Esto también puede ser suficiente.",
@@ -528,6 +695,7 @@ function openStay() {
 
   let index = 0;
 
+  document.getElementById("stayEmoji").innerText = comp ? comp.emoji : "🌊";
   document.getElementById("stayMessage").innerText = phrases[0];
   document.getElementById("staySubMessage").innerText = subPhrases[0];
 
@@ -553,6 +721,7 @@ function closeStay() {
 }
 
 renderStats();
+applyCompanion();
 </script>
 
 </body>
