@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>App Emocional V11</title>
+<title>App Emocional V13</title>
 
 <style>
 body {
@@ -210,6 +210,39 @@ body {
   color: #f97316;
 }
 
+
+.soundButton {
+  border:none;
+  border-radius:18px;
+  padding:12px 14px;
+  font-size:15px;
+  background:rgba(255,255,255,0.9);
+  margin:6px;
+}
+
+.supportCard {
+  background:rgba(255,255,255,0.9);
+  border-radius:22px;
+  padding:16px;
+  margin:12px 0;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.07);
+}
+
+.audioPulse {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  margin: 25px auto;
+  background: radial-gradient(circle, rgba(255,255,255,0.95), rgba(96,165,250,0.55));
+  animation: audioPulse 5s infinite ease-in-out;
+}
+
+@keyframes audioPulse {
+  0% { transform: scale(1); opacity: .75; }
+  50% { transform: scale(1.18); opacity: 1; }
+  100% { transform: scale(1); opacity: .75; }
+}
+
 </style>
 </head>
 
@@ -272,8 +305,14 @@ text-align:center;
     <button class="action" onclick="openStay()">
       <span>🌊</span>Quedarme
     </button>
-    <button class="action" onclick="openSpark()" style="grid-column:1/3;">
+    <button class="action" onclick="openSpark()">
       <span>😊</span>Chispa
+    </button>
+    <button class="action" onclick="openAtmosphere()">
+      <span>🎵</span>Ambiente
+    </button>
+    <button class="action" onclick="openSupport()" style="grid-column:1/3;">
+      <span>🚨</span>Apoyo rápido
     </button>
   </div>
 
@@ -473,6 +512,80 @@ overflow:auto;
 
   <br><br>
   <button onclick="closeSpark()" class="softButton">Volver</button>
+</div>
+
+
+<div id="atmosphereScreen" class="fullscreen" style="
+background:linear-gradient(180deg,#e0f2fe,#c7d2fe);
+text-align:center;
+overflow:auto;
+">
+  <h1 id="atmosphereEmoji">🎵</h1>
+  <h2>Ambiente</h2>
+  <p id="atmosphereIntro" style="font-size:17px;line-height:1.45;max-width:330px;margin:0 auto 18px;">
+    Elegí un sonido imaginado para acompañarte.
+  </p>
+
+  <div class="audioPulse"></div>
+
+  <div id="soundOptions" style="margin-top:18px;"></div>
+
+  <div id="soundResult" style="
+  margin-top:26px;
+  font-size:21px;
+  line-height:1.45;
+  font-weight:600;
+  "></div>
+
+  <p class="small" style="margin-top:18px;">
+    Por ahora es una experiencia visual. Más adelante podemos agregar audio real.
+  </p>
+
+  <br>
+  <button onclick="closeAtmosphere()" class="softButton">Volver</button>
+</div>
+
+<div id="supportScreen" class="fullscreen" style="
+background:linear-gradient(180deg,#fee2e2,#bfdbfe);
+overflow:auto;
+">
+  <h1>🚨</h1>
+  <h2>Apoyo rápido</h2>
+
+  <p style="font-size:17px;line-height:1.45;">
+    Este espacio no reemplaza ayuda profesional. Sirve para acercarte a alguien o a un recurso cuando te cuesta dar el primer paso.
+  </p>
+
+  <div class="supportCard">
+    <h3>🫂 Persona de confianza</h3>
+    <p>Prepará un mensaje simple para alguien cercano.</p>
+    <textarea id="supportMessage" class="textBox">Hoy me está costando un poco. ¿Podés estar cerca?</textarea>
+    <button onclick="copySupportMessage()" class="softButton">Copiar mensaje</button>
+    <div id="copyResult" style="font-weight:bold;margin-top:10px;"></div>
+  </div>
+
+  <div class="supportCard">
+    <h3>📱 WhatsApp</h3>
+    <p>Abre WhatsApp para que puedas pegar el mensaje copiado.</p>
+    <button onclick="openWhatsApp()" class="softButton">Abrir WhatsApp</button>
+  </div>
+
+  <div class="supportCard">
+    <h3>📞 Llamar</h3>
+    <p>Si necesitás escuchar una voz, podés llamar a alguien cercano.</p>
+    <button onclick="prepareCall()" class="softButton">Prepararme para llamar</button>
+    <div id="callResult" style="font-weight:bold;margin-top:10px;"></div>
+  </div>
+
+  <div class="supportCard">
+    <h3>🚑 Emergencia</h3>
+    <p>Si estás en peligro inmediato o sentís que no podés mantenerte a salvo, contactá emergencias de tu país.</p>
+    <button onclick="showEmergency()" class="softButton">Mostrar recordatorio</button>
+    <div id="emergencyResult" style="font-weight:bold;margin-top:10px;"></div>
+  </div>
+
+  <br>
+  <button onclick="closeSupport()" class="softButton">Volver</button>
 </div>
 
 <script>
@@ -880,6 +993,88 @@ function showSparkMission() {
   }
 }
 
+
+
+function getAtmospheres() {
+  const comp = getCompanion();
+  const key = localStorage.getItem("companion");
+
+  const sounds = {
+    brote: ["🌱 Bosque suave", "🍃 Hojas moviéndose", "🐦 Pájaros lejanos"],
+    luna: ["🌙 Lluvia suave", "🌌 Noche tranquila", "🍃 Viento lento"],
+    zorro: ["🦊 Bosque nocturno", "🚶 Caminata suave", "🔥 Fuego lejano"],
+    ballena: ["🐳 Océano profundo", "🌊 Olas lentas", "🫧 Burbujas"],
+    nube: ["☁️ Brisa", "🌫️ Cielo tranquilo", "🌬️ Aire suave"]
+  };
+
+  return sounds[key] || ["🌊 Olas suaves", "🍃 Viento suave", "🌧️ Lluvia tranquila"];
+}
+
+function openAtmosphere() {
+  const comp = getCompanion();
+  const options = getAtmospheres();
+
+  document.getElementById("atmosphereScreen").style.display = "block";
+  document.getElementById("atmosphereEmoji").innerText = comp ? comp.emoji : "🎵";
+  document.getElementById("atmosphereIntro").innerText =
+    comp ? comp.name + " puede quedarse con vos en este ambiente." : "Elegí un ambiente para acompañarte.";
+
+  document.getElementById("soundResult").innerText = "";
+
+  document.getElementById("soundOptions").innerHTML = options.map(s => `
+    <button class="soundButton" onclick="chooseAtmosphere('${s}')">${s}</button>
+  `).join("");
+
+  if (navigator.vibrate) navigator.vibrate(45);
+}
+
+function closeAtmosphere() {
+  document.getElementById("atmosphereScreen").style.display = "none";
+}
+
+function chooseAtmosphere(sound) {
+  document.getElementById("soundResult").innerText =
+    sound + " queda acompañándote imaginariamente.";
+
+  if (navigator.vibrate) navigator.vibrate([40,30,40]);
+}
+
+function openSupport() {
+  document.getElementById("supportScreen").style.display = "block";
+
+  if (navigator.vibrate) navigator.vibrate(70);
+}
+
+function closeSupport() {
+  document.getElementById("supportScreen").style.display = "none";
+}
+
+function copySupportMessage() {
+  const text = document.getElementById("supportMessage").value;
+
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(text);
+    document.getElementById("copyResult").innerText = "Mensaje copiado.";
+  } else {
+    document.getElementById("copyResult").innerText = "Copiá el texto manualmente.";
+  }
+
+  if (navigator.vibrate) navigator.vibrate([50,30,50]);
+}
+
+function openWhatsApp() {
+  window.location.href = "https://wa.me/";
+}
+
+function prepareCall() {
+  document.getElementById("callResult").innerText =
+    "No tenés que explicar todo. Podés empezar con: ¿podés hablar un momento?";
+}
+
+function showEmergency() {
+  document.getElementById("emergencyResult").innerText =
+    "Si hay peligro inmediato, llamá al número local de emergencias. En Italia y la Unión Europea es 112.";
+}
 
 renderStats();
 applyCompanion();
