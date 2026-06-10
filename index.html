@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>App Emocional V28.1</title>
+<title>App Emocional V29</title>
 
 <style>
 body {
@@ -480,6 +480,9 @@ text-align:center;
     </button>
     <button class="action" onclick="openRemember()">
       <span>🧠</span>Recordar
+    </button>
+    <button class="action" onclick="openJourney()">
+      <span>📊</span>Recorrido
     </button>
     <button class="action" onclick="openSupport()" style="grid-column:1/3;">
       <span>🚨</span>Apoyo rápido
@@ -994,6 +997,15 @@ text-align:center;
   <button onclick="closeRemember()" class="softButton">Volver</button>
 </div>
 
+
+<div id="journeyScreen" class="fullscreen" style="background:linear-gradient(180deg,#ecfeff,#ddd6fe);overflow:auto;text-align:center;">
+<h1 id="journeyEmoji">📊</h1>
+<h2>Mi recorrido</h2>
+<div id="journeyContent" class="rememberCard"></div>
+<br>
+<button onclick="closeJourney()" class="softButton">Volver</button>
+</div>
+
 <script>
 
 function openCalendar() {
@@ -1229,6 +1241,45 @@ function showSmartMemory() {
       ${endings[key] || endings.brote}
     </div>
   `;
+}
+
+
+function openJourney(){
+ document.getElementById("journeyScreen").style.display="block";
+ renderJourney();
+}
+function closeJourney(){
+ document.getElementById("journeyScreen").style.display="none";
+}
+function renderJourney(){
+ const moods=JSON.parse(localStorage.getItem("moods"))||{};
+ const entries=JSON.parse(localStorage.getItem("diaryEntries"))||[];
+ const key=localStorage.getItem("companion")||"brote";
+ const comp=companions[key]||companions.brote;
+
+ let moodCount=0;
+ Object.keys(moods).forEach(d=> moodCount += (moods[d]||[]).length);
+
+ const memoryCount=entries.length;
+
+ const messages={
+  brote:"🌱 Seguiste apareciendo. Eso también es crecer.",
+  luna:"🌙 Hubo noches difíciles y aun así volviste.",
+  zorro:"🦊 No siempre fue fácil, pero seguiste explorando.",
+  ballena:"🐳 Incluso cuando la marea subió, seguiste flotando.",
+  nube:"☁️ No todo el peso quedó con vos."
+ };
+
+ document.getElementById("journeyEmoji").innerText=comp.emoji;
+
+ document.getElementById("journeyContent").innerHTML=`
+ <div style="font-size:18px;line-height:1.8;">
+ 🙂 Emociones registradas: <strong>${moodCount}</strong><br>
+ 📖 Recuerdos guardados: <strong>${memoryCount}</strong><br>
+ </div>
+ <div style="margin-top:20px;font-weight:600;">
+ ${messages[key]}
+ </div>`;
 }
 
 let inhaling = true;
