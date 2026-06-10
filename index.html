@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>App Emocional V24</title>
+<title>App Emocional V25</title>
 
 <style>
 body {
@@ -338,6 +338,13 @@ body, .app, #circle, .action, .stats, .softButton, .moods button {
   100% { transform: scale(1); opacity: .85; }
 }
 
+
+@keyframes morningPulse {
+  0% { transform: scale(1); opacity: .85; }
+  50% { transform: scale(1.14); opacity: 1; }
+  100% { transform: scale(1); opacity: .85; }
+}
+
 </style>
 </head>
 
@@ -415,6 +422,9 @@ text-align:center;
     </button>
     <button class="action" onclick="openSleep()">
       <span>🌙</span>Dormir
+    </button>
+    <button class="action" onclick="openMorning()">
+      <span>🌱</span>Empezar
     </button>
     <button class="action" onclick="openSupport()" style="grid-column:1/3;">
       <span>🚨</span>Apoyo rápido
@@ -808,6 +818,68 @@ overflow:hidden;
   <button onclick="closeSleep()" class="softButton" style="margin-top:40px;">
     Volver
   </button>
+</div>
+
+
+<div id="morningScreen" class="fullscreen" style="
+background:linear-gradient(180deg,#fef9c3,#bbf7d0);
+color:#1f2937;
+text-align:center;
+justify-content:flex-start;
+align-items:center;
+flex-direction:column;
+overflow:auto;
+">
+  <div id="morningEmoji" style="font-size:62px;margin-top:30px;">🌱</div>
+
+  <h2 id="morningTitle">Empezar el día</h2>
+
+  <div id="morningMessage" style="
+  max-width:330px;
+  font-size:21px;
+  line-height:1.55;
+  margin-top:12px;
+  ">
+    Hoy podemos empezar despacio.
+  </div>
+
+  <div style="
+  width:155px;
+  height:155px;
+  border-radius:50%;
+  margin-top:30px;
+  background:radial-gradient(circle,#ffffff,#86efac);
+  box-shadow:0 22px 60px rgba(34,197,94,.25);
+  animation:morningPulse 7s infinite ease-in-out;
+  "></div>
+
+  <div style="margin-top:28px;font-size:17px;line-height:1.45;max-width:330px;">
+    Elegí una intención simple para hoy.
+  </div>
+
+  <div style="display:flex;flex-direction:column;gap:10px;margin-top:18px;width:100%;max-width:330px;">
+    <button class="softButton" onclick="chooseMorningIntention('Ir lento')">Ir lento</button>
+    <button class="softButton" onclick="chooseMorningIntention('Hacer una cosa a la vez')">Hacer una cosa a la vez</button>
+    <button class="softButton" onclick="chooseMorningIntention('Pedir ayuda si hace falta')">Pedir ayuda si hace falta</button>
+    <button class="softButton" onclick="chooseMorningIntention('No exigirme de más')">No exigirme de más</button>
+  </div>
+
+  <textarea id="morningText" class="textBox" style="margin-top:18px;max-width:330px;" placeholder="También podés escribir tu intención..."></textarea>
+
+  <button onclick="saveMorning()" class="softButton" style="margin-top:18px;">
+    Guardar inicio del día
+  </button>
+
+  <div id="morningResult" style="
+  margin-top:22px;
+  font-size:18px;
+  font-weight:bold;
+  line-height:1.45;
+  max-width:330px;
+  "></div>
+
+  <br>
+  <button onclick="closeMorning()" class="softButton">Volver</button>
 </div>
 
 <script>
@@ -1686,6 +1758,80 @@ function clearDiary() {
   document.getElementById("diaryResult").innerText = "Diario borrado.";
 }
 
+
+
+let selectedMorningIntention = "";
+
+function openMorning() {
+  document.getElementById("morningScreen").style.display = "flex";
+
+  const key = localStorage.getItem("companion") || "brote";
+  const comp = companions[key] || companions.brote;
+
+  const phrases = {
+    brote: "🌱 Hoy no hace falta avanzar rápido.",
+    luna: "🌙 Empecemos despacio, sin exigirle demasiado al día.",
+    zorro: "🦊 Veamos qué descubrimos hoy, una cosa por vez.",
+    ballena: "🐳 Una respiración primero. Después el día.",
+    nube: "☁️ No tenés que cargar todo desde la mañana."
+  };
+
+  const sounds = {
+    brote: "bosque.mp3",
+    luna: "brisa.mp3",
+    zorro: "fogata.mp3",
+    ballena: "oceano.mp3",
+    nube: "brisa.mp3"
+  };
+
+  document.getElementById("morningEmoji").innerText = comp.emoji;
+  document.getElementById("morningTitle").innerText = comp.name + " empieza el día con vos.";
+  document.getElementById("morningMessage").innerText = phrases[key] || phrases.brote;
+  document.getElementById("morningResult").innerText = "";
+  selectedMorningIntention = "";
+
+  const audio = document.getElementById("ambientAudio");
+  audio.src = sounds[key] || "bosque.mp3";
+  audio.volume = 0.22;
+
+  audio.play().catch(() => {});
+
+  if (navigator.vibrate) {
+    navigator.vibrate([60,30,60]);
+  }
+}
+
+function closeMorning() {
+  document.getElementById("morningScreen").style.display = "none";
+}
+
+function chooseMorningIntention(text) {
+  selectedMorningIntention = text;
+  document.getElementById("morningResult").innerText =
+    "Intención elegida: " + text;
+}
+
+function saveMorning() {
+  const custom = document.getElementById("morningText").value.trim();
+  const intention = custom || selectedMorningIntention;
+
+  if (!intention) {
+    document.getElementById("morningResult").innerText =
+      "Elegí una intención o escribí una frase corta.";
+    return;
+  }
+
+  addDiaryEntry("Inicio del día: " + intention);
+
+  document.getElementById("morningResult").innerText =
+    "Guardado. Hoy alcanza con empezar así: " + intention + ".";
+
+  document.getElementById("morningText").value = "";
+
+  if (navigator.vibrate) {
+    navigator.vibrate([70,40,70]);
+  }
+}
 
 function openSleep() {
   document.getElementById("sleepScreen").style.display = "flex";
