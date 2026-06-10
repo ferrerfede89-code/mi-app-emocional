@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>App Emocional V36</title>
+<title>App Emocional V37</title>
 
 <style>
 body {
@@ -498,6 +498,9 @@ text-align:center;
     </button>
     <button class="action" onclick="openLetter()">
       <span>💌</span>Carta
+    </button>
+    <button class="action" onclick="openTimeline()">
+      <span>📈</span>Línea
     </button>
     <button class="action" onclick="openSupport()" style="grid-column:1/3;">
       <span>🚨</span>Apoyo rápido
@@ -1065,6 +1068,15 @@ text-align:center;
 <div id="letterContent" class="rememberCard"></div>
 <br>
 <button onclick="closeLetter()" class="softButton">Volver</button>
+</div>
+
+
+<div id="timelineScreen" class="fullscreen" style="background:linear-gradient(180deg,#dbeafe,#f5d0fe);overflow:auto;text-align:center;">
+<h1>📈</h1>
+<h2>Línea de tiempo emocional</h2>
+<div id="timelineContent" class="rememberCard"></div>
+<br>
+<button onclick="closeTimeline()" class="softButton">Volver</button>
 </div>
 
 <script>
@@ -1731,6 +1743,40 @@ function renderLetter(){
  Y aun así seguiste apareciendo.<br><br>
  ${endings[key]}<br><br>
  💌 Eso merece ser reconocido.
+ </div>`;
+}
+
+
+function openTimeline(){
+ document.getElementById('timelineScreen').style.display='block';
+ renderTimeline();
+}
+function closeTimeline(){
+ document.getElementById('timelineScreen').style.display='none';
+}
+function renderTimeline(){
+ const moods=JSON.parse(localStorage.getItem('moods'))||{};
+
+ const dates=Object.keys(moods).sort();
+ if(!dates.length){
+   document.getElementById('timelineContent').innerHTML='Todavía no hay registros suficientes.';
+   return;
+ }
+
+ let timeline='';
+ dates.forEach(d=>{
+   const icons=(moods[d]||[]).map(m=>m==='bien'?'🙂':m==='normal'?'😐':'😔').join(' ');
+   timeline += `<div style="margin:12px 0;padding:10px;border-radius:14px;background:rgba(255,255,255,.6);">
+   <strong>${d}</strong><br>${icons}
+   </div>`;
+ });
+
+ document.getElementById('timelineContent').innerHTML=`
+ <div style="text-align:left;">
+ ${timeline}
+ <div style="margin-top:18px;font-weight:600;">
+ 📈 Cada registro forma parte de tu recorrido.
+ </div>
  </div>`;
 }
 
