@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>App Emocional V26</title>
+<title>App Emocional V27</title>
 
 <style>
 body {
@@ -366,6 +366,16 @@ body, .app, #circle, .action, .stats, .softButton, .moods button {
   margin-top: 18px;
   line-height: 1.45;
 }
+
+
+.dayDetailCard{
+ background:rgba(255,255,255,.9);
+ border-radius:22px;
+ padding:16px;
+ margin-top:16px;
+ line-height:1.5;
+}
+.clickableDay{cursor:pointer;}
 
 </style>
 </head>
@@ -930,6 +940,15 @@ overflow:auto;
   <button onclick="closeCalendar()" class="softButton">Volver</button>
 </div>
 
+
+<div id="dayDetailScreen" class="fullscreen" style="background:linear-gradient(180deg,#eef2ff,#dbeafe);overflow:auto;">
+<h1>📖</h1>
+<h2 id="dayDetailTitle">Detalle del día</h2>
+<div id="dayDetailContent"></div>
+<br>
+<button onclick="closeDayDetail()" class="softButton">Volver</button>
+</div>
+
 <script>
 
 function openCalendar() {
@@ -954,7 +973,7 @@ function renderCalendar() {
   const list = document.getElementById("calendarList");
 
   if (!dates.length) {
-    list.innerHTML = '<div class="calendarDay">Todavía no hay registros emocionales.</div>';
+    list.innerHTML = '<div class="calendarDay clickableDay" onclick="openDayDetail(\'${date}\')">Todavía no hay registros emocionales.</div>';
     document.getElementById("calendarTrend").innerText =
       "Registrá algunas caritas para empezar a ver tu recorrido.";
     return;
@@ -973,7 +992,7 @@ function renderCalendar() {
     }
 
     return `
-      <div class="calendarDay">
+      <div class="calendarDay clickableDay" onclick="openDayDetail(\'${date}\')">
         <strong>${formatDateForCalendar(date)}</strong>
         <div class="calendarIcons">${icons}</div>
         ${diaryText}
@@ -1053,6 +1072,40 @@ function renderCalendarTrend(dates, moods) {
 
   document.getElementById("calendarTrend").innerText =
     (messages[key] && messages[key][state]) || messages.brote[state];
+}
+
+
+function openDayDetail(date){
+ const moods=JSON.parse(localStorage.getItem("moods"))||{};
+ const entries=JSON.parse(localStorage.getItem("diaryEntries"))||[];
+
+ const icons=(moods[date]||[]).map(m=>m==="bien"?"🙂":m==="normal"?"😐":"😔").join(" ");
+ const dayEntries=entries.filter(e=>{
+   const p=date.split("-");
+   const target=p[2]+"/"+p[1]+"/"+p[0];
+   return e.date===target;
+ });
+
+ let diaryHtml="";
+ if(dayEntries.length){
+   diaryHtml=dayEntries.map(e=>`<div class="dayDetailCard">📖 ${e.text}</div>`).join("");
+ }else{
+   diaryHtml='<div class="dayDetailCard">No hay recuerdos guardados para este día.</div>';
+ }
+
+ document.getElementById("dayDetailTitle").innerText="📅 "+formatDateForCalendar(date);
+ document.getElementById("dayDetailContent").innerHTML=`
+   <div class="dayDetailCard">
+      <div style="font-size:28px;">${icons || "Sin registros"}</div>
+   </div>
+   ${diaryHtml}
+ `;
+
+ document.getElementById("dayDetailScreen").style.display="block";
+}
+
+function closeDayDetail(){
+ document.getElementById("dayDetailScreen").style.display="none";
 }
 
 let inhaling = true;
