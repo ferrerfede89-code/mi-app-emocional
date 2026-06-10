@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>App Emocional V13</title>
+<title>App Emocional V17</title>
 
 <style>
 body {
@@ -325,6 +325,11 @@ text-align:center;
   </div>
 
   <div class="stats" id="stats"></div>
+  <div class="stats" id="memoryCard" style="margin-top:14px;">
+    <div class="section-title">📖 Memoria emocional</div>
+    <div id="memoryText">Todavía no hay suficientes registros.</div>
+  </div>
+
 
   <div style="text-align:center;margin-top:14px;">
     <button onclick="resetCompanion()" class="softButton" style="font-size:13px;padding:9px 12px;">
@@ -1074,6 +1079,53 @@ function prepareCall() {
 function showEmergency() {
   document.getElementById("emergencyResult").innerText =
     "Si hay peligro inmediato, llamá al número local de emergencias. En Italia y la Unión Europea es 112.";
+}
+
+
+function renderMemory() {
+  let data = JSON.parse(localStorage.getItem("moods")) || {};
+  let days = Object.keys(data).sort();
+
+  let text = "Todavía no hay suficientes registros.";
+
+  if (days.length >= 2) {
+    let recent = days.slice(-3);
+    let moods = recent.map(d => (data[d] || []).slice(-1)[0]).filter(Boolean);
+
+    const compKey = localStorage.getItem("companion") || "brote";
+
+    const messages = {
+      brote: "🌱 Hace unos días parecía diferente. Gracias por seguir acá.",
+      luna: "🌙 La noche no fue igual todos los días.",
+      zorro: "🦊 Veo pequeños cambios en el camino.",
+      ballena: "🐳 Algo cambió en la marea.",
+      nube: "☁️ Algunas cosas se movieron suavemente."
+    };
+
+    text = messages[compKey] || messages.brote;
+  }
+
+  const el = document.getElementById("memoryText");
+  if (el) el.innerText = text;
+}
+
+const originalApplyCompanion = applyCompanion;
+applyCompanion = function() {
+  originalApplyCompanion();
+  const key = localStorage.getItem("companion");
+
+  const themes = {
+    brote: "linear-gradient(180deg,#ecfccb,#86efac)",
+    luna: "linear-gradient(180deg,#1e293b,#6366f1)",
+    zorro: "linear-gradient(180deg,#ffedd5,#fb923c)",
+    ballena: "linear-gradient(180deg,#dbeafe,#3b82f6)",
+    nube: "linear-gradient(180deg,#f8fafc,#cbd5e1)"
+  };
+
+  if (themes[key]) {
+    document.body.style.background = themes[key];
+  }
+  renderMemory();
 }
 
 renderStats();
