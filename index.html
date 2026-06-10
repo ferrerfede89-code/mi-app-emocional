@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>App Emocional V33.1</title>
+<title>App Emocional V34</title>
 
 <style>
 body {
@@ -1039,6 +1039,7 @@ text-align:center;
 <h2>Mi historia</h2>
 <div id="storyContent" class="rememberCard"></div>
 <br>
+<button onclick="copyStory()" class="softButton">📋 Guardar historia</button>
 <button onclick="closeStory()" class="softButton">Volver</button>
 </div>
 
@@ -1605,6 +1606,14 @@ function renderStory(){
  ${trend}<br><br>
  ${endings[key] || endings.brote}
  </div>`;
+}
+
+
+function copyStory(){
+ const text=document.getElementById('storyContent').innerText;
+ navigator.clipboard.writeText(text).then(()=>{
+   alert('📜 Historia copiada. Ya podés pegarla en Notas, Word o donde quieras guardarla.');
+ });
 }
 
 let inhaling = true;
