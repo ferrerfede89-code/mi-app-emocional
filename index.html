@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>App Emocional V43</title>
+<title>App Emocional V44</title>
 
 <style>
 body {
@@ -1095,6 +1095,7 @@ text-align:center;
 <div id="journeyHubScreen" class="fullscreen" style="background:linear-gradient(180deg,#dcfce7,#dbeafe);overflow:auto;text-align:center;">
 <h1>🗺️</h1>
 <h2>Mi recorrido</h2>
+<button onclick="openStats();closeJourneyHub();" class="softButton">📊 Estadísticas</button>
 <button onclick="openJourney();closeJourneyHub();" class="softButton">📊 Recorrido</button>
 <button onclick="openTree();closeJourneyHub();" class="softButton">🌳 Árbol</button>
 <button onclick="openStory();closeJourneyHub();" class="softButton">📜 Historia</button>
@@ -1126,7 +1127,67 @@ text-align:center;
 <button onclick="closeCapsule()" class="softButton">Volver</button>
 </div>
 
+
+<div id="statsScreen" class="fullscreen" style="background:linear-gradient(180deg,#dcfce7,#ddd6fe);overflow:auto;text-align:center;">
+<h1>📊</h1>
+<h2>Estadísticas emocionales</h2>
+<div id="statsAdvancedContent" class="rememberCard"></div>
+<br>
+<button onclick="closeStats()" class="softButton">Volver</button>
+</div>
+
 <script>
+
+
+function openStats(){
+ document.getElementById('statsScreen').style.display='block';
+ renderAdvancedStats();
+}
+function closeStats(){
+ document.getElementById('statsScreen').style.display='none';
+}
+function renderAdvancedStats(){
+ const moods=JSON.parse(localStorage.getItem('moods'))||{};
+ const entries=JSON.parse(localStorage.getItem('diaryEntries'))||[];
+
+ let bien=0,normal=0,mal=0,total=0;
+ Object.keys(moods).forEach(d=>{
+   (moods[d]||[]).forEach(m=>{
+      total++;
+      if(m==='bien') bien++;
+      else if(m==='normal') normal++;
+      else if(m==='mal') mal++;
+   });
+ });
+
+ const days=Object.keys(moods).length;
+ const p=t=> total?Math.round((t/total)*100):0;
+
+ let recent=[];
+ Object.keys(moods).sort().slice(-7).forEach(d=>{
+   recent=recent.concat(moods[d]||[]);
+ });
+ const trendIcons=recent.map(m=>m==='bien'?'🙂':m==='normal'?'😐':'😔').join(' ');
+
+ let trend='🌱 Seguí registrando para descubrir patrones.';
+ if(bien>mal) trend='🌱 Durante tu recorrido aparecieron más momentos de calma.';
+ else if(mal>bien) trend='🐳 Hubo momentos difíciles, pero seguiste apareciendo.';
+
+ document.getElementById('statsAdvancedContent').innerHTML=`
+ <div style="text-align:left;line-height:1.8;">
+ 🙂 Positivas: <strong>${bien}</strong> (${p(bien)}%)<br>
+ 😐 Neutras: <strong>${normal}</strong> (${p(normal)}%)<br>
+ 😔 Difíciles: <strong>${mal}</strong> (${p(mal)}%)<br><br>
+
+ 📖 Recuerdos escritos: <strong>${entries.length}</strong><br>
+ 🏆 Días activos: <strong>${days}</strong><br><br>
+
+ <strong>Últimos registros</strong><br>
+ ${trendIcons || 'Sin datos todavía'}<br><br>
+
+ ${trend}
+ </div>`;
+}
 
 function openCalendar() {
   document.getElementById("calendarScreen").style.display = "block";
