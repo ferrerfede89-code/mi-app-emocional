@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>App Emocional V35</title>
+<title>App Emocional V36</title>
 
 <style>
 body {
@@ -495,6 +495,9 @@ text-align:center;
     </button>
     <button class="action" onclick="openContinuity()">
       <span>🏆</span>Continuidad
+    </button>
+    <button class="action" onclick="openLetter()">
+      <span>💌</span>Carta
     </button>
     <button class="action" onclick="openSupport()" style="grid-column:1/3;">
       <span>🚨</span>Apoyo rápido
@@ -1053,6 +1056,15 @@ text-align:center;
 <div id="continuityContent" class="rememberCard"></div>
 <br>
 <button onclick="closeContinuity()" class="softButton">Volver</button>
+</div>
+
+
+<div id="letterScreen" class="fullscreen" style="background:linear-gradient(180deg,#fde68a,#ddd6fe);overflow:auto;text-align:center;">
+<h1>💌</h1>
+<h2>Carta para mí</h2>
+<div id="letterContent" class="rememberCard"></div>
+<br>
+<button onclick="closeLetter()" class="softButton">Volver</button>
 </div>
 
 <script>
@@ -1672,6 +1684,53 @@ function renderContinuity(){
  📖 Dejaste escritas <strong>${memoryCount}</strong> partes de tu historia.<br><br>
  🙂 Te observaste <strong>${moodCount}</strong> veces.<br><br>
  ${endings[key]}
+ </div>`;
+}
+
+
+function openLetter(){
+ document.getElementById('letterScreen').style.display='block';
+ renderLetter();
+}
+function closeLetter(){
+ document.getElementById('letterScreen').style.display='none';
+}
+function renderLetter(){
+ const moods=JSON.parse(localStorage.getItem('moods'))||{};
+ const entries=JSON.parse(localStorage.getItem('diaryEntries'))||[];
+ const key=localStorage.getItem('companion')||'brote';
+
+ let moodCount=0,bien=0,mal=0;
+ Object.keys(moods).forEach(d=>{
+   (moods[d]||[]).forEach(m=>{
+      moodCount++;
+      if(m==='bien') bien++;
+      if(m==='mal') mal++;
+   });
+ });
+
+ const memoryCount=entries.length;
+
+ const endings={
+   brote:'🌱 Quizás no lo notes todos los días, pero seguiste creciendo.',
+   luna:'🌙 Hubo noches distintas, y aun así seguiste volviendo.',
+   zorro:'🦊 El camino tuvo vueltas, pero seguiste explorando.',
+   ballena:'🐳 Hubo mareas altas y bajas, pero seguiste flotando.',
+   nube:'☁️ Algunas cargas siguieron ahí, pero no llevaron todo tu cielo.'
+ };
+
+ let trend='Hubo días tranquilos y días difíciles.';
+ if(bien>mal) trend='Aparecieron varios momentos de calma.';
+ else if(mal>bien) trend='Hubo días difíciles que merecen reconocimiento.';
+
+ document.getElementById('letterContent').innerHTML=`
+ <div style="text-align:left;font-size:18px;line-height:1.8;">
+ Querido/a yo:<br><br>
+ Durante este tiempo escribiste <strong>${memoryCount}</strong> recuerdo(s) y registraste <strong>${moodCount}</strong> emoción(es).<br><br>
+ ${trend}<br><br>
+ Y aun así seguiste apareciendo.<br><br>
+ ${endings[key]}<br><br>
+ 💌 Eso merece ser reconocido.
  </div>`;
 }
 
