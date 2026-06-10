@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>App Emocional V25</title>
+<title>App Emocional V26</title>
 
 <style>
 body {
@@ -345,6 +345,28 @@ body, .app, #circle, .action, .stats, .softButton, .moods button {
   100% { transform: scale(1); opacity: .85; }
 }
 
+
+.calendarDay {
+  background: rgba(255,255,255,0.82);
+  border-radius: 20px;
+  padding: 14px;
+  margin: 10px 0;
+  line-height: 1.45;
+}
+
+.calendarIcons {
+  font-size: 22px;
+  margin-top: 8px;
+}
+
+.calendarSummary {
+  background: rgba(255,255,255,0.78);
+  border-radius: 22px;
+  padding: 16px;
+  margin-top: 18px;
+  line-height: 1.45;
+}
+
 </style>
 </head>
 
@@ -425,6 +447,9 @@ text-align:center;
     </button>
     <button class="action" onclick="openMorning()">
       <span>🌱</span>Empezar
+    </button>
+    <button class="action" onclick="openCalendar()">
+      <span>📅</span>Calendario
     </button>
     <button class="action" onclick="openSupport()" style="grid-column:1/3;">
       <span>🚨</span>Apoyo rápido
@@ -882,7 +907,154 @@ overflow:auto;
   <button onclick="closeMorning()" class="softButton">Volver</button>
 </div>
 
+
+<div id="calendarScreen" class="fullscreen" style="
+background:linear-gradient(180deg,#f8fafc,#ddd6fe);
+overflow:auto;
+">
+  <h1 id="calendarEmoji">📅</h1>
+  <h2>Calendario emocional</h2>
+
+  <p id="calendarIntro" style="font-size:17px;line-height:1.45;">
+    Tu recorrido reciente, sin juzgarlo.
+  </p>
+
+  <div id="calendarList" style="margin-top:20px;"></div>
+
+  <div class="calendarSummary">
+    <div class="section-title">Tendencia reciente</div>
+    <div id="calendarTrend">Todavía no hay suficientes registros.</div>
+  </div>
+
+  <br>
+  <button onclick="closeCalendar()" class="softButton">Volver</button>
+</div>
+
 <script>
+
+function openCalendar() {
+  document.getElementById("calendarScreen").style.display = "block";
+
+  const comp = getCompanion();
+  document.getElementById("calendarEmoji").innerText = comp ? comp.emoji : "📅";
+
+  renderCalendar();
+
+  if (navigator.vibrate) navigator.vibrate(60);
+}
+
+function closeCalendar() {
+  document.getElementById("calendarScreen").style.display = "none";
+}
+
+function renderCalendar() {
+  const moods = JSON.parse(localStorage.getItem("moods")) || {};
+  const entries = JSON.parse(localStorage.getItem("diaryEntries")) || [];
+  const dates = Object.keys(moods).sort().reverse();
+  const list = document.getElementById("calendarList");
+
+  if (!dates.length) {
+    list.innerHTML = '<div class="calendarDay">Todavía no hay registros emocionales.</div>';
+    document.getElementById("calendarTrend").innerText =
+      "Registrá algunas caritas para empezar a ver tu recorrido.";
+    return;
+  }
+
+  list.innerHTML = dates.slice(0, 14).map(date => {
+    const icons = moods[date].map(m => (
+      m === "bien" ? "🙂" : m === "normal" ? "😐" : "😔"
+    )).join(" ");
+
+    const diaryForDay = entries.filter(e => e.date === new Date(date).toLocaleDateString());
+
+    let diaryText = "";
+    if (diaryForDay.length) {
+      diaryText = `<div class="small" style="margin-top:8px;">📖 ${diaryForDay.length} recuerdo(s) guardado(s)</div>`;
+    }
+
+    return `
+      <div class="calendarDay">
+        <strong>${formatDateForCalendar(date)}</strong>
+        <div class="calendarIcons">${icons}</div>
+        ${diaryText}
+      </div>
+    `;
+  }).join("");
+
+  renderCalendarTrend(dates, moods);
+}
+
+function formatDateForCalendar(date) {
+  const parts = date.split("-");
+  if (parts.length !== 3) return date;
+  return parts[2] + "/" + parts[1] + "/" + parts[0];
+}
+
+function renderCalendarTrend(dates, moods) {
+  let recent = [];
+  dates.slice(0, 7).forEach(d => {
+    recent = recent.concat(moods[d] || []);
+  });
+
+  if (!recent.length) {
+    document.getElementById("calendarTrend").innerText =
+      "Todavía no hay suficientes registros.";
+    return;
+  }
+
+  let score = 0;
+  let counts = { bien: 0, normal: 0, mal: 0 };
+
+  recent.forEach(m => {
+    counts[m]++;
+    if (m === "bien") score += 1;
+    if (m === "mal") score -= 1;
+  });
+
+  const key = localStorage.getItem("companion") || "brote";
+
+  let state = "mixed";
+  if (score >= 3) state = "light";
+  if (score <= -3) state = "heavy";
+  if (counts.normal >= counts.bien && counts.normal >= counts.mal) state = "steady";
+
+  const messages = {
+    brote: {
+      light: "🌱 Los últimos registros muestran más momentos de calma.",
+      heavy: "🌱 Estos días parecen pesados. Gracias por seguir registrando.",
+      steady: "🌱 Venís sosteniéndote despacio. Eso también cuenta.",
+      mixed: "🌱 Tu recorrido tuvo movimiento. No todo fue igual."
+    },
+    luna: {
+      light: "🌙 Apareció un poco más de luz en los últimos registros.",
+      heavy: "🌙 Los últimos días parecen más oscuros. Podemos seguir juntos.",
+      steady: "🌙 Hay una calma silenciosa en el recorrido.",
+      mixed: "🌙 La luz fue cambiando. Seguimos acá."
+    },
+    zorro: {
+      light: "🦊 Hay señales de movimiento positivo.",
+      heavy: "🦊 Fue un tramo difícil. No tiene que salir perfecto.",
+      steady: "🦊 Venís sosteniéndote. Una cosa por vez.",
+      mixed: "🦊 El camino tuvo vueltas. Podemos mirarlo con curiosidad."
+    },
+    ballena: {
+      light: "🐳 La marea parece un poco más tranquila.",
+      heavy: "🐳 La marea estuvo intensa. Sigamos cerca de la superficie.",
+      steady: "🐳 La marea está bastante quieta. Podemos flotar.",
+      mixed: "🐳 La marea cambió durante el recorrido."
+    },
+    nube: {
+      light: "☁️ Hay un poco más de espacio en los últimos registros.",
+      heavy: "☁️ Hubo bastante peso estos días. Podés soltar una parte.",
+      steady: "☁️ El recorrido parece suspendido. No hay prisa.",
+      mixed: "☁️ Pasaron varias nubes. Ninguna se queda para siempre."
+    }
+  };
+
+  document.getElementById("calendarTrend").innerText =
+    (messages[key] && messages[key][state]) || messages.brote[state];
+}
+
 let inhaling = true;
 let breathingInterval;
 let stayInterval;
