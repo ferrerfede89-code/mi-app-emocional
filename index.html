@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>App Emocional V23</title>
+<title>App Emocional V23.1</title>
 
 <style>
 body {
@@ -643,7 +643,7 @@ overflow:auto;
   </div>
 
   <p class="small" style="margin-top:18px;">
-    Si no suena, revisá que los archivos estén en la carpeta audio con los nombres correctos.
+    Ambiente real con sonido. Elegí uno y tocá Reproducir si Safari no lo inicia solo.
   </p>
 
   <br>
@@ -1168,36 +1168,31 @@ function getAtmospheres() {
 
   const sounds = {
     brote: [
-      { label: "🌱 Bosque suave", file: "audio/bosque.mp3" },
-      { label: "🍃 Hojas moviéndose", file: "audio/hojas.mp3" },
-      { label: "🐦 Pájaros lejanos", file: "audio/pajaros.mp3" }
+      { label: "🌱 Bosque suave", file: "bosque.mp3" },
+      { label: "🍃 Brisa ligera", file: "brisa.mp3" }
     ],
     luna: [
-      { label: "🌙 Lluvia suave", file: "audio/lluvia.mp3" },
-      { label: "🌌 Noche tranquila", file: "audio/noche.mp3" },
-      { label: "🍃 Viento lento", file: "audio/viento.mp3" }
+      { label: "🌙 Lluvia suave", file: "lluvia.mp3" },
+      { label: "🍃 Brisa nocturna", file: "brisa.mp3" }
     ],
     zorro: [
-      { label: "🦊 Bosque nocturno", file: "audio/bosque_nocturno.mp3" },
-      { label: "🚶 Caminata suave", file: "audio/pasos.mp3" },
-      { label: "🔥 Fogata lejana", file: "audio/fogata.mp3" }
+      { label: "🔥 Fogata lejana", file: "fogata.mp3" },
+      { label: "🌱 Bosque suave", file: "bosque.mp3" }
     ],
     ballena: [
-      { label: "🐳 Océano profundo", file: "audio/oceano.mp3" },
-      { label: "🌊 Olas lentas", file: "audio/olas.mp3" },
-      { label: "🫧 Burbujas", file: "audio/burbujas.mp3" }
+      { label: "🐳 Océano profundo", file: "oceano.mp3" },
+      { label: "🌙 Lluvia suave", file: "lluvia.mp3" }
     ],
     nube: [
-      { label: "☁️ Brisa", file: "audio/brisa.mp3" },
-      { label: "🌫️ Cielo tranquilo", file: "audio/cielo.mp3" },
-      { label: "🌬️ Aire suave", file: "audio/aire.mp3" }
+      { label: "☁️ Brisa ligera", file: "brisa.mp3" },
+      { label: "🌧️ Lluvia fina", file: "lluvia.mp3" }
     ]
   };
 
   return sounds[key] || [
-    { label: "🌊 Olas suaves", file: "audio/olas.mp3" },
-    { label: "🍃 Viento suave", file: "audio/viento.mp3" },
-    { label: "🌧️ Lluvia tranquila", file: "audio/lluvia.mp3" }
+    { label: "🌱 Bosque suave", file: "bosque.mp3" },
+    { label: "🌙 Lluvia suave", file: "lluvia.mp3" },
+    { label: "🐳 Océano profundo", file: "oceano.mp3" }
   ];
 }
 
@@ -1239,7 +1234,10 @@ function chooseAtmosphere(index) {
   document.getElementById("soundResult").innerText =
     "Ambiente activo: " + sound.label;
 
-  audio.play().catch(() => {
+  audio.play().then(() => {
+    document.getElementById("soundResult").innerText =
+      "Sonando: " + sound.label;
+  }).catch(() => {
     document.getElementById("soundResult").innerText =
       "Elegiste " + sound.label + ". Tocá ▶️ Reproducir para activarlo.";
   });
@@ -1256,9 +1254,13 @@ function playAmbient() {
     return;
   }
 
-  audio.play();
-  document.getElementById("soundResult").innerText =
-    "Sonando: " + (currentAmbient || "ambiente");
+  audio.play().then(() => {
+    document.getElementById("soundResult").innerText =
+      "Sonando: " + (currentAmbient || "ambiente");
+  }).catch(() => {
+    document.getElementById("soundResult").innerText =
+      "Safari bloqueó el audio. Tocá otra vez Reproducir.";
+  });
 }
 
 function pauseAmbient() {
