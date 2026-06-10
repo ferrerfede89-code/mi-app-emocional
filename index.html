@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>App Emocional V23.1</title>
+<title>App Emocional V24</title>
 
 <style>
 body {
@@ -331,6 +331,13 @@ body, .app, #circle, .action, .stats, .softButton, .moods button {
   line-height: 1.45;
 }
 
+
+@keyframes sleepPulse {
+  0% { transform: scale(1); opacity: .85; }
+  50% { transform: scale(1.18); opacity: 1; }
+  100% { transform: scale(1); opacity: .85; }
+}
+
 </style>
 </head>
 
@@ -405,6 +412,9 @@ text-align:center;
     </button>
     <button class="action" onclick="openDiary()">
       <span>📖</span>Diario
+    </button>
+    <button class="action" onclick="openSleep()">
+      <span>🌙</span>Dormir
     </button>
     <button class="action" onclick="openSupport()" style="grid-column:1/3;">
       <span>🚨</span>Apoyo rápido
@@ -750,6 +760,54 @@ overflow:auto;
 
   <br>
   <button onclick="closeDiary()" class="softButton">Volver</button>
+</div>
+
+
+<div id="sleepScreen" class="fullscreen" style="
+background:linear-gradient(180deg,#0f172a,#1e293b);
+color:white;
+text-align:center;
+justify-content:center;
+align-items:center;
+flex-direction:column;
+overflow:hidden;
+">
+  <div id="sleepEmoji" style="font-size:62px;margin-top:35px;">🌙</div>
+
+  <h2 id="sleepTitle">Hora de descansar</h2>
+
+  <div id="sleepMessage" style="
+  max-width:330px;
+  font-size:22px;
+  line-height:1.6;
+  margin-top:20px;
+  ">
+    La noche también pasa.
+  </div>
+
+  <div id="sleepCircle" style="
+  width:180px;
+  height:180px;
+  border-radius:50%;
+  margin-top:40px;
+  background:radial-gradient(circle,#93c5fd,#1d4ed8);
+  box-shadow:0 22px 60px rgba(147,197,253,.25);
+  animation:sleepPulse 8s infinite ease-in-out;
+  "></div>
+
+  <div id="sleepSubMessage" style="
+  margin-top:30px;
+  font-size:18px;
+  opacity:.85;
+  max-width:310px;
+  line-height:1.5;
+  ">
+    Respirá despacio. No hace falta resolver nada más por hoy.
+  </div>
+
+  <button onclick="closeSleep()" class="softButton" style="margin-top:40px;">
+    Volver
+  </button>
 </div>
 
 <script>
@@ -1626,6 +1684,60 @@ function clearDiary() {
   localStorage.removeItem("diaryEntries");
   renderDiary();
   document.getElementById("diaryResult").innerText = "Diario borrado.";
+}
+
+
+function openSleep() {
+  document.getElementById("sleepScreen").style.display = "flex";
+
+  const key = localStorage.getItem("companion") || "luna";
+  const comp = companions[key] || companions.luna;
+
+  const phrases = {
+    brote: "🌱 No hace falta crecer más por hoy.",
+    luna: "🌙 La noche también pasa.",
+    zorro: "🦊 Podemos dejar las preguntas para mañana.",
+    ballena: "🐳 Ya no tenés que seguir bajando.",
+    nube: "☁️ Soltá un poco el peso."
+  };
+
+  const subPhrases = {
+    brote: "Brote se queda cerca. Mañana vemos.",
+    luna: "Luna sigue acá. No hace falta apurarse.",
+    zorro: "Zorro baja el ritmo con vos.",
+    ballena: "Ballena te acompaña en la superficie.",
+    nube: "Nube puede sostener un poco el descanso."
+  };
+
+  const sounds = {
+    brote: "bosque.mp3",
+    luna: "lluvia.mp3",
+    zorro: "fogata.mp3",
+    ballena: "oceano.mp3",
+    nube: "brisa.mp3"
+  };
+
+  document.getElementById("sleepEmoji").innerText = comp.emoji;
+  document.getElementById("sleepTitle").innerText = comp.name + " te acompaña a descansar.";
+  document.getElementById("sleepMessage").innerText = phrases[key] || phrases.luna;
+  document.getElementById("sleepSubMessage").innerText = subPhrases[key] || subPhrases.luna;
+
+  const audio = document.getElementById("ambientAudio");
+  audio.src = sounds[key] || "lluvia.mp3";
+  audio.volume = 0.25;
+
+  audio.play().catch(() => {
+    document.getElementById("sleepSubMessage").innerText =
+      (subPhrases[key] || subPhrases.luna) + " Tocá la pantalla o volvé a entrar si Safari bloquea el sonido.";
+  });
+
+  if (navigator.vibrate) {
+    navigator.vibrate([80,40,80]);
+  }
+}
+
+function closeSleep() {
+  document.getElementById("sleepScreen").style.display = "none";
 }
 
 function escapeHTML(str) {
