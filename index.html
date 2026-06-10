@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>App Emocional V39</title>
+<title>App Emocional V40</title>
 
 <style>
 body {
@@ -445,9 +445,7 @@ text-align:center;
   <div class="section-title">¿Qué necesitás ahora?</div>
 
   <div class="actions">
-    <button class="action" onclick="openTimeline()" style="grid-column:1/3;background:#e9d5ff;font-weight:bold;">
-      <span>📈</span>LÍNEA DE TIEMPO
-    </button>
+    
     <button class="action" onclick="openBreathing()">
       <span>🫁</span>Respirar
     </button>
@@ -1896,6 +1894,53 @@ function copyFullExport(){
 
 function openJourneyHub(){document.getElementById('journeyHubScreen').style.display='block';}
 function closeJourneyHub(){document.getElementById('journeyHubScreen').style.display='none';}
+
+function updateLivingMessage(){
+ const key=localStorage.getItem('companion')||'brote';
+ const h=new Date().getHours();
+ const moods=JSON.parse(localStorage.getItem('moods'))||{};
+
+ let recent=[];
+ Object.keys(moods).sort().slice(-5).forEach(d=>{
+   recent=recent.concat(moods[d]||[]);
+ });
+
+ let bien=recent.filter(x=>x==='bien').length;
+ let mal=recent.filter(x=>x==='mal').length;
+
+ let msg='';
+ if(mal>=3){
+   const heavy={
+    brote:'🌱 La semana parece pesada. Gracias por seguir apareciendo.',
+    luna:'🌙 Hubo noches difíciles. Seguimos acá.',
+    zorro:'🦊 No fue un tramo fácil. Una cosa por vez.',
+    ballena:'🐳 La marea estuvo intensa. Y aun así seguiste.',
+    nube:'☁️ Hubo bastante peso. Podés soltar una parte.'
+   };
+   msg=heavy[key];
+ }else if(bien>=3){
+   const light={
+    brote:'🌱 Aparecieron algunos momentos de calma.',
+    luna:'🌙 Hubo algo más de luz últimamente.',
+    zorro:'🦊 Hay señales de movimiento positivo.',
+    ballena:'🐳 La marea parece un poco más tranquila.',
+    nube:'☁️ Hay un poco más de espacio para respirar.'
+   };
+   msg=light[key];
+ }else{
+   if(h>=6 && h<12){
+      msg={brote:'🌱 Hoy no hace falta correr.',luna:'🌙 La mañana también puede ser suave.',zorro:'🦊 Empecemos con un paso pequeño.',ballena:'🐳 Empecemos flotando, no empujando.',nube:'☁️ Todavía hay espacio para respirar.'}[key];
+   }else if(h>=12 && h<19){
+      msg={brote:'🌱 Una cosa por vez.',luna:'🌙 Sigamos despacio.',zorro:'🦊 No hace falta resolver todo ahora.',ballena:'🐳 Sigamos cerca de la superficie.',nube:'☁️ No cargues todo junto.'}[key];
+   }else{
+      msg={brote:'🌱 Lo que hiciste hoy ya cuenta.',luna:'🌙 Por hoy alcanza.',zorro:'🦊 El camino puede esperar hasta mañana.',ballena:'🐳 La marea puede descansar.',nube:'☁️ Ya podés aflojar un poco.'}[key];
+   }
+ }
+ const el=document.getElementById('message');
+ if(el) el.innerText=msg;
+}
+
+updateLivingMessage();
 let inhaling = true;
 
 let breathingInterval;
