@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>App Emocional V29</title>
+<title>App Emocional V30</title>
 
 <style>
 body {
@@ -483,6 +483,9 @@ text-align:center;
     </button>
     <button class="action" onclick="openJourney()">
       <span>📊</span>Recorrido
+    </button>
+    <button class="action" onclick="openMilestones()">
+      <span>🌟</span>Hitos
     </button>
     <button class="action" onclick="openSupport()" style="grid-column:1/3;">
       <span>🚨</span>Apoyo rápido
@@ -1006,6 +1009,15 @@ text-align:center;
 <button onclick="closeJourney()" class="softButton">Volver</button>
 </div>
 
+
+<div id="milestoneScreen" class="fullscreen" style="background:linear-gradient(180deg,#fef9c3,#ddd6fe);overflow:auto;text-align:center;">
+<h1 id="milestoneEmoji">🌟</h1>
+<h2>Hitos suaves</h2>
+<div id="milestoneContent" class="rememberCard"></div>
+<br>
+<button onclick="closeMilestones()" class="softButton">Volver</button>
+</div>
+
 <script>
 
 function openCalendar() {
@@ -1280,6 +1292,49 @@ function renderJourney(){
  <div style="margin-top:20px;font-weight:600;">
  ${messages[key]}
  </div>`;
+}
+
+
+function openMilestones(){
+ document.getElementById("milestoneScreen").style.display="block";
+ renderMilestones();
+}
+function closeMilestones(){
+ document.getElementById("milestoneScreen").style.display="none";
+}
+function renderMilestones(){
+ const moods=JSON.parse(localStorage.getItem("moods"))||{};
+ const entries=JSON.parse(localStorage.getItem("diaryEntries"))||[];
+ const key=localStorage.getItem("companion")||"brote";
+ const comp=companions[key]||companions.brote;
+
+ let moodCount=0;
+ Object.keys(moods).forEach(d=> moodCount += (moods[d]||[]).length);
+
+ const memoryCount=entries.length;
+
+ const milestones=[
+  {ok:memoryCount>=1, text:"📖 Dejaste escrito tu primer recuerdo"},
+  {ok:memoryCount>=10, text:"📖 Guardaste 10 recuerdos"},
+  {ok:moodCount>=10, text:"🙂 Te observaste 10 veces"},
+  {ok:moodCount>=50, text:"🙂 Registraste 50 emociones"},
+ ];
+
+ let htmlList="";
+ milestones.forEach(m=>{
+   htmlList += `<div style="margin:10px 0;">${m.ok ? "✅" : "🔒"} ${m.text}</div>`;
+ });
+
+ const msg={
+  brote:"🌱 Seguiste apareciendo. Eso también es crecer.",
+  luna:"🌙 Volviste incluso en días difíciles.",
+  zorro:"🦊 Seguiste explorando tu propio camino.",
+  ballena:"🐳 Seguiste flotando incluso con marea alta.",
+  nube:"☁️ No cargaste todo solo."
+ };
+
+ document.getElementById("milestoneEmoji").innerText=comp.emoji;
+ document.getElementById("milestoneContent").innerHTML=htmlList+`<div style="margin-top:20px;font-weight:600;">${msg[key]}</div>`;
 }
 
 let inhaling = true;
