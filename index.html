@@ -458,6 +458,9 @@ text-align:center;
     <button class="action" onclick="openMorning()">
       <span>🌱</span>Empezar
     </button>
+    <button class="action" onclick="openRemember()">
+      <span>🧠</span>Recordar
+    </button>
     <button class="action" onclick="openCalendar()">
       <span>📅</span>Calendario
     </button>
@@ -947,6 +950,11 @@ overflow:auto;
 <div id="dayDetailContent"></div>
 <br>
 <button onclick="closeDayDetail()" class="softButton">Volver</button>
+
+<div id="rememberScreen" class="fullscreen" style="background:linear-gradient(180deg,#eef2ff,#c7d2fe);overflow:auto;">
+<h1>🧠</h1><h2>Recuerdo inteligente</h2>
+<div id="rememberContent" class="dayDetailCard">Todavía no hay suficientes recuerdos.</div>
+<br><button onclick="closeRemember()" class="softButton">Volver</button>
 </div>
 
 <script>
@@ -2126,6 +2134,26 @@ function escapeHTML(str) {
 
 renderStats();
 applyCompanion();
+
+function openRemember(){
+ const entries=JSON.parse(localStorage.getItem("diaryEntries"))||[];
+ const moods=JSON.parse(localStorage.getItem("moods"))||{};
+ let html="Necesitás al menos un recuerdo guardado en el diario.";
+ if(entries.length){
+   const old=entries[Math.max(0,entries.length-1)];
+   let total=0,bien=0;
+   Object.values(moods).forEach(arr=>arr.forEach(m=>{total++; if(m==="bien") bien++;}));
+   html=`<strong>🧠 Hace un tiempo escribiste:</strong><br><br>"${old.text}"<br><br>`;
+   if(total>0){
+      html+= bien>=(total/3) ? "🌱 Desde entonces registraste varios momentos de calma. Quizás avanzaste más de lo que creés."
+      : "🌙 Seguiste registrándote y apareciendo. Eso también es avanzar.";
+   }
+ }
+ document.getElementById("rememberContent").innerHTML=html;
+ document.getElementById("rememberScreen").style.display="block";
+}
+function closeRemember(){document.getElementById("rememberScreen").style.display="none";}
+
 </script>
 
 </body>
