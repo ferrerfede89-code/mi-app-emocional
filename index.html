@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>App Emocional V42</title>
+<title>App Emocional V43</title>
 
 <style>
 body {
@@ -443,7 +443,13 @@ text-align:center;
     No hace falta resolver todo ahora.
   </div>
 
-  <div class="section-title">¿Qué necesitás ahora?</div>
+  
+<div id="pastMessageCard" class="rememberCard" style="margin-bottom:18px;display:none;">
+  <div style="font-weight:700;">🎁 Mensaje del pasado</div>
+  <div id="pastMessageContent" style="margin-top:10px;"></div>
+</div>
+
+<div class="section-title">¿Qué necesitás ahora?</div>
 
   <div class="actions">
     
@@ -2014,6 +2020,28 @@ function renderCapsule(){
  }
 }
 
+
+function showPastMessageCard(){
+ const entries=JSON.parse(localStorage.getItem('diaryEntries'))||[];
+ if(entries.length<2) return;
+
+ const oldEntries=entries.slice(0, Math.max(1, entries.length-1));
+ const entry=oldEntries[Math.floor(Math.random()*oldEntries.length)];
+
+ const card=document.getElementById('pastMessageCard');
+ const content=document.getElementById('pastMessageContent');
+ if(!card || !content) return;
+
+ content.innerHTML=`
+ <div class="small">Hace un tiempo escribiste:</div>
+ <div style="margin-top:8px;font-style:italic;">"${entry.text}"</div>
+ <div style="margin-top:10px;">🌱 Quizás hoy podés mirarlo distinto.</div>
+ `;
+
+ card.style.display='block';
+}
+
+showPastMessageCard();
 let inhaling = true;
 
 let breathingInterval;
