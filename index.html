@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>App Emocional V27</title>
+<title>App Emocional V28.1</title>
 
 <style>
 body {
@@ -377,6 +377,23 @@ body, .app, #circle, .action, .stats, .softButton, .moods button {
 }
 .clickableDay{cursor:pointer;}
 
+
+.rememberCard {
+  background: rgba(255,255,255,0.88);
+  border-radius: 24px;
+  padding: 18px;
+  margin-top: 18px;
+  line-height: 1.55;
+  font-size: 18px;
+}
+
+.rememberQuote {
+  font-size: 21px;
+  font-weight: 600;
+  margin: 18px 0;
+  line-height: 1.45;
+}
+
 </style>
 </head>
 
@@ -458,11 +475,11 @@ text-align:center;
     <button class="action" onclick="openMorning()">
       <span>🌱</span>Empezar
     </button>
-    <button class="action" onclick="openRemember()">
-      <span>🧠</span>Recordar
-    </button>
     <button class="action" onclick="openCalendar()">
       <span>📅</span>Calendario
+    </button>
+    <button class="action" onclick="openRemember()">
+      <span>🧠</span>Recordar
     </button>
     <button class="action" onclick="openSupport()" style="grid-column:1/3;">
       <span>🚨</span>Apoyo rápido
@@ -950,11 +967,31 @@ overflow:auto;
 <div id="dayDetailContent"></div>
 <br>
 <button onclick="closeDayDetail()" class="softButton">Volver</button>
+</div>
 
-<div id="rememberScreen" class="fullscreen" style="background:linear-gradient(180deg,#eef2ff,#c7d2fe);overflow:auto;">
-<h1>🧠</h1><h2>Recuerdo inteligente</h2>
-<div id="rememberContent" class="dayDetailCard">Todavía no hay suficientes recuerdos.</div>
-<br><button onclick="closeRemember()" class="softButton">Volver</button>
+
+<div id="rememberScreen" class="fullscreen" style="
+background:linear-gradient(180deg,#fefce8,#ddd6fe);
+overflow:auto;
+text-align:center;
+">
+  <h1 id="rememberEmoji">🧠</h1>
+  <h2>Recordar</h2>
+
+  <p style="font-size:17px;line-height:1.45;">
+    A veces hace falta mirar hacia atrás para ver que seguiste.
+  </p>
+
+  <div id="rememberContent" class="rememberCard">
+    Tocá el botón para traer un recuerdo.
+  </div>
+
+  <button onclick="showSmartMemory()" class="softButton" style="margin-top:18px;">
+    Traer un recuerdo
+  </button>
+
+  <br><br>
+  <button onclick="closeRemember()" class="softButton">Volver</button>
 </div>
 
 <script>
@@ -1114,6 +1151,84 @@ function openDayDetail(date){
 
 function closeDayDetail(){
  document.getElementById("dayDetailScreen").style.display="none";
+}
+
+
+function openRemember() {
+  document.getElementById("rememberScreen").style.display = "block";
+
+  const comp = getCompanion();
+  document.getElementById("rememberEmoji").innerText = comp ? comp.emoji : "🧠";
+
+  showSmartMemory();
+
+  if (navigator.vibrate) navigator.vibrate(60);
+}
+
+function closeRemember() {
+  document.getElementById("rememberScreen").style.display = "none";
+}
+
+function showSmartMemory() {
+  const entries = JSON.parse(localStorage.getItem("diaryEntries")) || [];
+  const moods = JSON.parse(localStorage.getItem("moods")) || {};
+  const key = localStorage.getItem("companion") || "brote";
+  const comp = companions[key] || companions.brote;
+
+  const box = document.getElementById("rememberContent");
+
+  if (!entries.length) {
+    box.innerHTML = `
+      <div><strong>${comp.emoji} ${comp.name}</strong></div>
+      <div style="margin-top:12px;">Todavía no hay recuerdos guardados.</div>
+      <div class="small" style="margin-top:10px;">Escribí algo en el Diario y volvé acá.</div>
+    `;
+    return;
+  }
+
+  const entry = entries[Math.floor(Math.random() * entries.length)];
+  const allMoods = [];
+
+  Object.keys(moods).forEach(date => {
+    moods[date].forEach(m => allMoods.push(m));
+  });
+
+  let moodText = "También seguiste registrando cómo venías.";
+  if (allMoods.length) {
+    const lastMoods = allMoods.slice(-5).map(m =>
+      m === "bien" ? "🙂" : m === "normal" ? "😐" : "😔"
+    ).join(" ");
+
+    moodText = "Después aparecieron estos registros: " + lastMoods;
+  }
+
+  const endings = {
+    brote: "🌱 Quizás no lo viste, pero seguiste creciendo a tu ritmo.",
+    luna: "🌙 Quizás no lo viste, pero la noche siguió pasando.",
+    zorro: "🦊 Quizás no lo viste, pero encontraste una forma de seguir.",
+    ballena: "🐳 Quizás no lo viste, pero seguiste flotando.",
+    nube: "☁️ Quizás no lo viste, pero algo del peso se movió."
+  };
+
+  box.innerHTML = `
+    <div><strong>${comp.emoji} ${comp.name} recuerda:</strong></div>
+
+    <div class="rememberQuote">
+      "${escapeHTML(entry.text)}"
+    </div>
+
+    <div class="small">
+      ${entry.date} · ${entry.time}
+    </div>
+
+    <div style="margin-top:18px;">
+      ${moodText}
+    </div>
+
+    <div style="margin-top:18px;font-weight:600;">
+      ${endings[key] || endings.brote}
+    </div>
+  `;
 }
 
 let inhaling = true;
@@ -2134,26 +2249,6 @@ function escapeHTML(str) {
 
 renderStats();
 applyCompanion();
-
-function openRemember(){
- const entries=JSON.parse(localStorage.getItem("diaryEntries"))||[];
- const moods=JSON.parse(localStorage.getItem("moods"))||{};
- let html="Necesitás al menos un recuerdo guardado en el diario.";
- if(entries.length){
-   const old=entries[Math.max(0,entries.length-1)];
-   let total=0,bien=0;
-   Object.values(moods).forEach(arr=>arr.forEach(m=>{total++; if(m==="bien") bien++;}));
-   html=`<strong>🧠 Hace un tiempo escribiste:</strong><br><br>"${old.text}"<br><br>`;
-   if(total>0){
-      html+= bien>=(total/3) ? "🌱 Desde entonces registraste varios momentos de calma. Quizás avanzaste más de lo que creés."
-      : "🌙 Seguiste registrándote y apareciendo. Eso también es avanzar.";
-   }
- }
- document.getElementById("rememberContent").innerHTML=html;
- document.getElementById("rememberScreen").style.display="block";
-}
-function closeRemember(){document.getElementById("rememberScreen").style.display="none";}
-
 </script>
 
 </body>
