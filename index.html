@@ -1,10 +1,9 @@
-```html
 <!DOCTYPE html>
 <html lang="es">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>App Emocional V7.3</title>
+<title>App Emocional V8</title>
 
 <style>
 body {
@@ -63,7 +62,7 @@ body {
 
 .actions {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr;
   gap: 10px;
   margin-bottom: 24px;
 }
@@ -145,6 +144,22 @@ body {
   box-sizing:border-box;
   border:none;
 }
+
+.stayCircle {
+  width: 165px;
+  height: 165px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255,255,255,0.95), rgba(147,197,253,0.65));
+  box-shadow: 0 22px 60px rgba(59,130,246,0.25);
+  margin-top: 42px;
+  animation: stayPulse 8s infinite ease-in-out;
+}
+
+@keyframes stayPulse {
+  0% { transform: scale(1); opacity: 0.82; }
+  50% { transform: scale(1.16); opacity: 1; }
+  100% { transform: scale(1); opacity: 0.82; }
+}
 </style>
 </head>
 
@@ -170,6 +185,9 @@ body {
     </button>
     <button class="action" onclick="openConnect()">
       <span>🫂</span>Conectar
+    </button>
+    <button class="action" onclick="openStay()">
+      <span>🌊</span>Quedarme
     </button>
   </div>
 
@@ -282,9 +300,46 @@ text-align:center;
   <button onclick="closeConnect()" class="softButton">Volver</button>
 </div>
 
+<div id="stayScreen" class="fullscreen" style="
+background:linear-gradient(180deg,#dbeafe,#bfdbfe);
+justify-content:center;
+align-items:center;
+text-align:center;
+flex-direction:column;
+overflow:hidden;
+">
+  <div style="font-size:42px;margin-bottom:20px;">🌊</div>
+
+  <div id="stayMessage" style="
+  font-size:28px;
+  font-weight:300;
+  max-width:320px;
+  line-height:1.5;
+  ">
+    Estoy acá.
+  </div>
+
+  <div class="stayCircle"></div>
+
+  <div id="staySubMessage" style="
+  margin-top:38px;
+  max-width:310px;
+  font-size:16px;
+  color:#475569;
+  line-height:1.5;
+  ">
+    No tenés que hacer nada.
+  </div>
+
+  <button onclick="closeStay()" class="softButton" style="margin-top:45px;">
+    Volver
+  </button>
+</div>
+
 <script>
 let inhaling = true;
 let breathingInterval;
+let stayInterval;
 let currentTopic = "";
 let selectedPerson = "";
 let selectedNeed = "";
@@ -452,10 +507,53 @@ function prepareConnection() {
   }
 }
 
+function openStay() {
+  document.getElementById("stayScreen").style.display = "flex";
+
+  const phrases = [
+    "Estoy acá.",
+    "No hace falta resolverlo ahora.",
+    "Podemos quedarnos un momento.",
+    "No tenés que hacer nada.",
+    "Solo estar."
+  ];
+
+  const subPhrases = [
+    "Podés quedarte un minuto.",
+    "No hay nada que demostrar.",
+    "Esto también puede ser suficiente.",
+    "Respirá si podés. Si no, solo quedate.",
+    "No estás obligado a sentirte mejor ahora."
+  ];
+
+  let index = 0;
+
+  document.getElementById("stayMessage").innerText = phrases[0];
+  document.getElementById("staySubMessage").innerText = subPhrases[0];
+
+  stayInterval = setInterval(() => {
+    index++;
+
+    if (index >= phrases.length) {
+      index = 0;
+    }
+
+    document.getElementById("stayMessage").innerText = phrases[index];
+    document.getElementById("staySubMessage").innerText = subPhrases[index];
+  }, 8000);
+
+  if (navigator.vibrate) {
+    navigator.vibrate(60);
+  }
+}
+
+function closeStay() {
+  clearInterval(stayInterval);
+  document.getElementById("stayScreen").style.display = "none";
+}
+
 renderStats();
 </script>
 
 </body>
 </html>
-```
-
