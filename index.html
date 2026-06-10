@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>App Emocional V17</title>
+<title>App Emocional V18</title>
 
 <style>
 body {
@@ -243,6 +243,67 @@ body {
   100% { transform: scale(1); opacity: .75; }
 }
 
+
+body, .app, #circle, .action, .stats, .softButton, .moods button {
+  transition: background 0.9s ease, color 0.9s ease, box-shadow 0.9s ease;
+}
+
+.theme-brote .app {
+  background: rgba(240,253,244,0.94);
+}
+.theme-brote #circle {
+  background: radial-gradient(circle,#bbf7d0,#22c55e);
+  box-shadow: 0 18px 35px rgba(34,197,94,0.28);
+}
+.theme-brote .action, .theme-brote .stats, .theme-brote .moods button {
+  background: #ecfdf5;
+}
+
+.theme-luna .app {
+  background: rgba(226,232,240,0.94);
+  color: #111827;
+}
+.theme-luna #circle {
+  background: radial-gradient(circle,#93c5fd,#4338ca);
+  box-shadow: 0 18px 35px rgba(67,56,202,0.32);
+}
+.theme-luna .action, .theme-luna .stats, .theme-luna .moods button {
+  background: #eef2ff;
+}
+
+.theme-zorro .app {
+  background: rgba(255,247,237,0.94);
+}
+.theme-zorro #circle {
+  background: radial-gradient(circle,#fed7aa,#f97316);
+  box-shadow: 0 18px 35px rgba(249,115,22,0.30);
+}
+.theme-zorro .action, .theme-zorro .stats, .theme-zorro .moods button {
+  background: #fff7ed;
+}
+
+.theme-ballena .app {
+  background: rgba(219,234,254,0.94);
+}
+.theme-ballena #circle {
+  background: radial-gradient(circle,#7dd3fc,#0369a1);
+  box-shadow: 0 18px 35px rgba(3,105,161,0.32);
+}
+.theme-ballena .action, .theme-ballena .stats, .theme-ballena .moods button {
+  background: #e0f2fe;
+}
+
+.theme-nube .app {
+  background: rgba(248,250,252,0.96);
+}
+.theme-nube #circle {
+  background: radial-gradient(circle,#ffffff,#94a3b8);
+  box-shadow: 0 18px 35px rgba(100,116,139,0.25);
+}
+.theme-nube .action, .theme-nube .stats, .theme-nube .moods button {
+  background: #f8fafc;
+}
+
 </style>
 </head>
 
@@ -281,7 +342,7 @@ text-align:center;
   </div>
 </div>
 
-<div class="app">
+<div class="app" id="appCard">
   <div class="presence" id="presenceText">Estoy acá.</div>
 
   <div id="circle">Tocar</div>
@@ -1114,6 +1175,14 @@ applyCompanion = function() {
   originalApplyCompanion();
   const key = localStorage.getItem("companion");
 
+  document.body.classList.remove(
+    "theme-brote",
+    "theme-luna",
+    "theme-zorro",
+    "theme-ballena",
+    "theme-nube"
+  );
+
   const themes = {
     brote: "linear-gradient(180deg,#ecfccb,#86efac)",
     luna: "linear-gradient(180deg,#1e293b,#6366f1)",
@@ -1124,7 +1193,9 @@ applyCompanion = function() {
 
   if (themes[key]) {
     document.body.style.background = themes[key];
+    document.body.classList.add("theme-" + key);
   }
+
   renderMemory();
 }
 
