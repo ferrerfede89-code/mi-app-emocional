@@ -1,9 +1,10 @@
+```html
 <!DOCTYPE html>
 <html lang="es">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>App Emocional V7.2</title>
+<title>App Emocional V7.3</title>
 
 <style>
 body {
@@ -112,6 +113,38 @@ body {
   font-size: 14px;
   color: #64748b;
 }
+
+.fullscreen {
+  display:none;
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  z-index:9999;
+  padding:30px;
+  box-sizing:border-box;
+  overflow:auto;
+}
+
+.softButton {
+  border:none;
+  border-radius:18px;
+  padding:13px 16px;
+  font-size:16px;
+  background:white;
+  margin:6px;
+}
+
+.textBox {
+  width:100%;
+  min-height:120px;
+  border-radius:18px;
+  padding:15px;
+  font-size:16px;
+  box-sizing:border-box;
+  border:none;
+}
 </style>
 </head>
 
@@ -135,7 +168,7 @@ body {
     <button class="action" onclick="openRelease()">
       <span>🔥</span>Liberar
     </button>
-    <button class="action" onclick="setAction('conectar')">
+    <button class="action" onclick="openConnect()">
       <span>🫂</span>Conectar
     </button>
   </div>
@@ -183,58 +216,78 @@ text-align:center;
     Respiremos juntos
   </div>
 
-  <button onclick="closeBreathing()" style="margin-top:40px;padding:14px 24px;border:none;border-radius:20px;font-size:16px;background:white;">
-    Volver
-  </button>
+  <button onclick="closeBreathing()" class="softButton">Volver</button>
 </div>
 
-<div id="releaseScreen" style="
-display:none;
-position:fixed;
-top:0;
-left:0;
-width:100%;
-height:100%;
-background:linear-gradient(180deg,#fff7ed,#fdba74);
-z-index:9999;
-padding:30px;
-box-sizing:border-box;
-overflow:auto;
-">
+<div id="releaseScreen" class="fullscreen" style="background:linear-gradient(180deg,#fff7ed,#fdba74);">
   <h1>🔥</h1>
   <h2>¿Qué pesa ahora?</h2>
 
   <div style="display:flex;flex-wrap:wrap;gap:10px;margin-bottom:20px;">
-    <button onclick="chooseTopic('Pensamientos')">Pensamientos</button>
-    <button onclick="chooseTopic('Trabajo')">Trabajo</button>
-    <button onclick="chooseTopic('Relación')">Relación</button>
-    <button onclick="chooseTopic('Miedo')">Miedo</button>
-    <button onclick="chooseTopic('Otra cosa')">Otra cosa</button>
+    <button class="softButton" onclick="chooseTopic('Pensamientos')">Pensamientos</button>
+    <button class="softButton" onclick="chooseTopic('Trabajo')">Trabajo</button>
+    <button class="softButton" onclick="chooseTopic('Relación')">Relación</button>
+    <button class="softButton" onclick="chooseTopic('Miedo')">Miedo</button>
+    <button class="softButton" onclick="chooseTopic('Otra cosa')">Otra cosa</button>
   </div>
 
   <div id="selectedTopic" style="margin-bottom:15px;"></div>
 
-  <textarea
-    id="releaseText"
-    placeholder="Podés dejarlo acá..."
-    style="width:100%;height:150px;border-radius:15px;padding:15px;font-size:16px;box-sizing:border-box;"
-  ></textarea>
+  <textarea id="releaseText" class="textBox" placeholder="Podés dejarlo acá..."></textarea>
 
-  <button onclick="releaseThought()" style="margin-top:20px;padding:15px 20px;border:none;border-radius:20px;font-size:16px;">
-    Soltar
-  </button>
+  <button onclick="releaseThought()" class="softButton" style="margin-top:20px;">Soltar</button>
 
   <div id="releaseResult" style="margin-top:30px;font-size:20px;font-weight:bold;"></div>
 
   <br><br>
+  <button onclick="closeRelease()" class="softButton">Volver</button>
+</div>
 
-  <button onclick="closeRelease()">Volver</button>
+<div id="connectScreen" class="fullscreen" style="background:linear-gradient(180deg,#ede9fe,#bfdbfe);">
+  <h1>🫂</h1>
+  <h2>¿Quién te hace sentir seguro?</h2>
+
+  <div style="display:flex;flex-wrap:wrap;gap:10px;margin-bottom:22px;">
+    <button class="softButton" onclick="choosePerson('Mamá')">Mamá</button>
+    <button class="softButton" onclick="choosePerson('Papá')">Papá</button>
+    <button class="softButton" onclick="choosePerson('Hermano/a')">Hermano/a</button>
+    <button class="softButton" onclick="choosePerson('Amigo/a')">Amigo/a</button>
+    <button class="softButton" onclick="choosePerson('Pareja')">Pareja</button>
+    <button class="softButton" onclick="choosePerson('Otra persona')">Otra persona</button>
+  </div>
+
+  <div id="selectedPerson" style="margin-bottom:18px;font-weight:bold;"></div>
+
+  <h3>¿Qué necesitás hoy?</h3>
+
+  <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:20px;">
+    <button class="softButton" onclick="chooseNeed('Quiero hablar')">Quiero hablar</button>
+    <button class="softButton" onclick="chooseNeed('Quiero compañía')">Quiero compañía</button>
+    <button class="softButton" onclick="chooseNeed('Solo quiero que sepa que hoy me cuesta')">Solo quiero que sepa que hoy me cuesta</button>
+  </div>
+
+  <div id="selectedNeed" style="margin-bottom:18px;"></div>
+
+  <p style="font-size:17px;line-height:1.4;">
+    Podés escribirlo. No hace falta enviarlo ahora.
+  </p>
+
+  <textarea id="connectText" class="textBox" placeholder="Hoy me cuesta un poco..."></textarea>
+
+  <button onclick="prepareConnection()" class="softButton" style="margin-top:20px;">Preparar mensaje</button>
+
+  <div id="connectResult" style="margin-top:25px;font-size:19px;font-weight:bold;"></div>
+
+  <br><br>
+  <button onclick="closeConnect()" class="softButton">Volver</button>
 </div>
 
 <script>
 let inhaling = true;
 let breathingInterval;
 let currentTopic = "";
+let selectedPerson = "";
+let selectedNeed = "";
 
 const messages = [
   "No hace falta resolver todo ahora.",
@@ -263,17 +316,6 @@ document.getElementById("circle").onclick = () => {
   if (navigator.vibrate) navigator.vibrate(50);
   inhaling = !inhaling;
 };
-
-function setAction(action) {
-  const message = document.getElementById("message");
-
-  if (action === "conectar") {
-    message.innerText = "No tenés que atravesarlo solo.";
-    document.body.style.background = "linear-gradient(180deg, #ede9fe, #bfdbfe)";
-  }
-
-  if (navigator.vibrate) navigator.vibrate(80);
-}
 
 function setMood(mood) {
   let data = JSON.parse(localStorage.getItem("moods")) || {};
@@ -374,8 +416,46 @@ function releaseThought() {
   }
 }
 
+function openConnect() {
+  document.getElementById("connectScreen").style.display = "block";
+}
+
+function closeConnect() {
+  document.getElementById("connectScreen").style.display = "none";
+}
+
+function choosePerson(person) {
+  selectedPerson = person;
+  document.getElementById("selectedPerson").innerText =
+    "Elegiste: " + person;
+}
+
+function chooseNeed(need) {
+  selectedNeed = need;
+  document.getElementById("selectedNeed").innerText =
+    "Necesitás: " + need;
+}
+
+function prepareConnection() {
+  const text = document.getElementById("connectText").value;
+
+  let result = "No tenés que atravesarlo solo.";
+
+  if (selectedPerson || selectedNeed || text.trim() !== "") {
+    result = "Ya diste el primer paso: ponerlo en palabras.";
+  }
+
+  document.getElementById("connectResult").innerText = result;
+
+  if (navigator.vibrate) {
+    navigator.vibrate([80,40,80]);
+  }
+}
+
 renderStats();
 </script>
 
 </body>
 </html>
+```
+
