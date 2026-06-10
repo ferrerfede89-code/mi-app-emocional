@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>App Emocional V30</title>
+<title>App Emocional V31.5</title>
 
 <style>
 body {
@@ -1193,12 +1193,12 @@ function closeRemember() {
   document.getElementById("rememberScreen").style.display = "none";
 }
 
+
 function showSmartMemory() {
   const entries = JSON.parse(localStorage.getItem("diaryEntries")) || [];
   const moods = JSON.parse(localStorage.getItem("moods")) || {};
   const key = localStorage.getItem("companion") || "brote";
   const comp = companions[key] || companions.brote;
-
   const box = document.getElementById("rememberContent");
 
   if (!entries.length) {
@@ -1210,49 +1210,198 @@ function showSmartMemory() {
     return;
   }
 
-  const entry = entries[Math.floor(Math.random() * entries.length)];
-  const allMoods = [];
+  const today = new Date();
 
-  Object.keys(moods).forEach(date => {
-    moods[date].forEach(m => allMoods.push(m));
+  const scoredEntries = entries.map((entry, index) => {
+    const entryDate = parseDiaryDate(entry.date);
+    const daysAgo = entryDate ? Math.floor((today - entryDate) / (1000 * 60 * 60 * 24)) : 0;
+    const relatedMoods = getMoodsAfterDate(moods, entryDate);
+
+    let score = 0;
+    score += Math.min(daysAgo, 30);
+
+    if (entry.text && /cansad|perdid|triste|miedo|solo|sola|pesad|mal|ansiedad|angust|no puedo|energ/i.test(entry.text)) {
+      score += 15;
+    }
+
+    if (relatedMoods.length >= 2) score += 10;
+
+    return { entry, index, daysAgo, relatedMoods, score };
   });
 
-  let moodText = "También seguiste registrando cómo venías.";
-  if (allMoods.length) {
-    const lastMoods = allMoods.slice(-5).map(m =>
-      m === "bien" ? "🙂" : m === "normal" ? "😐" : "😔"
-    ).join(" ");
+  scoredEntries.sort((a, b) => b.score - a.score);
 
-    moodText = "Después aparecieron estos registros: " + lastMoods;
-  }
+  const top = scoredEntries.slice(0, Math.min(4, scoredEntries.length));
+  const selected = top[Math.floor(Math.random() * top.length)];
 
-  const endings = {
-    brote: "🌱 Quizás no lo viste, pero seguiste creciendo a tu ritmo.",
-    luna: "🌙 Quizás no lo viste, pero la noche siguió pasando.",
-    zorro: "🦊 Quizás no lo viste, pero encontraste una forma de seguir.",
-    ballena: "🐳 Quizás no lo viste, pero seguiste flotando.",
-    nube: "☁️ Quizás no lo viste, pero algo del peso se movió."
-  };
+  const entry = selected.entry;
+  const entryDate = parseDiaryDate(entry.date);
+  const timeText = humanTimeAgo(entryDate);
+  const moodAnalysis = analyzeMoodEvolution(selected.relatedMoods, key);
+  const companionReflection = getCompanionReflection(key, moodAnalysis.state);
 
   box.innerHTML = `
-    <div><strong>${comp.emoji} ${comp.name} recuerda:</strong></div>
+    <div><strong>${comp.emoji} ${comp.name} recuerda con vos:</strong></div>
+
+    <div class="small" style="margin-top:12px;">
+      🕰️ ${timeText}
+    </div>
 
     <div class="rememberQuote">
       "${escapeHTML(entry.text)}"
     </div>
 
-    <div class="small">
-      ${entry.date} · ${entry.time}
-    </div>
-
     <div style="margin-top:18px;">
-      ${moodText}
+      ${moodAnalysis.text}
     </div>
 
     <div style="margin-top:18px;font-weight:600;">
-      ${endings[key] || endings.brote}
+      ${companionReflection}
     </div>
   `;
+
+  localStorage.setItem("rememberCount", String((parseInt(localStorage.getItem("rememberCount") || "0") + 1)));
+}
+
+function parseDiaryDate(dateText) {
+  if (!dateText) return null;
+
+  const parts = dateText.split("/");
+  if (parts.length === 3) {
+    const d = parseInt(parts[0], 10);
+    const m = parseInt(parts[1], 10) - 1;
+    const y = parseInt(parts[2], 10);
+    return new Date(y, m, d);
+  }
+
+  const parsed = new Date(dateText);
+  if (!isNaN(parsed.getTime())) return parsed;
+
+  return null;
+}
+
+function humanTimeAgo(date) {
+  if (!date) return "Hace un tiempo";
+
+  const now = new Date();
+  const diffDays = Math.max(0, Math.floor((now - date) / (1000 * 60 * 60 * 24)));
+
+  if (diffDays === 0) return "Hoy";
+  if (diffDays === 1) return "Ayer";
+  if (diffDays < 7) return "Hace " + diffDays + " días";
+
+  const weeks = Math.floor(diffDays / 7);
+  if (weeks === 1) return "Hace 1 semana";
+  if (weeks < 5) return "Hace " + weeks + " semanas";
+
+  const months = Math.floor(diffDays / 30);
+  if (months === 1) return "Hace 1 mes";
+  return "Hace " + months + " meses";
+}
+
+function getMoodsAfterDate(moods, date) {
+  if (!date) {
+    return Object.keys(moods).sort().flatMap(d => moods[d] || []);
+  }
+
+  const result = [];
+
+  Object.keys(moods).sort().forEach(dateKey => {
+    const moodDate = new Date(dateKey + "T00:00:00");
+    if (moodDate >= date) {
+      (moods[dateKey] || []).forEach(m => result.push(m));
+    }
+  });
+
+  return result.slice(-8);
+}
+
+function analyzeMoodEvolution(moodList, key) {
+  if (!moodList.length) {
+    return {
+      state: "unknown",
+      text: "Todavía no hay suficientes registros posteriores para leer una evolución, pero este recuerdo ya forma parte de tu camino."
+    };
+  }
+
+  let counts = { bien: 0, normal: 0, mal: 0 };
+  moodList.forEach(m => {
+    if (counts[m] !== undefined) counts[m]++;
+  });
+
+  const icons = moodList.map(m =>
+    m === "bien" ? "🙂" : m === "normal" ? "😐" : "😔"
+  ).join(" ");
+
+  let state = "steady";
+  if (counts.bien > counts.normal && counts.bien >= counts.mal) state = "improving";
+  if (counts.mal > counts.normal && counts.mal >= counts.bien) state = "heavy";
+
+  const texts = {
+    improving: {
+      brote: "Después aparecieron varios momentos de calma: " + icons,
+      luna: "Después apareció un poco más de luz: " + icons,
+      zorro: "Después encontraste algunos movimientos positivos: " + icons,
+      ballena: "Después la marea pareció aflojar un poco: " + icons,
+      nube: "Después apareció algo más de espacio: " + icons
+    },
+    steady: {
+      brote: "Después las cosas siguieron moviéndose despacio: " + icons,
+      luna: "Después el recorrido siguió en calma silenciosa: " + icons,
+      zorro: "Después seguiste explorando de a poco: " + icons,
+      ballena: "Después seguiste flotando cerca de la superficie: " + icons,
+      nube: "Después el peso se sostuvo, pero no te borró: " + icons
+    },
+    heavy: {
+      brote: "Después el camino siguió pesado, y aun así seguiste registrando: " + icons,
+      luna: "Después hubo más oscuridad, y aun así volviste: " + icons,
+      zorro: "Después no fue fácil, pero seguiste buscando una ruta: " + icons,
+      ballena: "Después la marea siguió intensa, y aun así seguiste flotando: " + icons,
+      nube: "Después hubo bastante peso, y aun así no lo cargaste en silencio: " + icons
+    }
+  };
+
+  return {
+    state,
+    text: (texts[state] && texts[state][key]) || texts[state].brote
+  };
+}
+
+function getCompanionReflection(key, state) {
+  const reflections = {
+    brote: {
+      improving: "🌱 Quizás no lo viste, pero seguiste creciendo.",
+      steady: "🌱 Sostenerse también es crecer.",
+      heavy: "🌱 Incluso en tierra pesada, una raíz puede seguir viva.",
+      unknown: "🌱 Este recuerdo también puede ser una semilla."
+    },
+    luna: {
+      improving: "🌙 Incluso las noches cambian un poco.",
+      steady: "🌙 No todo tiene que brillar para seguir estando.",
+      heavy: "🌙 La noche fue larga, pero no estuviste completamente solo.",
+      unknown: "🌙 Este recuerdo queda bajo una luz suave."
+    },
+    zorro: {
+      improving: "🦊 Fuiste encontrando caminos, aunque fueran pequeños.",
+      steady: "🦊 Seguiste caminando sin tener que saber todo.",
+      heavy: "🦊 Fue difícil, pero todavía había una ruta posible.",
+      unknown: "🦊 Este recuerdo puede enseñarnos algo después."
+    },
+    ballena: {
+      improving: "🐳 Seguiste flotando hasta que el agua aflojó un poco.",
+      steady: "🐳 Flotar también cuenta cuando no hay tierra cerca.",
+      heavy: "🐳 La marea subió, pero seguiste en la superficie.",
+      unknown: "🐳 Este recuerdo también vive en lo profundo."
+    },
+    nube: {
+      improving: "☁️ Algo del peso se movió.",
+      steady: "☁️ No todo se fue, pero algo pudo quedar más liviano.",
+      heavy: "☁️ Hubo peso, pero no tuviste que ser ese peso.",
+      unknown: "☁️ Este recuerdo puede pasar como una nube más."
+    }
+  };
+
+  return (reflections[key] && reflections[key][state]) || reflections.brote[state] || reflections.brote.unknown;
 }
 
 
