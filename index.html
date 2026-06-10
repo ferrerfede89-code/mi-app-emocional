@@ -202,7 +202,44 @@ Volver
   <div class="stats" id="stats"></div>
 
 </div>
+let currentTopic = "";
 
+function openRelease(){
+
+document.getElementById("releaseScreen").style.display="block";
+
+}
+
+function closeRelease(){
+
+document.getElementById("releaseScreen").style.display="none";
+
+}
+
+function chooseTopic(topic){
+
+currentTopic = topic;
+
+document.getElementById("selectedTopic").innerText =
+"Elegiste: " + topic;
+
+}
+
+function releaseThought(){
+
+const text =
+document.getElementById("releaseText");
+
+text.value = "";
+
+document.getElementById("releaseResult").innerText =
+"Lo dejaste un poco afuera.";
+
+if(navigator.vibrate){
+navigator.vibrate([100,50,100]);
+}
+
+}
 <script>
 let inhaling = true;
 
