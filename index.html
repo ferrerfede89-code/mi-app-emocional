@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>App Emocional V38</title>
+<title>App Emocional V39</title>
 
 <style>
 body {
@@ -484,31 +484,18 @@ text-align:center;
     <button class="action" onclick="openRemember()">
       <span>🧠</span>Recordar
     </button>
-    <button class="action" onclick="openJourney()">
-      <span>📊</span>Recorrido
+    
+    
+    
+    
+    
+    
+    
+    
+    <button class="action" onclick="openJourneyHub()" style="grid-column:1/3;background:#dcfce7;font-weight:bold;">
+      <span>🗺️</span>Mi recorrido
     </button>
-    <button class="action" onclick="openMilestones()">
-      <span>🌟</span>Hitos
-    </button>
-    <button class="action" onclick="openTree()">
-      <span>🌳</span>Árbol
-    </button>
-    <button class="action" onclick="openStory()">
-      <span>📜</span>Historia
-    </button>
-    <button class="action" onclick="openContinuity()">
-      <span>🏆</span>Continuidad
-    </button>
-    <button class="action" onclick="openLetter()">
-      <span>💌</span>Carta
-    </button>
-    <button class="action" onclick="openTimeline()">
-      <span>📈</span>Línea
-    </button>
-    <button class="action" onclick="openFullExport()" style="grid-column:1/3;background:#fef3c7;font-weight:bold;">
-      <span>📦</span>Historia completa
-    </button>
-    <button class="action" onclick="openSupport()" style="grid-column:1/3;">
+<button class="action" onclick="openSupport()" style="grid-column:1/3;">
       <span>🚨</span>Apoyo rápido
     </button>
   </div>
@@ -1094,6 +1081,22 @@ text-align:center;
 <br>
 <button onclick="copyFullExport()" class="softButton">📋 Copiar historia completa</button>
 <button onclick="closeFullExport()" class="softButton">Volver</button>
+</div>
+
+
+<div id="journeyHubScreen" class="fullscreen" style="background:linear-gradient(180deg,#dcfce7,#dbeafe);overflow:auto;text-align:center;">
+<h1>🗺️</h1>
+<h2>Mi recorrido</h2>
+<button onclick="openJourney();closeJourneyHub();" class="softButton">📊 Recorrido</button>
+<button onclick="openTree();closeJourneyHub();" class="softButton">🌳 Árbol</button>
+<button onclick="openStory();closeJourneyHub();" class="softButton">📜 Historia</button>
+<button onclick="openContinuity();closeJourneyHub();" class="softButton">🏆 Continuidad</button>
+<button onclick="openTimeline();closeJourneyHub();" class="softButton">📈 Línea</button>
+<button onclick="openLetter();closeJourneyHub();" class="softButton">💌 Carta</button>
+<button onclick="openMilestones();closeJourneyHub();" class="softButton">🌟 Hitos</button>
+<button onclick="openFullExport();closeJourneyHub();" class="softButton">📦 Historia completa</button>
+<br><br>
+<button onclick="closeJourneyHub()" class="softButton">Volver</button>
 </div>
 
 <script>
@@ -1890,7 +1893,11 @@ function copyFullExport(){
  });
 }
 
+
+function openJourneyHub(){document.getElementById('journeyHubScreen').style.display='block';}
+function closeJourneyHub(){document.getElementById('journeyHubScreen').style.display='none';}
 let inhaling = true;
+
 let breathingInterval;
 let stayInterval;
 let currentTopic = "";
