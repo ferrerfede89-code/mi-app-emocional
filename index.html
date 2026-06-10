@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>App Emocional V18</title>
+<title>App Emocional V19</title>
 
 <style>
 body {
@@ -798,6 +798,7 @@ function setMood(mood) {
 
   localStorage.setItem("moods", JSON.stringify(data));
   renderStats();
+  renderMemory();
 }
 
 function renderStats() {
@@ -1143,31 +1144,119 @@ function showEmergency() {
 }
 
 
+
+function moodScore(mood) {
+  if (mood === "bien") return 3;
+  if (mood === "normal") return 2;
+  if (mood === "mal") return 1;
+  return 0;
+}
+
+function getMoodLabel(mood) {
+  if (mood === "bien") return "bien";
+  if (mood === "normal") return "normal";
+  if (mood === "mal") return "mal";
+  return "";
+}
+
 function renderMemory() {
   let data = JSON.parse(localStorage.getItem("moods")) || {};
-  let days = Object.keys(data).sort();
+  let today = new Date().toISOString().split("T")[0];
+  let todayMoods = data[today] || [];
+  let compKey = localStorage.getItem("companion") || "brote";
+  let comp = companions[compKey] || companions.brote;
 
-  let text = "Todavía no hay suficientes registros.";
+  let text = comp.emoji + " " + comp.name + " todavía está aprendiendo tu día.";
 
-  if (days.length >= 2) {
-    let recent = days.slice(-3);
-    let moods = recent.map(d => (data[d] || []).slice(-1)[0]).filter(Boolean);
+  if (todayMoods.length === 0) {
+    text = comp.emoji + " Todavía no registraste cómo venís hoy. Podemos empezar con una carita.";
+  }
 
-    const compKey = localStorage.getItem("companion") || "brote";
+  if (todayMoods.length === 1) {
+    const only = todayMoods[0];
 
-    const messages = {
-      brote: "🌱 Hace unos días parecía diferente. Gracias por seguir acá.",
-      luna: "🌙 La noche no fue igual todos los días.",
-      zorro: "🦊 Veo pequeños cambios en el camino.",
-      ballena: "🐳 Algo cambió en la marea.",
-      nube: "☁️ Algunas cosas se movieron suavemente."
-    };
+    if (only === "mal") {
+      text = companionMemoryText(compKey, "heavy");
+    } else if (only === "normal") {
+      text = companionMemoryText(compKey, "steady");
+    } else if (only === "bien") {
+      text = companionMemoryText(compKey, "light");
+    }
+  }
 
-    text = messages[compKey] || messages.brote;
+  if (todayMoods.length >= 2) {
+    let counts = { bien: 0, normal: 0, mal: 0 };
+    todayMoods.forEach(m => counts[m]++);
+
+    let first = todayMoods[0];
+    let last = todayMoods[todayMoods.length - 1];
+    let firstScore = moodScore(first);
+    let lastScore = moodScore(last);
+
+    if (lastScore > firstScore) {
+      text = companionMemoryText(compKey, "improving");
+    } else if (lastScore < firstScore) {
+      text = companionMemoryText(compKey, "heavier");
+    } else if (counts.mal > counts.normal && counts.mal > counts.bien) {
+      text = companionMemoryText(compKey, "heavy");
+    } else if (counts.bien > counts.normal && counts.bien > counts.mal) {
+      text = companionMemoryText(compKey, "light");
+    } else if (counts.normal >= counts.bien && counts.normal >= counts.mal) {
+      text = companionMemoryText(compKey, "steady");
+    } else {
+      text = companionMemoryText(compKey, "mixed");
+    }
   }
 
   const el = document.getElementById("memoryText");
   if (el) el.innerText = text;
+}
+
+function companionMemoryText(compKey, state) {
+  const texts = {
+    brote: {
+      heavy: "🌱 Hoy parece un día pesado. Gracias por seguir acá.",
+      steady: "🌱 Hoy parece un día de sostenerse despacio.",
+      light: "🌱 Hoy apareció un poco de luz. No hace falta exigirle más.",
+      improving: "🌱 Parece que apareció un poco más de espacio durante el día.",
+      heavier: "🌱 Si se volvió más pesado, podemos ir todavía más lento.",
+      mixed: "🌱 Hoy hubo movimiento. No todo fue igual."
+    },
+    luna: {
+      heavy: "🌙 La noche parece más larga hoy. Podemos esperar juntos.",
+      steady: "🌙 Hoy se siente silencioso. No hace falta forzar nada.",
+      light: "🌙 Aparece una calma pequeña. Podemos cuidarla.",
+      improving: "🌙 Algo de la noche se fue abriendo durante el día.",
+      heavier: "🌙 Si oscureció un poco, no tenés que atravesarlo solo.",
+      mixed: "🌙 Hoy la luz cambió varias veces. Seguimos acá."
+    },
+    zorro: {
+      heavy: "🦊 Hoy parece difícil. No tenemos que resolverlo perfecto.",
+      steady: "🦊 Hoy venís sosteniéndote. Eso también cuenta.",
+      light: "🦊 Hay una chispa por acá. Aunque sea pequeña.",
+      improving: "🦊 Algo cambió en el camino. Buena señal.",
+      heavier: "🦊 Si se complicó, podemos buscar una ruta más simple.",
+      mixed: "🦊 Hoy tuvo vueltas. Podemos mirarlo con curiosidad."
+    },
+    ballena: {
+      heavy: "🐳 Hoy el agua parece más profunda. No tenés que hundirte más.",
+      steady: "🐳 Hoy la marea está quieta. Podemos flotar.",
+      light: "🐳 Hoy aparecen señales de calma en la superficie.",
+      improving: "🐳 Parece que el agua está un poco más tranquila.",
+      heavier: "🐳 Si la marea subió, podemos quedarnos cerca de la superficie.",
+      mixed: "🐳 La marea cambió durante el día. Seguimos flotando."
+    },
+    nube: {
+      heavy: "☁️ Hoy pesa un poco más. Podés soltar una parte.",
+      steady: "☁️ Hoy parece suspendido. No hay prisa.",
+      light: "☁️ Hoy hay un poco más de espacio.",
+      improving: "☁️ Algo se movió suavemente durante el día.",
+      heavier: "☁️ Si volvió el peso, no tenés que sostenerlo todo.",
+      mixed: "☁️ Hoy pasaron varias nubes. Ninguna se queda para siempre."
+    }
+  };
+
+  return (texts[compKey] && texts[compKey][state]) || texts.brote[state];
 }
 
 const originalApplyCompanion = applyCompanion;
