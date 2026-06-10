@@ -342,5 +342,76 @@ document.getElementById("breathingScreen").style.display="none";
 
 }
 </script>
+  <div id="releaseScreen" style="
+display:none;
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:linear-gradient(180deg,#fff7ed,#fdba74);
+z-index:9999;
+padding:30px;
+box-sizing:border-box;
+overflow:auto;
+">
+
+<h1>🔥</h1>
+
+<h2>¿Qué pesa ahora?</h2>
+
+<div style="display:flex;flex-wrap:wrap;gap:10px;margin-bottom:20px;">
+
+<button onclick="chooseTopic('Pensamientos')">Pensamientos</button>
+
+<button onclick="chooseTopic('Trabajo')">Trabajo</button>
+
+<button onclick="chooseTopic('Relación')">Relación</button>
+
+<button onclick="chooseTopic('Miedo')">Miedo</button>
+
+<button onclick="chooseTopic('Otra cosa')">Otra cosa</button>
+
+</div>
+
+<div id="selectedTopic" style="margin-bottom:15px;"></div>
+
+<textarea
+id="releaseText"
+placeholder="Podés dejarlo acá..."
+style="
+width:100%;
+height:150px;
+border-radius:15px;
+padding:15px;
+font-size:16px;
+box-sizing:border-box;
+"></textarea>
+
+<button
+onclick="releaseThought()"
+style="
+margin-top:20px;
+padding:15px 20px;
+border:none;
+border-radius:20px;
+font-size:16px;
+">
+Soltar
+</button>
+
+<div id="releaseResult" style="
+margin-top:30px;
+font-size:20px;
+font-weight:bold;
+"></div>
+
+<br><br>
+
+<button onclick="closeRelease()">
+Volver
+</button>
+
+</div>
 </body>
 </html>
