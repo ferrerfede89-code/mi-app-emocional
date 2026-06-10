@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>App Emocional V33</title>
+<title>App Emocional V33.1</title>
 
 <style>
 body {
@@ -1570,13 +1570,13 @@ function renderStory(){
       moodCount++;
       if(m==='bien') bien++;
       else if(m==='normal') normal++;
-      else mal++;
+      else if(m==='mal') mal++;
    });
  });
 
  const memoryCount=entries.length;
 
- let trend='Hubo días distintos.';
+ let trend='Hubo días distintos. No todos pesaron igual.';
  if(bien>mal) trend='Aparecieron varios momentos de calma.';
  else if(mal>bien) trend='Hubo días difíciles que merecen reconocimiento.';
 
@@ -1588,14 +1588,22 @@ function renderStory(){
   nube:'☁️ Y aun así seguiste soltando algo de peso.'
  };
 
- document.getElementById('storyEmoji').innerText=key==='brote'?'🌱':key==='luna'?'🌙':key==='zorro'?'🦊':key==='ballena'?'🐳':'☁️';
+ const emojis={
+  brote:'🌱',
+  luna:'🌙',
+  zorro:'🦊',
+  ballena:'🐳',
+  nube:'☁️'
+ };
+
+ document.getElementById('storyEmoji').innerText=emojis[key]||'📜';
 
  document.getElementById('storyContent').innerHTML=`
  <div style="font-size:18px;line-height:1.8;text-align:left;">
  Durante este tiempo escribiste <strong>${memoryCount}</strong> recuerdo(s).<br><br>
  Registraste <strong>${moodCount}</strong> emoción(es).<br><br>
  ${trend}<br><br>
- ${endings[key]}
+ ${endings[key] || endings.brote}
  </div>`;
 }
 
