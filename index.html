@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>App Emocional V10</title>
+<title>App Emocional V11</title>
 
 <style>
 body {
@@ -182,6 +182,34 @@ body {
   50% { transform: scale(1.16); opacity: 1; }
   100% { transform: scale(1); opacity: 0.82; }
 }
+
+.sparkOrb {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #fff7ed, #fb923c);
+  box-shadow: 0 22px 60px rgba(251,146,60,0.28);
+  margin: 28px auto;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:54px;
+  animation: sparkPulse 3s infinite ease-in-out;
+}
+
+@keyframes sparkPulse {
+  0% { transform: scale(1) rotate(0deg); }
+  50% { transform: scale(1.08) rotate(2deg); }
+  100% { transform: scale(1) rotate(0deg); }
+}
+
+.countNumber {
+  font-size: 64px;
+  font-weight: 700;
+  margin: 20px 0;
+  color: #f97316;
+}
+
 </style>
 </head>
 
@@ -243,6 +271,9 @@ text-align:center;
     </button>
     <button class="action" onclick="openStay()">
       <span>🌊</span>Quedarme
+    </button>
+    <button class="action" onclick="openSpark()" style="grid-column:1/3;">
+      <span>😊</span>Chispa
     </button>
   </div>
 
@@ -397,6 +428,53 @@ overflow:hidden;
   </button>
 </div>
 
+
+<div id="sparkScreen" class="fullscreen" style="
+background:linear-gradient(180deg,#fff7ed,#fed7aa);
+text-align:center;
+overflow:auto;
+">
+  <div id="sparkEmoji" style="font-size:44px;margin-top:10px;">😊</div>
+
+  <h2 id="sparkTitle">Te propongo algo raro.</h2>
+
+  <p id="sparkIntro" style="font-size:18px;line-height:1.45;max-width:330px;margin:0 auto 18px;">
+    No tiene que salir bien.
+  </p>
+
+  <div class="sparkOrb" id="sparkOrb">✨</div>
+
+  <div id="sparkCountdown" class="countNumber" style="display:none;">5</div>
+
+  <button id="sparkStartButton" onclick="startSparkCountdown()" class="softButton">
+    Empezar
+  </button>
+
+  <button id="sparkMissionButton" onclick="showSparkMission()" class="softButton" style="display:none;">
+    Dame una misión absurda
+  </button>
+
+  <div id="sparkMission" style="
+  margin-top:28px;
+  font-size:22px;
+  line-height:1.4;
+  font-weight:600;
+  max-width:330px;
+  margin-left:auto;
+  margin-right:auto;
+  "></div>
+
+  <div id="sparkClosing" style="
+  margin-top:22px;
+  font-size:17px;
+  color:#7c2d12;
+  line-height:1.45;
+  "></div>
+
+  <br><br>
+  <button onclick="closeSpark()" class="softButton">Volver</button>
+</div>
+
 <script>
 let inhaling = true;
 let breathingInterval;
@@ -415,7 +493,9 @@ const companions = {
     release: "🌱 ¿Querés dejar algo acá?",
     connect: "🌱 No hace falta hacerlo solo.",
     stay: ["No hace falta crecer hoy.", "Incluso las raíces descansan.", "Podemos quedarnos así.", "Un paso pequeño alcanza.", "No tenés que florecer ahora."],
-    sub: ["Crecimiento también es descansar.", "La pausa también forma parte.", "Hoy alcanza con estar.", "No todo tiene que avanzar.", "Quedate un minuto más."]
+    sub: ["Crecimiento también es descansar.", "La pausa también forma parte.", "Hoy alcanza con estar.", "No todo tiene que avanzar.", "Quedate un minuto más."],
+    sparkIntro: "Probemos algo pequeño.",
+    sparks: ["🌱 Mové los dedos como si estuvieran creciendo.", "🌱 Estirá los brazos hacia arriba 5 segundos.", "🌱 Sonreí aunque sea un poquito.", "🌱 Tocá algo cercano y notá su textura.", "🌱 Decí en voz baja: hoy puedo ir lento."]
   },
   luna: {
     emoji: "🌙",
@@ -426,7 +506,9 @@ const companions = {
     release: "🌙 Podés dejarlo bajo esta luz.",
     connect: "🌙 No tenés que atravesar la noche solo.",
     stay: ["La noche también pasa.", "Podemos esperar juntos.", "No hace falta apurarse.", "La calma puede ser mínima.", "Estoy cerca."],
-    sub: ["No tenés que ver todo ahora.", "A veces alcanza con esperar.", "La oscuridad no exige respuestas.", "Podemos quedarnos un momento.", "Respirá si podés."]
+    sub: ["No tenés que ver todo ahora.", "A veces alcanza con esperar.", "La oscuridad no exige respuestas.", "Podemos quedarnos un momento.", "Respirá si podés."],
+    sparkIntro: "Hagamos algo suave y raro.",
+    sparks: ["🌙 Mirá un punto fijo durante 10 segundos.", "🌙 Cerrá los ojos y levantá las cejas.", "🌙 Hacé una sonrisa mínima, casi secreta.", "🌙 Mové la cabeza lento como diciendo no pasa nada.", "🌙 Susurrá una palabra inventada."]
   },
   zorro: {
     emoji: "🦊",
@@ -437,7 +519,9 @@ const companions = {
     release: "🦊 Veamos qué está dando vueltas.",
     connect: "🦊 Tal vez alguien pueda acercarse.",
     stay: ["No hace falta hacerlo perfecto.", "Podemos observar un rato.", "Algo pequeño también cuenta.", "Probemos quedarnos.", "Estoy acá, curioso y quieto."],
-    sub: ["No hay examen.", "Hagámoslo raro si hace falta.", "La curiosidad también acompaña.", "Quedarse también es un movimiento.", "No tenés que saber qué hacer."]
+    sub: ["No hay examen.", "Hagámoslo raro si hace falta.", "La curiosidad también acompaña.", "Quedarse también es un movimiento.", "No tenés que saber qué hacer."],
+    sparkIntro: "Inventemos algo raro.",
+    sparks: ["🦊 Hacé una cara ridícula 5 segundos.", "🦊 Inventá un sonido extraño.", "🦊 Hablá como robot durante 5 segundos.", "🦊 Mirá alrededor y encontrá algo naranja.", "🦊 Caminá como explorador perdido."]
   },
   ballena: {
     emoji: "🐳",
@@ -448,7 +532,9 @@ const companions = {
     release: "🐳 Podés soltar un poco de peso.",
     connect: "🐳 No tenés que cargarlo solo.",
     stay: ["No tenés que hundirte más.", "Ya estoy acá con vos.", "Podemos quedarnos en la superficie.", "Respirá despacio.", "No hace falta bajar más profundo."],
-    sub: ["La profundidad también puede sostener.", "Un minuto más es suficiente.", "No estás solo en esto.", "Dejá que el agua baje.", "Podemos flotar."]
+    sub: ["La profundidad también puede sostener.", "Un minuto más es suficiente.", "No estás solo en esto.", "Dejá que el agua baje.", "Podemos flotar."],
+    sparkIntro: "Hagamos una chispa profunda.",
+    sparks: ["🐳 Inflá los cachetes como una ballena.", "🐳 Hacé un sonido grave y lento.", "🐳 Abrí los brazos como si flotaras.", "🐳 Exhalá largo como si soltaras burbujas.", "🐳 Sonreí como si guardaras un secreto del mar."]
   },
   nube: {
     emoji: "☁️",
@@ -459,7 +545,9 @@ const companions = {
     release: "☁️ Podés dejarlo pasar un poco.",
     connect: "☁️ No tenés que sostenerlo todo.",
     stay: ["Soltá un poco el peso.", "Podemos flotar un rato.", "Nada tiene que ser duro ahora.", "No tenés que sostenerlo todo.", "Estoy suave acá."],
-    sub: ["La suavidad también es fuerza.", "Podés descansar un poco.", "No hay prisa.", "Hoy puede ser liviano por un minuto.", "Solo estar."]
+    sub: ["La suavidad también es fuerza.", "Podés descansar un poco.", "No hay prisa.", "Hoy puede ser liviano por un minuto.", "Solo estar."],
+    sparkIntro: "Algo liviano, sin esfuerzo.",
+    sparks: ["☁️ Sacudí lentamente los hombros.", "☁️ Inflá los cachetes y soltá el aire.", "☁️ Mové los brazos como si fueran humo.", "☁️ Hacé una sonrisa muy suave.", "☁️ Decí una palabra graciosa sin pensar."]
   }
 };
 
@@ -719,6 +807,79 @@ function closeStay() {
   clearInterval(stayInterval);
   document.getElementById("stayScreen").style.display = "none";
 }
+
+
+function openSpark() {
+  const comp = getCompanion();
+
+  document.getElementById("sparkScreen").style.display = "block";
+  document.getElementById("sparkEmoji").innerText = comp ? comp.emoji : "😊";
+  document.getElementById("sparkTitle").innerText = "Te propongo algo raro.";
+  document.getElementById("sparkIntro").innerText = comp ? comp.sparkIntro : "No tiene que salir bien.";
+  document.getElementById("sparkCountdown").style.display = "none";
+  document.getElementById("sparkStartButton").style.display = "inline-block";
+  document.getElementById("sparkMissionButton").style.display = "none";
+  document.getElementById("sparkMission").innerText = "";
+  document.getElementById("sparkClosing").innerText = "";
+
+  if (navigator.vibrate) {
+    navigator.vibrate(50);
+  }
+}
+
+function closeSpark() {
+  document.getElementById("sparkScreen").style.display = "none";
+}
+
+function startSparkCountdown() {
+  let count = 5;
+
+  document.getElementById("sparkStartButton").style.display = "none";
+  document.getElementById("sparkCountdown").style.display = "block";
+  document.getElementById("sparkMission").innerText = "Intentá sonreír durante 5 segundos. No importa si es falso.";
+  document.getElementById("sparkClosing").innerText = "";
+  document.getElementById("sparkCountdown").innerText = count;
+
+  const timer = setInterval(() => {
+    count--;
+    document.getElementById("sparkCountdown").innerText = count;
+
+    if (navigator.vibrate) {
+      navigator.vibrate(35);
+    }
+
+    if (count <= 0) {
+      clearInterval(timer);
+      document.getElementById("sparkCountdown").style.display = "none";
+      document.getElementById("sparkMission").innerText = "¿Viste? No solucionó todo. Pero pasó algo.";
+      document.getElementById("sparkClosing").innerText = "Ahora podemos probar una misión absurda.";
+      document.getElementById("sparkMissionButton").style.display = "inline-block";
+    }
+  }, 1000);
+}
+
+function showSparkMission() {
+  const comp = getCompanion();
+
+  const defaultMissions = [
+    "😊 Hacé una cara ridícula durante 5 segundos.",
+    "🎤 Inventá un sonido extraño.",
+    "🦆 Caminá como pato durante 5 segundos.",
+    "🎭 Cambiá tu voz durante 10 segundos.",
+    "🫧 Inflá los cachetes y soltá el aire."
+  ];
+
+  const missions = comp ? comp.sparks : defaultMissions;
+  const mission = missions[Math.floor(Math.random() * missions.length)];
+
+  document.getElementById("sparkMission").innerText = mission;
+  document.getElementById("sparkClosing").innerText = "No hace falta que salga bien. Solo que pase.";
+
+  if (navigator.vibrate) {
+    navigator.vibrate([60,40,60]);
+  }
+}
+
 
 renderStats();
 applyCompanion();
