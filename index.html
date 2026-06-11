@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>App Emocional V56.1</title>
+<title>App Emocional V56.2</title>
 
 <style>
 body {
@@ -1376,54 +1376,61 @@ function renderCapsulesV46(){
 
 
 
+
 function showAnniversaryMemory(){
- const entries=JSON.parse(localStorage.getItem('diaryEntries'))||[];
- if(!entries.length) return;
+ try{
+   const card=document.getElementById('anniversaryCard');
+   const content=document.getElementById('anniversaryContent');
+   if(!card || !content) return;
 
- const today=new Date();
- let candidates=[];
+   const entries=JSON.parse(localStorage.getItem('diaryEntries')||'[]');
+   if(!entries.length){
+     card.style.display='none';
+     return;
+   }
 
- entries.forEach(e=>{
-   if(!e.date) return;
-   const p=e.date.split('/');
-   if(p.length!==3) return;
+   const today=new Date();
+   let candidates=[];
 
-   const d=new Date(parseInt(p[2]), parseInt(p[1])-1, parseInt(p[0]));
-   if(isNaN(d.getTime())) return;
+   entries.forEach(e=>{
+     if(!e.date) return;
+     const p=e.date.split('/');
+     if(p.length!==3) return;
 
-   const daysAgo=Math.max(0, Math.floor((today-d)/(1000*60*60*24)));
-   candidates.push({entry:e, daysAgo});
- });
+     const d=new Date(parseInt(p[2]), parseInt(p[1])-1, parseInt(p[0]));
+     if(isNaN(d.getTime())) return;
 
- if(!candidates.length) return;
+     const daysAgo=Math.max(0, Math.floor((today-d)/(1000*60*60*24)));
+     candidates.push({entry:e, daysAgo});
+   });
 
- candidates.sort((a,b)=>b.daysAgo-a.daysAgo);
- const chosen=candidates[0];
+   if(!candidates.length){
+     card.style.display='none';
+     return;
+   }
 
- let label='📅 Escribiste esto hoy:';
- const card=document.getElementById('anniversaryCard');
- const content=document.getElementById('anniversaryContent');
+   candidates.sort((a,b)=>b.daysAgo-a.daysAgo);
+   const chosen=candidates[0];
 
- if(chosen.daysAgo < 7){
-   if(card) card.style.display='none';
-   return;
- }
- if(chosen.daysAgo===1) label='📅 Ayer escribiste:';
- else if(chosen.daysAgo>1 && chosen.daysAgo<25) label='📅 Hace '+chosen.daysAgo+' días escribiste:';
- else if(chosen.daysAgo>=25 && chosen.daysAgo<=45) label='🎁 Hace aproximadamente 30 días escribiste:';
- else if(chosen.daysAgo>45 && chosen.daysAgo<80) label='🎁 Hace aproximadamente '+chosen.daysAgo+' días escribiste:';
- else if(chosen.daysAgo>=80 && chosen.daysAgo<=110) label='🎁 Hace aproximadamente 3 meses escribiste:';
- else if(chosen.daysAgo>110) label='🎁 Hace bastante tiempo escribiste:';
+   if(chosen.daysAgo < 7){
+     card.style.display='none';
+     return;
+   }
 
- const card=document.getElementById('anniversaryCard');
- const content=document.getElementById('anniversaryContent');
+   let label='📅 Hace '+chosen.daysAgo+' días escribiste:';
+   if(chosen.daysAgo>=25 && chosen.daysAgo<=45) label='🎁 Hace aproximadamente 30 días escribiste:';
+   else if(chosen.daysAgo>=80 && chosen.daysAgo<=110) label='🎁 Hace aproximadamente 3 meses escribiste:';
+   else if(chosen.daysAgo>110) label='🎁 Hace bastante tiempo escribiste:';
 
- if(card && content){
    content.innerHTML='<div>'+label+'</div><div style="margin-top:8px;font-style:italic;">"'+(chosen.entry.text||'')+'"</div><div style="margin-top:10px;">🌱 ¿Qué le responderías hoy a esa versión tuya?</div>';
    card.style.display='block';
+ }catch(e){
+   const card=document.getElementById('anniversaryCard');
+   if(card) card.style.display='none';
  }
 }
 showAnniversaryMemory();
+
 
 
 function saveCapsule(days){
@@ -3370,22 +3377,38 @@ function closeDiary() {
   document.getElementById("diaryScreen").style.display = "none";
 }
 
-function saveDiaryEntry() {
-  const input = document.getElementById("diaryInput");
-  const text = input.value.trim();
 
-  if (!text) {
-    document.getElementById("diaryResult").innerText = "Podés escribir una frase corta.";
-    return;
-  }
+function saveDiaryEntry(){
+ const input=document.getElementById('diaryInput');
+ const result=document.getElementById('diaryResult');
+ const tagEl=document.getElementById('diaryTag');
+ const text=(input && input.value ? input.value.trim() : '');
 
-  addDiaryEntry(text);
-  input.value = "";
-  document.getElementById("diaryResult").innerText = "Guardado.";
-  renderDiary();
+ if(!text){
+   if(result) result.innerText='Escribí algo primero.';
+   return;
+ }
 
-  if (navigator.vibrate) navigator.vibrate([60,30,60]);
+ const entries=JSON.parse(localStorage.getItem('diaryEntries')||'[]');
+ const today=new Date().toLocaleDateString();
+
+ entries.push({
+   text:text,
+   date:today,
+   tag:(tagEl && tagEl.value) ? tagEl.value : ''
+ });
+
+ localStorage.setItem('diaryEntries', JSON.stringify(entries));
+
+ input.value='';
+ if(tagEl) tagEl.value='';
+ if(result) result.innerText='📖 Guardado en tu diario.';
+
+ renderDiaryList();
+ updateMemory();
+ renderDashboard();
 }
+
 
 function addDiaryEntry(text) {
   let entries = JSON.parse(localStorage.getItem("diaryEntries")) || [];
