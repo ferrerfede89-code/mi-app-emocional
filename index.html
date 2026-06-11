@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>App Emocional V56</title>
+<title>App Emocional V56.1</title>
 
 <style>
 body {
@@ -1401,8 +1401,11 @@ function showAnniversaryMemory(){
  const chosen=candidates[0];
 
  let label='📅 Escribiste esto hoy:';
+ const card=document.getElementById('anniversaryCard');
+ const content=document.getElementById('anniversaryContent');
+
  if(chosen.daysAgo < 7){
-   card.style.display='none';
+   if(card) card.style.display='none';
    return;
  }
  if(chosen.daysAgo===1) label='📅 Ayer escribiste:';
