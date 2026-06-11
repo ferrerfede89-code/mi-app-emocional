@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>App Emocional V56.3</title>
+<title>App Emocional V57</title>
 
 <style>
 body {
@@ -1190,7 +1190,7 @@ text-align:center;
 <div id="searchScreen" class="fullscreen" style="background:linear-gradient(180deg,#ecfeff,#dbeafe);overflow:auto;text-align:center;">
 <h1>🔎</h1>
 <h2>Buscar recuerdos</h2>
-<input id="memorySearchInput" type="text" class="textBox" style="min-height:auto;height:56px;" placeholder="Escribí una palabra...">
+<input id="memorySearchInput" type="text" class="textBox" style="min-height:auto;height:56px;" placeholder="Palabra o etiqueta (trabajo, ansiedad, estudio...)...">
 <br>
 <button onclick="searchMemories()" class="softButton">Buscar</button>
 <div id="searchResults" class="rememberCard" style="margin-top:18px;"></div>
@@ -1272,7 +1272,13 @@ function searchMemories(){
    return;
  }
 
- const results=entries.filter(e => (e.text||'').toLowerCase().includes(q));
+ 
+const results=entries.filter(e => {
+ const textMatch=(e.text||'').toLowerCase().includes(q);
+ const tagMatch=(e.tag||'').toLowerCase().includes(q);
+ return textMatch || tagMatch;
+});
+
 
  if(!results.length){
    box.innerHTML='No encontré recuerdos con: <strong>'+q+'</strong>';
