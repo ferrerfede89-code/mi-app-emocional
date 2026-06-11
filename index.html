@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>App Emocional V46.1</title>
+<title>App Emocional V46.2</title>
 
 <style>
 body {
@@ -506,7 +506,7 @@ text-align:center;
     <button class="action" onclick="openJourneyHub()" style="grid-column:1/3;background:#dcfce7;font-weight:bold;">
       <span>🗺️</span>Mi recorrido
     </button>
-<button class="action" onclick="openCapsule()" style="grid-column:1/3;background:#fde68a;font-weight:bold;">
+<button class="action" onclick="openCapsuleV46()" style="grid-column:1/3;background:#fde68a;font-weight:bold;">
       <span>📬</span>Cápsula del tiempo
     </button>
 <button class="action" onclick="openSupport()" style="grid-column:1/3;">
@@ -1122,9 +1122,9 @@ text-align:center;
 <textarea id="capsuleText" class="textBox" placeholder="Quiero que mi yo del futuro lea esto..."></textarea>
 
 <div style="margin-top:12px;">
-<button class="softButton" onclick="saveCapsule(7)">7 días</button>
-<button class="softButton" onclick="saveCapsule(30)">30 días</button>
-<button class="softButton" onclick="saveCapsule(90)">90 días</button>
+<button class="softButton" onclick="addNewCapsule(7)">7 días</button>
+<button class="softButton" onclick="addNewCapsule(30)">30 días</button>
+<button class="softButton" onclick="addNewCapsule(90)">90 días</button>
 </div>
 
 <div id="capsuleContent" class="rememberCard" style="margin-top:18px;"></div>
@@ -1143,6 +1143,76 @@ text-align:center;
 </div>
 
 <script>
+
+function openCapsuleV46(){
+ document.getElementById('capsuleScreen').style.display='block';
+ renderCapsulesV46();
+}
+
+function addNewCapsule(days){
+ const input=document.getElementById('capsuleText');
+ const text=input.value.trim();
+ if(!text){ alert('Escribí un mensaje primero.'); return; }
+
+ let capsules=JSON.parse(localStorage.getItem('futureCapsulesV46')||'[]');
+
+ const openDate=new Date();
+ openDate.setDate(openDate.getDate()+days);
+
+ capsules.push({
+   id: Date.now() + Math.floor(Math.random()*1000),
+   text: text,
+   created: new Date().toISOString(),
+   openAt: openDate.toISOString(),
+   days: days
+ });
+
+ localStorage.setItem('futureCapsulesV46', JSON.stringify(capsules));
+
+ // Limpieza de sistema viejo de una sola cápsula
+ localStorage.removeItem('futureCapsule');
+
+ input.value='';
+ renderCapsulesV46();
+ alert('📬 Cápsula agregada. Podés escribir otra.');
+}
+
+function renderCapsulesV46(){
+ const box=document.getElementById('capsuleContent');
+ if(!box) return;
+
+ const capsules=JSON.parse(localStorage.getItem('futureCapsulesV46')||'[]');
+
+ if(!capsules.length){
+   box.innerHTML='No hay cápsulas guardadas. Escribí una y elegí 7, 30 o 90 días.';
+   return;
+ }
+
+ const now=new Date();
+
+ box.innerHTML = capsules.map((c,i)=>{
+   const openAt=new Date(c.openAt);
+   const created=new Date(c.created).toLocaleDateString();
+   const isOpen = now >= openAt;
+
+   if(isOpen){
+     return `<div style="margin:12px 0;padding:14px;border-radius:16px;background:white;text-align:left;">
+       🎁 <strong>Cápsula ${i+1}</strong><br>
+       <span class="small">Creada: ${created} · plazo elegido: ${c.days || '?'} días</span><br><br>
+       ${c.text}
+     </div>`;
+   }
+
+   const remaining=Math.ceil((openAt-now)/(1000*60*60*24));
+   return `<div style="margin:12px 0;padding:14px;border-radius:16px;background:white;text-align:left;">
+     ⏳ <strong>Cápsula ${i+1}</strong><br>
+     <span class="small">Creada: ${created} · plazo elegido: ${c.days || '?'} días</span><br>
+     Faltan <strong>${remaining}</strong> día(s)
+   </div>`;
+ }).join('');
+}
+
+
 
 
 
@@ -3230,6 +3300,12 @@ function escapeHTML(str) {
 
 renderStats();
 applyCompanion();
+
+
+function openCapsule(){ openCapsuleV46(); }
+function saveCapsule(days){ addNewCapsule(days); }
+function renderCapsule(){ renderCapsulesV46(); }
+
 </script>
 
 </body>
