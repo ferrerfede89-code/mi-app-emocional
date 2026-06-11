@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>App Emocional V60</title>
+<title>App Emocional V61</title>
 
 <style>
 body {
@@ -1159,6 +1159,7 @@ text-align:center;
 <button onclick="openSearch();closeJourneyHub();" class="softButton">🔎 Buscar</button>
 <button onclick="openLibrary();closeJourneyHub();" class="softButton">📚 Biblioteca</button>
 <button onclick="openMilestones();closeJourneyHub();" class="softButton">🌟 Hitos</button>
+<button onclick="openAchievements();closeJourneyHub();" class="softButton">🏅 Logros</button>
 <button onclick="openFullExport();closeJourneyHub();" class="softButton">📦 Historia completa</button>
 <button onclick="openBackup();closeJourneyHub();" class="softButton">☁️ Respaldo</button>
 <br><br>
@@ -1227,6 +1228,15 @@ text-align:center;
 <button onclick="closeBackup()" class="softButton">Volver</button>
 </div>
 
+
+<div id="achievementScreen" class="fullscreen" style="background:linear-gradient(180deg,#fef9c3,#dbeafe);overflow:auto;text-align:center;">
+<h1>🏅</h1>
+<h2>Logros emocionales</h2>
+<div id="achievementContent" class="rememberCard"></div>
+<br>
+<button onclick="closeAchievements()" class="softButton">Volver</button>
+</div>
+
 <div id="statsScreen" class="fullscreen" style="background:linear-gradient(180deg,#dcfce7,#ddd6fe);overflow:auto;text-align:center;">
 <h1>📊</h1>
 <h2>Estadísticas emocionales</h2>
@@ -1236,6 +1246,43 @@ text-align:center;
 </div>
 
 <script>
+
+function openAchievements(){
+ document.getElementById('achievementScreen').style.display='block';
+
+ const entries=JSON.parse(localStorage.getItem('diaryEntries')||'[]');
+ const favs=JSON.parse(localStorage.getItem('favoriteMemories')||'[]');
+ const capsules=JSON.parse(localStorage.getItem('futureCapsulesV46')||'[]');
+
+ let items=[];
+
+ if(entries.length>=1) items.push('🌱 Primer recuerdo guardado');
+ if(entries.length>=10) items.push('📖 10 recuerdos escritos');
+ if(entries.length>=25) items.push('📚 25 recuerdos escritos');
+
+ if(favs.length>=1) items.push('⭐ Primer favorito guardado');
+ if(favs.length>=5) items.push('⭐ 5 favoritos guardados');
+
+ if(capsules.length>=1) items.push('📬 Primera cápsula creada');
+ if(capsules.length>=5) items.push('📬 5 cápsulas creadas');
+
+ const box=document.getElementById('achievementContent');
+
+ if(!items.length){
+   box.innerHTML='Todavía no desbloqueaste logros. Seguí escribiendo tu recorrido.';
+   return;
+ }
+
+ box.innerHTML=items.map(x=>
+   '<div style="margin:10px 0;padding:12px;background:white;border-radius:14px;">'+x+'</div>'
+ ).join('');
+}
+
+function closeAchievements(){
+ document.getElementById('achievementScreen').style.display='none';
+}
+
+
 
 function openLibrary(){
  document.getElementById('libraryScreen').style.display='block';
