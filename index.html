@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>App Emocional V52</title>
+<title>App Emocional V53</title>
 
 <style>
 body {
@@ -1448,7 +1448,11 @@ function renderCapsule(){
 
 function toggleFavoriteMemory(text){
  let favs=JSON.parse(localStorage.getItem('favoriteMemories')||'[]');
- if(!favs.includes(text)) favs.push(text);
+ if(favs.includes(text)){
+   alert('⭐ Ese recuerdo ya está en favoritos');
+   return;
+ }
+ favs.push(text);
  localStorage.setItem('favoriteMemories', JSON.stringify(favs));
  alert('⭐ Recuerdo agregado a favoritos');
 }
@@ -1463,11 +1467,27 @@ function closeFavorites(){
 function renderFavorites(){
  const favs=JSON.parse(localStorage.getItem('favoriteMemories')||'[]');
  const box=document.getElementById('favoritesContent');
+
  if(!favs.length){
    box.innerHTML='Todavía no hay recuerdos favoritos.';
    return;
  }
- box.innerHTML=favs.map(f=>'<div style="margin:10px 0;padding:12px;background:white;border-radius:14px;">⭐ '+f+'</div>').join('');
+
+ box.innerHTML='<div style="margin-bottom:12px;font-weight:bold;">⭐ Favoritos ('+favs.length+')</div>' +
+ favs.map((f,i)=>
+ '<div style="margin:10px 0;padding:12px;background:white;border-radius:14px;text-align:left;">'
+ +'⭐ '+f+
+ '<br><button class="softButton" onclick="removeFavorite('+i+')" style="margin-top:8px;">🗑️ Quitar</button>'
+ +'</div>'
+ ).join('');
+}
+
+
+function removeFavorite(index){
+ let favs=JSON.parse(localStorage.getItem('favoriteMemories')||'[]');
+ favs.splice(index,1);
+ localStorage.setItem('favoriteMemories', JSON.stringify(favs));
+ renderFavorites();
 }
 
 function openBackup(){
