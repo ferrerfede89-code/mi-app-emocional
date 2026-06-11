@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>App Emocional V61</title>
+<title>App Emocional V62</title>
 
 <style>
 body {
@@ -4040,6 +4040,41 @@ document.addEventListener('DOMContentLoaded',function(){
      renderLibraryStatsRealV60();
   };
 });
+</script>
+
+
+<script id="v62_emotional_level">
+function getEmotionalLevel(){
+ const entries=JSON.parse(localStorage.getItem('diaryEntries')||'[]');
+ const n=entries.length;
+
+ if(n>=100) return {name:'🌎 Explorador profundo', level:6, current:n, next:100};
+ if(n>=50) return {name:'🌲 Explorador constante', level:5, current:n, next:100};
+ if(n>=30) return {name:'🍃 Explorador presente', level:4, current:n, next:50};
+ if(n>=15) return {name:'🌳 Explorador emocional', level:3, current:n, next:30};
+ if(n>=5) return {name:'🌿 Explorador en camino', level:2, current:n, next:15};
+ return {name:'🌱 Primeros pasos', level:1, current:n, next:5};
+}
+
+const oldOpenAchievements = window.openAchievements;
+window.openAchievements = function(){
+ if(typeof oldOpenAchievements === 'function') oldOpenAchievements();
+
+ const box=document.getElementById('achievementContent');
+ if(!box) return;
+
+ const level=getEmotionalLevel();
+ const progress=Math.min(100, Math.round((level.current/level.next)*100));
+
+ box.innerHTML =
+ '<div style="background:white;border-radius:14px;padding:12px;margin-bottom:12px;">'+
+ '<div style="font-size:20px;font-weight:bold;">'+level.name+'</div>'+
+ '<div>Nivel '+level.level+'</div>'+
+ '<div style="margin-top:8px;">📖 '+level.current+' recuerdos registrados</div>'+
+ '<div style="height:10px;background:#e5e7eb;border-radius:999px;margin-top:10px;">'+
+ '<div style="height:10px;width:'+progress+'%;background:#22c55e;border-radius:999px;"></div>'+
+ '</div></div>' + box.innerHTML;
+};
 </script>
 
 </body>
