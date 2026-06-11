@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>App Emocional V46.2</title>
+<title>App Emocional V47</title>
 
 <style>
 body {
@@ -1110,6 +1110,7 @@ text-align:center;
 <button onclick="openLetter();closeJourneyHub();" class="softButton">💌 Carta</button>
 <button onclick="openMilestones();closeJourneyHub();" class="softButton">🌟 Hitos</button>
 <button onclick="openFullExport();closeJourneyHub();" class="softButton">📦 Historia completa</button>
+<button onclick="openBackup();closeJourneyHub();" class="softButton">☁️ Respaldo</button>
 <br><br>
 <button onclick="closeJourneyHub()" class="softButton">Volver</button>
 </div>
@@ -1133,6 +1134,16 @@ text-align:center;
 <button onclick="closeCapsule()" class="softButton">Volver</button>
 </div>
 
+
+
+<div id="backupScreen" class="fullscreen" style="background:linear-gradient(180deg,#e0f2fe,#dcfce7);overflow:auto;text-align:center;">
+<h1>☁️</h1>
+<h2>Respaldo completo</h2>
+<div id="backupContent" class="rememberCard"></div>
+<br>
+<button onclick="copyBackup()" class="softButton">📋 Copiar respaldo</button>
+<button onclick="closeBackup()" class="softButton">Volver</button>
+</div>
 
 <div id="statsScreen" class="fullscreen" style="background:linear-gradient(180deg,#dcfce7,#ddd6fe);overflow:auto;text-align:center;">
 <h1>📊</h1>
@@ -1315,6 +1326,43 @@ function renderCapsule(){
      </div>`;
    }
  }).join('');
+}
+
+
+function openBackup(){
+ document.getElementById('backupScreen').style.display='block';
+ renderBackup();
+}
+function closeBackup(){
+ document.getElementById('backupScreen').style.display='none';
+}
+function renderBackup(){
+ const entries=JSON.parse(localStorage.getItem('diaryEntries')||'[]');
+ const moods=JSON.parse(localStorage.getItem('moods')||'{}');
+ const capsules=JSON.parse(localStorage.getItem('futureCapsulesV46')||'[]');
+
+ let moodCount=0;
+ Object.keys(moods).forEach(d=> moodCount+=(moods[d]||[]).length);
+
+ let text='APP EMOCIONAL - RESPALDO\n\n';
+ text+='📖 Recuerdos: '+entries.length+'\n';
+ text+='🙂 Emociones: '+moodCount+'\n';
+ text+='📬 Cápsulas: '+capsules.length+'\n\n';
+
+ text+='ULTIMOS RECUERDOS\n';
+ entries.slice(-5).forEach(e=>{
+   text+='- '+(e.text||'')+'\n';
+ });
+
+ document.getElementById('backupContent').innerHTML =
+ '<div style="text-align:left;white-space:pre-wrap;">'+text.replace(/</g,'&lt;')+'</div>';
+
+ localStorage.setItem('lastBackupText', text);
+}
+function copyBackup(){
+ const txt=localStorage.getItem('lastBackupText')||'';
+ navigator.clipboard.writeText(txt);
+ alert('☁️ Respaldo copiado');
 }
 
 function openStats(){
