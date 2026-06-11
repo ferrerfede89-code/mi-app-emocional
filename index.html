@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>App Emocional V48</title>
+<title>App Emocional V49</title>
 
 <style>
 body {
@@ -1131,6 +1131,7 @@ text-align:center;
 <button onclick="openContinuity();closeJourneyHub();" class="softButton">🏆 Continuidad</button>
 <button onclick="openTimeline();closeJourneyHub();" class="softButton">📈 Línea</button>
 <button onclick="openLetter();closeJourneyHub();" class="softButton">💌 Carta</button>
+<button onclick="openFavorites();closeJourneyHub();" class="softButton">⭐ Favoritos</button>
 <button onclick="openMilestones();closeJourneyHub();" class="softButton">🌟 Hitos</button>
 <button onclick="openFullExport();closeJourneyHub();" class="softButton">📦 Historia completa</button>
 <button onclick="openBackup();closeJourneyHub();" class="softButton">☁️ Respaldo</button>
@@ -1158,6 +1159,15 @@ text-align:center;
 </div>
 
 
+
+
+<div id="favoritesScreen" class="fullscreen" style="background:linear-gradient(180deg,#fef9c3,#fde68a);overflow:auto;text-align:center;">
+<h1>⭐</h1>
+<h2>Recuerdos favoritos</h2>
+<div id="favoritesContent" class="rememberCard"></div>
+<br>
+<button onclick="closeFavorites()" class="softButton">Volver</button>
+</div>
 
 <div id="backupScreen" class="fullscreen" style="background:linear-gradient(180deg,#e0f2fe,#dcfce7);overflow:auto;text-align:center;">
 <h1>☁️</h1>
@@ -1351,6 +1361,31 @@ function renderCapsule(){
  }).join('');
 }
 
+
+
+function toggleFavoriteMemory(text){
+ let favs=JSON.parse(localStorage.getItem('favoriteMemories')||'[]');
+ if(!favs.includes(text)) favs.push(text);
+ localStorage.setItem('favoriteMemories', JSON.stringify(favs));
+ alert('⭐ Recuerdo agregado a favoritos');
+}
+
+function openFavorites(){
+ document.getElementById('favoritesScreen').style.display='block';
+ renderFavorites();
+}
+function closeFavorites(){
+ document.getElementById('favoritesScreen').style.display='none';
+}
+function renderFavorites(){
+ const favs=JSON.parse(localStorage.getItem('favoriteMemories')||'[]');
+ const box=document.getElementById('favoritesContent');
+ if(!favs.length){
+   box.innerHTML='Todavía no hay recuerdos favoritos.';
+   return;
+ }
+ box.innerHTML=favs.map(f=>'<div style="margin:10px 0;padding:12px;background:white;border-radius:14px;">⭐ '+f+'</div>').join('');
+}
 
 function openBackup(){
  document.getElementById('backupScreen').style.display='block';
@@ -1612,6 +1647,13 @@ function closeRemember() {
 }
 
 
+
+let currentRememberedText='';
+function favoriteCurrentMemory(){
+ if(!currentRememberedText){ alert('Primero traé un recuerdo.'); return; }
+ toggleFavoriteMemory(currentRememberedText);
+}
+
 function showSmartMemory() {
   const entries = JSON.parse(localStorage.getItem("diaryEntries")) || [];
   const moods = JSON.parse(localStorage.getItem("moods")) || {};
@@ -1653,6 +1695,7 @@ function showSmartMemory() {
   const selected = top[Math.floor(Math.random() * top.length)];
 
   const entry = selected.entry;
+currentRememberedText = entry.text || '';
   const entryDate = parseDiaryDate(entry.date);
   const timeText = humanTimeAgo(entryDate);
   const moodAnalysis = analyzeMoodEvolution(selected.relatedMoods, key);
