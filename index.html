@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>App Emocional V45</title>
+<title>App Emocional V45.1</title>
 
 <style>
 body {
@@ -1149,11 +1149,40 @@ text-align:center;
 function showAnniversaryMemory(){
  const entries=JSON.parse(localStorage.getItem('diaryEntries'))||[];
  if(!entries.length) return;
- const best=entries[0];
+
+ const today=new Date();
+ let candidates=[];
+
+ entries.forEach(e=>{
+   if(!e.date) return;
+   const p=e.date.split('/');
+   if(p.length!==3) return;
+
+   const d=new Date(parseInt(p[2]), parseInt(p[1])-1, parseInt(p[0]));
+   if(isNaN(d.getTime())) return;
+
+   const daysAgo=Math.max(0, Math.floor((today-d)/(1000*60*60*24)));
+   candidates.push({entry:e, daysAgo});
+ });
+
+ if(!candidates.length) return;
+
+ candidates.sort((a,b)=>b.daysAgo-a.daysAgo);
+ const chosen=candidates[0];
+
+ let label='📅 Escribiste esto hoy:';
+ if(chosen.daysAgo===1) label='📅 Ayer escribiste:';
+ else if(chosen.daysAgo>1 && chosen.daysAgo<25) label='📅 Hace '+chosen.daysAgo+' días escribiste:';
+ else if(chosen.daysAgo>=25 && chosen.daysAgo<=45) label='🎁 Hace aproximadamente 30 días escribiste:';
+ else if(chosen.daysAgo>45 && chosen.daysAgo<80) label='🎁 Hace aproximadamente '+chosen.daysAgo+' días escribiste:';
+ else if(chosen.daysAgo>=80 && chosen.daysAgo<=110) label='🎁 Hace aproximadamente 3 meses escribiste:';
+ else if(chosen.daysAgo>110) label='🎁 Hace bastante tiempo escribiste:';
+
  const card=document.getElementById('anniversaryCard');
  const content=document.getElementById('anniversaryContent');
+
  if(card && content){
-   content.innerHTML='<div>🎁 Hace aproximadamente 30 días escribiste:</div><div style="margin-top:8px;font-style:italic;">"'+(best.text||'')+'"</div><div style="margin-top:10px;">🌱 ¿Qué le responderías hoy a esa versión tuya?</div>';
+   content.innerHTML='<div>'+label+'</div><div style="margin-top:8px;font-style:italic;">"'+(chosen.entry.text||'')+'"</div><div style="margin-top:10px;">🌱 ¿Qué le responderías hoy a esa versión tuya?</div>';
    card.style.display='block';
  }
 }
