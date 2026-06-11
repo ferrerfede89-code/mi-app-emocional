@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>App Emocional V59.1</title>
+<title>App Emocional V59.2</title>
 
 <style>
 body {
@@ -1203,6 +1203,7 @@ text-align:center;
 <div id="libraryScreen" class="fullscreen" style="background:linear-gradient(180deg,#ecfccb,#dbeafe);overflow:auto;text-align:center;">
 <h1>📚</h1>
 <h2>Biblioteca emocional</h2>
+<div id="libraryStatsV592" class="rememberCard" style="margin-bottom:16px;text-align:left;"></div>
 <div id="libraryCategories"></div>
 <div id="libraryResults" class="rememberCard" style="margin-top:18px;"></div>
 <br>
@@ -3787,6 +3788,108 @@ document.addEventListener('DOMContentLoaded', function(){
 });
 </script>
 
+
+<script id="v59_2_library_stats_fix">
+function renderLibraryStatsV592(){
+ const statsBox=document.getElementById('libraryStatsV592');
+ if(!statsBox) return;
+
+ let entries=[];
+ try{
+   entries=JSON.parse(localStorage.getItem('diaryEntries')||'[]');
+ }catch(e){
+   entries=[];
+ }
+
+ const cats=[
+   ['trabajo','💼 Trabajo'],
+   ['estudio','📚 Estudio'],
+   ['familia','👨‍👩‍👧 Familia'],
+   ['ansiedad','😟 Ansiedad'],
+   ['esperanza','🌱 Esperanza'],
+   ['salud','❤️ Salud'],
+   ['descanso','🌙 Descanso']
+ ];
+
+ let maxLabel='';
+ let maxCount=0;
+
+ let html='<div style="font-weight:700;margin-bottom:10px;">📊 Estadísticas por categoría</div>';
+
+ cats.forEach(c=>{
+   const count=entries.filter(e=>(e.tag||'')===c[0]).length;
+   html += c[1]+': <strong>'+count+'</strong><br>';
+   if(count>maxCount){
+     maxCount=count;
+     maxLabel=c[1];
+   }
+ });
+
+ if(maxCount>0){
+   html += '<br>🏆 Categoría más frecuente:<br><strong>'+maxLabel+' ('+maxCount+' recuerdos)</strong>';
+ }else{
+   html += '<br>Todavía no hay recuerdos etiquetados.';
+ }
+
+ statsBox.innerHTML=html;
+}
+
+function openLibrary(){
+ const screen=document.getElementById('libraryScreen');
+ const catsBox=document.getElementById('libraryCategories');
+ const resultsBox=document.getElementById('libraryResults');
+ if(!screen || !catsBox || !resultsBox) return;
+
+ screen.style.display='block';
+
+ const cats=[
+   ['trabajo','💼 Trabajo'],
+   ['estudio','📚 Estudio'],
+   ['familia','👨‍👩‍👧 Familia'],
+   ['ansiedad','😟 Ansiedad'],
+   ['esperanza','🌱 Esperanza'],
+   ['salud','❤️ Salud'],
+   ['descanso','🌙 Descanso']
+ ];
+
+ catsBox.innerHTML=cats.map(c=>
+   '<button class="softButton" onclick="showLibraryCategory(\\''+c[0]+'\\')">'+c[1]+'</button>'
+ ).join(' ');
+
+ renderLibraryStatsV592();
+ resultsBox.innerHTML='Elegí una categoría.';
+}
+
+function showLibraryCategory(tag){
+ const entries=JSON.parse(localStorage.getItem('diaryEntries')||'[]');
+ const results=entries.filter(e=>(e.tag||'')===tag).reverse();
+ const box=document.getElementById('libraryResults');
+
+ const labels={
+   trabajo:'💼 Trabajo',
+   estudio:'📚 Estudio',
+   familia:'👨‍👩‍👧 Familia',
+   ansiedad:'😟 Ansiedad',
+   esperanza:'🌱 Esperanza',
+   salud:'❤️ Salud',
+   descanso:'🌙 Descanso'
+ };
+
+ if(!box) return;
+
+ if(!results.length){
+   box.innerHTML='No hay recuerdos en '+(labels[tag]||'esta categoría')+'.';
+   return;
+ }
+
+ box.innerHTML='<div style="font-weight:bold;margin-bottom:12px;">'+(labels[tag]||'Categoría')+'</div>'+
+ results.map(e=>
+   '<div style="text-align:left;margin:10px 0;padding:12px;background:white;border-radius:14px;">📖 <strong>'
+   +(e.date||'')+'</strong><br><br>'+(e.text||'')+'</div>'
+ ).join('');
+}
+</script>
+
 </body>
 
 <script id="v57_2_final_diary_fix">
@@ -3896,86 +3999,5 @@ document.addEventListener('DOMContentLoaded', function(){
 });
 </script>
 
-
-<script id="v59_1_library_stats_fix">
-function openLibrary(){
- const screen=document.getElementById('libraryScreen');
- const catsBox=document.getElementById('libraryCategories');
- const resultsBox=document.getElementById('libraryResults');
- if(!screen || !catsBox || !resultsBox) return;
-
- screen.style.display='block';
-
- const entries=JSON.parse(localStorage.getItem('diaryEntries')||'[]');
- const cats=[
-   ['trabajo','💼 Trabajo'],
-   ['estudio','📚 Estudio'],
-   ['familia','👨‍👩‍👧 Familia'],
-   ['ansiedad','😟 Ansiedad'],
-   ['esperanza','🌱 Esperanza'],
-   ['salud','❤️ Salud'],
-   ['descanso','🌙 Descanso']
- ];
-
- let maxLabel='';
- let maxCount=0;
-
- let stats='<div class="rememberCard" style="margin-bottom:16px;text-align:left;">';
- stats+='<div style="font-weight:700;margin-bottom:8px;">📊 Estadísticas por categoría</div>';
-
- cats.forEach(c=>{
-   const count=entries.filter(e=>(e.tag||'')===c[0]).length;
-   stats+=c[1]+': <strong>'+count+'</strong><br>';
-   if(count>maxCount){
-     maxCount=count;
-     maxLabel=c[1];
-   }
- });
-
- if(maxCount>0){
-   stats+='<br>🏆 Categoría más frecuente:<br><strong>'+maxLabel+' ('+maxCount+' recuerdos)</strong>';
- }else{
-   stats+='<br>Todavía no hay recuerdos etiquetados.';
- }
-
- stats+='</div>';
-
- const buttons='<div style="margin-top:12px;">'+cats.map(c=>
-   '<button class="softButton" onclick="showLibraryCategory(\\''+c[0]+'\\')">'+c[1]+'</button>'
- ).join(' ')+'</div>';
-
- catsBox.innerHTML=stats+buttons;
- resultsBox.innerHTML='Elegí una categoría.';
-}
-
-function showLibraryCategory(tag){
- const entries=JSON.parse(localStorage.getItem('diaryEntries')||'[]');
- const results=entries.filter(e=>(e.tag||'')===tag).reverse();
- const box=document.getElementById('libraryResults');
-
- const labels={
-   trabajo:'💼 Trabajo',
-   estudio:'📚 Estudio',
-   familia:'👨‍👩‍👧 Familia',
-   ansiedad:'😟 Ansiedad',
-   esperanza:'🌱 Esperanza',
-   salud:'❤️ Salud',
-   descanso:'🌙 Descanso'
- };
-
- if(!box) return;
-
- if(!results.length){
-   box.innerHTML='No hay recuerdos en '+(labels[tag]||'esta categoría')+'.';
-   return;
- }
-
- box.innerHTML='<div style="font-weight:bold;margin-bottom:12px;">'+(labels[tag]||'Categoría')+'</div>'+
- results.map(e=>
-   '<div style="text-align:left;margin:10px 0;padding:12px;background:white;border-radius:14px;">📖 <strong>'
-   +(e.date||'')+'</strong><br><br>'+(e.text||'')+'</div>'
- ).join('');
-}
-</script>
 
 </html>
