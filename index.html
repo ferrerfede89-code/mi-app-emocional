@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>App Emocional V50</title>
+<title>App Emocional V50.1</title>
 
 <style>
 body {
@@ -1199,24 +1199,28 @@ text-align:center;
 
 <script>
 
+
 function renderDashboard(){
- const entries=JSON.parse(localStorage.getItem('diaryEntries')||'[]');
- const favs=JSON.parse(localStorage.getItem('favoriteMemories')||'[]');
- const capsules=JSON.parse(localStorage.getItem('futureCapsulesV46')||'[]');
+ try{
+   const entries=JSON.parse(localStorage.getItem('diaryEntries')||'[]');
+   const favs=JSON.parse(localStorage.getItem('favoriteMemories')||'[]');
+   const capsules=JSON.parse(localStorage.getItem('futureCapsulesV46')||'[]');
 
- const box=document.getElementById('dashboardContent');
- if(!box) return;
+   const box=document.getElementById('dashboardContent');
+   if(!box) return;
 
- box.innerHTML=`
- 🌱 Recuerdos: <strong>${entries.length}</strong><br>
- ⭐ Favoritos: <strong>${favs.length}</strong><br>
- 📬 Cápsulas: <strong>${capsules.length}</strong><br><br>
- <div style="font-size:12px">Tu recorrido emocional en un vistazo.</div>
- `;
+   box.innerHTML=`
+   🌱 Recuerdos: <strong>${entries.length}</strong><br>
+   ⭐ Favoritos: <strong>${favs.length}</strong><br>
+   📬 Cápsulas: <strong>${capsules.length}</strong><br><br>
+   <div style="font-size:12px">Tu recorrido emocional en un vistazo.</div>
+   `;
+ }catch(e){
+   const box=document.getElementById('dashboardContent');
+   if(box) box.innerHTML='No pude cargar el resumen, pero la app sigue funcionando.';
+ }
 }
 document.addEventListener('DOMContentLoaded',renderDashboard);
-
-
 
 function openCapsuleV46(){
  document.getElementById('capsuleScreen').style.display='block';
@@ -1687,8 +1691,6 @@ function favoriteCurrentMemory(){
  }
  if(!text){ alert('Primero traé un recuerdo.'); return; }
  toggleFavoriteMemory(text);
-}
- toggleFavoriteMemory(currentRememberedText);
 }
 
 function showSmartMemory() {
