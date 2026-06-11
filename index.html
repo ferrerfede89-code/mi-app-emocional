@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>App Emocional V62</title>
+<title>App Emocional V63</title>
 
 <style>
 body {
@@ -4074,6 +4074,47 @@ window.openAchievements = function(){
  '<div style="height:10px;background:#e5e7eb;border-radius:999px;margin-top:10px;">'+
  '<div style="height:10px;width:'+progress+'%;background:#22c55e;border-radius:999px;"></div>'+
  '</div></div>' + box.innerHTML;
+};
+</script>
+
+
+<script id="v63_badges">
+const oldOpenAchievementsV63 = window.openAchievements;
+
+window.openAchievements = function(){
+ if(typeof oldOpenAchievementsV63 === 'function'){
+   oldOpenAchievementsV63();
+ }
+
+ const box=document.getElementById('achievementContent');
+ if(!box) return;
+
+ const entries=JSON.parse(localStorage.getItem('diaryEntries')||'[]');
+ const favs=JSON.parse(localStorage.getItem('favoriteMemories')||'[]');
+ const capsules=JSON.parse(localStorage.getItem('futureCapsulesV46')||'[]');
+
+ const tagsUsed=new Set(
+   entries.map(e=>e.tag).filter(Boolean)
+ );
+
+ let badges=[];
+
+ if(tagsUsed.size>=1) badges.push('🏷️ Primera categoría utilizada');
+ if(tagsUsed.size>=3) badges.push('📚 Explorador de categorías');
+ if(entries.some(e=>e.tag==='esperanza')) badges.push('🌱 Primer recuerdo de esperanza');
+ if(entries.some(e=>e.tag==='ansiedad')) badges.push('😟 Primer recuerdo de ansiedad');
+ if(favs.length>=3) badges.push('⭐ Coleccionista de recuerdos');
+ if(capsules.length>=3) badges.push('📬 Constructor del futuro');
+
+ const badgeHtml = badges.length
+ ? '<div style="margin-top:14px;"><h3>🏵️ Insignias especiales</h3>' +
+   badges.map(b=>
+     '<div style="margin:8px 0;padding:10px;background:#fff;border-radius:12px;">'+b+'</div>'
+   ).join('') +
+   '</div>'
+ : '';
+
+ box.innerHTML += badgeHtml;
 };
 </script>
 
