@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>App Emocional V64</title>
+<title>App Emocional V65</title>
 
 <style>
 body {
@@ -1161,6 +1161,7 @@ text-align:center;
 <button onclick="openMilestones();closeJourneyHub();" class="softButton">🌟 Hitos</button>
 <button onclick="openAchievements();closeJourneyHub();" class="softButton">🏅 Logros</button>
 <button onclick="openMonthlySummary();closeJourneyHub();" class="softButton">📅 Resumen mensual</button>
+<button onclick="openPresentLetter();closeJourneyHub();" class="softButton">💌 Carta automática</button>
 <button onclick="openFullExport();closeJourneyHub();" class="softButton">📦 Historia completa</button>
 <button onclick="openBackup();closeJourneyHub();" class="softButton">☁️ Respaldo</button>
 <br><br>
@@ -4139,6 +4140,73 @@ function openMonthlySummary(){
 }
 function closeMonthlySummary(){
  document.getElementById('monthlySummaryScreen').style.display='none';
+}
+</script>
+
+
+<script id="v65_present_letter">
+function openPresentLetter(){
+  let screen=document.getElementById('presentLetterScreen');
+  if(!screen){
+    const div=document.createElement('div');
+    div.id='presentLetterScreen';
+    div.className='fullscreen';
+    div.style='background:linear-gradient(180deg,#fde68a,#ddd6fe);overflow:auto;text-align:center;';
+    div.innerHTML=`
+      <h1>💌</h1>
+      <h2>Carta automática</h2>
+      <div id="presentLetterContent" class="rememberCard"></div>
+      <br>
+      <button onclick="closePresentLetter()" class="softButton">Volver</button>`;
+    document.body.appendChild(div);
+    screen=div;
+  }
+
+  const entries=JSON.parse(localStorage.getItem('diaryEntries')||'[]');
+  const favs=JSON.parse(localStorage.getItem('favoriteMemories')||'[]');
+  const capsules=JSON.parse(localStorage.getItem('futureCapsulesV46')||'[]');
+
+  const counts={};
+  entries.forEach(e=>{
+    if(e.tag) counts[e.tag]=(counts[e.tag]||0)+1;
+  });
+
+  const labels={
+    trabajo:'💼 Trabajo', estudio:'📚 Estudio', familia:'👨‍👩‍👧 Familia',
+    ansiedad:'😟 Ansiedad', esperanza:'🌱 Esperanza', salud:'❤️ Salud', descanso:'🌙 Descanso'
+  };
+
+  let top='tu recorrido';
+  let max=0;
+  Object.keys(counts).forEach(k=>{
+    if(counts[k]>max){ max=counts[k]; top=labels[k]||k; }
+  });
+
+  const letter=`
+  <div style="text-align:left;line-height:1.7;">
+  Querido yo de hoy:<br><br>
+
+  Mirando este recorrido veo que seguiste adelante.
+  Registraste <strong>${entries.length}</strong> recuerdos, guardaste
+  <strong>${favs.length}</strong> favoritos y creaste
+  <strong>${capsules.length}</strong> cápsulas para tu futuro.<br><br>
+
+  El tema que más apareció fue <strong>${top}</strong>.
+  Eso no define quién sos, pero muestra qué estuvo ocupando espacio en tu vida.<br><br>
+
+  Lo más importante es que seguiste apareciendo.
+  Incluso en los días confusos, dejaste señales para recordarte que estabas acá.<br><br>
+
+  🌱 Gracias por seguir construyendo tu recorrido emocional.
+  </div>`;
+
+  document.getElementById('presentLetterContent').innerHTML=letter;
+  screen.style.display='block';
+}
+
+function closePresentLetter(){
+ const s=document.getElementById('presentLetterScreen');
+ if(s) s.style.display='none';
 }
 </script>
 
