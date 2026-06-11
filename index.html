@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>App Emocional V65</title>
+<title>App Emocional V66</title>
 
 <style>
 body {
@@ -1162,6 +1162,7 @@ text-align:center;
 <button onclick="openAchievements();closeJourneyHub();" class="softButton">🏅 Logros</button>
 <button onclick="openMonthlySummary();closeJourneyHub();" class="softButton">📅 Resumen mensual</button>
 <button onclick="openPresentLetter();closeJourneyHub();" class="softButton">💌 Carta automática</button>
+<button onclick="openFutureLetter();closeJourneyHub();" class="softButton">📬 Carta futura</button>
 <button onclick="openFullExport();closeJourneyHub();" class="softButton">📦 Historia completa</button>
 <button onclick="openBackup();closeJourneyHub();" class="softButton">☁️ Respaldo</button>
 <br><br>
@@ -4206,6 +4207,63 @@ function openPresentLetter(){
 
 function closePresentLetter(){
  const s=document.getElementById('presentLetterScreen');
+ if(s) s.style.display='none';
+}
+</script>
+
+
+<script id="v66_future_letter">
+function openFutureLetter(){
+ let screen=document.getElementById('futureLetterScreen');
+
+ if(!screen){
+   screen=document.createElement('div');
+   screen.id='futureLetterScreen';
+   screen.className='fullscreen';
+   screen.style='background:linear-gradient(180deg,#dbeafe,#fef3c7);overflow:auto;text-align:center;';
+
+   screen.innerHTML=`
+   <h1>📬</h1>
+   <h2>Carta de mi yo futuro</h2>
+   <div id="futureLetterContent" class="rememberCard"></div>
+   <br>
+   <button onclick="closeFutureLetter()" class="softButton">Volver</button>`;
+
+   document.body.appendChild(screen);
+ }
+
+ const entries=JSON.parse(localStorage.getItem('diaryEntries')||'[]');
+ const favs=JSON.parse(localStorage.getItem('favoriteMemories')||'[]');
+ const capsules=JSON.parse(localStorage.getItem('futureCapsulesV46')||'[]');
+
+ const letter=`
+ <div style="text-align:left;line-height:1.7;">
+ Hola.<br><br>
+
+ Soy una versión tuya que siguió avanzando un poco más.<br><br>
+
+ Veo que registraste <strong>${entries.length}</strong> recuerdos,
+ guardaste <strong>${favs.length}</strong> favoritos
+ y preparaste <strong>${capsules.length}</strong> mensajes para el futuro.<br><br>
+
+ Algunas preocupaciones cambiaron.
+ Otras tal vez siguen ahí.
+ Pero hay algo que ya demostraste:<br><br>
+
+ <strong>seguiste apareciendo.</strong><br><br>
+
+ Cuando escribiste tus recuerdos dejaste evidencia de que estabas luchando,
+ creciendo y tratando de entenderte mejor.<br><br>
+
+ 🌱 Gracias por confiar en que llegarías hasta acá.
+ </div>`;
+
+ document.getElementById('futureLetterContent').innerHTML=letter;
+ screen.style.display='block';
+}
+
+function closeFutureLetter(){
+ const s=document.getElementById('futureLetterScreen');
  if(s) s.style.display='none';
 }
 </script>
