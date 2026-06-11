@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>App Emocional V56.2</title>
+<title>App Emocional V56.3</title>
 
 <style>
 body {
@@ -1225,6 +1225,36 @@ text-align:center;
 
 <script>
 
+function getTagLabelV563(tag){
+ const labels={
+   trabajo:'💼 Trabajo',
+   estudio:'📚 Estudio',
+   familia:'👨‍👩‍👧 Familia',
+   ansiedad:'😟 Ansiedad',
+   esperanza:'🌱 Esperanza',
+   salud:'❤️ Salud',
+   descanso:'🌙 Descanso'
+ };
+ return labels[tag] || '';
+}
+function escapeHTMLV563(text){
+ return String(text || '').replace(/[&<>"']/g, function(m){
+   return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m];
+ });
+}
+
+
+
+function hidePastMessageCardV563(){
+ const card=document.getElementById('pastMessageCard');
+ if(card) card.style.display='none';
+}
+document.addEventListener('DOMContentLoaded', hidePastMessageCardV563);
+setTimeout(hidePastMessageCardV563, 300);
+setTimeout(hidePastMessageCardV563, 1000);
+
+
+
 function openSearch(){
  document.getElementById('searchScreen').style.display='block';
  document.getElementById('searchResults').innerHTML='Escribí una palabra para buscar en tus recuerdos.';
@@ -1251,7 +1281,7 @@ function searchMemories(){
 
  box.innerHTML=results.reverse().map(e =>
    '<div style="text-align:left;margin:12px 0;padding:12px;background:white;border-radius:14px;">📖 <strong>'
-   +(e.date||'')+'</strong>'+(e.tag?'<br>🏷️ '+e.tag:'')+'<br><br>'+(e.text||'')+'</div>'
+   +(e.date||'')+'</strong>'+(e.tag?'<br>'+getTagLabelV563(e.tag):'')+'<br><br>'+(e.text||'')+'</div>'
  ).join('');
 }
 
@@ -1535,6 +1565,28 @@ function removeFavorite(index){
  favs.splice(index,1);
  localStorage.setItem('favoriteMemories', JSON.stringify(favs));
  renderFavorites();
+}
+
+
+function renderDiaryList(){
+ const list=document.getElementById('diaryList');
+ if(!list) return;
+
+ const entries=JSON.parse(localStorage.getItem('diaryEntries')||'[]');
+
+ if(!entries.length){
+   list.innerHTML='';
+   return;
+ }
+
+ list.innerHTML=entries.slice().reverse().map(e=>{
+   const tagLabel=getTagLabelV563(e.tag);
+   return `<div class="diaryEntry">
+     <div class="small">${escapeHTMLV563(e.date || '')}</div>
+     ${tagLabel ? `<div class="small" style="margin-top:4px;">🏷️ ${tagLabel}</div>` : ''}
+     <div style="margin-top:8px;">${escapeHTMLV563(e.text || '')}</div>
+   </div>`;
+ }).join('');
 }
 
 function openBackup(){
@@ -3378,6 +3430,7 @@ function closeDiary() {
 }
 
 
+
 function saveDiaryEntry(){
  const input=document.getElementById('diaryInput');
  const result=document.getElementById('diaryResult');
@@ -3407,6 +3460,7 @@ function saveDiaryEntry(){
  renderDiaryList();
  updateMemory();
  renderDashboard();
+ hidePastMessageCardV563();
 }
 
 
