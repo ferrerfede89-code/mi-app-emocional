@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>App Emocional V59.3</title>
+<title>App Emocional V60</title>
 
 <style>
 body {
@@ -3938,6 +3938,61 @@ window.openLibrary = function(){
    }
    renderLibraryStatsReal();
 };
+</script>
+
+
+<script id="v60_category_evolution">
+function renderLibraryStatsRealV60(){
+ const box=document.getElementById('libraryStatsV592');
+ if(!box) return;
+
+ const entries=JSON.parse(localStorage.getItem('diaryEntries')||'[]');
+
+ const cats=[
+ ['trabajo','💼 Trabajo'],
+ ['estudio','📚 Estudio'],
+ ['familia','👨‍👩‍👧 Familia'],
+ ['ansiedad','😟 Ansiedad'],
+ ['esperanza','🌱 Esperanza'],
+ ['salud','❤️ Salud'],
+ ['descanso','🌙 Descanso']
+ ];
+
+ let maxName='';
+ let maxCount=0;
+
+ let content='<div style="font-weight:bold;margin-bottom:10px;">📊 Estadísticas por categoría</div>';
+
+ cats.forEach(c=>{
+   const count=entries.filter(e=>(e.tag||'')===c[0]).length;
+   content += c[1]+': <strong>'+count+'</strong><br>';
+   if(count>maxCount){ maxCount=count; maxName=c[1]; }
+ });
+
+ if(maxCount>0){
+   content += '<br>🏆 Categoría más frecuente:<br><strong>'+maxName+' ('+maxCount+' recuerdos)</strong>';
+ }
+
+ content += '<hr style="margin:12px 0;">';
+ content += '<div style="font-weight:bold;margin-bottom:8px;">📈 Evolución por categoría</div>';
+
+ cats.forEach(c=>{
+   const count=entries.filter(e=>(e.tag||'')===c[0]).length;
+   if(count>0){
+      content += c[1] + ': <strong>' + count + '</strong><br>';
+   }
+ });
+
+ box.innerHTML=content;
+}
+
+document.addEventListener('DOMContentLoaded',function(){
+  const oldOpen=window.openLibrary;
+  window.openLibrary=function(){
+     if(typeof oldOpen==='function') oldOpen();
+     renderLibraryStatsRealV60();
+  };
+});
 </script>
 
 </body>
