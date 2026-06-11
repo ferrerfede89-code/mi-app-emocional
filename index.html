@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>App Emocional V57.1</title>
+<title>App Emocional V57.2</title>
 
 <style>
 body {
@@ -3714,4 +3714,112 @@ document.addEventListener('DOMContentLoaded', function(){
 </script>
 
 </body>
+
+<script id="v57_2_final_diary_fix">
+function tagLabelFinal(tag){
+ const labels={
+   trabajo:'💼 Trabajo',
+   estudio:'📚 Estudio',
+   familia:'👨‍👩‍👧 Familia',
+   ansiedad:'😟 Ansiedad',
+   esperanza:'🌱 Esperanza',
+   salud:'❤️ Salud',
+   descanso:'🌙 Descanso'
+ };
+ return labels[tag] || '';
+}
+
+function cleanTextFinal(v){
+ if(v===undefined || v===null || v==='undefined') return '';
+ return String(v);
+}
+
+function escapeFinal(v){
+ return cleanTextFinal(v).replace(/[&<>"']/g, function(m){
+   return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m];
+ });
+}
+
+function renderDiaryListFinal(){
+ const list=document.getElementById('diaryList');
+ if(!list) return;
+
+ let entries=[];
+ try{
+   entries=JSON.parse(localStorage.getItem('diaryEntries')||'[]');
+ }catch(e){
+   entries=[];
+ }
+
+ if(!entries.length){
+   list.innerHTML='';
+   return;
+ }
+
+ list.innerHTML=entries.slice().reverse().map(e=>{
+   e=e||{};
+   const date=cleanTextFinal(e.date);
+   const text=cleanTextFinal(e.text);
+   const tag=tagLabelFinal(e.tag);
+
+   return `<div class="diaryEntry">
+     ${date ? `<div class="small">${escapeFinal(date)}</div>` : ''}
+     ${tag ? `<div class="small" style="margin-top:4px;">🏷️ ${tag}</div>` : ''}
+     <div style="margin-top:8px;">${escapeFinal(text)}</div>
+   </div>`;
+ }).join('');
+
+ list.innerHTML=list.innerHTML.replace(/undefined/g,'');
+}
+
+function openDiary(){
+ document.getElementById('diaryScreen').style.display='block';
+ const comp = (typeof getCompanion === 'function') ? getCompanion() : null;
+ const emoji=document.getElementById('diaryEmoji');
+ if(emoji) emoji.innerText = comp ? comp.emoji : '📖';
+ renderDiaryListFinal();
+ if(navigator.vibrate) navigator.vibrate(60);
+}
+
+function saveDiaryEntry(){
+ const input=document.getElementById('diaryInput');
+ const result=document.getElementById('diaryResult');
+ const tagEl=document.getElementById('diaryTag');
+ const text=input ? input.value.trim() : '';
+
+ if(!text){
+   if(result) result.innerText='Escribí algo primero.';
+   return;
+ }
+
+ let entries=[];
+ try{
+   entries=JSON.parse(localStorage.getItem('diaryEntries')||'[]');
+ }catch(e){
+   entries=[];
+ }
+
+ entries.push({
+   text:text,
+   date:new Date().toLocaleDateString(),
+   tag:tagEl ? tagEl.value : ''
+ });
+
+ localStorage.setItem('diaryEntries', JSON.stringify(entries));
+
+ if(input) input.value='';
+ if(tagEl) tagEl.value='';
+ if(result) result.innerText='📖 Guardado en tu diario.';
+
+ renderDiaryListFinal();
+ if(typeof updateMemory === 'function') updateMemory();
+ if(typeof renderDashboard === 'function') renderDashboard();
+ if(typeof hidePastMessageCardV563 === 'function') hidePastMessageCardV563();
+}
+
+document.addEventListener('DOMContentLoaded', function(){
+ try{ renderDiaryListFinal(); }catch(e){}
+});
+</script>
+
 </html>
