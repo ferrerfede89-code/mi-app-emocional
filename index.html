@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>App Emocional V51</title>
+<title>App Emocional V52</title>
 
 <style>
 body {
@@ -1143,6 +1143,7 @@ text-align:center;
 <button onclick="openTimeline();closeJourneyHub();" class="softButton">📈 Línea</button>
 <button onclick="openLetter();closeJourneyHub();" class="softButton">💌 Carta</button>
 <button onclick="openFavorites();closeJourneyHub();" class="softButton">⭐ Favoritos</button>
+<button onclick="openSearch();closeJourneyHub();" class="softButton">🔎 Buscar</button>
 <button onclick="openMilestones();closeJourneyHub();" class="softButton">🌟 Hitos</button>
 <button onclick="openFullExport();closeJourneyHub();" class="softButton">📦 Historia completa</button>
 <button onclick="openBackup();closeJourneyHub();" class="softButton">☁️ Respaldo</button>
@@ -1172,6 +1173,18 @@ text-align:center;
 
 
 
+
+<div id="searchScreen" class="fullscreen" style="background:linear-gradient(180deg,#ecfeff,#dbeafe);overflow:auto;text-align:center;">
+<h1>🔎</h1>
+<h2>Buscar recuerdos</h2>
+<input id="memorySearchInput" type="text" class="textBox" style="min-height:auto;height:56px;" placeholder="Escribí una palabra...">
+<br>
+<button onclick="searchMemories()" class="softButton">Buscar</button>
+<div id="searchResults" class="rememberCard" style="margin-top:18px;"></div>
+<br>
+<button onclick="closeSearch()" class="softButton">Volver</button>
+</div>
+
 <div id="favoritesScreen" class="fullscreen" style="background:linear-gradient(180deg,#fef9c3,#fde68a);overflow:auto;text-align:center;">
 <h1>⭐</h1>
 <h2>Recuerdos favoritos</h2>
@@ -1198,6 +1211,38 @@ text-align:center;
 </div>
 
 <script>
+
+function openSearch(){
+ document.getElementById('searchScreen').style.display='block';
+ document.getElementById('searchResults').innerHTML='Escribí una palabra para buscar en tus recuerdos.';
+}
+function closeSearch(){
+ document.getElementById('searchScreen').style.display='none';
+}
+function searchMemories(){
+ const q=(document.getElementById('memorySearchInput').value||'').trim().toLowerCase();
+ const entries=JSON.parse(localStorage.getItem('diaryEntries')||'[]');
+ const box=document.getElementById('searchResults');
+
+ if(!q){
+   box.innerHTML='Escribí una palabra para buscar.';
+   return;
+ }
+
+ const results=entries.filter(e => (e.text||'').toLowerCase().includes(q));
+
+ if(!results.length){
+   box.innerHTML='No encontré recuerdos con: <strong>'+q+'</strong>';
+   return;
+ }
+
+ box.innerHTML=results.reverse().map(e =>
+   '<div style="text-align:left;margin:12px 0;padding:12px;background:white;border-radius:14px;">📖 <strong>'
+   +(e.date||'')+'</strong><br><br>'+(e.text||'')+'</div>'
+ ).join('');
+}
+
+
 
 
 function renderDashboard(){
