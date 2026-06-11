@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>App Emocional V57</title>
+<title>App Emocional V57.1</title>
 
 <style>
 body {
@@ -3660,6 +3660,57 @@ function openCapsule(){ openCapsuleV46(); }
 function saveCapsule(days){ addNewCapsule(days); }
 function renderCapsule(){ renderCapsulesV46(); }
 
+</script>
+
+
+<script id="v57_1_diary_fix">
+function getTagLabelV571(tag){
+ const labels={
+   trabajo:'💼 Trabajo',
+   estudio:'📚 Estudio',
+   familia:'👨‍👩‍👧 Familia',
+   ansiedad:'😟 Ansiedad',
+   esperanza:'🌱 Esperanza',
+   salud:'❤️ Salud',
+   descanso:'🌙 Descanso'
+ };
+ return labels[tag] || '';
+}
+
+function escapeHTMLV571(text){
+ return String(text || '').replace(/[&<>"']/g, function(m){
+   return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m];
+ });
+}
+
+function renderDiaryList(){
+ const list=document.getElementById('diaryList');
+ if(!list) return;
+
+ const entries=JSON.parse(localStorage.getItem('diaryEntries')||'[]');
+
+ if(!entries.length){
+   list.innerHTML='';
+   return;
+ }
+
+ list.innerHTML=entries.slice().reverse().map(e=>{
+   const date = e && e.date ? e.date : '';
+   const text = e && e.text ? e.text : '';
+   const tagLabel = e && e.tag ? getTagLabelV571(e.tag) : '';
+
+   return `<div class="diaryEntry">
+     ${date ? `<div class="small">${escapeHTMLV571(date)}</div>` : ''}
+     ${tagLabel ? `<div class="small" style="margin-top:4px;">🏷️ ${tagLabel}</div>` : ''}
+     <div style="margin-top:8px;">${escapeHTMLV571(text)}</div>
+   </div>`;
+ }).join('');
+}
+
+// Re-render seguro al entrar y después de cargar.
+document.addEventListener('DOMContentLoaded', function(){
+ try{ renderDiaryList(); }catch(e){}
+});
 </script>
 
 </body>
