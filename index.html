@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>App Emocional V57.2</title>
+<title>App Emocional V58</title>
 
 <style>
 body {
@@ -1157,6 +1157,7 @@ text-align:center;
 <button onclick="openLetter();closeJourneyHub();" class="softButton">💌 Carta</button>
 <button onclick="openFavorites();closeJourneyHub();" class="softButton">⭐ Favoritos</button>
 <button onclick="openSearch();closeJourneyHub();" class="softButton">🔎 Buscar</button>
+<button onclick="openLibrary();closeJourneyHub();" class="softButton">📚 Biblioteca</button>
 <button onclick="openMilestones();closeJourneyHub();" class="softButton">🌟 Hitos</button>
 <button onclick="openFullExport();closeJourneyHub();" class="softButton">📦 Historia completa</button>
 <button onclick="openBackup();closeJourneyHub();" class="softButton">☁️ Respaldo</button>
@@ -1198,6 +1199,16 @@ text-align:center;
 <button onclick="closeSearch()" class="softButton">Volver</button>
 </div>
 
+
+<div id="libraryScreen" class="fullscreen" style="background:linear-gradient(180deg,#ecfccb,#dbeafe);overflow:auto;text-align:center;">
+<h1>📚</h1>
+<h2>Biblioteca emocional</h2>
+<div id="libraryCategories"></div>
+<div id="libraryResults" class="rememberCard" style="margin-top:18px;"></div>
+<br>
+<button onclick="closeLibrary()" class="softButton">Volver</button>
+</div>
+
 <div id="favoritesScreen" class="fullscreen" style="background:linear-gradient(180deg,#fef9c3,#fde68a);overflow:auto;text-align:center;">
 <h1>⭐</h1>
 <h2>Recuerdos favoritos</h2>
@@ -1224,6 +1235,39 @@ text-align:center;
 </div>
 
 <script>
+
+function openLibrary(){
+ document.getElementById('libraryScreen').style.display='block';
+ const cats=[
+ ['trabajo','💼 Trabajo'],
+ ['estudio','📚 Estudio'],
+ ['familia','👨‍👩‍👧 Familia'],
+ ['ansiedad','😟 Ansiedad'],
+ ['esperanza','🌱 Esperanza'],
+ ['salud','❤️ Salud'],
+ ['descanso','🌙 Descanso']
+ ];
+ document.getElementById('libraryCategories').innerHTML=
+ cats.map(c=>'<button class="softButton" onclick="showLibraryCategory(\''+c[0]+'\')">'+c[1]+'</button>').join(' ');
+ document.getElementById('libraryResults').innerHTML='Elegí una categoría.';
+}
+function closeLibrary(){
+ document.getElementById('libraryScreen').style.display='none';
+}
+function showLibraryCategory(tag){
+ const entries=JSON.parse(localStorage.getItem('diaryEntries')||'[]');
+ const results=entries.filter(e=>(e.tag||'')===tag).reverse();
+ const box=document.getElementById('libraryResults');
+ if(!results.length){
+   box.innerHTML='No hay recuerdos en esta categoría.';
+   return;
+ }
+ box.innerHTML=results.map(e=>
+ '<div style="text-align:left;margin:10px 0;padding:12px;background:white;border-radius:14px;">📖 <strong>'+(e.date||'')+'</strong><br><br>'+(e.text||'')+'</div>'
+ ).join('');
+}
+
+
 
 function getTagLabelV563(tag){
  const labels={
