@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>App Emocional V55</title>
+<title>App Emocional V56</title>
 
 <style>
 body {
@@ -867,6 +867,19 @@ overflow:auto;
   </p>
 
   <textarea id="diaryInput" class="textBox" placeholder="Hoy quiero dejar escrito..."></textarea>
+<div style="margin-top:12px;">
+<select id="diaryTag" class="softButton">
+<option value="">🏷️ Sin etiqueta</option>
+<option value="trabajo">💼 Trabajo</option>
+<option value="estudio">📚 Estudio</option>
+<option value="familia">👨‍👩‍👧 Familia</option>
+<option value="ansiedad">😟 Ansiedad</option>
+<option value="esperanza">🌱 Esperanza</option>
+<option value="salud">❤️ Salud</option>
+<option value="descanso">🌙 Descanso</option>
+</select>
+</div>
+
 
   <button onclick="saveDiaryEntry()" class="softButton" style="margin-top:16px;">
     Guardar
@@ -1238,7 +1251,7 @@ function searchMemories(){
 
  box.innerHTML=results.reverse().map(e =>
    '<div style="text-align:left;margin:12px 0;padding:12px;background:white;border-radius:14px;">📖 <strong>'
-   +(e.date||'')+'</strong><br><br>'+(e.text||'')+'</div>'
+   +(e.date||'')+'</strong>'+(e.tag?'<br>🏷️ '+e.tag:'')+'<br><br>'+(e.text||'')+'</div>'
  ).join('');
 }
 
