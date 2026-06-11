@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>App Emocional V58</title>
+<title>App Emocional V59</title>
 
 <style>
 body {
@@ -1238,6 +1238,36 @@ text-align:center;
 
 function openLibrary(){
  document.getElementById('libraryScreen').style.display='block';
+
+ const entries=JSON.parse(localStorage.getItem('diaryEntries')||'[]');
+ const tags=['trabajo','estudio','familia','ansiedad','esperanza','salud','descanso'];
+ const labels={
+   trabajo:'💼 Trabajo',
+   estudio:'📚 Estudio',
+   familia:'👨‍👩‍👧 Familia',
+   ansiedad:'😟 Ansiedad',
+   esperanza:'🌱 Esperanza',
+   salud:'❤️ Salud',
+   descanso:'🌙 Descanso'
+ };
+
+ let stats='<div class="rememberCard" style="margin-bottom:16px;text-align:left;">';
+ let maxTag='';
+ let maxCount=0;
+
+ tags.forEach(t=>{
+   const c=entries.filter(e=>(e.tag||'')===t).length;
+   stats += labels[t]+': <strong>'+c+'</strong><br>';
+   if(c>maxCount){ maxCount=c; maxTag=t; }
+ });
+
+ if(maxCount>0){
+   stats += '<br>🏆 Categoría más frecuente:<br><strong>'+labels[maxTag]+' ('+maxCount+' recuerdos)</strong>';
+ }
+
+ stats+='</div>';
+
+ document.getElementById('libraryCategories').innerHTML=stats;
  const cats=[
  ['trabajo','💼 Trabajo'],
  ['estudio','📚 Estudio'],
