@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>App Emocional V63</title>
+<title>App Emocional V64</title>
 
 <style>
 body {
@@ -1160,6 +1160,7 @@ text-align:center;
 <button onclick="openLibrary();closeJourneyHub();" class="softButton">📚 Biblioteca</button>
 <button onclick="openMilestones();closeJourneyHub();" class="softButton">🌟 Hitos</button>
 <button onclick="openAchievements();closeJourneyHub();" class="softButton">🏅 Logros</button>
+<button onclick="openMonthlySummary();closeJourneyHub();" class="softButton">📅 Resumen mensual</button>
 <button onclick="openFullExport();closeJourneyHub();" class="softButton">📦 Historia completa</button>
 <button onclick="openBackup();closeJourneyHub();" class="softButton">☁️ Respaldo</button>
 <br><br>
@@ -1228,6 +1229,15 @@ text-align:center;
 <button onclick="closeBackup()" class="softButton">Volver</button>
 </div>
 
+
+
+<div id="monthlySummaryScreen" class="fullscreen" style="background:linear-gradient(180deg,#fefce8,#dbeafe);overflow:auto;text-align:center;">
+<h1>📅</h1>
+<h2>Resumen emocional mensual</h2>
+<div id="monthlySummaryContent" class="rememberCard"></div>
+<br>
+<button onclick="closeMonthlySummary()" class="softButton">Volver</button>
+</div>
 
 <div id="achievementScreen" class="fullscreen" style="background:linear-gradient(180deg,#fef9c3,#dbeafe);overflow:auto;text-align:center;">
 <h1>🏅</h1>
@@ -4078,44 +4088,58 @@ window.openAchievements = function(){
 </script>
 
 
-<script id="v63_badges">
-const oldOpenAchievementsV63 = window.openAchievements;
-
-window.openAchievements = function(){
- if(typeof oldOpenAchievementsV63 === 'function'){
-   oldOpenAchievementsV63();
- }
-
- const box=document.getElementById('achievementContent');
- if(!box) return;
+<script id="v64_monthly_summary">
+function openMonthlySummary(){
+ document.getElementById('monthlySummaryScreen').style.display='block';
 
  const entries=JSON.parse(localStorage.getItem('diaryEntries')||'[]');
- const favs=JSON.parse(localStorage.getItem('favoriteMemories')||'[]');
- const capsules=JSON.parse(localStorage.getItem('futureCapsulesV46')||'[]');
+ const moods=JSON.parse(localStorage.getItem('moods')||'{}');
 
- const tagsUsed=new Set(
-   entries.map(e=>e.tag).filter(Boolean)
- );
+ const labels={
+   trabajo:'💼 Trabajo', estudio:'📚 Estudio', familia:'👨‍👩‍👧 Familia',
+   ansiedad:'😟 Ansiedad', esperanza:'🌱 Esperanza', salud:'❤️ Salud', descanso:'🌙 Descanso'
+ };
 
- let badges=[];
+ let counts={};
+ entries.forEach(e=>{
+   if(e.tag) counts[e.tag]=(counts[e.tag]||0)+1;
+ });
 
- if(tagsUsed.size>=1) badges.push('🏷️ Primera categoría utilizada');
- if(tagsUsed.size>=3) badges.push('📚 Explorador de categorías');
- if(entries.some(e=>e.tag==='esperanza')) badges.push('🌱 Primer recuerdo de esperanza');
- if(entries.some(e=>e.tag==='ansiedad')) badges.push('😟 Primer recuerdo de ansiedad');
- if(favs.length>=3) badges.push('⭐ Coleccionista de recuerdos');
- if(capsules.length>=3) badges.push('📬 Constructor del futuro');
+ let top='Sin categoría predominante';
+ let topCount=0;
+ Object.keys(counts).forEach(k=>{
+   if(counts[k]>topCount){
+     topCount=counts[k];
+     top=labels[k] || k;
+   }
+ });
 
- const badgeHtml = badges.length
- ? '<div style="margin-top:14px;"><h3>🏵️ Insignias especiales</h3>' +
-   badges.map(b=>
-     '<div style="margin:8px 0;padding:10px;background:#fff;border-radius:12px;">'+b+'</div>'
-   ).join('') +
-   '</div>'
- : '';
+ let bien=0, normal=0, mal=0;
+ Object.keys(moods).forEach(d=>{
+   (moods[d]||[]).forEach(m=>{
+      if(m==='bien') bien++;
+      else if(m==='normal') normal++;
+      else if(m==='mal') mal++;
+   });
+ });
 
- box.innerHTML += badgeHtml;
-};
+ let moodText='😐 Equilibrado';
+ if(bien>mal) moodText='🙂 Predominaron momentos positivos';
+ if(mal>bien) moodText='😔 Hubo más momentos difíciles';
+
+ document.getElementById('monthlySummaryContent').innerHTML =
+   '<div style="text-align:left;line-height:1.8;">'+
+   '📖 Recuerdos escritos: <strong>'+entries.length+'</strong><br>'+
+   '🏷️ Categoría principal: <strong>'+top+'</strong><br>'+
+   '⭐ Favoritos guardados: <strong>'+(JSON.parse(localStorage.getItem("favoriteMemories")||"[]").length)+'</strong><br>'+
+   '📬 Cápsulas creadas: <strong>'+(JSON.parse(localStorage.getItem("futureCapsulesV46")||"[]").length)+'</strong><br><br>'+
+   '<strong>Estado general</strong><br>'+moodText+
+   '<br><br>🌱 Seguiste construyendo tu recorrido emocional.'+
+   '</div>';
+}
+function closeMonthlySummary(){
+ document.getElementById('monthlySummaryScreen').style.display='none';
+}
 </script>
 
 </body>
