@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>App Emocional V54</title>
+<title>App Emocional V55</title>
 
 <style>
 body {
@@ -479,7 +479,7 @@ text-align:center;
 </div>
 
 
-<div id="dashboardCard" class="rememberCard" style="margin-bottom:18px;">
+<div id="dashboardCard" class="rememberCard" style="margin-bottom:18px;background:linear-gradient(135deg,#f0fdf4,#dbeafe);border:1px solid rgba(255,255,255,.5);">
 <div style="font-weight:700;font-size:16px;">📊 Resumen rápido</div>
 <div id="dashboardContent" style="margin-top:10px;">Cargando...</div>
 </div>
@@ -1245,27 +1245,51 @@ function searchMemories(){
 
 
 
+
 function renderDashboard(){
  try{
    const entries=JSON.parse(localStorage.getItem('diaryEntries')||'[]');
    const favs=JSON.parse(localStorage.getItem('favoriteMemories')||'[]');
    const capsules=JSON.parse(localStorage.getItem('futureCapsulesV46')||'[]');
+   const moods=JSON.parse(localStorage.getItem('moods')||'{}');
 
    const box=document.getElementById('dashboardContent');
    if(!box) return;
 
+   let recent=[];
+   Object.keys(moods).sort().slice(-7).forEach(d=>{
+      recent=recent.concat(moods[d]||[]);
+   });
+
+   const trend = recent.map(m=>m==='bien'?'🟢':m==='normal'?'🟡':'🔴').join(' ');
+
    box.innerHTML=`
-<div style="display:flex;justify-content:space-around;font-size:18px;">
-<span>🌱 <strong>${entries.length}</strong></span>
-<span>⭐ <strong>${favs.length}</strong></span>
-<span>📬 <strong>${capsules.length}</strong></span>
-</div>`;
+   <div style="text-align:center;">
+      <div style="font-size:20px;font-weight:700;margin-bottom:8px;">
+      🌱 Tu recorrido hoy
+      </div>
+
+      <div style="display:flex;justify-content:space-around;margin:12px 0;">
+        <span>📖 <strong>${entries.length}</strong></span>
+        <span>⭐ <strong>${favs.length}</strong></span>
+        <span>📬 <strong>${capsules.length}</strong></span>
+      </div>
+
+      <div style="margin-top:10px;font-size:14px;">
+      ${trend || 'Todavía no hay registros emocionales.'}
+      </div>
+
+      <div style="margin-top:12px;font-style:italic;">
+      "Seguiste apareciendo incluso en los días difíciles."
+      </div>
+   </div>`;
  }catch(e){
    const box=document.getElementById('dashboardContent');
-   if(box) box.innerHTML='No pude cargar el resumen, pero la app sigue funcionando.';
+   if(box) box.innerHTML='🌱 Bienvenido';
  }
 }
 document.addEventListener('DOMContentLoaded',renderDashboard);
+
 
 function openCapsuleV46(){
  document.getElementById('capsuleScreen').style.display='block';
