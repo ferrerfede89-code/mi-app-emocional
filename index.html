@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>App Emocional V45.1</title>
+<title>App Emocional V46</title>
 
 <style>
 body {
@@ -1188,6 +1188,51 @@ function showAnniversaryMemory(){
 }
 showAnniversaryMemory();
 
+
+function saveCapsule(days){
+ const text=document.getElementById('capsuleText').value.trim();
+ if(!text){ alert('Escribí un mensaje primero.'); return; }
+
+ const capsules=JSON.parse(localStorage.getItem('futureCapsules')||'[]');
+ const openDate=new Date();
+ openDate.setDate(openDate.getDate()+days);
+
+ capsules.push({
+   id:Date.now(),
+   text:text,
+   created:new Date().toISOString(),
+   openAt:openDate.toISOString()
+ });
+
+ localStorage.setItem('futureCapsules', JSON.stringify(capsules));
+ document.getElementById('capsuleText').value='';
+ renderCapsule();
+}
+
+function renderCapsule(){
+ const box=document.getElementById('capsuleContent');
+ const capsules=JSON.parse(localStorage.getItem('futureCapsules')||'[]');
+
+ if(!capsules.length){
+   box.innerHTML='No hay cápsulas guardadas.';
+   return;
+ }
+
+ const now=new Date();
+
+ box.innerHTML=capsules.map((c,i)=>{
+   const openAt=new Date(c.openAt);
+   if(now>=openAt){
+     return `<div style="margin:10px 0;padding:10px;border-radius:12px;background:white;">
+     🎁 <strong>Cápsula ${i+1}</strong><br>${c.text}</div>`;
+   } else {
+     const days=Math.ceil((openAt-now)/(1000*60*60*24));
+     return `<div style="margin:10px 0;padding:10px;border-radius:12px;background:white;">
+     ⏳ <strong>Cápsula ${i+1}</strong><br>Faltan ${days} día(s)</div>`;
+   }
+ }).join('');
+}
+
 function openStats(){
  document.getElementById('statsScreen').style.display='block';
  renderAdvancedStats();
@@ -2081,7 +2126,7 @@ function updateLivingMessage(){
 
 updateLivingMessage();
 
-function openCapsule(){
+function openCapsule(){ renderCapsule();
  document.getElementById('capsuleScreen').style.display='block';
  renderCapsule();
 }
