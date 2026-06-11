@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>App Emocional V46</title>
+<title>App Emocional V46.1</title>
 
 <style>
 body {
@@ -1205,8 +1205,13 @@ function saveCapsule(days){
  });
 
  localStorage.setItem('futureCapsules', JSON.stringify(capsules));
+
+ // Compatibilidad: borra la cápsula vieja única para que no pise la lista nueva.
+ localStorage.removeItem('futureCapsule');
+
  document.getElementById('capsuleText').value='';
  renderCapsule();
+ alert('📬 Cápsula guardada. Podés escribir otra.');
 }
 
 function renderCapsule(){
@@ -1214,7 +1219,7 @@ function renderCapsule(){
  const capsules=JSON.parse(localStorage.getItem('futureCapsules')||'[]');
 
  if(!capsules.length){
-   box.innerHTML='No hay cápsulas guardadas.';
+   box.innerHTML='No hay cápsulas guardadas. Escribí una y elegí 7, 30 o 90 días.';
    return;
  }
 
@@ -1222,13 +1227,22 @@ function renderCapsule(){
 
  box.innerHTML=capsules.map((c,i)=>{
    const openAt=new Date(c.openAt);
+   const created=new Date(c.created);
+   const createdText=created.toLocaleDateString();
+
    if(now>=openAt){
-     return `<div style="margin:10px 0;padding:10px;border-radius:12px;background:white;">
-     🎁 <strong>Cápsula ${i+1}</strong><br>${c.text}</div>`;
+     return `<div style="margin:10px 0;padding:14px;border-radius:16px;background:white;text-align:left;">
+     🎁 <strong>Cápsula ${i+1}</strong><br>
+     <span class="small">Creada: ${createdText}</span><br><br>
+     ${c.text}
+     </div>`;
    } else {
      const days=Math.ceil((openAt-now)/(1000*60*60*24));
-     return `<div style="margin:10px 0;padding:10px;border-radius:12px;background:white;">
-     ⏳ <strong>Cápsula ${i+1}</strong><br>Faltan ${days} día(s)</div>`;
+     return `<div style="margin:10px 0;padding:14px;border-radius:16px;background:white;text-align:left;">
+     ⏳ <strong>Cápsula ${i+1}</strong><br>
+     <span class="small">Creada: ${createdText}</span><br>
+     Faltan <strong>${days}</strong> día(s)
+     </div>`;
    }
  }).join('');
 }
@@ -2126,7 +2140,7 @@ function updateLivingMessage(){
 
 updateLivingMessage();
 
-function openCapsule(){ renderCapsule();
+function openCapsule(){
  document.getElementById('capsuleScreen').style.display='block';
  renderCapsule();
 }
