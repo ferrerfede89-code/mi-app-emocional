@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>App Emocional V49.1</title>
+<title>App Emocional V49.2</title>
 
 <style>
 body {
@@ -1655,7 +1655,14 @@ function closeRemember() {
 
 let currentRememberedText='';
 function favoriteCurrentMemory(){
- if(!currentRememberedText){ alert('Primero traé un recuerdo.'); return; }
+ let text=currentRememberedText;
+ if(!text){
+   const q=document.querySelector('#rememberContent .rememberQuote');
+   if(q) text=q.innerText.replace(/^["“]|["”]$/g,'').trim();
+ }
+ if(!text){ alert('Primero traé un recuerdo.'); return; }
+ toggleFavoriteMemory(text);
+}
  toggleFavoriteMemory(currentRememberedText);
 }
 
@@ -1724,6 +1731,10 @@ currentRememberedText = entry.text || '';
     <div style="margin-top:18px;font-weight:600;">
       ${companionReflection}
     </div>
+
+    <button onclick="favoriteCurrentMemory()" class="softButton" style="margin-top:18px;background:#fef3c7;font-weight:bold;">
+      ⭐ Guardar favorito
+    </button>
   `;
 
   localStorage.setItem("rememberCount", String((parseInt(localStorage.getItem("rememberCount") || "0") + 1)));
