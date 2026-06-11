@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>App Emocional V53</title>
+<title>App Emocional V54</title>
 
 <style>
 body {
@@ -1571,6 +1571,11 @@ function renderAdvancedStats(){
 
  <strong>Últimos registros</strong><br>
  ${trendIcons || 'Sin datos todavía'}<br><br>
+
+ <strong>📈 Evolución emocional</strong><br>
+ <div id="emotionGraph" style="font-family:monospace;margin:8px 0;">
+ ${recent.map(m=>m==='bien'?'🟢':m==='normal'?'🟡':'🔴').join(' ') || 'Sin datos'}
+ </div>
 
  ${trend}
  </div>`;
