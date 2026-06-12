@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>App Emocional V81</title>
+<title>App Emocional V81 corregida</title>
 
 <style>
 body {
@@ -1623,8 +1623,17 @@ A veces una frase antigua vuelve como un tesoro. No para medir tu avance, sino p
 <div class="treasureOrbV81">💎</div>
 <div id="treasurePhraseV81" class="treasurePhraseV81">Buscando algo que quedó guardado...</div>
 <div id="treasureContentV81" class="rememberCard"></div>
+
+<div id="treasureWriteBoxV81" class="rememberCard" style="display:none;text-align:left;">
+  <strong>💎 Escribir un nuevo tesoro</strong><br><br>
+  <span class="small">Puede ser una frase mínima. Algo que quieras volver a encontrar más adelante.</span>
+  <textarea id="treasureManualTextV81" class="textBox" style="margin-top:14px;" placeholder="Hoy quiero guardar como tesoro..."></textarea>
+  <button onclick="saveManualTreasureV81()" class="softButton">Guardar tesoro</button>
+</div>
+
 <br>
 <button onclick="showAnotherTreasureV81()" class="softButton">Encontrar otro tesoro</button>
+<button onclick="openTreasureWriterV81()" class="softButton">✍️ Escribir nuevo tesoro</button>
 <button onclick="saveCurrentTreasureV81()" class="softButton">⭐ Guardar como favorito</button>
 <br>
 <button onclick="closeTreasuresV81()" class="softButton">Volver</button>
@@ -5947,6 +5956,7 @@ function getTreasureSourcesV81(){
   const favs = JSON.parse(localStorage.getItem('favoriteMemories') || '[]');
   const anchors = JSON.parse(localStorage.getItem('anchorMomentsV78') || '[]');
   const seeds = JSON.parse(localStorage.getItem('seedMomentsV77') || '[]');
+  const manualTreasures = JSON.parse(localStorage.getItem('manualTreasuresV81') || '[]');
 
   let sources = [];
 
@@ -6004,6 +6014,20 @@ function getTreasureSourcesV81(){
     }
   });
 
+  manualTreasures.forEach((a,idx)=>{
+    const txt = typeof a === 'string' ? a : (a.text || '');
+    if(String(txt||'').trim()){
+      sources.push({
+        type:'tesoro escrito',
+        icon:'💎',
+        date:a.date || 'Tesoro escrito',
+        text:String(txt),
+        tag:'',
+        score: idx + 4000
+      });
+    }
+  });
+
   return sources;
 }
 
@@ -6027,13 +6051,14 @@ function renderTreasuresV81(){
       <div class="treasureCardV81" style="text-align:center;">
         <div style="font-size:48px;margin:10px 0;">💎</div>
         <strong>Un tesoro aparece cuando dejás una frase.</strong><br><br>
-        Podés escribir en Diario, Anclaje rápido o Modo semilla. No tiene que ser profundo. A veces una línea mínima alcanza.
+        Podés escribir en Diario, Anclaje rápido, Modo semilla o tocar “Escribir nuevo tesoro”. No tiene que ser profundo. A veces una línea mínima alcanza.
       </div>
       <div class="treasureGridV81">
         <div class="treasureMiniV81">📖 Diario: guarda frases</div>
         <div class="treasureMiniV81">⚓ Anclaje: guarda momentos</div>
         <div class="treasureMiniV81">🌱 Semilla: inicio suave</div>
         <div class="treasureMiniV81">⭐ Favoritos: lo valioso</div>
+        <div class="treasureMiniV81">💎 Tesoro escrito: manual</div>
       </div>`;
     return;
   }
@@ -6070,6 +6095,7 @@ function renderTreasuresV81(){
       <div class="treasureMiniV81">✨ Frases con luz: <strong>${lightCount}</strong></div>
       <div class="treasureMiniV81">📖 Diario: <strong>${sources.filter(x=>x.type==='diario').length}</strong></div>
       <div class="treasureMiniV81">⭐ Favoritos: <strong>${sources.filter(x=>x.type==='favorito').length}</strong></div>
+      <div class="treasureMiniV81">💎 Escritos: <strong>${sources.filter(x=>x.type==='tesoro escrito').length}</strong></div>
     </div>`;
 }
 
@@ -6082,8 +6108,46 @@ function closeTreasuresV81(){
   document.getElementById('treasuresScreenV81').style.display='none';
 }
 function showAnotherTreasureV81(){
+  const sources = getTreasureSourcesV81();
+  if(sources.length <= 1){
+    openTreasureWriterV81();
+    const phrase = document.getElementById('treasurePhraseV81');
+    if(phrase) phrase.innerHTML = 'Por ahora hay un solo tesoro. Podés escribir otro para que el cofre empiece a crecer.';
+    return;
+  }
   currentTreasureIndexV81++;
   renderTreasuresV81();
+}
+
+function openTreasureWriterV81(){
+  const box = document.getElementById('treasureWriteBoxV81');
+  if(box) box.style.display = 'block';
+  const input = document.getElementById('treasureManualTextV81');
+  if(input) setTimeout(()=>input.focus(), 120);
+}
+
+function saveManualTreasureV81(){
+  const input = document.getElementById('treasureManualTextV81');
+  const text = (input && input.value ? input.value.trim() : '');
+  if(!text){ alert('Escribí una frase mínima para guardar como tesoro.'); return; }
+
+  let treasures = JSON.parse(localStorage.getItem('manualTreasuresV81') || '[]');
+  treasures.push({
+    text:text,
+    date:new Date().toLocaleDateString(),
+    created:new Date().toISOString()
+  });
+  localStorage.setItem('manualTreasuresV81', JSON.stringify(treasures));
+
+  if(input) input.value='';
+  const box = document.getElementById('treasureWriteBoxV81');
+  if(box) box.style.display='none';
+
+  currentTreasureIndexV81 = getTreasureSourcesV81().length - 1;
+  renderTreasuresV81();
+  alert('💎 Tesoro guardado');
+  if(typeof renderDashboard === 'function') renderDashboard();
+  if(typeof addFootprintV79 === 'function') addFootprintV79('guardo_tesoro');
 }
 function saveCurrentTreasureV81(){
   if(!currentTreasureV81){ alert('Todavía no hay un tesoro para guardar.'); return; }
