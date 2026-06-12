@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>App Emocional V80</title>
+<title>App Emocional V81</title>
 
 <style>
 body {
@@ -627,6 +627,74 @@ body, .app, #circle, .action, .stats, .softButton, .moods button {
   text-align:left;
 }
 
+
+/* V81 - Tesoros olvidados */
+.treasureOrbV81{
+  width:150px;
+  height:150px;
+  border-radius:50%;
+  margin:24px auto;
+  background:radial-gradient(circle,#ffffff,#facc15);
+  box-shadow:0 22px 60px rgba(250,204,21,.30);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:56px;
+  animation:treasurePulseV81 6s infinite ease-in-out;
+}
+@keyframes treasurePulseV81{
+  0%{transform:scale(1);opacity:.86;}
+  50%{transform:scale(1.1);opacity:1;}
+  100%{transform:scale(1);opacity:.86;}
+}
+.treasurePhraseV81{
+  font-size:21px;
+  font-weight:650;
+  line-height:1.45;
+  text-align:center;
+  padding:18px;
+  border-radius:22px;
+  background:rgba(254,249,195,.95);
+  margin:16px 0;
+}
+.treasureCardV81{
+  background:rgba(255,255,255,.92);
+  border-radius:24px;
+  padding:18px;
+  margin:14px 0;
+  line-height:1.55;
+  text-align:left;
+  box-shadow:0 12px 30px rgba(0,0,0,.08);
+}
+.treasureQuoteV81{
+  font-size:21px;
+  font-weight:620;
+  line-height:1.45;
+  text-align:left;
+  padding:18px;
+  border-radius:22px;
+  background:linear-gradient(135deg,rgba(254,243,199,.96),rgba(221,214,254,.82));
+  margin:16px 0;
+}
+.treasureSmallV81{
+  font-size:15px;
+  color:#64748b;
+  line-height:1.45;
+}
+.treasureGridV81{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+  margin-top:14px;
+}
+.treasureMiniV81{
+  background:rgba(255,255,255,.76);
+  border-radius:16px;
+  padding:10px;
+  text-align:left;
+  font-size:14px;
+}
+
 </style>
 
 <style id="v48premium">
@@ -778,6 +846,9 @@ text-align:center;
     </button>
 <button class="action" onclick="openGardenV80()" style="grid-column:1/3;background:#dcfce7;font-weight:bold;">
       <span>🌿</span>Jardín emocional
+    </button>
+<button class="action" onclick="openTreasuresV81()" style="grid-column:1/3;background:#fef3c7;font-weight:bold;">
+      <span>💎</span>Tesoros olvidados
     </button>
 <button class="action" onclick="openCapsuleV46()" style="grid-column:1/3;background:#fde68a;font-weight:bold;">
       <span>📬</span>Cápsula del tiempo
@@ -1423,6 +1494,7 @@ text-align:center;
 <button onclick="openAnchorV78();closeJourneyHub();" class="softButton">⚓ Anclaje rápido</button>
 <button onclick="openFootprintsV79();closeJourneyHub();" class="softButton">👣 Huellas invisibles</button>
 <button onclick="openGardenV80();closeJourneyHub();" class="softButton">🌿 Jardín emocional</button>
+<button onclick="openTreasuresV81();closeJourneyHub();" class="softButton">💎 Tesoros olvidados</button>
 
 <br><br>
 <button onclick="closeJourneyHub()" class="softButton">Volver</button>
@@ -1538,6 +1610,24 @@ No muestra productividad. Muestra vida. Cada señal de tu recorrido puede conver
 <div id="gardenContentV80" class="rememberCard"></div>
 <br>
 <button onclick="closeGardenV80()" class="softButton">Volver</button>
+</div>
+
+
+
+<div id="treasuresScreenV81" class="fullscreen" style="background:linear-gradient(180deg,#fef3c7,#ddd6fe);overflow:auto;text-align:center;">
+<h1>💎</h1>
+<h2>Tesoros olvidados</h2>
+<p style="font-size:17px;line-height:1.45;max-width:330px;margin:0 auto;">
+A veces una frase antigua vuelve como un tesoro. No para medir tu avance, sino para recordarte que algo en vos siguió existiendo.
+</p>
+<div class="treasureOrbV81">💎</div>
+<div id="treasurePhraseV81" class="treasurePhraseV81">Buscando algo que quedó guardado...</div>
+<div id="treasureContentV81" class="rememberCard"></div>
+<br>
+<button onclick="showAnotherTreasureV81()" class="softButton">Encontrar otro tesoro</button>
+<button onclick="saveCurrentTreasureV81()" class="softButton">⭐ Guardar como favorito</button>
+<br>
+<button onclick="closeTreasuresV81()" class="softButton">Volver</button>
 </div>
 
 <div id="searchScreen" class="fullscreen" style="background:linear-gradient(180deg,#ecfeff,#dbeafe);overflow:auto;text-align:center;">
@@ -5846,6 +5936,167 @@ function installFootprintsV79(){
 if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', installFootprintsV79);
 else installFootprintsV79();
 
+
+
+/* V81 - Tesoros olvidados */
+let currentTreasureV81 = '';
+let currentTreasureIndexV81 = 0;
+
+function getTreasureSourcesV81(){
+  const entries = JSON.parse(localStorage.getItem('diaryEntries') || '[]');
+  const favs = JSON.parse(localStorage.getItem('favoriteMemories') || '[]');
+  const anchors = JSON.parse(localStorage.getItem('anchorMomentsV78') || '[]');
+  const seeds = JSON.parse(localStorage.getItem('seedMomentsV77') || '[]');
+
+  let sources = [];
+
+  entries.forEach((e,idx)=>{
+    if((e.text||'').trim()){
+      sources.push({
+        type:'diario',
+        icon:'📖',
+        date:e.date || '',
+        text:e.text,
+        tag:e.tag || '',
+        score: idx
+      });
+    }
+  });
+
+  favs.forEach((f,idx)=>{
+    if(String(f||'').trim()){
+      sources.push({
+        type:'favorito',
+        icon:'⭐',
+        date:'Recuerdo favorito',
+        text:String(f),
+        tag:'',
+        score: idx + 1000
+      });
+    }
+  });
+
+  anchors.forEach((a,idx)=>{
+    const txt = typeof a === 'string' ? a : (a.text || '');
+    if(String(txt||'').trim()){
+      sources.push({
+        type:'anclaje',
+        icon:'⚓',
+        date:a.date || 'Anclaje guardado',
+        text:String(txt),
+        tag:'',
+        score: idx + 2000
+      });
+    }
+  });
+
+  seeds.forEach((a,idx)=>{
+    const txt = typeof a === 'string' ? a : (a.text || '');
+    if(String(txt||'').trim()){
+      sources.push({
+        type:'semilla',
+        icon:'🌱',
+        date:a.date || 'Semilla guardada',
+        text:String(txt),
+        tag:'',
+        score: idx + 3000
+      });
+    }
+  });
+
+  return sources;
+}
+
+function treasureIsLightV81(text){
+  const t = String(text || '').toLowerCase();
+  const words = ['puedo','pude','bien','calma','seguir','seguí','mejor','esperanza','gracias','logré','tranquilo','tranquila','respiro','sostuve','sigo','acompañado','acompañada','luz'];
+  return words.some(w => t.includes(w));
+}
+
+function renderTreasuresV81(){
+  const box = document.getElementById('treasureContentV81');
+  const phrase = document.getElementById('treasurePhraseV81');
+  if(!box || !phrase) return;
+
+  const sources = getTreasureSourcesV81();
+
+  if(!sources.length){
+    currentTreasureV81 = '';
+    phrase.innerHTML = 'Todavía no hay tesoros guardados.';
+    box.innerHTML = `
+      <div class="treasureCardV81" style="text-align:center;">
+        <div style="font-size:48px;margin:10px 0;">💎</div>
+        <strong>Un tesoro aparece cuando dejás una frase.</strong><br><br>
+        Podés escribir en Diario, Anclaje rápido o Modo semilla. No tiene que ser profundo. A veces una línea mínima alcanza.
+      </div>
+      <div class="treasureGridV81">
+        <div class="treasureMiniV81">📖 Diario: guarda frases</div>
+        <div class="treasureMiniV81">⚓ Anclaje: guarda momentos</div>
+        <div class="treasureMiniV81">🌱 Semilla: inicio suave</div>
+        <div class="treasureMiniV81">⭐ Favoritos: lo valioso</div>
+      </div>`;
+    return;
+  }
+
+  const preferred = sources.filter(x => treasureIsLightV81(x.text));
+  const pool = preferred.length ? preferred : sources;
+  const sorted = pool.slice().sort((a,b)=>a.score-b.score);
+  const chosen = sorted[currentTreasureIndexV81 % sorted.length];
+  currentTreasureV81 = chosen.icon + ' ' + chosen.text;
+
+  const total = sources.length;
+  const lightCount = preferred.length;
+
+  let intro = 'Encontré algo que habías dejado guardado.';
+  if(total === 1) intro = 'Hay un primer tesoro guardado.';
+  else if(lightCount) intro = 'Encontré una frase con un poco de luz.';
+  else intro = 'No todo tesoro brilla fuerte. Algunos solo dicen: seguí acá.';
+
+  phrase.innerHTML = intro;
+
+  const tag = chosen.tag ? '<div class="treasureSmallV81">🏷️ '+getTagLabelV563(chosen.tag)+'</div>' : '';
+
+  box.innerHTML = `
+    <div class="treasureCardV81">
+      <div class="treasureSmallV81">${chosen.icon} ${chosen.type}${chosen.date ? ' · '+chosen.date : ''}</div>
+      ${tag}
+      <div class="treasureQuoteV81">“${escapeHTMLV563(chosen.text)}”</div>
+      <div style="text-align:center;line-height:1.5;">
+        Esto no quedó perdido. Quedó guardado para que puedas volver a encontrarlo.
+      </div>
+    </div>
+    <div class="treasureGridV81">
+      <div class="treasureMiniV81">💎 Tesoros encontrados: <strong>${total}</strong></div>
+      <div class="treasureMiniV81">✨ Frases con luz: <strong>${lightCount}</strong></div>
+      <div class="treasureMiniV81">📖 Diario: <strong>${sources.filter(x=>x.type==='diario').length}</strong></div>
+      <div class="treasureMiniV81">⭐ Favoritos: <strong>${sources.filter(x=>x.type==='favorito').length}</strong></div>
+    </div>`;
+}
+
+function openTreasuresV81(){
+  addFootprintV79 && addFootprintV79('busco_tesoro');
+  document.getElementById('treasuresScreenV81').style.display='block';
+  renderTreasuresV81();
+}
+function closeTreasuresV81(){
+  document.getElementById('treasuresScreenV81').style.display='none';
+}
+function showAnotherTreasureV81(){
+  currentTreasureIndexV81++;
+  renderTreasuresV81();
+}
+function saveCurrentTreasureV81(){
+  if(!currentTreasureV81){ alert('Todavía no hay un tesoro para guardar.'); return; }
+  let favs = JSON.parse(localStorage.getItem('favoriteMemories') || '[]');
+  if(favs.includes(currentTreasureV81)){
+    alert('⭐ Este tesoro ya estaba en favoritos');
+    return;
+  }
+  favs.push(currentTreasureV81);
+  localStorage.setItem('favoriteMemories', JSON.stringify(favs));
+  alert('💎 Tesoro guardado como favorito');
+  if(typeof renderDashboard === 'function') renderDashboard();
+}
 </script>
 
 
