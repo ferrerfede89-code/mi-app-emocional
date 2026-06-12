@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>App Emocional V71</title>
+<title>App Emocional V72</title>
 
 <style>
 body {
@@ -1168,6 +1168,7 @@ text-align:center;
 <button onclick="openCompass();closeJourneyHub();" class="softButton">🧭 Brújula emocional</button>
 <button onclick="openEmotionalTrends();closeJourneyHub();" class="softButton">📈 Tendencias emocionales</button>
 <button onclick="openKeyMoments();closeJourneyHub();" class="softButton">🏆 Momentos clave</button>
+<button onclick="openLifeTimeline();closeJourneyHub();" class="softButton">📜 Línea de vida</button>
 <button onclick="openFullExport();closeJourneyHub();" class="softButton">📦 Historia completa</button>
 <button onclick="openBackup();closeJourneyHub();" class="softButton">☁️ Respaldo</button>
 <br><br>
@@ -4552,6 +4553,51 @@ function openKeyMoments(){
 }
 function closeKeyMoments(){
  const s=document.getElementById('keyMomentsScreen');
+ if(s) s.style.display='none';
+}
+</script>
+
+
+<script id="v72_life_timeline">
+function openLifeTimeline(){
+ let screen=document.getElementById('lifeTimelineScreen');
+ if(!screen){
+   screen=document.createElement('div');
+   screen.id='lifeTimelineScreen';
+   screen.className='fullscreen';
+   screen.style='background:linear-gradient(180deg,#fef3c7,#e9d5ff);overflow:auto;text-align:center;';
+   screen.innerHTML='<h1>📜</h1><h2>Línea de vida emocional</h2><div id="lifeTimelineContent" class="rememberCard"></div><br><button onclick="closeLifeTimeline()" class="softButton">Volver</button>';
+   document.body.appendChild(screen);
+ }
+
+ const entries=JSON.parse(localStorage.getItem("diaryEntries")||"[]");
+ const favs=JSON.parse(localStorage.getItem("favoriteMemories")||"[]");
+ const capsules=JSON.parse(localStorage.getItem("futureCapsulesV46")||"[]");
+
+ let htmlLine='<div style="text-align:left;line-height:1.8;">';
+
+ if(entries.length){
+   htmlLine+='🌱 <strong>Primer recuerdo</strong><br>'+(entries[0].date||'-')+'<br><br>━━━━━━━━━━━━<br><br>';
+ }
+
+ if(favs.length){
+   htmlLine+='⭐ <strong>Primer favorito</strong><br>Guardado en tu recorrido<br><br>━━━━━━━━━━━━<br><br>';
+ }
+
+ if(capsules.length){
+   htmlLine+='📬 <strong>Primera cápsula</strong><br>Creada para tu yo futuro<br><br>━━━━━━━━━━━━<br><br>';
+ }
+
+ htmlLine+='🏆 <strong>Momentos registrados</strong><br>'+entries.length+' recuerdos<br><br>';
+ htmlLine+='🌱 Tu recorrido sigue creciendo.';
+ htmlLine+='</div>';
+
+ document.getElementById('lifeTimelineContent').innerHTML=htmlLine;
+ screen.style.display='block';
+}
+
+function closeLifeTimeline(){
+ const s=document.getElementById('lifeTimelineScreen');
  if(s) s.style.display='none';
 }
 </script>
