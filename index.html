@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>App Emocional V70</title>
+<title>App Emocional V71</title>
 
 <style>
 body {
@@ -1167,6 +1167,7 @@ text-align:center;
 <button onclick="openEmotionMap();closeJourneyHub();" class="softButton">🗺️ Mapa emocional</button>
 <button onclick="openCompass();closeJourneyHub();" class="softButton">🧭 Brújula emocional</button>
 <button onclick="openEmotionalTrends();closeJourneyHub();" class="softButton">📈 Tendencias emocionales</button>
+<button onclick="openKeyMoments();closeJourneyHub();" class="softButton">🏆 Momentos clave</button>
 <button onclick="openFullExport();closeJourneyHub();" class="softButton">📦 Historia completa</button>
 <button onclick="openBackup();closeJourneyHub();" class="softButton">☁️ Respaldo</button>
 <br><br>
@@ -4503,6 +4504,54 @@ function openEmotionalTrends(){
 
 function closeEmotionalTrends(){
  const s=document.getElementById('emotionalTrendsScreen');
+ if(s) s.style.display='none';
+}
+</script>
+
+
+<script id="v71_key_moments">
+function openKeyMoments(){
+ let screen=document.getElementById('keyMomentsScreen');
+ if(!screen){
+   screen=document.createElement('div');
+   screen.id='keyMomentsScreen';
+   screen.className='fullscreen';
+   screen.style='background:linear-gradient(180deg,#fef3c7,#dbeafe);overflow:auto;text-align:center;';
+   screen.innerHTML='<h1>🏆</h1><h2>Momentos clave</h2><div id="keyMomentsContent" class="rememberCard"></div><br><button onclick="closeKeyMoments()" class="softButton">Volver</button>';
+   document.body.appendChild(screen);
+ }
+
+ const entries=JSON.parse(localStorage.getItem("diaryEntries")||"[]");
+ const favs=JSON.parse(localStorage.getItem("favoriteMemories")||"[]");
+ const capsules=JSON.parse(localStorage.getItem("futureCapsulesV46")||"[]");
+
+ let counts={};
+ entries.forEach(e=>{
+   if(e.tag) counts[e.tag]=(counts[e.tag]||0)+1;
+ });
+
+ let topTag='Sin datos';
+ let topCount=0;
+ Object.keys(counts).forEach(k=>{
+   if(counts[k]>topCount){ topCount=counts[k]; topTag=k; }
+ });
+
+ const firstEntry=entries.length ? (entries[0].text || 'Primer recuerdo registrado') : 'Todavía no hay recuerdos';
+ const oldestEntryDate=entries.length ? (entries[0].date || '-') : '-';
+
+ document.getElementById('keyMomentsContent').innerHTML =
+ '<div style="text-align:left;line-height:1.8;">'+
+ '🌱 <strong>Primer recuerdo</strong><br>'+firstEntry+'<br><br>'+
+ '📖 <strong>Recuerdo más antiguo</strong><br>'+oldestEntryDate+'<br><br>'+
+ '⭐ <strong>Primer favorito</strong><br>'+(favs.length ? 'Guardado' : 'Todavía no hay favoritos')+'<br><br>'+
+ '📬 <strong>Primera cápsula</strong><br>'+(capsules.length ? 'Creada' : 'Todavía no hay cápsulas')+'<br><br>'+
+ '🏷️ <strong>Categoría con más presencia</strong><br>'+topTag+
+ '</div>';
+
+ screen.style.display='block';
+}
+function closeKeyMoments(){
+ const s=document.getElementById('keyMomentsScreen');
  if(s) s.style.display='none';
 }
 </script>
