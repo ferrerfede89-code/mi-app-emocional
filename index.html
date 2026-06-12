@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>App Emocional V79</title>
+<title>App Emocional V80</title>
 
 <style>
 body {
@@ -559,6 +559,74 @@ body, .app, #circle, .action, .stats, .softButton, .moods button {
   text-align:center;
 }
 
+
+/* V80 - Jardín emocional */
+.gardenWrapV80{
+  background:linear-gradient(180deg,rgba(255,255,255,.78),rgba(220,252,231,.92));
+  border-radius:30px;
+  padding:22px 14px;
+  margin:20px 0;
+  min-height:210px;
+  box-shadow:inset 0 0 34px rgba(34,197,94,.10), 0 12px 30px rgba(0,0,0,.07);
+}
+.gardenSkyV80{
+  font-size:34px;
+  margin-bottom:12px;
+  min-height:42px;
+}
+.gardenGroundV80{
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:center;
+  align-items:flex-end;
+  gap:10px;
+  font-size:34px;
+  line-height:1.5;
+  padding:12px 8px;
+}
+.gardenEmptyV80{
+  font-size:72px;
+  margin:20px 0 8px;
+  animation:gardenPulseV80 7s infinite ease-in-out;
+}
+@keyframes gardenPulseV80{
+  0%{transform:scale(1);opacity:.86;}
+  50%{transform:scale(1.1);opacity:1;}
+  100%{transform:scale(1);opacity:.86;}
+}
+.gardenPhraseV80{
+  font-size:21px;
+  font-weight:650;
+  line-height:1.45;
+  text-align:center;
+  padding:18px;
+  border-radius:22px;
+  background:rgba(240,253,244,.95);
+  margin:16px 0;
+}
+.gardenCardV80{
+  background:rgba(255,255,255,.9);
+  border-radius:24px;
+  padding:16px;
+  margin:14px 0;
+  line-height:1.55;
+  text-align:left;
+  box-shadow:0 12px 30px rgba(0,0,0,.08);
+}
+.gardenLegendV80{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+  margin-top:14px;
+  font-size:14px;
+}
+.gardenLegendItemV80{
+  background:rgba(255,255,255,.76);
+  border-radius:16px;
+  padding:10px;
+  text-align:left;
+}
+
 </style>
 
 <style id="v48premium">
@@ -707,6 +775,9 @@ text-align:center;
     </button>
 <button class="action" onclick="openFootprintsV79()" style="grid-column:1/3;background:#ecfccb;font-weight:bold;">
       <span>👣</span>Huellas invisibles
+    </button>
+<button class="action" onclick="openGardenV80()" style="grid-column:1/3;background:#dcfce7;font-weight:bold;">
+      <span>🌿</span>Jardín emocional
     </button>
 <button class="action" onclick="openCapsuleV46()" style="grid-column:1/3;background:#fde68a;font-weight:bold;">
       <span>📬</span>Cápsula del tiempo
@@ -1351,6 +1422,8 @@ text-align:center;
 <button onclick="openSeedModeV77();closeJourneyHub();" class="softButton">🌱 Modo semilla</button>
 <button onclick="openAnchorV78();closeJourneyHub();" class="softButton">⚓ Anclaje rápido</button>
 <button onclick="openFootprintsV79();closeJourneyHub();" class="softButton">👣 Huellas invisibles</button>
+<button onclick="openGardenV80();closeJourneyHub();" class="softButton">🌿 Jardín emocional</button>
+
 <br><br>
 <button onclick="closeJourneyHub()" class="softButton">Volver</button>
 </div>
@@ -1448,6 +1521,24 @@ No son logros. No son estadísticas. Son pequeñas señales de que estuviste ac�
 <button onclick="closeFootprintsV79()" class="softButton">Volver</button>
 </div>
 
+
+
+
+<div id="gardenScreenV80" class="fullscreen" style="background:linear-gradient(180deg,#ecfccb,#bfdbfe);overflow:auto;text-align:center;">
+<h1>🌿</h1>
+<h2>Jardín emocional</h2>
+<p style="font-size:17px;line-height:1.45;max-width:330px;margin:0 auto;">
+No muestra productividad. Muestra vida. Cada señal de tu recorrido puede convertirse en brote, flor, árbol o luz.
+</p>
+<div id="gardenPhraseV80" class="gardenPhraseV80">Tu jardín todavía está empezando.</div>
+<div class="gardenWrapV80">
+  <div id="gardenSkyV80" class="gardenSkyV80"></div>
+  <div id="gardenGroundV80" class="gardenGroundV80"></div>
+</div>
+<div id="gardenContentV80" class="rememberCard"></div>
+<br>
+<button onclick="closeGardenV80()" class="softButton">Volver</button>
+</div>
 
 <div id="searchScreen" class="fullscreen" style="background:linear-gradient(180deg,#ecfeff,#dbeafe);overflow:auto;text-align:center;">
 <h1>🔎</h1>
@@ -4216,6 +4307,111 @@ function renderStrengthsV76(){
   </div>`;
 }
 
+
+
+/* V80 - Jardín emocional */
+function getGardenDataV80(){
+  const entries=JSON.parse(localStorage.getItem('diaryEntries')||'[]');
+  const favs=JSON.parse(localStorage.getItem('favoriteMemories')||'[]');
+  const capsules=JSON.parse(localStorage.getItem('futureCapsulesV46')||'[]');
+  const moods=JSON.parse(localStorage.getItem('moods')||'{}');
+  const footprints=JSON.parse(localStorage.getItem('invisibleFootprintsV79')||'[]');
+  let moodCount=0, good=0, hard=0;
+  Object.keys(moods).forEach(d=>{
+    (moods[d]||[]).forEach(m=>{
+      moodCount++;
+      if(m==='bien') good++;
+      if(m==='mal') hard++;
+    });
+  });
+  return {entries,favs,capsules,moods,footprints,moodCount,good,hard};
+}
+
+function buildGardenItemsV80(data){
+  let items=[];
+
+  // Primeras señales: incluso pocas acciones generan vida.
+  const seedCount=Math.min(4, Math.max(0, data.entries.length + Math.floor(data.footprints.length/4)));
+  for(let i=0;i<seedCount;i++) items.push('🌱');
+
+  const plants=Math.min(6, Math.floor(data.entries.length/3));
+  for(let i=0;i<plants;i++) items.push('🌿');
+
+  const flowers=Math.min(6, data.favs.length);
+  for(let i=0;i<flowers;i++) items.push('🌸');
+
+  const trees=Math.min(4, Math.floor(Object.keys(data.moods).length/4));
+  for(let i=0;i<trees;i++) items.push('🌳');
+
+  const lights=Math.min(5, data.capsules.length);
+  for(let i=0;i<lights;i++) items.push('✨');
+
+  if(data.good>0) items.push('☀️');
+  if(data.hard>0) items.push('🌧️');
+
+  return items.slice(0,32);
+}
+
+function renderGardenV80(){
+  const data=getGardenDataV80();
+  const items=buildGardenItemsV80(data);
+  const sky=document.getElementById('gardenSkyV80');
+  const ground=document.getElementById('gardenGroundV80');
+  const content=document.getElementById('gardenContentV80');
+  const phrase=document.getElementById('gardenPhraseV80');
+  if(!sky||!ground||!content||!phrase) return;
+
+  const totalSignals=data.entries.length+data.favs.length+data.capsules.length+data.moodCount+data.footprints.length;
+
+  if(totalSignals===0){
+    sky.innerHTML='☁️';
+    ground.innerHTML='<div class="gardenEmptyV80">🌱</div>';
+    phrase.innerHTML='Tu jardín todavía está empezando.';
+    content.innerHTML='No necesita crecer hoy.<br><br>Solo necesita existir.';
+    return;
+  }
+
+  const skyBits=[];
+  if(data.good>0) skyBits.push('☀️');
+  if(data.hard>0) skyBits.push('🌧️');
+  if(data.capsules.length>0) skyBits.push('✨');
+  if(!skyBits.length) skyBits.push('☁️');
+  sky.innerHTML=skyBits.join(' ');
+
+  ground.innerHTML=items.length ? items.map(x=>'<span>'+x+'</span>').join('') : '<div class="gardenEmptyV80">🌱</div>';
+
+  let message='Hay señales de vida.';
+  if(items.length<=3) message='Tu jardín está empezando despacio.';
+  else if(data.favs.length>0 && data.capsules.length>0) message='Hay recuerdos guardados y luces para tu futuro.';
+  else if(Object.keys(data.moods).length>=4) message='Este jardín creció porque volviste más de una vez.';
+  else if(data.entries.length>0) message='Algo quedó escrito. Eso también es crecimiento.';
+  phrase.innerHTML=message;
+
+  content.innerHTML=`
+    <div class="gardenCardV80">
+      <strong>🌿 Lectura suave del jardín</strong><br><br>
+      ${message}<br><br>
+      No es una evaluación. Es una forma de ver que hubo presencia.
+    </div>
+    <div class="gardenLegendV80">
+      <div class="gardenLegendItemV80">🌱 Primeras señales</div>
+      <div class="gardenLegendItemV80">🌿 Recuerdos escritos</div>
+      <div class="gardenLegendItemV80">🌸 Favoritos</div>
+      <div class="gardenLegendItemV80">🌳 Continuidad</div>
+      <div class="gardenLegendItemV80">✨ Cápsulas</div>
+      <div class="gardenLegendItemV80">☀️ / 🌧️ Días emocionales</div>
+    </div>
+  `;
+}
+
+function openGardenV80(){
+  if(typeof addFootprintV79==='function') addFootprintV79('jardin');
+  document.getElementById('gardenScreenV80').style.display='block';
+  renderGardenV80();
+}
+function closeGardenV80(){
+  document.getElementById('gardenScreenV80').style.display='none';
+}
 
 </script>
 
