@@ -1631,8 +1631,18 @@ A veces una frase antigua vuelve como un tesoro. No para medir tu avance, sino p
   <button onclick="saveManualTreasureV81()" class="softButton">Guardar tesoro</button>
 </div>
 
+<div id="treasureSearchBoxV81" class="rememberCard" style="display:none;text-align:left;">
+  <strong>🔎 Buscar tesoro</strong><br><br>
+  <span class="small">Escribí una palabra o una letra para buscar dentro de tus tesoros guardados.</span>
+  <input id="treasureSearchInputV81" type="text" class="textBox" style="min-height:auto;height:54px;margin-top:14px;" placeholder="Ej: calma, miedo, puedo, a...">
+  <button onclick="searchTreasuresV81()" class="softButton">Buscar</button>
+  <button onclick="clearTreasureSearchV81()" class="softButton">Limpiar búsqueda</button>
+  <div id="treasureSearchResultsV81" style="margin-top:14px;"></div>
+</div>
+
 <br>
-<button onclick="showAnotherTreasureV81()" class="softButton">Encontrar otro tesoro</button>
+<button onclick="showAnotherTreasureV81()" class="softButton">Mostrar otro tesoro</button>
+<button onclick="openTreasureSearchV81()" class="softButton">🔎 Buscar tesoro</button>
 <button onclick="openTreasureWriterV81()" class="softButton">✍️ Escribir nuevo tesoro</button>
 <button onclick="saveCurrentTreasureV81()" class="softButton">⭐ Guardar como favorito</button>
 <br>
@@ -6149,6 +6159,64 @@ function saveManualTreasureV81(){
   if(typeof renderDashboard === 'function') renderDashboard();
   if(typeof addFootprintV79 === 'function') addFootprintV79('guardo_tesoro');
 }
+
+function openTreasureSearchV81(){
+  const box = document.getElementById('treasureSearchBoxV81');
+  if(box) box.style.display = 'block';
+  const input = document.getElementById('treasureSearchInputV81');
+  const results = document.getElementById('treasureSearchResultsV81');
+  if(results) results.innerHTML = '<div class="treasureSmallV81">Escribí una palabra o letra y tocá Buscar.</div>';
+  if(input) setTimeout(()=>input.focus(),120);
+}
+
+function searchTreasuresV81(){
+  const input = document.getElementById('treasureSearchInputV81');
+  const results = document.getElementById('treasureSearchResultsV81');
+  const phrase = document.getElementById('treasurePhraseV81');
+  if(!input || !results) return;
+
+  const q = (input.value || '').trim().toLowerCase();
+  if(!q){
+    results.innerHTML = '<div class="treasureCardV81">Escribí una palabra o una letra para buscar.</div>';
+    return;
+  }
+
+  const matches = getTreasureSourcesV81().filter(t => {
+    const text = String(t.text || '').toLowerCase();
+    const type = String(t.type || '').toLowerCase();
+    const tag = String(t.tag || '').toLowerCase();
+    const date = String(t.date || '').toLowerCase();
+    return text.includes(q) || type.includes(q) || tag.includes(q) || date.includes(q);
+  });
+
+  if(!matches.length){
+    results.innerHTML = '<div class="treasureCardV81">No encontré tesoros con: <strong>'+escapeHTMLV563(q)+'</strong><br><br>Podés probar con otra palabra o escribir un nuevo tesoro.</div>';
+    if(phrase) phrase.innerHTML = 'No apareció ese tesoro todavía.';
+    return;
+  }
+
+  if(phrase) phrase.innerHTML = 'Encontré '+matches.length+' tesoro(s) con: '+escapeHTMLV563(q);
+
+  results.innerHTML = matches.slice().reverse().map(t => {
+    const tag = t.tag ? '<div class="treasureSmallV81">🏷️ '+getTagLabelV563(t.tag)+'</div>' : '';
+    return '<div class="treasureCardV81">'
+      + '<div class="treasureSmallV81">'+t.icon+' '+escapeHTMLV563(t.type)+(t.date ? ' · '+escapeHTMLV563(t.date) : '')+'</div>'
+      + tag
+      + '<div class="treasureQuoteV81">“'+escapeHTMLV563(t.text)+'”</div>'
+      + '</div>';
+  }).join('');
+
+  currentTreasureV81 = matches[matches.length-1].icon + ' ' + matches[matches.length-1].text;
+}
+
+function clearTreasureSearchV81(){
+  const input = document.getElementById('treasureSearchInputV81');
+  const results = document.getElementById('treasureSearchResultsV81');
+  if(input) input.value = '';
+  if(results) results.innerHTML = '<div class="treasureSmallV81">Búsqueda limpia.</div>';
+  renderTreasuresV81();
+}
+
 function saveCurrentTreasureV81(){
   if(!currentTreasureV81){ alert('Todavía no hay un tesoro para guardar.'); return; }
   let favs = JSON.parse(localStorage.getItem('favoriteMemories') || '[]');
