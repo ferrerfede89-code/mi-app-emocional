@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>App Emocional V68</title>
+<title>App Emocional V69</title>
 
 <style>
 body {
@@ -1165,6 +1165,7 @@ text-align:center;
 <button onclick="openFutureLetter();closeJourneyHub();" class="softButton">📬 Carta futura</button>
 <button onclick="openVersionsConversation();closeJourneyHub();" class="softButton">🎙️ Conversación</button>
 <button onclick="openEmotionMap();closeJourneyHub();" class="softButton">🗺️ Mapa emocional</button>
+<button onclick="openCompass();closeJourneyHub();" class="softButton">🧭 Brújula emocional</button>
 <button onclick="openFullExport();closeJourneyHub();" class="softButton">📦 Historia completa</button>
 <button onclick="openBackup();closeJourneyHub();" class="softButton">☁️ Respaldo</button>
 <br><br>
@@ -4352,6 +4353,72 @@ function openEmotionMap(){
 }
 function closeEmotionMap(){
  const s=document.getElementById('emotionMapScreen');
+ if(s) s.style.display='none';
+}
+</script>
+
+
+<script id="v69_compass">
+function openCompass(){
+ let screen=document.getElementById('compassScreen');
+ if(!screen){
+   screen=document.createElement('div');
+   screen.id='compassScreen';
+   screen.className='fullscreen';
+   screen.style='background:linear-gradient(180deg,#ecfccb,#dbeafe);overflow:auto;text-align:center;';
+   screen.innerHTML='<h1>🧭</h1><h2>Brújula emocional</h2><div id="compassContent" class="rememberCard"></div><br><button onclick="closeCompass()" class="softButton">Volver</button>';
+   document.body.appendChild(screen);
+ }
+
+ const entries=JSON.parse(localStorage.getItem("diaryEntries")||"[]");
+
+ const labels={
+   trabajo:"💼 Trabajo",
+   estudio:"📚 Estudio",
+   familia:"👨‍👩‍👧 Familia",
+   ansiedad:"😟 Ansiedad",
+   esperanza:"🌱 Esperanza",
+   salud:"❤️ Salud",
+   descanso:"🌙 Descanso"
+ };
+
+ let counts={};
+ entries.forEach(e=>{
+   if(e.tag) counts[e.tag]=(counts[e.tag]||0)+1;
+ });
+
+ let topTag=null;
+ let topCount=0;
+
+ Object.keys(counts).forEach(k=>{
+   if(counts[k]>topCount){
+      topCount=counts[k];
+      topTag=k;
+   }
+ });
+
+ let direction='🌱 Tu recorrido todavía se está construyendo.';
+
+ if(topTag==='esperanza') direction='🌱 Tu energía emocional apunta hacia la esperanza.';
+ else if(topTag==='ansiedad') direction='😟 Hay señales de ansiedad ocupando espacio. Recordá mirar también lo que sí avanzó.';
+ else if(topTag==='trabajo') direction='💼 Gran parte de tu atención estuvo en temas laborales.';
+ else if(topTag==='estudio') direction='📚 Tu recorrido reciente estuvo enfocado en aprender y crecer.';
+ else if(topTag==='familia') direction='👨‍👩‍👧 La familia estuvo presente en tu recorrido.';
+ else if(topTag==='salud') direction='❤️ Tu bienestar tuvo un lugar importante.';
+ else if(topTag==='descanso') direction='🌙 Tu brújula apunta a recuperar energía y descanso.';
+
+ document.getElementById('compassContent').innerHTML=
+ '<div style="line-height:1.8;text-align:left;">'+
+ '<strong>🧭 Dirección actual</strong><br><br>'+
+ direction+
+ '<br><br><strong>🌟 Categoría dominante</strong><br>'+(topTag ? labels[topTag] : 'Sin datos todavía')+
+ '<br><br><strong>🌱 Orientación</strong><br>Seguí registrando recuerdos para descubrir cómo evoluciona tu recorrido.'+
+ '</div>';
+
+ screen.style.display='block';
+}
+function closeCompass(){
+ const s=document.getElementById('compassScreen');
  if(s) s.style.display='none';
 }
 </script>
