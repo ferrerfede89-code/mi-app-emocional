@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>App Emocional V74</title>
+<title>App Emocional V75</title>
 
 <style>
 body {
@@ -1173,6 +1173,7 @@ text-align:center;
 <button onclick="openBackup();closeJourneyHub();" class="softButton">☁️ Respaldo</button>
 <button onclick="openRestoreCenter();closeJourneyHub();" class="softButton">💾 Restaurar</button>
 <button onclick="openJourneyReflection();closeJourneyHub();" class="softButton">🌟 Reflexión automática</button>
+<button onclick="openEmotionalMirror();closeJourneyHub();" class="softButton">🎭 Espejo emocional</button>
 <br><br>
 <button onclick="closeJourneyHub()" class="softButton">Volver</button>
 </div>
@@ -4721,6 +4722,53 @@ function openJourneyReflection(){
 
 function closeJourneyReflection(){
  const s=document.getElementById('journeyReflectionScreen');
+ if(s) s.style.display='none';
+}
+</script>
+
+
+<script>
+function openEmotionalMirror(){
+ let screen=document.getElementById('emotionalMirrorScreen');
+ if(!screen){
+   screen=document.createElement('div');
+   screen.id='emotionalMirrorScreen';
+   screen.className='fullscreen';
+   screen.style='background:linear-gradient(180deg,#f5f3ff,#dbeafe);overflow:auto;text-align:center;';
+   screen.innerHTML='<h1>🎭</h1><h2>Espejo emocional</h2><div id="emotionalMirrorContent" class="rememberCard"></div><br><button onclick="closeEmotionalMirror()" class="softButton">Volver</button>';
+   document.body.appendChild(screen);
+ }
+
+ const entries=JSON.parse(localStorage.getItem("diaryEntries")||"[]");
+ let counts={};
+
+ entries.forEach(e=>{
+   if(e.tag) counts[e.tag]=(counts[e.tag]||0)+1;
+ });
+
+ let topTag=null, topCount=0;
+ Object.keys(counts).forEach(k=>{
+   if(counts[k]>topCount){ topTag=k; topCount=counts[k]; }
+ });
+
+ let title='🌱 Explorador en construcción';
+ let text='Todavía no hay suficientes registros para descubrir una identidad emocional predominante.';
+
+ if(topTag==='esperanza'){ title='🌱 Explorador de esperanza'; text='Tu recorrido muestra crecimiento y confianza en el futuro.'; }
+ else if(topTag==='trabajo'){ title='💼 Constructor persistente'; text='Seguiste avanzando incluso cuando las cosas no fueron simples.'; }
+ else if(topTag==='estudio'){ title='📚 Aprendiz constante'; text='Tu historia reciente refleja curiosidad y aprendizaje.'; }
+ else if(topTag==='familia'){ title='👨‍👩‍👧 Guardián de vínculos'; text='Los vínculos importantes ocuparon un lugar central.'; }
+ else if(topTag==='ansiedad'){ title='🌤️ Atravesando tormentas'; text='Hubo tensiones, pero seguiste registrando tu recorrido.'; }
+ else if(topTag==='salud'){ title='❤️ Cuidando tu bienestar'; text='Tu energía estuvo enfocada en sentirte mejor.'; }
+ else if(topTag==='descanso'){ title='🌙 Buscando equilibrio'; text='Tu recorrido muestra una búsqueda de calma y recuperación.'; }
+
+ document.getElementById('emotionalMirrorContent').innerHTML=
+ '<div style="font-size:26px;font-weight:bold;margin-bottom:16px;">'+title+'</div><div style="line-height:1.7;">'+text+'</div>';
+
+ screen.style.display='block';
+}
+function closeEmotionalMirror(){
+ const s=document.getElementById('emotionalMirrorScreen');
  if(s) s.style.display='none';
 }
 </script>
