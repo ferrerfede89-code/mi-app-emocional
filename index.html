@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>App Emocional V75</title>
+<title>App Emocional V76</title>
 
 <style>
 body {
@@ -393,6 +393,30 @@ body, .app, #circle, .action, .stats, .softButton, .moods button {
   font-weight: 600;
   margin: 18px 0;
   line-height: 1.45;
+}
+
+.strengthCard {
+  background: rgba(255,255,255,0.9);
+  border-radius: 22px;
+  padding: 16px;
+  margin: 12px 0;
+  text-align: left;
+  line-height: 1.5;
+  box-shadow: 0 10px 26px rgba(0,0,0,0.07);
+}
+
+.strengthMeter {
+  height: 9px;
+  border-radius: 999px;
+  background: rgba(148,163,184,0.22);
+  overflow: hidden;
+  margin-top: 10px;
+}
+
+.strengthFill {
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg,#86efac,#60a5fa);
 }
 
 </style>
@@ -1174,10 +1198,23 @@ text-align:center;
 <button onclick="openRestoreCenter();closeJourneyHub();" class="softButton">💾 Restaurar</button>
 <button onclick="openJourneyReflection();closeJourneyHub();" class="softButton">🌟 Reflexión automática</button>
 <button onclick="openEmotionalMirror();closeJourneyHub();" class="softButton">🎭 Espejo emocional</button>
+<button onclick="openStrengths();closeJourneyHub();" class="softButton">💪 Fortalezas detectadas</button>
 <br><br>
 <button onclick="closeJourneyHub()" class="softButton">Volver</button>
 </div>
 
+
+
+<div id="strengthsScreen" class="fullscreen" style="background:linear-gradient(180deg,#ecfccb,#dbeafe);overflow:auto;text-align:center;">
+<h1>💪</h1>
+<h2>Fortalezas detectadas</h2>
+<p style="font-size:17px;line-height:1.45;max-width:330px;margin:0 auto 16px;">
+  No son etiquetas fijas. Son señales suaves que aparecen en tu recorrido.
+</p>
+<div id="strengthsContent" class="rememberCard"></div>
+<br>
+<button onclick="closeStrengths()" class="softButton">Volver</button>
+</div>
 
 <div id="capsuleScreen" class="fullscreen" style="background:linear-gradient(180deg,#fef3c7,#ddd6fe);overflow:auto;text-align:center;">
 <h1>📬</h1>
@@ -3803,6 +3840,171 @@ function openCapsule(){ openCapsuleV46(); }
 function saveCapsule(days){ addNewCapsule(days); }
 function renderCapsule(){ renderCapsulesV46(); }
 
+
+function openStrengths(){
+ const screen=document.getElementById('strengthsScreen');
+ if(screen) screen.style.display='block';
+ renderStrengthsV76();
+ if(navigator.vibrate) navigator.vibrate(60);
+}
+
+function closeStrengths(){
+ const screen=document.getElementById('strengthsScreen');
+ if(screen) screen.style.display='none';
+}
+
+function strengthScoreV76(value, max){
+ if(!max) return 0;
+ return Math.max(8, Math.min(100, Math.round((value/max)*100)));
+}
+
+function strengthCardV76(icon,title,score,why,message){
+ return `
+ <div class="strengthCard">
+   <div style="font-size:22px;font-weight:700;">${icon} ${title}</div>
+   <div class="strengthMeter"><div class="strengthFill" style="width:${score}%;"></div></div>
+   <div class="small" style="margin-top:8px;">Señal detectada: ${why}</div>
+   <div style="margin-top:12px;font-size:17px;">${message}</div>
+ </div>`;
+}
+
+function renderStrengthsV76(){
+ const box=document.getElementById('strengthsContent');
+ if(!box) return;
+
+ let entries=[];
+ let moods={};
+ let favs=[];
+ let capsules=[];
+ try{ entries=JSON.parse(localStorage.getItem('diaryEntries')||'[]'); }catch(e){ entries=[]; }
+ try{ moods=JSON.parse(localStorage.getItem('moods')||'{}'); }catch(e){ moods={}; }
+ try{ favs=JSON.parse(localStorage.getItem('favoriteMemories')||'[]'); }catch(e){ favs=[]; }
+ try{ capsules=JSON.parse(localStorage.getItem('futureCapsulesV46')||'[]'); }catch(e){ capsules=[]; }
+
+ let moodTotal=0, bien=0, normal=0, mal=0;
+ Object.keys(moods).forEach(d=>{
+   (moods[d]||[]).forEach(m=>{
+     moodTotal++;
+     if(m==='bien') bien++;
+     if(m==='normal') normal++;
+     if(m==='mal') mal++;
+   });
+ });
+
+ const tagCounts={};
+ entries.forEach(e=>{
+   const t=(e&&e.tag)||'';
+   if(t) tagCounts[t]=(tagCounts[t]||0)+1;
+ });
+
+ const textAll=entries.map(e=>(e&&e.text)||'').join(' ').toLowerCase();
+
+ const strengths=[];
+
+ if(entries.length>0){
+   strengths.push({
+    icon:'📖',
+    title:'Capacidad de expresión',
+    score:strengthScoreV76(entries.length,12),
+    why:entries.length+' recuerdo(s) escritos',
+    message:'Aunque no siempre sea claro, pudiste poner algo en palabras. Eso ya es una forma de orden interno.'
+   });
+ }
+
+ if(moodTotal>0){
+   strengths.push({
+    icon:'🧭',
+    title:'Autoconciencia emocional',
+    score:strengthScoreV76(moodTotal,18),
+    why:moodTotal+' registro(s) de ánimo',
+    message:'Estás aprendiendo a mirar cómo estás sin tener que resolverlo todo en el mismo momento.'
+   });
+ }
+
+ if(mal>0){
+   strengths.push({
+    icon:'🌊',
+    title:'Resistencia en días difíciles',
+    score:strengthScoreV76(mal,8),
+    why:mal+' momento(s) difíciles registrados',
+    message:'Los días pesados no borraron tu presencia. Volviste a registrar, y eso también cuenta.'
+   });
+ }
+
+ if(normal>0 || bien>0){
+   strengths.push({
+    icon:'🌱',
+    title:'Búsqueda de equilibrio',
+    score:strengthScoreV76(normal+bien,12),
+    why:(normal+bien)+' señal(es) entre calma y estabilidad',
+    message:'También aparecen momentos donde algo se acomoda, aunque sea por un rato.'
+   });
+ }
+
+ if((tagCounts.ansiedad||0)>0){
+   strengths.push({
+    icon:'🫁',
+    title:'Reconocer la ansiedad',
+    score:strengthScoreV76(tagCounts.ansiedad,6),
+    why:tagCounts.ansiedad+' recuerdo(s) con ansiedad',
+    message:'Nombrar la ansiedad puede hacerla menos confusa. No la elimina, pero la vuelve más observable.'
+   });
+ }
+
+ if((tagCounts.esperanza||0)>0 || textAll.includes('puedo') || textAll.includes('quiero')){
+   strengths.push({
+    icon:'✨',
+    title:'Orientación hacia adelante',
+    score:strengthScoreV76((tagCounts.esperanza||0)+2,7),
+    why:'aparecen palabras o etiquetas de posibilidad',
+    message:'Hay una parte tuya que todavía busca una salida, una intención o una pequeña continuidad.'
+   });
+ }
+
+ if(favs.length>0){
+   strengths.push({
+    icon:'⭐',
+    title:'Reconocer lo valioso',
+    score:strengthScoreV76(favs.length,8),
+    why:favs.length+' favorito(s) guardado(s)',
+    message:'Elegir recuerdos favoritos muestra que sabés detectar algo importante para volver a sostenerte.'
+   });
+ }
+
+ if(capsules.length>0){
+   strengths.push({
+    icon:'📬',
+    title:'Cuidado hacia tu yo futuro',
+    score:strengthScoreV76(capsules.length,6),
+    why:capsules.length+' cápsula(s) creada(s)',
+    message:'Le dejaste algo a tu versión futura. Eso es una forma muy concreta de cuidado.'
+   });
+ }
+
+ if(!strengths.length){
+   box.innerHTML=`
+    <div style="line-height:1.6;text-align:left;">
+      Todavía no hay suficientes registros para detectar fortalezas con claridad.<br><br>
+      Probá registrar algunas caritas, escribir en el diario o guardar una cápsula. 
+      La app va a empezar a notar señales como expresión, resistencia, calma, esperanza y cuidado.
+    </div>`;
+   return;
+ }
+
+ strengths.sort((a,b)=>b.score-a.score);
+ const top=strengths.slice(0,5);
+
+ box.innerHTML=`
+  <div style="text-align:left;line-height:1.55;margin-bottom:14px;">
+    Detecté <strong>${strengths.length}</strong> fortaleza(s) posibles en tu recorrido.
+    Las más presentes ahora son:
+  </div>
+  ${top.map(s=>strengthCardV76(s.icon,s.title,s.score,s.why,s.message)).join('')}
+  <div style="margin-top:16px;text-align:left;font-style:italic;">
+    “Una fortaleza no siempre se siente fuerte. A veces es simplemente volver a intentarlo.”
+  </div>`;
+}
+
 </script>
 
 
@@ -3921,7 +4123,7 @@ function openLibrary(){
  ];
 
  catsBox.innerHTML=cats.map(c=>
-   '<button class="softButton" onclick="showLibraryCategory(\\''+c[0]+'\\')">'+c[1]+'</button>'
+   `<button class="softButton" onclick="showLibraryCategory(\'${c[0]}\')">${c[1]}</button>`
  ).join(' ');
 
  renderLibraryStatsV592();
