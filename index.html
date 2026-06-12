@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>App Emocional V72</title>
+<title>App Emocional V73</title>
 
 <style>
 body {
@@ -1171,6 +1171,7 @@ text-align:center;
 <button onclick="openLifeTimeline();closeJourneyHub();" class="softButton">📜 Línea de vida</button>
 <button onclick="openFullExport();closeJourneyHub();" class="softButton">📦 Historia completa</button>
 <button onclick="openBackup();closeJourneyHub();" class="softButton">☁️ Respaldo</button>
+<button onclick="openRestoreCenter();closeJourneyHub();" class="softButton">💾 Restaurar</button>
 <br><br>
 <button onclick="closeJourneyHub()" class="softButton">Volver</button>
 </div>
@@ -4599,6 +4600,59 @@ function openLifeTimeline(){
 function closeLifeTimeline(){
  const s=document.getElementById('lifeTimelineScreen');
  if(s) s.style.display='none';
+}
+</script>
+
+
+<div id="restoreScreen" class="fullscreen" style="background:linear-gradient(180deg,#dbeafe,#dcfce7);overflow:auto;text-align:center;">
+<h1>💾</h1>
+<h2>Restaurar recorrido</h2>
+<p>Pegá aquí un respaldo exportado.</p>
+<textarea id="restoreInput" class="textBox" placeholder="APP_EMOCIONAL_BACKUP_V73 {...}"></textarea>
+<br>
+<button onclick="restoreBackupV73()" class="softButton">Restaurar</button>
+<button onclick="closeRestoreCenter()" class="softButton">Volver</button>
+<div id="restoreResult" style="margin-top:12px;font-weight:bold;"></div>
+</div>
+
+<script id="v73_backup_restore">
+function openRestoreCenter(){
+ document.getElementById('restoreScreen').style.display='block';
+}
+function closeRestoreCenter(){
+ document.getElementById('restoreScreen').style.display='none';
+}
+
+function renderBackup(){
+ const data={
+   diaryEntries: JSON.parse(localStorage.getItem('diaryEntries')||'[]'),
+   favoriteMemories: JSON.parse(localStorage.getItem('favoriteMemories')||'[]'),
+   futureCapsulesV46: JSON.parse(localStorage.getItem('futureCapsulesV46')||'[]'),
+   moods: JSON.parse(localStorage.getItem('moods')||'{}')
+ };
+
+ const text='APP_EMOCIONAL_BACKUP_V73\n'+JSON.stringify(data);
+ document.getElementById('backupContent').innerHTML=
+ '<div style="text-align:left;word-break:break-all;">'+text.replace(/</g,'&lt;')+'</div>';
+ localStorage.setItem('lastBackupText', text);
+}
+
+function restoreBackupV73(){
+ try{
+   let txt=document.getElementById('restoreInput').value.trim();
+   txt=txt.replace('APP_EMOCIONAL_BACKUP_V73','').trim();
+
+   const data=JSON.parse(txt);
+
+   localStorage.setItem('diaryEntries', JSON.stringify(data.diaryEntries||[]));
+   localStorage.setItem('favoriteMemories', JSON.stringify(data.favoriteMemories||[]));
+   localStorage.setItem('futureCapsulesV46', JSON.stringify(data.futureCapsulesV46||[]));
+   localStorage.setItem('moods', JSON.stringify(data.moods||{}));
+
+   document.getElementById('restoreResult').innerHTML='✅ Recorrido restaurado';
+ }catch(e){
+   document.getElementById('restoreResult').innerHTML='❌ Respaldo inválido';
+ }
 }
 </script>
 
