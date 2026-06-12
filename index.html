@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>App Emocional V76</title>
+<title>App Emocional V77</title>
 
 <style>
 body {
@@ -419,6 +419,51 @@ body, .app, #circle, .action, .stats, .softButton, .moods button {
   background: linear-gradient(90deg,#86efac,#60a5fa);
 }
 
+
+.seedCardV77 {
+  background: rgba(255,255,255,0.88);
+  border-radius: 24px;
+  padding: 18px;
+  margin: 14px 0;
+  line-height: 1.5;
+  box-shadow: 0 12px 28px rgba(0,0,0,0.07);
+}
+.seedOrbV77 {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  margin: 24px auto;
+  background: radial-gradient(circle,#ffffff,#86efac);
+  box-shadow: 0 22px 60px rgba(34,197,94,.25);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:54px;
+  animation: seedPulseV77 6s infinite ease-in-out;
+}
+@keyframes seedPulseV77 {
+  0% { transform: scale(1); opacity:.86; }
+  50% { transform: scale(1.13); opacity:1; }
+  100% { transform: scale(1); opacity:.86; }
+}
+.seedChoiceV77 {
+  border:none;
+  border-radius:18px;
+  padding:14px 16px;
+  font-size:16px;
+  background:rgba(255,255,255,.92);
+  margin:7px 0;
+  width:100%;
+  text-align:left;
+}
+.seedEmptyHintV77 {
+  margin-top:10px;
+  padding:12px;
+  border-radius:18px;
+  background:rgba(220,252,231,.9);
+  line-height:1.45;
+}
+
 </style>
 
 <style id="v48premium">
@@ -558,6 +603,9 @@ text-align:center;
     
     <button class="action" onclick="openJourneyHub()" style="grid-column:1/3;background:#dcfce7;font-weight:bold;">
       <span>🗺️</span>Mi recorrido
+    </button>
+<button class="action" onclick="openSeedModeV77()" style="grid-column:1/3;background:#bbf7d0;font-weight:bold;">
+      <span>🌱</span>Modo semilla
     </button>
 <button class="action" onclick="openCapsuleV46()" style="grid-column:1/3;background:#fde68a;font-weight:bold;">
       <span>📬</span>Cápsula del tiempo
@@ -1199,6 +1247,7 @@ text-align:center;
 <button onclick="openJourneyReflection();closeJourneyHub();" class="softButton">🌟 Reflexión automática</button>
 <button onclick="openEmotionalMirror();closeJourneyHub();" class="softButton">🎭 Espejo emocional</button>
 <button onclick="openStrengths();closeJourneyHub();" class="softButton">💪 Fortalezas detectadas</button>
+<button onclick="openSeedModeV77();closeJourneyHub();" class="softButton">🌱 Modo semilla</button>
 <br><br>
 <button onclick="closeJourneyHub()" class="softButton">Volver</button>
 </div>
@@ -1234,6 +1283,28 @@ text-align:center;
 <button onclick="closeCapsule()" class="softButton">Volver</button>
 </div>
 
+
+
+<div id="seedModeScreenV77" class="fullscreen" style="background:linear-gradient(180deg,#f0fdf4,#dbeafe);overflow:auto;text-align:center;">
+<h1>🌱</h1>
+<h2>Modo semilla</h2>
+<p style="font-size:17px;line-height:1.45;max-width:330px;margin:0 auto;">
+Este modo es para cuando todavía no hay historial. No necesita números: solo una primera señal suave.
+</p>
+<div class="seedOrbV77">🌱</div>
+<div id="seedModeContentV77" class="rememberCard"></div>
+<div id="seedModeChoicesV77" style="max-width:340px;margin:16px auto 0;text-align:left;">
+<button class="seedChoiceV77" onclick="chooseSeedV77('respirar')">🫁 Necesito bajar un poco la intensidad</button>
+<button class="seedChoiceV77" onclick="chooseSeedV77('escribir')">📖 Quiero dejar una frase inicial</button>
+<button class="seedChoiceV77" onclick="chooseSeedV77('acompañar')">🫂 Necesito sentir compañía</button>
+<button class="seedChoiceV77" onclick="chooseSeedV77('empezar')">🌤️ Quiero empezar sin exigirme</button>
+</div>
+<textarea id="seedTextV77" class="textBox" style="margin-top:18px;display:none;" placeholder="Una frase mínima alcanza..."></textarea>
+<button id="seedSaveButtonV77" onclick="saveSeedTextV77()" class="softButton" style="margin-top:12px;display:none;">Guardar primera semilla</button>
+<div id="seedResultV77" style="margin-top:16px;font-weight:bold;line-height:1.45;"></div>
+<br>
+<button onclick="closeSeedModeV77()" class="softButton">Volver</button>
+</div>
 
 
 
@@ -4123,7 +4194,7 @@ function openLibrary(){
  ];
 
  catsBox.innerHTML=cats.map(c=>
-   `<button class="softButton" onclick="showLibraryCategory(\'${c[0]}\')">${c[1]}</button>`
+   '<button class="softButton" onclick="showLibraryCategory(\\''+c[0]+'\\')">'+c[1]+'</button>'
  ).join(' ');
 
  renderLibraryStatsV592();
@@ -4973,6 +5044,113 @@ function closeEmotionalMirror(){
  const s=document.getElementById('emotionalMirrorScreen');
  if(s) s.style.display='none';
 }
+
+function getCountsV77(){
+ const entries=JSON.parse(localStorage.getItem('diaryEntries')||'[]');
+ const moods=JSON.parse(localStorage.getItem('moods')||'{}');
+ const favs=JSON.parse(localStorage.getItem('favoriteMemories')||'[]');
+ const capsules=JSON.parse(localStorage.getItem('futureCapsulesV46')||'[]');
+ let moodTotal=0;
+ Object.keys(moods).forEach(d=> moodTotal+=(moods[d]||[]).length);
+ return {entries,moods,favs,capsules,moodTotal,total:entries.length+moodTotal+favs.length+capsules.length};
+}
+
+function openSeedModeV77(){
+ const screen=document.getElementById('seedModeScreenV77');
+ if(screen) screen.style.display='block';
+ renderSeedModeV77();
+ if(navigator.vibrate) navigator.vibrate(45);
+}
+function closeSeedModeV77(){
+ const screen=document.getElementById('seedModeScreenV77');
+ if(screen) screen.style.display='none';
+}
+function renderSeedModeV77(){
+ const data=getCountsV77();
+ const box=document.getElementById('seedModeContentV77');
+ const result=document.getElementById('seedResultV77');
+ const text=document.getElementById('seedTextV77');
+ const save=document.getElementById('seedSaveButtonV77');
+ if(result) result.innerHTML='';
+ if(text){ text.style.display='none'; text.value=''; }
+ if(save) save.style.display='none';
+ if(!box) return;
+ if(data.total===0){
+  box.innerHTML=`<div style="font-size:21px;font-weight:700;margin-bottom:10px;">Todavía estás en el inicio.</div>
+  <div>Eso no es un problema. La app todavía no necesita medir: primero puede acompañarte.</div>
+  <div class="seedEmptyHintV77">🌱 Hoy alcanza con una sola acción: tocar una opción, respirar o guardar una frase mínima.</div>`;
+ }else{
+  box.innerHTML=`<div style="font-size:21px;font-weight:700;margin-bottom:10px;">Ya hay pequeñas señales guardadas.</div>
+  <div>Registros emocionales: <strong>${data.moodTotal}</strong><br>Recuerdos escritos: <strong>${data.entries.length}</strong><br>Favoritos: <strong>${data.favs.length}</strong></div>
+  <div class="seedEmptyHintV77">🌱 Aunque ya exista recorrido, podés volver al inicio cuando necesites simpleza.</div>`;
+ }
+}
+function chooseSeedV77(kind){
+ const result=document.getElementById('seedResultV77');
+ const text=document.getElementById('seedTextV77');
+ const save=document.getElementById('seedSaveButtonV77');
+ let msg='';
+ if(kind==='respirar'){
+  msg='🫁 Bien. No hay que resolver todo. Tocá “Respirar” cuando vuelvas, o quedate con esta frase: ahora solo bajo un poco la intensidad.';
+ }
+ if(kind==='escribir'){
+  msg='📖 Escribí una frase mínima. No tiene que explicar todo.';
+  if(text) text.style.display='block';
+  if(save) save.style.display='inline-block';
+ }
+ if(kind==='acompañar'){
+  msg='🫂 Podés usar Conectar o Apoyo rápido. La primera señal también puede ser acercarte a alguien.';
+ }
+ if(kind==='empezar'){
+  msg='🌤️ Hoy no hace falta empezar fuerte. Elegí una cosa pequeña y suficiente.';
+ }
+ if(result) result.innerHTML=msg;
+}
+function saveSeedTextV77(){
+ const input=document.getElementById('seedTextV77');
+ const text=(input&&input.value?input.value.trim():'');
+ if(!text){ alert('Escribí una frase mínima primero.'); return; }
+ const entries=JSON.parse(localStorage.getItem('diaryEntries')||'[]');
+ entries.push({
+  text:'🌱 Primera semilla: '+text,
+  date:new Date().toLocaleDateString(),
+  tag:'esperanza',
+  createdAt:new Date().toISOString(),
+  source:'seedModeV77'
+ });
+ localStorage.setItem('diaryEntries', JSON.stringify(entries));
+ if(typeof renderDiaryList==='function') renderDiaryList();
+ if(typeof renderDashboard==='function') renderDashboard();
+ const result=document.getElementById('seedResultV77');
+ if(result) result.innerHTML='🌱 Guardado. Ya no estás en cero: dejaste una primera señal.';
+ input.value='';
+ renderSeedModeV77();
+}
+
+(function enhanceEmptyStatesV77(){
+ const oldRenderDashboard=window.renderDashboard;
+ if(typeof oldRenderDashboard==='function'){
+  window.renderDashboard=function(){
+   oldRenderDashboard();
+   try{
+    const data=getCountsV77();
+    const box=document.getElementById('dashboardContent');
+    if(box && data.total===0){
+     box.innerHTML=`<div style="text-align:center;">
+      <div style="font-size:20px;font-weight:700;margin-bottom:8px;">🌱 Estás empezando</div>
+      <div>No hay números todavía, y está bien.</div>
+      <div style="margin-top:10px;">La primera señal puede ser una carita, una frase o simplemente respirar.</div>
+      <button onclick="openSeedModeV77()" class="softButton" style="margin-top:12px;">Abrir modo semilla</button>
+     </div>`;
+    }
+   }catch(e){}
+  }
+ }
+ document.addEventListener('DOMContentLoaded',function(){
+  if(typeof renderDashboard==='function') renderDashboard();
+ });
+})();
+
 </script>
 
 </body>
