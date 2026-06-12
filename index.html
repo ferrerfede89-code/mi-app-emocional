@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>App Emocional V67</title>
+<title>App Emocional V68</title>
 
 <style>
 body {
@@ -1164,6 +1164,7 @@ text-align:center;
 <button onclick="openPresentLetter();closeJourneyHub();" class="softButton">💌 Carta automática</button>
 <button onclick="openFutureLetter();closeJourneyHub();" class="softButton">📬 Carta futura</button>
 <button onclick="openVersionsConversation();closeJourneyHub();" class="softButton">🎙️ Conversación</button>
+<button onclick="openEmotionMap();closeJourneyHub();" class="softButton">🗺️ Mapa emocional</button>
 <button onclick="openFullExport();closeJourneyHub();" class="softButton">📦 Historia completa</button>
 <button onclick="openBackup();closeJourneyHub();" class="softButton">☁️ Respaldo</button>
 <br><br>
@@ -4303,6 +4304,54 @@ function openVersionsConversation(){
 }
 function closeVersionsConversation(){
  const s=document.getElementById('versionsConversationScreen');
+ if(s) s.style.display='none';
+}
+</script>
+
+
+<script id="v68_emotion_map">
+function openEmotionMap(){
+ let screen=document.getElementById('emotionMapScreen');
+ if(!screen){
+   screen=document.createElement('div');
+   screen.id='emotionMapScreen';
+   screen.className='fullscreen';
+   screen.style='background:linear-gradient(180deg,#dcfce7,#dbeafe);overflow:auto;text-align:center;';
+   screen.innerHTML='<h1>🗺️</h1><h2>Mapa emocional</h2><div id="emotionMapContent" class="rememberCard"></div><br><button onclick="closeEmotionMap()" class="softButton">Volver</button>';
+   document.body.appendChild(screen);
+ }
+
+ const entries=JSON.parse(localStorage.getItem('diaryEntries')||'[]');
+ const cats=[
+ ['trabajo','💼 Trabajo'],
+ ['estudio','📚 Estudio'],
+ ['familia','👨‍👩‍👧 Familia'],
+ ['ansiedad','😟 Ansiedad'],
+ ['esperanza','🌱 Esperanza'],
+ ['salud','❤️ Salud'],
+ ['descanso','🌙 Descanso']
+ ];
+
+ let maxName='';
+ let maxCount=0;
+ let htmlMap='<div style="text-align:left;line-height:1.8;">';
+
+ cats.forEach(c=>{
+   const count=entries.filter(e=>(e.tag||'')===c[0]).length;
+   const bar='█'.repeat(Math.min(count,12));
+   htmlMap += c[1]+' <strong>'+bar+'</strong> '+count+'<br>';
+   if(count>maxCount){ maxCount=count; maxName=c[1]; }
+ });
+
+ htmlMap += '<br>🌟 Área principal:<br><strong>'+(maxName || 'Sin datos')+'</strong>';
+ htmlMap += '<br><br>🌱 Este mapa muestra dónde estuvo tu energía emocional.';
+ htmlMap += '</div>';
+
+ document.getElementById('emotionMapContent').innerHTML=htmlMap;
+ screen.style.display='block';
+}
+function closeEmotionMap(){
+ const s=document.getElementById('emotionMapScreen');
  if(s) s.style.display='none';
 }
 </script>
