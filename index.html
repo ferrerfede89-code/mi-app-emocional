@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>App Emocional V69</title>
+<title>App Emocional V70</title>
 
 <style>
 body {
@@ -1166,6 +1166,7 @@ text-align:center;
 <button onclick="openVersionsConversation();closeJourneyHub();" class="softButton">🎙️ Conversación</button>
 <button onclick="openEmotionMap();closeJourneyHub();" class="softButton">🗺️ Mapa emocional</button>
 <button onclick="openCompass();closeJourneyHub();" class="softButton">🧭 Brújula emocional</button>
+<button onclick="openEmotionalTrends();closeJourneyHub();" class="softButton">📈 Tendencias emocionales</button>
 <button onclick="openFullExport();closeJourneyHub();" class="softButton">📦 Historia completa</button>
 <button onclick="openBackup();closeJourneyHub();" class="softButton">☁️ Respaldo</button>
 <br><br>
@@ -4419,6 +4420,89 @@ function openCompass(){
 }
 function closeCompass(){
  const s=document.getElementById('compassScreen');
+ if(s) s.style.display='none';
+}
+</script>
+
+
+<script id="v70_emotional_trends">
+function openEmotionalTrends(){
+ let screen=document.getElementById('emotionalTrendsScreen');
+ if(!screen){
+   screen=document.createElement('div');
+   screen.id='emotionalTrendsScreen';
+   screen.className='fullscreen';
+   screen.style='background:linear-gradient(180deg,#fef9c3,#dbeafe);overflow:auto;text-align:center;';
+   screen.innerHTML='<h1>📈</h1><h2>Tendencias emocionales</h2><div id="emotionalTrendsContent" class="rememberCard"></div><br><button onclick="closeEmotionalTrends()" class="softButton">Volver</button>';
+   document.body.appendChild(screen);
+ }
+
+ const entries=JSON.parse(localStorage.getItem("diaryEntries")||"[]");
+
+ const labels={
+   trabajo:"💼 Trabajo",
+   estudio:"📚 Estudio",
+   familia:"👨‍👩‍👧 Familia",
+   ansiedad:"😟 Ansiedad",
+   esperanza:"🌱 Esperanza",
+   salud:"❤️ Salud",
+   descanso:"🌙 Descanso"
+ };
+
+ const tags=["trabajo","estudio","familia","ansiedad","esperanza","salud","descanso"];
+
+ const mid=Math.floor(entries.length/2);
+ const oldEntries=entries.slice(0, mid);
+ const recentEntries=entries.slice(mid);
+
+ function countTag(arr, tag){
+   return arr.filter(e=>(e.tag||"")===tag).length;
+ }
+
+ let rows=[];
+ let biggestTag=null;
+ let biggestDiff=0;
+
+ tags.forEach(tag=>{
+   const oldCount=countTag(oldEntries, tag);
+   const recentCount=countTag(recentEntries, tag);
+   const diff=recentCount-oldCount;
+
+   let trend="→ estable";
+   if(diff>0) trend="↗ creciendo";
+   if(diff<0) trend="↘ disminuyendo";
+
+   rows.push(labels[tag]+" <strong>"+trend+"</strong> ("+recentCount+")");
+
+   if(Math.abs(diff)>Math.abs(biggestDiff)){
+     biggestDiff=diff;
+     biggestTag=tag;
+   }
+ });
+
+ let mainChange="Todavía no hay suficientes recuerdos para detectar un cambio claro.";
+ if(entries.length>=2 && biggestTag){
+   if(biggestDiff>0){
+     mainChange=(labels[biggestTag]||biggestTag)+" apareció más en tus registros recientes.";
+   }else if(biggestDiff<0){
+     mainChange=(labels[biggestTag]||biggestTag)+" apareció menos en tus registros recientes.";
+   }
+ }
+
+ document.getElementById("emotionalTrendsContent").innerHTML=
+ '<div style="text-align:left;line-height:1.8;">'+
+ '<strong>📈 Tendencias recientes</strong><br><br>'+
+ rows.join("<br>")+
+ '<br><br><strong>🌟 Cambio principal</strong><br>'+
+ mainChange+
+ '<br><br>🌱 Las tendencias no te definen: solo muestran cómo se va moviendo tu recorrido.'+
+ '</div>';
+
+ screen.style.display='block';
+}
+
+function closeEmotionalTrends(){
+ const s=document.getElementById('emotionalTrendsScreen');
  if(s) s.style.display='none';
 }
 </script>
