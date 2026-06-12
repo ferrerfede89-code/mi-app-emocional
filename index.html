@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>App Emocional V77</title>
+<title>App Emocional V78</title>
 
 <style>
 body {
@@ -464,6 +464,56 @@ body, .app, #circle, .action, .stats, .softButton, .moods button {
   line-height:1.45;
 }
 
+
+/* V78 - Anclaje inmediato */
+.anchorCardV78{
+  background:rgba(255,255,255,.9);
+  border-radius:24px;
+  padding:18px;
+  margin:14px 0;
+  line-height:1.55;
+  text-align:left;
+  box-shadow:0 12px 30px rgba(0,0,0,.08);
+}
+.anchorOrbV78{
+  width:145px;
+  height:145px;
+  border-radius:50%;
+  margin:24px auto;
+  background:radial-gradient(circle,#ffffff,#93c5fd);
+  box-shadow:0 22px 60px rgba(59,130,246,.25);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:52px;
+  animation: anchorPulseV78 7s infinite ease-in-out;
+}
+@keyframes anchorPulseV78{
+  0%{transform:scale(1);opacity:.86;}
+  50%{transform:scale(1.12);opacity:1;}
+  100%{transform:scale(1);opacity:.86;}
+}
+.anchorStepV78{
+  border:none;
+  border-radius:18px;
+  padding:14px 16px;
+  font-size:16px;
+  background:rgba(255,255,255,.92);
+  margin:7px 0;
+  width:100%;
+  text-align:left;
+}
+.anchorPhraseV78{
+  font-size:22px;
+  font-weight:650;
+  line-height:1.45;
+  text-align:center;
+  padding:18px;
+  border-radius:22px;
+  background:rgba(239,246,255,.94);
+  margin:16px 0;
+}
+
 </style>
 
 <style id="v48premium">
@@ -606,6 +656,9 @@ text-align:center;
     </button>
 <button class="action" onclick="openSeedModeV77()" style="grid-column:1/3;background:#bbf7d0;font-weight:bold;">
       <span>🌱</span>Modo semilla
+    </button>
+<button class="action" onclick="openAnchorV78()" style="grid-column:1/3;background:#dbeafe;font-weight:bold;">
+      <span>⚓</span>Anclaje rápido
     </button>
 <button class="action" onclick="openCapsuleV46()" style="grid-column:1/3;background:#fde68a;font-weight:bold;">
       <span>📬</span>Cápsula del tiempo
@@ -1248,6 +1301,7 @@ text-align:center;
 <button onclick="openEmotionalMirror();closeJourneyHub();" class="softButton">🎭 Espejo emocional</button>
 <button onclick="openStrengths();closeJourneyHub();" class="softButton">💪 Fortalezas detectadas</button>
 <button onclick="openSeedModeV77();closeJourneyHub();" class="softButton">🌱 Modo semilla</button>
+<button onclick="openAnchorV78();closeJourneyHub();" class="softButton">⚓ Anclaje rápido</button>
 <br><br>
 <button onclick="closeJourneyHub()" class="softButton">Volver</button>
 </div>
@@ -1307,6 +1361,28 @@ Este modo es para cuando todavía no hay historial. No necesita números: solo u
 </div>
 
 
+
+
+<div id="anchorScreenV78" class="fullscreen" style="background:linear-gradient(180deg,#dbeafe,#f8fafc);overflow:auto;text-align:center;">
+<h1>⚓</h1>
+<h2>Anclaje rápido</h2>
+<p style="font-size:17px;line-height:1.45;max-width:330px;margin:0 auto;">
+Para cuando abrís la app y todavía no querés registrar nada. Solo volver un poco al cuerpo y al presente.
+</p>
+<div class="anchorOrbV78">⚓</div>
+<div id="anchorContentV78" class="rememberCard"></div>
+<div style="max-width:340px;margin:16px auto 0;text-align:left;">
+<button class="anchorStepV78" onclick="chooseAnchorV78('cuerpo')">🖐️ Volver al cuerpo</button>
+<button class="anchorStepV78" onclick="chooseAnchorV78('lugar')">👀 Mirar el lugar</button>
+<button class="anchorStepV78" onclick="chooseAnchorV78('frase')">💬 Necesito una frase</button>
+<button class="anchorStepV78" onclick="chooseAnchorV78('guardar')">📖 Guardar este momento</button>
+</div>
+<textarea id="anchorTextV78" class="textBox" style="margin-top:18px;display:none;" placeholder="Estoy acá. En este momento siento... / necesito... / puedo... "></textarea>
+<button id="anchorSaveButtonV78" onclick="saveAnchorV78()" class="softButton" style="margin-top:12px;display:none;">Guardar anclaje</button>
+<div id="anchorResultV78" style="margin-top:16px;font-weight:bold;line-height:1.45;"></div>
+<br>
+<button onclick="closeAnchorV78()" class="softButton">Volver</button>
+</div>
 
 
 <div id="searchScreen" class="fullscreen" style="background:linear-gradient(180deg,#ecfeff,#dbeafe);overflow:auto;text-align:center;">
@@ -4076,6 +4152,7 @@ function renderStrengthsV76(){
   </div>`;
 }
 
+
 </script>
 
 
@@ -4127,6 +4204,7 @@ function renderDiaryList(){
 document.addEventListener('DOMContentLoaded', function(){
  try{ renderDiaryList(); }catch(e){}
 });
+
 </script>
 
 
@@ -4229,6 +4307,7 @@ function showLibraryCategory(tag){
    +(e.date||'')+'</strong><br><br>'+(e.text||'')+'</div>'
  ).join('');
 }
+
 </script>
 
 
@@ -4279,6 +4358,7 @@ window.openLibrary = function(){
    }
    renderLibraryStatsReal();
 };
+
 </script>
 
 
@@ -4334,6 +4414,7 @@ document.addEventListener('DOMContentLoaded',function(){
      renderLibraryStatsRealV60();
   };
 });
+
 </script>
 
 
@@ -4369,6 +4450,7 @@ window.openAchievements = function(){
  '<div style="height:10px;width:'+progress+'%;background:#22c55e;border-radius:999px;"></div>'+
  '</div></div>' + box.innerHTML;
 };
+
 </script>
 
 
@@ -4424,6 +4506,7 @@ function openMonthlySummary(){
 function closeMonthlySummary(){
  document.getElementById('monthlySummaryScreen').style.display='none';
 }
+
 </script>
 
 
@@ -4491,6 +4574,7 @@ function closePresentLetter(){
  const s=document.getElementById('presentLetterScreen');
  if(s) s.style.display='none';
 }
+
 </script>
 
 
@@ -4548,6 +4632,7 @@ function closeFutureLetter(){
  const s=document.getElementById('futureLetterScreen');
  if(s) s.style.display='none';
 }
+
 </script>
 
 
@@ -4586,6 +4671,7 @@ function closeVersionsConversation(){
  const s=document.getElementById('versionsConversationScreen');
  if(s) s.style.display='none';
 }
+
 </script>
 
 
@@ -4634,6 +4720,7 @@ function closeEmotionMap(){
  const s=document.getElementById('emotionMapScreen');
  if(s) s.style.display='none';
 }
+
 </script>
 
 
@@ -4700,6 +4787,7 @@ function closeCompass(){
  const s=document.getElementById('compassScreen');
  if(s) s.style.display='none';
 }
+
 </script>
 
 
@@ -4783,6 +4871,7 @@ function closeEmotionalTrends(){
  const s=document.getElementById('emotionalTrendsScreen');
  if(s) s.style.display='none';
 }
+
 </script>
 
 
@@ -4831,6 +4920,7 @@ function closeKeyMoments(){
  const s=document.getElementById('keyMomentsScreen');
  if(s) s.style.display='none';
 }
+
 </script>
 
 
@@ -4876,6 +4966,7 @@ function closeLifeTimeline(){
  const s=document.getElementById('lifeTimelineScreen');
  if(s) s.style.display='none';
 }
+
 </script>
 
 
@@ -4929,6 +5020,7 @@ function restoreBackupV73(){
    document.getElementById('restoreResult').innerHTML='❌ Respaldo inválido';
  }
 }
+
 </script>
 
 
@@ -4997,6 +5089,7 @@ function closeJourneyReflection(){
  const s=document.getElementById('journeyReflectionScreen');
  if(s) s.style.display='none';
 }
+
 </script>
 
 
@@ -5140,7 +5233,7 @@ function saveSeedTextV77(){
       <div style="font-size:20px;font-weight:700;margin-bottom:8px;">🌱 Estás empezando</div>
       <div>No hay números todavía, y está bien.</div>
       <div style="margin-top:10px;">La primera señal puede ser una carita, una frase o simplemente respirar.</div>
-      <button onclick="openSeedModeV77()" class="softButton" style="margin-top:12px;">Abrir modo semilla</button>
+      <button onclick="openSeedModeV77()" class="softButton" style="margin-top:12px;">Abrir modo semilla</button><br><button onclick="openAnchorV78()" class="softButton" style="margin-top:8px;">⚓ Anclaje rápido</button>
      </div>`;
     }
    }catch(e){}
@@ -5150,6 +5243,7 @@ function saveSeedTextV77(){
   if(typeof renderDashboard==='function') renderDashboard();
  });
 })();
+
 
 </script>
 
@@ -5260,6 +5354,89 @@ function saveDiaryEntry(){
 document.addEventListener('DOMContentLoaded', function(){
  try{ renderDiaryListFinal(); }catch(e){}
 });
+
+
+
+/* V78 - Anclaje rápido */
+function openAnchorV78(){
+ const screen=document.getElementById('anchorScreenV78');
+ if(screen) screen.style.display='block';
+ renderAnchorV78();
+ if(navigator.vibrate) navigator.vibrate([30,40,30]);
+}
+function closeAnchorV78(){
+ const screen=document.getElementById('anchorScreenV78');
+ if(screen) screen.style.display='none';
+}
+function renderAnchorV78(){
+ const box=document.getElementById('anchorContentV78');
+ const result=document.getElementById('anchorResultV78');
+ const text=document.getElementById('anchorTextV78');
+ const save=document.getElementById('anchorSaveButtonV78');
+ if(result) result.innerHTML='';
+ if(text){ text.style.display='none'; text.value=''; }
+ if(save) save.style.display='none';
+ if(!box) return;
+ const data=(typeof getCountsV77==='function') ? getCountsV77() : {total:0,moodTotal:0,entries:[]};
+ if(data.total===0){
+  box.innerHTML=`<div style="font-size:21px;font-weight:700;margin-bottom:10px;text-align:center;">No hace falta medir todavía.</div>
+  <div class="anchorCardV78">⚓ Este espacio es para una intervención breve: notar el cuerpo, mirar el lugar, recibir una frase o guardar una línea.</div>
+  <div class="anchorPhraseV78">Estoy acá. Este minuto alcanza.</div>`;
+ }else{
+  box.innerHTML=`<div style="font-size:21px;font-weight:700;margin-bottom:10px;text-align:center;">Volver al presente</div>
+  <div class="anchorCardV78">Ya hay algunas señales guardadas, pero ahora no necesitás analizarlas. Podés usar este anclaje como pausa breve.</div>
+  <div class="anchorPhraseV78">No tengo que entender todo para cuidarme un poco.</div>`;
+ }
+}
+function chooseAnchorV78(kind){
+ const result=document.getElementById('anchorResultV78');
+ const text=document.getElementById('anchorTextV78');
+ const save=document.getElementById('anchorSaveButtonV78');
+ if(text) text.style.display='none';
+ if(save) save.style.display='none';
+ let msg='';
+ if(kind==='cuerpo'){
+  msg='🖐️ Apoyá ambos pies. Aflojá la mandíbula. Bajá los hombros. Una respiración lenta alcanza.';
+ }
+ if(kind==='lugar'){
+  msg='👀 Nombrá 3 cosas que ves, 2 sonidos que escuchás y 1 sensación del cuerpo. No hace falta hacerlo perfecto.';
+ }
+ if(kind==='frase'){
+  const phrases=[
+   '💬 Esto es un momento, no toda mi vida.',
+   '💬 Puedo ir más lento.',
+   '💬 No tengo que pelearme con todo ahora.',
+   '💬 Estoy haciendo lo suficiente para este minuto.',
+   '💬 Volver a mí también cuenta.'
+  ];
+  msg=phrases[Math.floor(Math.random()*phrases.length)];
+ }
+ if(kind==='guardar'){
+  msg='📖 Escribí una línea mínima. Puede ser desordenada. Guardarla ya es una forma de anclarte.';
+  if(text) text.style.display='block';
+  if(save) save.style.display='inline-block';
+ }
+ if(result) result.innerHTML=msg;
+}
+function saveAnchorV78(){
+ const input=document.getElementById('anchorTextV78');
+ const val=(input&&input.value?input.value.trim():'');
+ if(!val){ alert('Escribí una línea mínima primero.'); return; }
+ const entries=JSON.parse(localStorage.getItem('diaryEntries')||'[]');
+ entries.push({
+  text:'⚓ Anclaje rápido: '+val,
+  date:new Date().toLocaleDateString(),
+  tag:'ansiedad',
+  createdAt:new Date().toISOString(),
+  source:'anchorV78'
+ });
+ localStorage.setItem('diaryEntries', JSON.stringify(entries));
+ if(typeof renderDiaryList==='function') renderDiaryList();
+ if(typeof renderDashboard==='function') renderDashboard();
+ const result=document.getElementById('anchorResultV78');
+ if(result) result.innerHTML='⚓ Guardado. Este momento ya tiene un punto de apoyo.';
+ input.value='';
+}
 </script>
 
 
