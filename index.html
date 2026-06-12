@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>App Emocional V73</title>
+<title>App Emocional V74</title>
 
 <style>
 body {
@@ -1172,6 +1172,7 @@ text-align:center;
 <button onclick="openFullExport();closeJourneyHub();" class="softButton">📦 Historia completa</button>
 <button onclick="openBackup();closeJourneyHub();" class="softButton">☁️ Respaldo</button>
 <button onclick="openRestoreCenter();closeJourneyHub();" class="softButton">💾 Restaurar</button>
+<button onclick="openJourneyReflection();closeJourneyHub();" class="softButton">🌟 Reflexión automática</button>
 <br><br>
 <button onclick="closeJourneyHub()" class="softButton">Volver</button>
 </div>
@@ -4653,6 +4654,74 @@ function restoreBackupV73(){
  }catch(e){
    document.getElementById('restoreResult').innerHTML='❌ Respaldo inválido';
  }
+}
+</script>
+
+
+<script id="v74_reflection">
+function openJourneyReflection(){
+ let screen=document.getElementById('journeyReflectionScreen');
+
+ if(!screen){
+   screen=document.createElement('div');
+   screen.id='journeyReflectionScreen';
+   screen.className='fullscreen';
+   screen.style='background:linear-gradient(180deg,#fefce8,#dbeafe);overflow:auto;text-align:center;';
+
+   screen.innerHTML='   <h1>🌟</h1>   <h2>Reflexión automática</h2>   <div id="journeyReflectionContent" class="rememberCard"></div>   <br>   <button onclick="closeJourneyReflection()" class="softButton">Volver</button>';
+
+   document.body.appendChild(screen);
+ }
+
+ const entries=JSON.parse(localStorage.getItem("diaryEntries")||"[]");
+ const favs=JSON.parse(localStorage.getItem("favoriteMemories")||"[]");
+ const capsules=JSON.parse(localStorage.getItem("futureCapsulesV46")||"[]");
+
+ const labels={
+   trabajo:"💼 Trabajo",
+   estudio:"📚 Estudio",
+   familia:"👨‍👩‍👧 Familia",
+   ansiedad:"😟 Ansiedad",
+   esperanza:"🌱 Esperanza",
+   salud:"❤️ Salud",
+   descanso:"🌙 Descanso"
+ };
+
+ let counts={};
+ entries.forEach(e=>{
+   if(e.tag) counts[e.tag]=(counts[e.tag]||0)+1;
+ });
+
+ let topTag=null;
+ let topCount=0;
+
+ Object.keys(counts).forEach(k=>{
+   if(counts[k]>topCount){
+      topCount=counts[k];
+      topTag=k;
+   }
+ });
+
+ let reflection='Todavía no hay suficientes registros para generar una reflexión profunda. 🌱<br><br>Cuando empieces a escribir recuerdos, guardar favoritos o crear cápsulas, este espacio comenzará a contar tu historia.';
+
+ if(entries.length>0){
+   reflection='Durante tu recorrido aparecieron <strong>'+entries.length+'</strong> recuerdos.<br><br>';
+
+   if(topTag){
+      reflection+='La categoría más frecuente fue <strong>'+(labels[topTag]||topTag)+'</strong>.<br><br>';
+   }
+
+   reflection+='También guardaste <strong>'+favs.length+'</strong> favorito(s) y creaste <strong>'+capsules.length+'</strong> cápsula(s).<br><br>';
+   reflection+='Tus registros muestran continuidad, curiosidad por entenderte y voluntad de seguir adelante. 🌱';
+ }
+
+ document.getElementById("journeyReflectionContent").innerHTML=reflection;
+ screen.style.display='block';
+}
+
+function closeJourneyReflection(){
+ const s=document.getElementById('journeyReflectionScreen');
+ if(s) s.style.display='none';
 }
 </script>
 
