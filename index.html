@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>App Emocional V78</title>
+<title>App Emocional V79</title>
 
 <style>
 body {
@@ -514,6 +514,51 @@ body, .app, #circle, .action, .stats, .softButton, .moods button {
   margin:16px 0;
 }
 
+
+
+/* V79 - Huellas invisibles */
+.footprintCardV79{
+  background:rgba(255,255,255,.9);
+  border-radius:24px;
+  padding:18px;
+  margin:14px 0;
+  line-height:1.55;
+  text-align:left;
+  box-shadow:0 12px 30px rgba(0,0,0,.08);
+}
+.footprintPathV79{
+  background:linear-gradient(180deg,rgba(255,255,255,.72),rgba(240,253,244,.88));
+  border-radius:28px;
+  padding:22px 16px;
+  margin:20px 0;
+  min-height:170px;
+  text-align:center;
+  line-height:2.15;
+  font-size:26px;
+  box-shadow:inset 0 0 30px rgba(34,197,94,.08);
+}
+.footprintLineV79{
+  display:block;
+  letter-spacing:7px;
+  margin:4px 0;
+}
+.footprintPhraseV79{
+  font-size:21px;
+  font-weight:650;
+  line-height:1.45;
+  text-align:center;
+  padding:18px;
+  border-radius:22px;
+  background:rgba(236,253,245,.94);
+  margin:16px 0;
+}
+.footprintSmallV79{
+  font-size:15px;
+  color:#64748b;
+  line-height:1.45;
+  text-align:center;
+}
+
 </style>
 
 <style id="v48premium">
@@ -659,6 +704,9 @@ text-align:center;
     </button>
 <button class="action" onclick="openAnchorV78()" style="grid-column:1/3;background:#dbeafe;font-weight:bold;">
       <span>⚓</span>Anclaje rápido
+    </button>
+<button class="action" onclick="openFootprintsV79()" style="grid-column:1/3;background:#ecfccb;font-weight:bold;">
+      <span>👣</span>Huellas invisibles
     </button>
 <button class="action" onclick="openCapsuleV46()" style="grid-column:1/3;background:#fde68a;font-weight:bold;">
       <span>📬</span>Cápsula del tiempo
@@ -1302,6 +1350,7 @@ text-align:center;
 <button onclick="openStrengths();closeJourneyHub();" class="softButton">💪 Fortalezas detectadas</button>
 <button onclick="openSeedModeV77();closeJourneyHub();" class="softButton">🌱 Modo semilla</button>
 <button onclick="openAnchorV78();closeJourneyHub();" class="softButton">⚓ Anclaje rápido</button>
+<button onclick="openFootprintsV79();closeJourneyHub();" class="softButton">👣 Huellas invisibles</button>
 <br><br>
 <button onclick="closeJourneyHub()" class="softButton">Volver</button>
 </div>
@@ -1382,6 +1431,21 @@ Para cuando abrís la app y todavía no querés registrar nada. Solo volver un p
 <div id="anchorResultV78" style="margin-top:16px;font-weight:bold;line-height:1.45;"></div>
 <br>
 <button onclick="closeAnchorV78()" class="softButton">Volver</button>
+</div>
+
+
+<div id="footprintsScreenV79" class="fullscreen" style="background:linear-gradient(180deg,#ecfccb,#dbeafe);overflow:auto;text-align:center;">
+<h1>👣</h1>
+<h2>Huellas invisibles</h2>
+<p style="font-size:17px;line-height:1.45;max-width:330px;margin:0 auto;">
+No son logros. No son estadísticas. Son pequeñas señales de que estuviste acá.
+</p>
+<div id="footprintsIntroV79" class="footprintPhraseV79">Hoy apareciste.</div>
+<div id="footprintsPathV79" class="footprintPathV79"></div>
+<div id="footprintsContentV79" class="rememberCard"></div>
+<br>
+<button onclick="clearFootprintsV79()" class="softButton">Limpiar huellas</button>
+<button onclick="closeFootprintsV79()" class="softButton">Volver</button>
 </div>
 
 
@@ -5437,6 +5501,155 @@ function saveAnchorV78(){
  if(result) result.innerHTML='⚓ Guardado. Este momento ya tiene un punto de apoyo.';
  input.value='';
 }
+
+
+/* V79 - Huellas invisibles */
+function getTodayKeyV79(){
+  return new Date().toISOString().slice(0,10);
+}
+
+function getFootprintsV79(){
+  try{ return JSON.parse(localStorage.getItem('invisibleFootprintsV79')||'[]'); }
+  catch(e){ return []; }
+}
+
+function saveFootprintsV79(items){
+  localStorage.setItem('invisibleFootprintsV79', JSON.stringify(items.slice(-120)));
+}
+
+function footprintLabelV79(type){
+  const labels={
+    abrio_app:'Abriste la aplicación.',
+    respirar:'Entraste a respirar.',
+    liberar:'Buscaste soltar algo.',
+    conectar:'Pensaste en conectar con alguien.',
+    quedarse:'Elegiste quedarte un momento.',
+    chispa:'Buscaste una chispa.',
+    ambiente:'Elegiste un ambiente.',
+    hablar:'Abriste un espacio para hablar.',
+    diario:'Abriste el diario.',
+    dormir:'Buscaste descansar.',
+    empezar:'Intentaste empezar suave.',
+    calendario:'Miraste tu recorrido.',
+    recordar:'Volviste a recordar.',
+    anclaje:'Usaste un anclaje.',
+    semilla:'Entraste al modo semilla.',
+    capsula:'Abriste cápsula del tiempo.',
+    guardo_diario:'Guardaste una frase.',
+    creo_capsula:'Dejaste un mensaje para tu futuro.',
+    guardo_anclaje:'Guardaste un punto de apoyo.',
+    guardo_semilla:'Guardaste una primera semilla.'
+  };
+  return labels[type] || 'Dejaste una huella.';
+}
+
+function addFootprintV79(type){
+  try{
+    const now=new Date();
+    const today=getTodayKeyV79();
+    let items=getFootprintsV79();
+    const recentDuplicate=items.slice(-5).some(x=>x.type===type && x.date===today);
+    if(type==='abrio_app' && recentDuplicate) return;
+    items.push({ id:Date.now()+Math.floor(Math.random()*1000), type:type, date:today, time:now.toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'}), createdAt:now.toISOString() });
+    saveFootprintsV79(items);
+  }catch(e){}
+}
+
+function buildFootprintPathV79(items){
+  if(!items.length) return '<span class="footprintLineV79">👣</span>';
+  const icons=items.slice(-18).map((x,i)=>{
+    if(x.type==='guardo_diario' || x.type==='guardo_semilla') return '🌱';
+    if(x.type==='creo_capsula') return '✨';
+    if(x.type==='recordar') return '🌸';
+    return '👣';
+  });
+  let lines=[];
+  for(let i=0;i<icons.length;i+=5){
+    lines.push('<span class="footprintLineV79">'+icons.slice(i,i+5).join(' ')+'</span>');
+  }
+  return lines.join('');
+}
+
+function renderFootprintsV79(){
+  const items=getFootprintsV79();
+  const path=document.getElementById('footprintsPathV79');
+  const content=document.getElementById('footprintsContentV79');
+  const intro=document.getElementById('footprintsIntroV79');
+  if(!path || !content) return;
+
+  path.innerHTML=buildFootprintPathV79(items);
+
+  if(!items.length){
+    if(intro) intro.innerHTML='👣 Primera huella';
+    content.innerHTML='<div class="footprintCardV79"><strong>Abriste esta aplicación.</strong><br><br>A veces una huella es simplemente estar acá.</div>';
+    return;
+  }
+
+  const today=getTodayKeyV79();
+  const todayItems=items.filter(x=>x.date===today);
+  const days=[...new Set(items.map(x=>x.date))].length;
+  const recent=items.slice(-8).reverse();
+
+  let phrase='Hoy apareciste.';
+  if(items.length>=5) phrase='Hay un camino, aunque no siempre se vea.';
+  if(items.length>=12) phrase='Volviste varias veces. Eso también cuenta.';
+  if(days>=3) phrase='Hubo pausas. No abandono.';
+  if(intro) intro.innerHTML='👣 '+phrase;
+
+  content.innerHTML=`
+    <div class="footprintCardV79">
+      <strong>Huellas de hoy:</strong> ${todayItems.length || 1}<br>
+      <strong>Días con huellas:</strong> ${days}<br><br>
+      <span class="footprintSmallV79">No es para medirte. Es para recordarte que hubo movimiento.</span>
+    </div>
+    ${recent.map(x=>`<div class="footprintCardV79">👣 <strong>${x.time || ''}</strong><br>${footprintLabelV79(x.type)}</div>`).join('')}
+  `;
+}
+
+function openFootprintsV79(){
+  addFootprintV79('huellas');
+  document.getElementById('footprintsScreenV79').style.display='block';
+  renderFootprintsV79();
+  if(navigator.vibrate) navigator.vibrate(45);
+}
+function closeFootprintsV79(){
+  document.getElementById('footprintsScreenV79').style.display='none';
+}
+function clearFootprintsV79(){
+  if(confirm('¿Querés limpiar las huellas invisibles?')){
+    localStorage.removeItem('invisibleFootprintsV79');
+    addFootprintV79('abrio_app');
+    renderFootprintsV79();
+  }
+}
+
+function wrapFootprintV79(fnName,type){
+  const original=window[fnName];
+  if(typeof original!=='function' || original.__footprintWrappedV79) return;
+  const wrapped=function(){
+    addFootprintV79(type);
+    return original.apply(this, arguments);
+  };
+  wrapped.__footprintWrappedV79=true;
+  window[fnName]=wrapped;
+}
+
+function installFootprintsV79(){
+  addFootprintV79('abrio_app');
+  [
+    ['openBreathing','respirar'],['openRelease','liberar'],['openConnect','conectar'],
+    ['openStay','quedarse'],['openSpark','chispa'],['openAtmosphere','ambiente'],
+    ['openTalk','hablar'],['openDiary','diario'],['openSleep','dormir'],
+    ['openMorning','empezar'],['openCalendar','calendario'],['openRemember','recordar'],
+    ['openAnchorV78','anclaje'],['openSeedModeV77','semilla'],['openCapsuleV46','capsula'],
+    ['saveDiaryEntry','guardo_diario'],['addNewCapsule','creo_capsula'],
+    ['saveAnchorV78','guardo_anclaje'],['saveSeedTextV77','guardo_semilla']
+  ].forEach(x=>wrapFootprintV79(x[0],x[1]));
+}
+
+if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', installFootprintsV79);
+else installFootprintsV79();
+
 </script>
 
 
