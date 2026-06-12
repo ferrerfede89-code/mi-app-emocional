@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>App Emocional V66</title>
+<title>App Emocional V67</title>
 
 <style>
 body {
@@ -1163,6 +1163,7 @@ text-align:center;
 <button onclick="openMonthlySummary();closeJourneyHub();" class="softButton">📅 Resumen mensual</button>
 <button onclick="openPresentLetter();closeJourneyHub();" class="softButton">💌 Carta automática</button>
 <button onclick="openFutureLetter();closeJourneyHub();" class="softButton">📬 Carta futura</button>
+<button onclick="openVersionsConversation();closeJourneyHub();" class="softButton">🎙️ Conversación</button>
 <button onclick="openFullExport();closeJourneyHub();" class="softButton">📦 Historia completa</button>
 <button onclick="openBackup();closeJourneyHub();" class="softButton">☁️ Respaldo</button>
 <br><br>
@@ -4264,6 +4265,44 @@ function openFutureLetter(){
 
 function closeFutureLetter(){
  const s=document.getElementById('futureLetterScreen');
+ if(s) s.style.display='none';
+}
+</script>
+
+
+<script id="v67_versions_conversation">
+function openVersionsConversation(){
+ let screen=document.getElementById('versionsConversationScreen');
+ if(!screen){
+   screen=document.createElement('div');
+   screen.id='versionsConversationScreen';
+   screen.className='fullscreen';
+   screen.style='background:linear-gradient(180deg,#fefce8,#dbeafe);overflow:auto;text-align:center;';
+   screen.innerHTML='<h1>🎙️</h1><h2>Conversación entre versiones de vos</h2><div id="versionsConversationContent" class="rememberCard"></div><br><button onclick="closeVersionsConversation()" class="softButton">Volver</button>';
+   document.body.appendChild(screen);
+ }
+
+ const entries=JSON.parse(localStorage.getItem('diaryEntries')||'[]');
+ let past='Todavía no hay recuerdos suficientes.';
+ if(entries.length && entries[0].text) past=entries[0].text;
+
+ let present=entries.length>=10
+   ? 'Seguí registrando mi recorrido y aprendiendo de él.'
+   : 'Estoy intentando entenderme mejor.';
+
+ let future='Seguiste avanzando más de lo que imaginabas.';
+
+ document.getElementById('versionsConversationContent').innerHTML =
+ '<div style="text-align:left;line-height:1.7;">'+
+ '<div style="background:white;padding:12px;border-radius:14px;margin-bottom:12px;">🕰️ <strong>Yo de hace un tiempo</strong><br><br>"'+past+'"</div>'+
+ '<div style="background:white;padding:12px;border-radius:14px;margin-bottom:12px;">🙂 <strong>Yo de hoy</strong><br><br>"'+present+'"</div>'+
+ '<div style="background:white;padding:12px;border-radius:14px;">📬 <strong>Yo del futuro</strong><br><br>"'+future+'"</div>'+
+ '</div>';
+
+ screen.style.display='block';
+}
+function closeVersionsConversation(){
+ const s=document.getElementById('versionsConversationScreen');
  if(s) s.style.display='none';
 }
 </script>
