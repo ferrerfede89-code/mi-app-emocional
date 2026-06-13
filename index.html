@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>App Emocional V81 corregida</title>
+<title>App Emocional V82</title>
 
 <style>
 body {
@@ -695,6 +695,65 @@ body, .app, #circle, .action, .stats, .softButton, .moods button {
   font-size:14px;
 }
 
+
+/* V82 - Qué te sostuvo */
+.supportedOrbV82{
+  width:150px;
+  height:150px;
+  border-radius:50%;
+  margin:24px auto;
+  background:radial-gradient(circle,#ffffff,#fb7185);
+  box-shadow:0 22px 60px rgba(244,63,94,.24);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:56px;
+  animation:supportedPulseV82 7s infinite ease-in-out;
+}
+@keyframes supportedPulseV82{
+  0%{transform:scale(1);opacity:.86;}
+  50%{transform:scale(1.1);opacity:1;}
+  100%{transform:scale(1);opacity:.86;}
+}
+.supportedPhraseV82{
+  font-size:21px;
+  font-weight:650;
+  line-height:1.45;
+  text-align:center;
+  padding:18px;
+  border-radius:22px;
+  background:rgba(255,241,242,.95);
+  margin:16px 0;
+}
+.supportedCardV82{
+  background:rgba(255,255,255,.92);
+  border-radius:24px;
+  padding:18px;
+  margin:14px 0;
+  line-height:1.55;
+  text-align:left;
+  box-shadow:0 12px 30px rgba(0,0,0,.08);
+}
+.supportedSignalV82{
+  background:linear-gradient(135deg,rgba(255,241,242,.96),rgba(219,234,254,.82));
+  border-radius:20px;
+  padding:14px;
+  margin:10px 0;
+  line-height:1.45;
+}
+.supportedWordsV82{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  margin-top:12px;
+}
+.supportedWordV82{
+  background:rgba(255,255,255,.78);
+  border-radius:999px;
+  padding:8px 12px;
+  font-size:14px;
+}
+
 </style>
 
 <style id="v48premium">
@@ -849,6 +908,9 @@ text-align:center;
     </button>
 <button class="action" onclick="openTreasuresV81()" style="grid-column:1/3;background:#fef3c7;font-weight:bold;">
       <span>💎</span>Tesoros olvidados
+    </button>
+<button class="action" onclick="openSupportedV82()" style="grid-column:1/3;background:#ffe4e6;font-weight:bold;">
+      <span>🫀</span>Qué te sostuvo
     </button>
 <button class="action" onclick="openCapsuleV46()" style="grid-column:1/3;background:#fde68a;font-weight:bold;">
       <span>📬</span>Cápsula del tiempo
@@ -1495,6 +1557,7 @@ text-align:center;
 <button onclick="openFootprintsV79();closeJourneyHub();" class="softButton">👣 Huellas invisibles</button>
 <button onclick="openGardenV80();closeJourneyHub();" class="softButton">🌿 Jardín emocional</button>
 <button onclick="openTreasuresV81();closeJourneyHub();" class="softButton">💎 Tesoros olvidados</button>
+<button onclick="openSupportedV82();closeJourneyHub();" class="softButton">🫀 Qué te sostuvo</button>
 
 <br><br>
 <button onclick="closeJourneyHub()" class="softButton">Volver</button>
@@ -1649,6 +1712,21 @@ A veces una frase antigua vuelve como un tesoro. No para medir tu avance, sino p
 <button onclick="closeTreasuresV81()" class="softButton">Volver</button>
 </div>
 
+
+<div id="supportedScreenV82" class="fullscreen" style="background:linear-gradient(180deg,#ffe4e6,#dbeafe);overflow:auto;text-align:center;">
+<h1>🫀</h1>
+<h2>Qué te sostuvo</h2>
+<p style="font-size:17px;line-height:1.45;max-width:330px;margin:0 auto;">
+No es un ranking. No mide rendimiento. Busca señales suaves de lo que estuvo cerca tuyo cuando seguiste.
+</p>
+<div class="supportedOrbV82">🫀</div>
+<div id="supportedPhraseV82" class="supportedPhraseV82">Estoy buscando señales en tu recorrido...</div>
+<div id="supportedContentV82" class="rememberCard"></div>
+<br>
+<button onclick="renderSupportedV82()" class="softButton">Volver a mirar</button>
+<button onclick="closeSupportedV82()" class="softButton">Volver</button>
+</div>
+
 <div id="searchScreen" class="fullscreen" style="background:linear-gradient(180deg,#ecfeff,#dbeafe);overflow:auto;text-align:center;">
 <h1>🔎</h1>
 <h2>Buscar recuerdos</h2>
@@ -1715,6 +1793,100 @@ A veces una frase antigua vuelve como un tesoro. No para medir tu avance, sino p
 </div>
 
 <script>
+
+
+// V82 - Qué te sostuvo
+function openSupportedV82(){
+ document.getElementById('supportedScreenV82').style.display='block';
+ renderSupportedV82();
+ if(typeof addFootprintV79==='function') addFootprintV79('miro_que_sostuvo');
+}
+function closeSupportedV82(){
+ document.getElementById('supportedScreenV82').style.display='none';
+}
+function getManualTreasuresV82(){
+ return JSON.parse(localStorage.getItem('manualTreasuresV81')||'[]');
+}
+function getAllSupportTextsV82(){
+ const entries=JSON.parse(localStorage.getItem('diaryEntries')||'[]');
+ const favs=JSON.parse(localStorage.getItem('favoriteMemories')||'[]');
+ const capsules=JSON.parse(localStorage.getItem('futureCapsulesV46')||'[]');
+ const manualTreasures=getManualTreasuresV82();
+ const seedTexts=JSON.parse(localStorage.getItem('seedTextsV77')||'[]');
+ const anchorTexts=JSON.parse(localStorage.getItem('anchorEntriesV78')||'[]');
+ let texts=[];
+ entries.forEach(e=>{ if(e && e.text) texts.push(String(e.text)); });
+ favs.forEach(f=>{ if(typeof f==='string') texts.push(f); else if(f && f.text) texts.push(String(f.text)); });
+ capsules.forEach(c=>{ if(c && c.text) texts.push(String(c.text)); });
+ manualTreasures.forEach(t=>{ if(t && t.text) texts.push(String(t.text)); else if(typeof t==='string') texts.push(t); });
+ seedTexts.forEach(t=>{ if(t && t.text) texts.push(String(t.text)); else if(typeof t==='string') texts.push(t); });
+ anchorTexts.forEach(t=>{ if(t && t.text) texts.push(String(t.text)); else if(typeof t==='string') texts.push(t); });
+ return texts;
+}
+function getFootprintsCountV82(){
+ const keys=['footprintsV79','invisibleFootprintsV79','footprintEventsV79'];
+ for(const k of keys){
+   try{
+     const arr=JSON.parse(localStorage.getItem(k)||'[]');
+     if(Array.isArray(arr) && arr.length) return arr.length;
+   }catch(e){}
+ }
+ return 0;
+}
+function mostFrequentWordsV82(texts){
+ const stop='porque para pero como cuando donde desde hasta esta este esto estas estos estas una unos unas con sin que los las del por soy estoy tengo tiene hay muy mas más menos algo todo todos todas hoy ayer mañana aqui aquí ahi ahí solo sola puede puedo pude quiero quería necesito sentir siento sentí estar seguir sigue segui seguí bien mal normal cosa cosas vez veces'.split(' ');
+ const stopSet=new Set(stop);
+ const counts={};
+ texts.join(' ').toLowerCase()
+  .normalize('NFD').replace(/[\u0300-\u036f]/g,'')
+  .replace(/[^a-záéíóúñ0-9\s]/gi,' ')
+  .split(/\s+/)
+  .filter(w=>w.length>=4 && !stopSet.has(w))
+  .forEach(w=>counts[w]=(counts[w]||0)+1);
+ return Object.entries(counts).sort((a,b)=>b[1]-a[1]).slice(0,6);
+}
+function renderSupportedV82(){
+ const entries=JSON.parse(localStorage.getItem('diaryEntries')||'[]');
+ const favs=JSON.parse(localStorage.getItem('favoriteMemories')||'[]');
+ const capsules=JSON.parse(localStorage.getItem('futureCapsulesV46')||'[]');
+ const manualTreasures=getManualTreasuresV82();
+ const texts=getAllSupportTextsV82();
+ const footprints=getFootprintsCountV82();
+ const box=document.getElementById('supportedContentV82');
+ const phrase=document.getElementById('supportedPhraseV82');
+ const signals=[];
+ if(entries.length>0) signals.push('📖 Escribiste. Dejar algo escrito también puede sostener.');
+ if(entries.length>2) signals.push('📖 Volviste al diario más de una vez. Hubo continuidad, aunque haya sido pequeña.');
+ if(favs.length>0) signals.push('⭐ Guardaste recuerdos favoritos. Algo en vos eligió conservar ciertas frases.');
+ if(capsules.length>0) signals.push('📬 Dejaste mensajes para tu futuro. Eso también es una forma de cuidado.');
+ if(manualTreasures.length>0) signals.push('💎 Creaste tesoros propios. Marcaste frases que querías volver a encontrar.');
+ if(footprints>0) signals.push('👣 Dejaste huellas. No todo fue visible, pero hubo presencia.');
+ if(texts.length>0) signals.push('🫀 Hubo palabras guardadas. A veces escribir no soluciona, pero acompaña.');
+ const words=mostFrequentWordsV82(texts);
+ if(!signals.length && !words.length){
+   phrase.innerHTML='Todavía estoy aprendiendo.';
+   box.innerHTML=`
+   <div class="supportedCardV82">
+     <div class="supportedSignalV82">🫀 Encontré algo simple: abriste este espacio.</div>
+     <div class="supportedSignalV82">👣 Volviste. Y eso ya es una señal.</div>
+     <br>
+     No hace falta tener historial para que esto empiece. A veces lo primero que sostiene es quedarse unos segundos.
+   </div>`;
+   return;
+ }
+ phrase.innerHTML='Encontré algunas señales suaves.';
+ let html='<div class="supportedCardV82"><strong>🫀 Qué pudo haberte sostenido</strong><br><br>';
+ html += signals.map(s=>'<div class="supportedSignalV82">'+s+'</div>').join('');
+ if(words.length){
+   html += '<br><strong>Palabras que aparecieron más de una vez</strong>';
+   html += '<div class="supportedWordsV82">'+words.map(w=>'<span class="supportedWordV82">'+w[0]+' · '+w[1]+'</span>').join('')+'</div>';
+   html += '<p class="small" style="margin-top:14px;">No significa que esas palabras expliquen todo. Solo muestran qué estuvo presente en tu recorrido.</p>';
+ }
+ html += '<br><div class="supportedSignalV82">Eso no resuelve todo. Pero muestra que algo en vos siguió apareciendo.</div>';
+ html += '</div>';
+ box.innerHTML=html;
+}
+
 
 function openAchievements(){
  document.getElementById('achievementScreen').style.display='block';
