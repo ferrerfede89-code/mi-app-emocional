@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>App Emocional V82</title>
+<title>App Emocional V83</title>
 
 <style>
 body {
@@ -754,6 +754,73 @@ body, .app, #circle, .action, .stats, .softButton, .moods button {
   font-size:14px;
 }
 
+
+/* V83 - Momentos de luz */
+.lightOrbV83{
+  width:150px;
+  height:150px;
+  border-radius:50%;
+  margin:24px auto;
+  background:radial-gradient(circle,#ffffff,#fde047);
+  box-shadow:0 22px 70px rgba(250,204,21,.34);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:58px;
+  animation:lightPulseV83 6s infinite ease-in-out;
+}
+@keyframes lightPulseV83{
+  0%{transform:scale(1);opacity:.86;filter:brightness(1);}
+  50%{transform:scale(1.12);opacity:1;filter:brightness(1.08);}
+  100%{transform:scale(1);opacity:.86;filter:brightness(1);}
+}
+.lightPhraseV83{
+  font-size:21px;
+  font-weight:650;
+  line-height:1.45;
+  text-align:center;
+  padding:18px;
+  border-radius:22px;
+  background:rgba(254,249,195,.95);
+  margin:16px 0;
+}
+.lightCardV83{
+  background:rgba(255,255,255,.92);
+  border-radius:24px;
+  padding:18px;
+  margin:14px 0;
+  line-height:1.55;
+  text-align:left;
+  box-shadow:0 12px 30px rgba(0,0,0,.08);
+}
+.lightMomentV83{
+  background:linear-gradient(135deg,rgba(254,249,195,.96),rgba(219,234,254,.82));
+  border-radius:22px;
+  padding:18px;
+  margin:14px 0;
+  line-height:1.5;
+  font-size:19px;
+}
+.lightSmallV83{
+  font-size:15px;
+  color:#64748b;
+  line-height:1.45;
+}
+.lightGridV83{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+  margin-top:14px;
+}
+.lightChipV83{
+  background:rgba(255,255,255,.76);
+  border-radius:999px;
+  padding:9px 12px;
+  font-size:14px;
+  display:inline-block;
+  margin:4px;
+}
+
 </style>
 
 <style id="v48premium">
@@ -911,6 +978,9 @@ text-align:center;
     </button>
 <button class="action" onclick="openSupportedV82()" style="grid-column:1/3;background:#ffe4e6;font-weight:bold;">
       <span>🫀</span>Qué te sostuvo
+    </button>
+<button class="action" onclick="openLightsV83()" style="grid-column:1/3;background:#fef9c3;font-weight:bold;">
+      <span>🌟</span>Momentos de luz
     </button>
 <button class="action" onclick="openCapsuleV46()" style="grid-column:1/3;background:#fde68a;font-weight:bold;">
       <span>📬</span>Cápsula del tiempo
@@ -1558,6 +1628,7 @@ text-align:center;
 <button onclick="openGardenV80();closeJourneyHub();" class="softButton">🌿 Jardín emocional</button>
 <button onclick="openTreasuresV81();closeJourneyHub();" class="softButton">💎 Tesoros olvidados</button>
 <button onclick="openSupportedV82();closeJourneyHub();" class="softButton">🫀 Qué te sostuvo</button>
+<button onclick="openLightsV83();closeJourneyHub();" class="softButton">🌟 Momentos de luz</button>
 
 <br><br>
 <button onclick="closeJourneyHub()" class="softButton">Volver</button>
@@ -1727,6 +1798,33 @@ No es un ranking. No mide rendimiento. Busca señales suaves de lo que estuvo ce
 <button onclick="closeSupportedV82()" class="softButton">Volver</button>
 </div>
 
+
+<div id="lightsScreenV83" class="fullscreen" style="background:linear-gradient(180deg,#fef9c3,#dbeafe);overflow:auto;text-align:center;">
+<h1>🌟</h1>
+<h2>Momentos de luz</h2>
+<p style="font-size:17px;line-height:1.45;max-width:330px;margin:0 auto;">
+No busca felicidad obligatoria. Solo rescata instantes pequeños donde algo se sintió un poco menos pesado.
+</p>
+<div class="lightOrbV83">🌟</div>
+<div id="lightPhraseV83" class="lightPhraseV83">Buscando pequeñas luces en tu recorrido...</div>
+<div id="lightContentV83" class="rememberCard"></div>
+
+<div id="lightWriteBoxV83" class="rememberCard" style="display:none;text-align:left;">
+  <strong>🌟 Guardar un momento de luz</strong><br><br>
+  <span class="lightSmallV83">Puede ser mínimo: una comida tranquila, una canción, un mensaje, una caminata, una respiración.</span>
+  <textarea id="lightManualTextV83" class="textBox" style="margin-top:14px;" placeholder="Hoy hubo una pequeña luz cuando..."></textarea>
+  <button onclick="saveManualLightV83()" class="softButton">Guardar luz</button>
+</div>
+
+<br>
+<button onclick="showAnotherLightV83()" class="softButton">Mostrar otra luz</button>
+<button onclick="openLightWriterV83()" class="softButton">✍️ Guardar momento de luz</button>
+<button onclick="renderLightGalleryV83()" class="softButton">🕯️ Ver luces guardadas</button>
+<button onclick="saveCurrentLightV83()" class="softButton">⭐ Guardar como favorito</button>
+<br>
+<button onclick="closeLightsV83()" class="softButton">Volver</button>
+</div>
+
 <div id="searchScreen" class="fullscreen" style="background:linear-gradient(180deg,#ecfeff,#dbeafe);overflow:auto;text-align:center;">
 <h1>🔎</h1>
 <h2>Buscar recuerdos</h2>
@@ -1885,6 +1983,149 @@ function renderSupportedV82(){
  html += '<br><div class="supportedSignalV82">Eso no resuelve todo. Pero muestra que algo en vos siguió apareciendo.</div>';
  html += '</div>';
  box.innerHTML=html;
+}
+
+
+// V83 - Momentos de luz
+let currentLightV83='';
+
+function openLightsV83(){
+  document.getElementById('lightsScreenV83').style.display='block';
+  renderLightsV83();
+  if(typeof addFootprintV79==='function') addFootprintV79('miro_momentos_de_luz');
+}
+function closeLightsV83(){
+  document.getElementById('lightsScreenV83').style.display='none';
+}
+function escapeLightV83(str){
+  return String(str||'').replace(/[&<>'"]/g,function(c){
+    return {'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c];
+  });
+}
+function getManualLightsV83(){
+  try{ return JSON.parse(localStorage.getItem('lightMomentsV83')||'[]'); }catch(e){ return []; }
+}
+function setManualLightsV83(arr){
+  localStorage.setItem('lightMomentsV83', JSON.stringify(arr));
+}
+function getLightSourcesV83(){
+  const entries=JSON.parse(localStorage.getItem('diaryEntries')||'[]');
+  const favs=JSON.parse(localStorage.getItem('favoriteMemories')||'[]');
+  const treasures=JSON.parse(localStorage.getItem('manualTreasuresV81')||'[]');
+  const manual=getManualLightsV83();
+  const moods=JSON.parse(localStorage.getItem('moods')||'{}');
+  let lights=[];
+
+  manual.forEach(l=>{
+    if(l && l.text) lights.push({icon:'🌟',type:'Luz guardada',text:String(l.text),date:l.date||''});
+  });
+  favs.forEach(f=>{
+    const text=(typeof f==='string')?f:(f&&f.text?String(f.text):'');
+    if(text) lights.push({icon:'⭐',type:'Favorito',text,date:''});
+  });
+  treasures.forEach(t=>{
+    const text=(typeof t==='string')?t:(t&&t.text?String(t.text):'');
+    if(text) lights.push({icon:'💎',type:'Tesoro',text,date:t.date||''});
+  });
+  entries.forEach(e=>{
+    const text=e && e.text ? String(e.text) : '';
+    const tag=e && e.tag ? String(e.tag) : '';
+    const softWords=/alegr|calma|pude|logr|gracias|tranquil|sonre|mejor|luz|bien|esperanza|acompañ|descans|respir/i;
+    if(text && (tag==='esperanza' || tag==='descanso' || softWords.test(text))){
+      lights.push({icon:'📖',type:'Diario',text,date:e.date||''});
+    }
+  });
+  Object.keys(moods).sort().forEach(d=>{
+    const good=(moods[d]||[]).filter(m=>m==='bien').length;
+    if(good>0) lights.push({icon:'🙂',type:'Estado de ánimo',text:'Ese día registraste un momento de alivio o bienestar.',date:d});
+  });
+  return lights;
+}
+function renderLightsV83(){
+  const box=document.getElementById('lightContentV83');
+  const phrase=document.getElementById('lightPhraseV83');
+  const writeBox=document.getElementById('lightWriteBoxV83');
+  if(writeBox) writeBox.style.display='none';
+  const lights=getLightSourcesV83();
+
+  if(!lights.length){
+    currentLightV83='Abriste este espacio. Esa también puede ser una primera luz.';
+    phrase.innerHTML='Todavía no encontré luces guardadas.';
+    box.innerHTML=`<div class="lightCardV83">
+      <div class="lightMomentV83">🌟 Abriste este espacio. Esa también puede ser una primera luz.</div>
+      <div class="lightSmallV83">Podés guardar una luz mínima para volver a encontrarla más adelante.</div>
+    </div>`;
+    return;
+  }
+  const chosen=lights[lights.length-1];
+  currentLightV83=chosen.icon+' '+chosen.text;
+  phrase.innerHTML='Encontré una luz reciente.';
+  box.innerHTML=`<div class="lightCardV83">
+    <div class="lightSmallV83">${escapeLightV83(chosen.icon)} ${escapeLightV83(chosen.type)}${chosen.date?' · '+escapeLightV83(chosen.date):''}</div>
+    <div class="lightMomentV83">“${escapeLightV83(chosen.text)}”</div>
+    <div class="lightSmallV83">No tiene que ser enorme para contar. A veces una luz pequeña alcanza para ubicar el camino.</div>
+  </div>`;
+}
+function showAnotherLightV83(){
+  const lights=getLightSourcesV83();
+  const box=document.getElementById('lightContentV83');
+  const phrase=document.getElementById('lightPhraseV83');
+  const writeBox=document.getElementById('lightWriteBoxV83');
+  if(writeBox) writeBox.style.display='none';
+  if(!lights.length){ renderLightsV83(); return; }
+  const chosen=lights[Math.floor(Math.random()*lights.length)];
+  currentLightV83=chosen.icon+' '+chosen.text;
+  phrase.innerHTML='Apareció otra pequeña luz.';
+  box.innerHTML=`<div class="lightCardV83">
+    <div class="lightSmallV83">${escapeLightV83(chosen.icon)} ${escapeLightV83(chosen.type)}${chosen.date?' · '+escapeLightV83(chosen.date):''}</div>
+    <div class="lightMomentV83">“${escapeLightV83(chosen.text)}”</div>
+  </div>`;
+}
+function openLightWriterV83(){
+  const box=document.getElementById('lightWriteBoxV83');
+  const phrase=document.getElementById('lightPhraseV83');
+  if(box) box.style.display='block';
+  if(phrase) phrase.innerHTML='Podés guardar una luz mínima.';
+}
+function saveManualLightV83(){
+  const input=document.getElementById('lightManualTextV83');
+  const text=(input.value||'').trim();
+  const phrase=document.getElementById('lightPhraseV83');
+  if(!text){
+    if(phrase) phrase.innerHTML='Una palabra también alcanza.';
+    return;
+  }
+  const arr=getManualLightsV83();
+  const now=new Date();
+  arr.push({text, date:now.toLocaleDateString('es-ES'), createdAt:now.toISOString()});
+  setManualLightsV83(arr);
+  input.value='';
+  currentLightV83='🌟 '+text;
+  if(phrase) phrase.innerHTML='Luz guardada.';
+  renderLightGalleryV83();
+  if(typeof renderDashboard==='function') renderDashboard();
+}
+function renderLightGalleryV83(){
+  const lights=getLightSourcesV83();
+  const box=document.getElementById('lightContentV83');
+  const phrase=document.getElementById('lightPhraseV83');
+  const writeBox=document.getElementById('lightWriteBoxV83');
+  if(writeBox) writeBox.style.display='none';
+  if(!lights.length){ renderLightsV83(); return; }
+  phrase.innerHTML='Estas son algunas luces encontradas.';
+  const recent=lights.slice(-8).reverse();
+  box.innerHTML='<div class="lightCardV83"><strong>🕯️ Luces guardadas y encontradas</strong><br><br>'+
+    recent.map(l=>'<div class="lightMomentV83"><div class="lightSmallV83">'+escapeLightV83(l.icon)+' '+escapeLightV83(l.type)+(l.date?' · '+escapeLightV83(l.date):'')+'</div>“'+escapeLightV83(l.text)+'”</div>').join('')+
+    '<div class="lightSmallV83">Se muestran las últimas 8 señales de luz.</div></div>';
+}
+function saveCurrentLightV83(){
+  if(!currentLightV83){ alert('Todavía no hay una luz para guardar.'); return; }
+  let favs=JSON.parse(localStorage.getItem('favoriteMemories')||'[]');
+  if(favs.includes(currentLightV83)){ alert('⭐ Esta luz ya estaba en favoritos'); return; }
+  favs.push(currentLightV83);
+  localStorage.setItem('favoriteMemories', JSON.stringify(favs));
+  alert('🌟 Momento de luz guardado como favorito');
+  if(typeof renderDashboard==='function') renderDashboard();
 }
 
 
