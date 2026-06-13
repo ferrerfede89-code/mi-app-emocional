@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>App Emocional V83</title>
+<title>App Emocional V84</title>
 
 <style>
 body {
@@ -821,6 +821,81 @@ body, .app, #circle, .action, .stats, .softButton, .moods button {
   margin:4px;
 }
 
+
+/* V84 - Refugio interno */
+.refugeOrbV84{
+  width:152px;
+  height:152px;
+  border-radius:50%;
+  margin:24px auto;
+  background:radial-gradient(circle,#ffffff,#a7f3d0);
+  box-shadow:0 22px 60px rgba(16,185,129,.25);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:56px;
+  animation:refugePulseV84 7s infinite ease-in-out;
+}
+@keyframes refugePulseV84{
+  0%{transform:scale(1);opacity:.86;}
+  50%{transform:scale(1.1);opacity:1;}
+  100%{transform:scale(1);opacity:.86;}
+}
+.refugePhraseV84{
+  font-size:21px;
+  font-weight:650;
+  line-height:1.45;
+  text-align:center;
+  padding:18px;
+  border-radius:22px;
+  background:rgba(236,253,245,.95);
+  margin:16px 0;
+}
+.refugeCardV84{
+  background:rgba(255,255,255,.92);
+  border-radius:24px;
+  padding:18px;
+  margin:14px 0;
+  line-height:1.55;
+  text-align:left;
+  box-shadow:0 12px 30px rgba(0,0,0,.08);
+}
+.refugeSceneV84{
+  background:linear-gradient(180deg,rgba(255,255,255,.78),rgba(209,250,229,.9));
+  border-radius:28px;
+  padding:22px 16px;
+  margin:20px 0;
+  min-height:170px;
+  text-align:center;
+  box-shadow:inset 0 0 34px rgba(16,185,129,.10), 0 12px 30px rgba(0,0,0,.07);
+}
+.refugeSkyV84{font-size:38px;margin-bottom:14px;}
+.refugePlaceV84{font-size:54px;margin:16px 0;}
+.refugeLineV84{
+  font-size:19px;
+  font-weight:620;
+  line-height:1.45;
+  padding:14px;
+  border-radius:20px;
+  background:rgba(255,255,255,.72);
+  margin-top:12px;
+}
+.refugeChoiceV84{
+  border:none;
+  border-radius:18px;
+  padding:14px 16px;
+  font-size:16px;
+  background:rgba(255,255,255,.92);
+  margin:7px 0;
+  width:100%;
+  text-align:left;
+}
+.refugeSmallV84{
+  font-size:15px;
+  color:#64748b;
+  line-height:1.45;
+}
+
 </style>
 
 <style id="v48premium">
@@ -981,6 +1056,9 @@ text-align:center;
     </button>
 <button class="action" onclick="openLightsV83()" style="grid-column:1/3;background:#fef9c3;font-weight:bold;">
       <span>🌟</span>Momentos de luz
+    </button>
+<button class="action" onclick="openRefugeV84()" style="grid-column:1/3;background:#d1fae5;font-weight:bold;">
+      <span>🏡</span>Refugio interno
     </button>
 <button class="action" onclick="openCapsuleV46()" style="grid-column:1/3;background:#fde68a;font-weight:bold;">
       <span>📬</span>Cápsula del tiempo
@@ -1629,6 +1707,7 @@ text-align:center;
 <button onclick="openTreasuresV81();closeJourneyHub();" class="softButton">💎 Tesoros olvidados</button>
 <button onclick="openSupportedV82();closeJourneyHub();" class="softButton">🫀 Qué te sostuvo</button>
 <button onclick="openLightsV83();closeJourneyHub();" class="softButton">🌟 Momentos de luz</button>
+<button onclick="openRefugeV84();closeJourneyHub();" class="softButton">🏡 Refugio interno</button>
 
 <br><br>
 <button onclick="closeJourneyHub()" class="softButton">Volver</button>
@@ -1823,6 +1902,42 @@ No busca felicidad obligatoria. Solo rescata instantes pequeños donde algo se s
 <button onclick="saveCurrentLightV83()" class="softButton">⭐ Guardar como favorito</button>
 <br>
 <button onclick="closeLightsV83()" class="softButton">Volver</button>
+</div>
+
+
+<div id="refugeScreenV84" class="fullscreen" style="background:linear-gradient(180deg,#d1fae5,#dbeafe);overflow:auto;text-align:center;">
+<h1>🏡</h1>
+<h2>Refugio interno</h2>
+<p style="font-size:17px;line-height:1.45;max-width:330px;margin:0 auto;">
+Un lugar imaginario para bajar un poco el ruido. No exige explicar nada: solo elegir una sensación de cuidado.
+</p>
+<div class="refugeOrbV84">🏡</div>
+<div id="refugePhraseV84" class="refugePhraseV84">Elegí cómo querés que se sienta este refugio.</div>
+<div id="refugeSceneV84" class="refugeSceneV84">
+  <div id="refugeSkyV84" class="refugeSkyV84">🌤️</div>
+  <div id="refugePlaceV84" class="refugePlaceV84">🏡</div>
+  <div id="refugeLineV84" class="refugeLineV84">Este espacio puede ser pequeño. Igual puede cuidarte un momento.</div>
+</div>
+<div style="max-width:340px;margin:16px auto 0;text-align:left;">
+<button class="refugeChoiceV84" onclick="chooseRefugeV84('silencio')">🌙 Silencio suave</button>
+<button class="refugeChoiceV84" onclick="chooseRefugeV84('calor')">🕯️ Calor y abrigo</button>
+<button class="refugeChoiceV84" onclick="chooseRefugeV84('aire')">🌬️ Aire y espacio</button>
+<button class="refugeChoiceV84" onclick="chooseRefugeV84('agua')">🌊 Agua tranquila</button>
+<button class="refugeChoiceV84" onclick="chooseRefugeV84('luz')">🌟 Una luz cerca</button>
+</div>
+<div id="refugeContentV84" class="rememberCard"></div>
+<div id="refugeWriteBoxV84" class="rememberCard" style="display:none;text-align:left;">
+  <strong>✍️ Personalizar mi refugio</strong><br><br>
+  <span class="refugeSmallV84">Podés escribir una frase, imagen o lugar que te dé calma.</span>
+  <textarea id="refugeManualTextV84" class="textBox" style="margin-top:14px;" placeholder="Mi refugio se parece a... / En este lugar puedo... / Necesito recordar..."></textarea>
+  <button onclick="saveManualRefugeV84()" class="softButton">Guardar refugio</button>
+</div>
+<br>
+<button onclick="openRefugeWriterV84()" class="softButton">✍️ Escribir mi refugio</button>
+<button onclick="showSavedRefugeV84()" class="softButton">🧺 Ver refugio guardado</button>
+<button onclick="saveCurrentRefugeV84()" class="softButton">⭐ Guardar como favorito</button>
+<br>
+<button onclick="closeRefugeV84()" class="softButton">Volver</button>
 </div>
 
 <div id="searchScreen" class="fullscreen" style="background:linear-gradient(180deg,#ecfeff,#dbeafe);overflow:auto;text-align:center;">
@@ -2125,6 +2240,105 @@ function saveCurrentLightV83(){
   favs.push(currentLightV83);
   localStorage.setItem('favoriteMemories', JSON.stringify(favs));
   alert('🌟 Momento de luz guardado como favorito');
+  if(typeof renderDashboard==='function') renderDashboard();
+}
+
+
+// V84 - Refugio interno
+let currentRefugeV84='';
+
+function openRefugeV84(){
+  document.getElementById('refugeScreenV84').style.display='block';
+  renderRefugeV84();
+  if(typeof addFootprintV79==='function') addFootprintV79('entro_refugio_interno');
+}
+function closeRefugeV84(){
+  document.getElementById('refugeScreenV84').style.display='none';
+}
+function escapeRefugeV84(str){
+  return String(str||'').replace(/[&<>'"]/g,function(c){
+    return {'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c];
+  });
+}
+function getSavedRefugeV84(){
+  try{ return JSON.parse(localStorage.getItem('internalRefugeV84')||'null'); }catch(e){ return null; }
+}
+function setSavedRefugeV84(obj){
+  localStorage.setItem('internalRefugeV84', JSON.stringify(obj));
+}
+function renderRefugeV84(){
+  const saved=getSavedRefugeV84();
+  const content=document.getElementById('refugeContentV84');
+  const writeBox=document.getElementById('refugeWriteBoxV84');
+  if(writeBox) writeBox.style.display='none';
+  if(saved && saved.text){
+    currentRefugeV84='🏡 '+saved.text;
+    document.getElementById('refugePhraseV84').innerHTML='Tu refugio sigue disponible.';
+    document.getElementById('refugeSkyV84').innerHTML=saved.sky||'🌤️';
+    document.getElementById('refugePlaceV84').innerHTML=saved.place||'🏡';
+    document.getElementById('refugeLineV84').innerHTML=escapeRefugeV84(saved.text);
+    content.innerHTML='<div class="refugeCardV84"><strong>🧺 Refugio guardado</strong><br><br><span class="refugeSmallV84">'+escapeRefugeV84(saved.date||'')+'</span><br>'+escapeRefugeV84(saved.text)+'</div>';
+  }else{
+    currentRefugeV84='Este espacio puede ser pequeño. Igual puede cuidarte un momento.';
+    document.getElementById('refugePhraseV84').innerHTML='Elegí cómo querés que se sienta este refugio.';
+    document.getElementById('refugeSkyV84').innerHTML='🌤️';
+    document.getElementById('refugePlaceV84').innerHTML='🏡';
+    document.getElementById('refugeLineV84').innerHTML='Este espacio puede ser pequeño. Igual puede cuidarte un momento.';
+    content.innerHTML='<div class="refugeCardV84"><strong>Entrada suave</strong><br><br>No tenés que explicar lo que pasa. Podés entrar, respirar y quedarte unos segundos en una imagen más segura.</div>';
+  }
+}
+function chooseRefugeV84(type){
+  const data={
+    silencio:{sky:'🌙 ✨',place:'🛏️',line:'Un lugar con silencio amable. Nada te apura. Nada te exige responder ahora.'},
+    calor:{sky:'🕯️',place:'🧣',line:'Un lugar con abrigo. Podés aflojar un poco los hombros y dejar que el cuerpo pese.'},
+    aire:{sky:'🌤️',place:'🌬️',line:'Un lugar con aire. Hay espacio alrededor tuyo. Podés respirar sin hacerlo perfecto.'},
+    agua:{sky:'☁️',place:'🌊',line:'Un lugar con agua tranquila. Lo que sentís puede moverse despacio, sin golpearte.'},
+    luz:{sky:'🌟',place:'🏡',line:'Un lugar con una luz cerca. No ilumina todo, pero alcanza para no quedar a oscuras.'}
+  }[type] || null;
+  if(!data) return;
+  document.getElementById('refugePhraseV84').innerHTML='Tu refugio tomó una forma.';
+  document.getElementById('refugeSkyV84').innerHTML=data.sky;
+  document.getElementById('refugePlaceV84').innerHTML=data.place;
+  document.getElementById('refugeLineV84').innerHTML=data.line;
+  currentRefugeV84=data.place+' '+data.line;
+  document.getElementById('refugeContentV84').innerHTML='<div class="refugeCardV84"><strong>Quedate unos segundos acá.</strong><br><br>'+escapeRefugeV84(data.line)+'<br><br><span class="refugeSmallV84">Si querés, podés escribir una versión propia de este refugio y guardarla.</span></div>';
+}
+function openRefugeWriterV84(){
+  const box=document.getElementById('refugeWriteBoxV84');
+  if(box) box.style.display='block';
+  document.getElementById('refugePhraseV84').innerHTML='Podés construirlo con tus palabras.';
+}
+function saveManualRefugeV84(){
+  const input=document.getElementById('refugeManualTextV84');
+  const text=(input.value||'').trim();
+  if(!text){
+    document.getElementById('refugePhraseV84').innerHTML='Una frase mínima alcanza para empezar.';
+    return;
+  }
+  const now=new Date();
+  const obj={text, sky:'🌤️ ✨', place:'🏡', date:now.toLocaleDateString('es-ES'), createdAt:now.toISOString()};
+  setSavedRefugeV84(obj);
+  input.value='';
+  currentRefugeV84='🏡 '+text;
+  renderRefugeV84();
+  if(typeof renderDashboard==='function') renderDashboard();
+}
+function showSavedRefugeV84(){
+  const saved=getSavedRefugeV84();
+  if(!saved || !saved.text){
+    document.getElementById('refugePhraseV84').innerHTML='Todavía no hay un refugio escrito.';
+    document.getElementById('refugeContentV84').innerHTML='<div class="refugeCardV84">Podés elegir una sensación o escribir una frase para crear el primero.</div>';
+    return;
+  }
+  renderRefugeV84();
+}
+function saveCurrentRefugeV84(){
+  if(!currentRefugeV84){ alert('Todavía no hay un refugio para guardar.'); return; }
+  let favs=JSON.parse(localStorage.getItem('favoriteMemories')||'[]');
+  if(favs.includes(currentRefugeV84)){ alert('⭐ Este refugio ya estaba en favoritos'); return; }
+  favs.push(currentRefugeV84);
+  localStorage.setItem('favoriteMemories', JSON.stringify(favs));
+  alert('🏡 Refugio guardado como favorito');
   if(typeof renderDashboard==='function') renderDashboard();
 }
 
