@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>App Emocional V86</title>
+<title>App Emocional V87</title>
 
 <style>
 body {
@@ -1031,6 +1031,75 @@ body, .app, #circle, .action, .stats, .softButton, .moods button {
   line-height:1.45;
 }
 
+
+
+/* V87 - Constelación emocional */
+.constellationSkyV87{
+  position:relative;
+  min-height:300px;
+  border-radius:30px;
+  margin:20px 0;
+  overflow:hidden;
+  background:radial-gradient(circle at 50% 15%, rgba(255,255,255,.24), transparent 18%), linear-gradient(180deg,#1e1b4b,#0f172a 72%,#111827);
+  box-shadow:inset 0 0 42px rgba(255,255,255,.08), 0 16px 36px rgba(15,23,42,.18);
+}
+.constellationStarV87{
+  position:absolute;
+  border:none;
+  border-radius:999px;
+  width:42px;
+  height:42px;
+  background:rgba(255,255,255,.12);
+  color:#fde68a;
+  font-size:24px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  box-shadow:0 0 20px rgba(253,230,138,.38);
+  animation:starTwinkleV87 4.8s infinite ease-in-out;
+}
+.constellationStarV87.brightV87{
+  width:50px;
+  height:50px;
+  font-size:29px;
+  box-shadow:0 0 28px rgba(253,230,138,.62), 0 0 52px rgba(147,197,253,.25);
+}
+@keyframes starTwinkleV87{
+  0%{transform:scale(1);opacity:.78;}
+  50%{transform:scale(1.12);opacity:1;}
+  100%{transform:scale(1);opacity:.78;}
+}
+.constellationPhraseV87{
+  font-size:21px;
+  font-weight:650;
+  line-height:1.45;
+  text-align:center;
+  padding:18px;
+  border-radius:22px;
+  background:rgba(238,242,255,.95);
+  margin:16px 0;
+}
+.constellationCardV87{
+  background:rgba(255,255,255,.92);
+  border-radius:24px;
+  padding:18px;
+  margin:14px 0;
+  line-height:1.55;
+  text-align:left;
+  box-shadow:0 12px 30px rgba(0,0,0,.08);
+}
+.constellationLineV87{
+  position:absolute;
+  height:1px;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.28),transparent);
+  transform-origin:left center;
+}
+.constellationSmallV87{
+  font-size:15px;
+  color:#64748b;
+  line-height:1.45;
+}
+
 </style>
 
 <style id="v48premium">
@@ -1200,6 +1269,9 @@ text-align:center;
     </button>
 <button class="action" onclick="openPocketV86()" style="grid-column:1/3;background:#ede9fe;font-weight:bold;">
       <span>🧺</span>Bolsillo de calma
+    </button>
+<button class="action" onclick="openConstellationV87()" style="grid-column:1/3;background:#e0e7ff;font-weight:bold;">
+      <span>🌌</span>Constelación emocional
     </button>
 <button class="action" onclick="openCapsuleV46()" style="grid-column:1/3;background:#fde68a;font-weight:bold;">
       <span>📬</span>Cápsula del tiempo
@@ -1851,6 +1923,7 @@ text-align:center;
 <button onclick="openRefugeV84();closeJourneyHub();" class="softButton">🏡 Refugio interno</button>
 <button onclick="openBridgeV85();closeJourneyHub();" class="softButton">🌉 Puente de regreso</button>
 <button onclick="openPocketV86();closeJourneyHub();" class="softButton">🧺 Bolsillo de calma</button>
+<button onclick="openConstellationV87();closeJourneyHub();" class="softButton">🌌 Constelación emocional</button>
 
 <br><br>
 <button onclick="closeJourneyHub()" class="softButton">Volver</button>
@@ -2146,6 +2219,23 @@ Un lugar pequeño para guardar recursos simples. No tiene que solucionar todo: s
 <button onclick="saveCurrentPocketV86()" class="softButton">⭐ Guardar como favorito</button>
 <br>
 <button onclick="closePocketV86()" class="softButton">Volver</button>
+</div>
+
+
+<div id="constellationScreenV87" class="fullscreen" style="background:linear-gradient(180deg,#312e81,#0f172a);color:white;overflow:auto;text-align:center;">
+<h1>🌌</h1>
+<h2>Constelación emocional</h2>
+<p style="font-size:17px;line-height:1.45;max-width:330px;margin:0 auto;color:#e0e7ff;">
+No son datos sueltos. Son puntos de luz de tu recorrido: tesoros, momentos, refugios, favoritos y señales que fueron quedando.
+</p>
+<div id="constellationPhraseV87" class="constellationPhraseV87" style="color:#1f2937;">Armando tu cielo...</div>
+<div id="constellationSkyV87" class="constellationSkyV87"></div>
+<div id="constellationContentV87" class="rememberCard" style="color:#1f2937;"></div>
+<br>
+<button onclick="renderConstellationV87()" class="softButton">Volver a mirar el cielo</button>
+<button onclick="saveCurrentConstellationV87()" class="softButton">⭐ Guardar estrella actual</button>
+<br>
+<button onclick="closeConstellationV87()" class="softButton">Volver</button>
 </div>
 
 <div id="searchScreen" class="fullscreen" style="background:linear-gradient(180deg,#ecfeff,#dbeafe);overflow:auto;text-align:center;">
@@ -2732,6 +2822,121 @@ function saveCurrentPocketV86(){
   favs.push(currentPocketV86);
   localStorage.setItem('favoriteMemories', JSON.stringify(favs));
   alert('🧺 Guardado como favorito');
+  if(typeof renderDashboard==='function') renderDashboard();
+}
+
+
+
+// V87 - Constelación emocional
+let currentConstellationV87='';
+
+function openConstellationV87(){
+  document.getElementById('constellationScreenV87').style.display='block';
+  renderConstellationV87();
+  if(typeof addFootprintV79==='function') addFootprintV79('miro_constelacion_emocional');
+}
+function closeConstellationV87(){
+  document.getElementById('constellationScreenV87').style.display='none';
+}
+function escapeConstellationV87(str){
+  return String(str||'').replace(/[&<>'"]/g,function(c){
+    return {'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c];
+  });
+}
+function getConstellationPiecesV87(){
+  let pieces=[];
+  function add(text,type,emoji,date,weight){
+    text=String(text||'').trim();
+    if(!text) return;
+    pieces.push({text:text,type:type||'recuerdo',emoji:emoji||'⭐',date:date||'',weight:weight||1});
+  }
+  function readArray(key){ try{return JSON.parse(localStorage.getItem(key)||'[]');}catch(e){return [];} }
+
+  readArray('favoriteMemories').slice(-10).forEach(function(x){ add(x,'Favorito','⭐','',3); });
+  readArray('emotionalLightsV83').slice(-8).forEach(function(x){ add(x.text||x,'Momento de luz','✨',x.date||'',3); });
+  readArray('forgottenTreasuresV81').slice(-8).forEach(function(x){ add(x.text||x,'Tesoro','💎',x.date||'',3); });
+  readArray('refugesV84').slice(-6).forEach(function(x){ add(x.text||x,'Refugio','🏡',x.date||'',2); });
+  readArray('calmPocketV86').slice(-6).forEach(function(x){ add(x.text||x,'Bolsillo de calma','🧺',x.date||'',2); });
+  readArray('bridgeReturnV85').slice(-5).forEach(function(x){ add(x.text||x,'Puente','🌉',x.date||'',2); });
+  readArray('diaryEntries').slice(-6).forEach(function(x){ add(x.text||x.content||x.entry||'','Diario','📖',x.date||'',1); });
+
+  // Quitar duplicados suaves
+  let seen={};
+  pieces=pieces.filter(function(p){
+    let k=p.text.toLowerCase().slice(0,90);
+    if(seen[k]) return false;
+    seen[k]=true;
+    return true;
+  });
+  return pieces.slice(-18);
+}
+function renderConstellationV87(){
+  const sky=document.getElementById('constellationSkyV87');
+  const phrase=document.getElementById('constellationPhraseV87');
+  const content=document.getElementById('constellationContentV87');
+  const pieces=getConstellationPiecesV87();
+  sky.innerHTML='';
+
+  if(!pieces.length){
+    currentConstellationV87='🌌 Todavía puedo empezar mi constelación con una pequeña señal.';
+    phrase.innerHTML='Todavía hay pocas estrellas, pero el cielo ya está abierto.';
+    sky.innerHTML='<div style="position:absolute;left:0;right:0;top:92px;text-align:center;font-size:68px;">🌌</div><div style="position:absolute;left:26px;right:26px;bottom:34px;color:#c7d2fe;font-size:16px;line-height:1.45;">Cuando guardes tesoros, favoritos, momentos de luz o frases propias, van a aparecer como estrellas.</div>';
+    content.innerHTML='<div class="constellationCardV87"><strong>🌌 Entrada suave</strong><br><br>La constelación no exige historial. Solo espera pequeños puntos de luz: una frase que te sostuvo, un refugio, un tesoro, un momento de calma o algo que quieras recordar.</div>';
+    return;
+  }
+
+  phrase.innerHTML='Tu recorrido también tiene puntos de luz.';
+  const positions=[
+    [12,22],[31,14],[55,24],[77,16],[20,46],[44,39],[68,48],[84,37],[14,70],[36,66],[58,72],[78,64],[47,18],[27,82],[70,82],[90,74],[8,38],[52,57]
+  ];
+  const chosen=pieces.slice(-18);
+
+  for(let i=0;i<chosen.length-1;i++){
+    const a=positions[i], b=positions[i+1];
+    const dx=b[0]-a[0], dy=b[1]-a[1];
+    const len=Math.sqrt(dx*dx+dy*dy);
+    const angle=Math.atan2(dy,dx)*180/Math.PI;
+    const line=document.createElement('div');
+    line.className='constellationLineV87';
+    line.style.left=a[0]+'%';
+    line.style.top=a[1]+'%';
+    line.style.width=(len*3.15)+'px';
+    line.style.transform='rotate('+angle+'deg)';
+    sky.appendChild(line);
+  }
+
+  chosen.forEach(function(p,i){
+    const pos=positions[i];
+    const star=document.createElement('button');
+    star.className='constellationStarV87'+(p.weight>=3?' brightV87':'');
+    star.style.left='calc('+pos[0]+'% - 21px)';
+    star.style.top='calc('+pos[1]+'% - 21px)';
+    star.style.animationDelay=(i*.27)+'s';
+    star.innerHTML=p.emoji;
+    star.onclick=function(){showConstellationStarV87(i);};
+    sky.appendChild(star);
+  });
+
+  const brightest=chosen.slice().sort(function(a,b){return b.weight-a.weight;})[0] || chosen[0];
+  currentConstellationV87=brightest.emoji+' '+brightest.text;
+  content.innerHTML='<div class="constellationCardV87"><strong>🌌 Tu cielo de hoy</strong><br><br>Aparecieron <strong>'+chosen.length+'</strong> puntos de luz. Tocá una estrella para ver qué recuerdo, frase o señal está guardada ahí.<br><br><span class="constellationSmallV87">Las estrellas más brillantes vienen de favoritos, tesoros y momentos de luz.</span></div>';
+}
+function showConstellationStarV87(index){
+  const pieces=getConstellationPiecesV87().slice(-18);
+  const p=pieces[index];
+  if(!p) return;
+  currentConstellationV87=p.emoji+' '+p.text;
+  document.getElementById('constellationPhraseV87').innerHTML='Esta estrella también es parte de vos.';
+  document.getElementById('constellationContentV87').innerHTML='<div class="constellationCardV87"><strong>'+escapeConstellationV87(p.emoji+' '+p.type)+'</strong><br><br>“'+escapeConstellationV87(p.text)+'”'+(p.date?'<br><br><span class="constellationSmallV87">Guardado: '+escapeConstellationV87(p.date)+'</span>':'')+'<br><br><em>Este punto de luz apareció porque algo en vos siguió dejando señales.</em></div>';
+}
+function saveCurrentConstellationV87(){
+  if(!currentConstellationV87){ alert('Todavía no hay una estrella seleccionada.'); return; }
+  let favs=[];
+  try{ favs=JSON.parse(localStorage.getItem('favoriteMemories')||'[]'); }catch(e){ favs=[]; }
+  if(favs.includes(currentConstellationV87)){ alert('⭐ Esta estrella ya estaba en favoritos'); return; }
+  favs.push(currentConstellationV87);
+  localStorage.setItem('favoriteMemories', JSON.stringify(favs));
+  alert('🌌 Estrella guardada como favorita');
   if(typeof renderDashboard==='function') renderDashboard();
 }
 
