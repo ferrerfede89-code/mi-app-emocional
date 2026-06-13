@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>App Emocional V87</title>
+<title>App Emocional V88</title>
 
 <style>
 body {
@@ -1100,6 +1100,61 @@ body, .app, #circle, .action, .stats, .softButton, .moods button {
   line-height:1.45;
 }
 
+
+/* V88 - Ritual de cierre */
+.closingOrbV88{
+  width:150px;
+  height:150px;
+  border-radius:50%;
+  margin:24px auto;
+  background:radial-gradient(circle,#ffffff,#fbbf24);
+  box-shadow:0 22px 60px rgba(251,191,36,.30);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:56px;
+  animation:closingPulseV88 7s infinite ease-in-out;
+}
+@keyframes closingPulseV88{
+  0%{transform:scale(1);opacity:.86;}
+  50%{transform:scale(1.1);opacity:1;}
+  100%{transform:scale(1);opacity:.86;}
+}
+.closingPhraseV88{
+  font-size:21px;
+  font-weight:650;
+  line-height:1.45;
+  text-align:center;
+  padding:18px;
+  border-radius:22px;
+  background:rgba(254,243,199,.96);
+  margin:16px 0;
+}
+.closingCardV88{
+  background:rgba(255,255,255,.92);
+  border-radius:24px;
+  padding:18px;
+  margin:14px 0;
+  line-height:1.55;
+  text-align:left;
+  box-shadow:0 12px 30px rgba(0,0,0,.08);
+}
+.closingStepV88{
+  border:none;
+  border-radius:18px;
+  padding:14px 16px;
+  font-size:16px;
+  background:rgba(255,255,255,.92);
+  margin:7px 0;
+  width:100%;
+  text-align:left;
+}
+.closingSmallV88{
+  font-size:15px;
+  color:#64748b;
+  line-height:1.45;
+}
+
 </style>
 
 <style id="v48premium">
@@ -1272,6 +1327,9 @@ text-align:center;
     </button>
 <button class="action" onclick="openConstellationV87()" style="grid-column:1/3;background:#e0e7ff;font-weight:bold;">
       <span>🌌</span>Constelación emocional
+    </button>
+<button class="action" onclick="openClosingV88()" style="grid-column:1/3;background:#fef3c7;font-weight:bold;">
+      <span>🕯️</span>Ritual de cierre
     </button>
 <button class="action" onclick="openCapsuleV46()" style="grid-column:1/3;background:#fde68a;font-weight:bold;">
       <span>📬</span>Cápsula del tiempo
@@ -1924,6 +1982,7 @@ text-align:center;
 <button onclick="openBridgeV85();closeJourneyHub();" class="softButton">🌉 Puente de regreso</button>
 <button onclick="openPocketV86();closeJourneyHub();" class="softButton">🧺 Bolsillo de calma</button>
 <button onclick="openConstellationV87();closeJourneyHub();" class="softButton">🌌 Constelación emocional</button>
+<button onclick="openClosingV88();closeJourneyHub();" class="softButton">🕯️ Ritual de cierre</button>
 
 <br><br>
 <button onclick="closeJourneyHub()" class="softButton">Volver</button>
@@ -2236,6 +2295,33 @@ No son datos sueltos. Son puntos de luz de tu recorrido: tesoros, momentos, refu
 <button onclick="saveCurrentConstellationV87()" class="softButton">⭐ Guardar estrella actual</button>
 <br>
 <button onclick="closeConstellationV87()" class="softButton">Volver</button>
+</div>
+
+
+
+<div id="closingScreenV88" class="fullscreen" style="background:linear-gradient(180deg,#fef3c7,#ddd6fe);overflow:auto;text-align:center;">
+<h1>🕯️</h1>
+<h2>Ritual de cierre</h2>
+<p style="font-size:17px;line-height:1.45;max-width:330px;margin:0 auto;">
+Para cerrar un momento sin tener que resolverlo todo. Un gesto pequeño para decir: por ahora, alcanza.
+</p>
+<div class="closingOrbV88">🕯️</div>
+<div id="closingPhraseV88" class="closingPhraseV88">Podemos cerrar esto con suavidad.</div>
+<div id="closingContentV88" class="rememberCard"></div>
+<div style="max-width:340px;margin:16px auto 0;text-align:left;">
+<button class="closingStepV88" onclick="chooseClosingV88('soltar')">🍃 Soltar una frase</button>
+<button class="closingStepV88" onclick="chooseClosingV88('agradecer')">🤲 Agradecer algo mínimo</button>
+<button class="closingStepV88" onclick="chooseClosingV88('cuerpo')">🖐️ Volver al cuerpo</button>
+<button class="closingStepV88" onclick="chooseClosingV88('mañana')">🌤️ Dejar algo para mañana</button>
+</div>
+<textarea id="closingTextV88" class="textBox" style="margin-top:18px;display:none;" placeholder="Hoy cierro esto dejando escrito... / Por ahora puedo soltar... / Mañana vuelvo a intentar... "></textarea>
+<button id="closingSaveButtonV88" onclick="saveClosingV88()" class="softButton" style="margin-top:12px;display:none;">Guardar cierre</button>
+<div id="closingResultV88" style="margin-top:16px;font-weight:bold;line-height:1.45;"></div>
+<br>
+<button onclick="showClosingHistoryV88()" class="softButton">🕯️ Ver cierres guardados</button>
+<button onclick="saveCurrentClosingV88()" class="softButton">⭐ Guardar cierre actual</button>
+<br>
+<button onclick="closeClosingV88()" class="softButton">Volver</button>
 </div>
 
 <div id="searchScreen" class="fullscreen" style="background:linear-gradient(180deg,#ecfeff,#dbeafe);overflow:auto;text-align:center;">
@@ -2937,6 +3023,108 @@ function saveCurrentConstellationV87(){
   favs.push(currentConstellationV87);
   localStorage.setItem('favoriteMemories', JSON.stringify(favs));
   alert('🌌 Estrella guardada como favorita');
+  if(typeof renderDashboard==='function') renderDashboard();
+}
+
+
+// V88 - Ritual de cierre
+let currentClosingV88='';
+
+function openClosingV88(){
+  document.getElementById('closingScreenV88').style.display='block';
+  renderClosingV88();
+  if(typeof addFootprintV79==='function') addFootprintV79('ritual_de_cierre');
+}
+function closeClosingV88(){
+  document.getElementById('closingScreenV88').style.display='none';
+}
+function escapeClosingV88(str){
+  return String(str||'').replace(/[&<>'"]/g,function(c){
+    return {'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c];
+  });
+}
+function getClosingsV88(){
+  try{ return JSON.parse(localStorage.getItem('closingRitualsV88')||'[]'); }catch(e){ return []; }
+}
+function setClosingsV88(items){
+  localStorage.setItem('closingRitualsV88', JSON.stringify(items));
+}
+function renderClosingV88(){
+  const items=getClosingsV88();
+  const phrase=document.getElementById('closingPhraseV88');
+  const content=document.getElementById('closingContentV88');
+  const last=items[items.length-1];
+  document.getElementById('closingTextV88').style.display='none';
+  document.getElementById('closingSaveButtonV88').style.display='none';
+  document.getElementById('closingResultV88').innerHTML='';
+
+  if(!items.length){
+    currentClosingV88='🕯️ Por ahora, alcanza.';
+    phrase.innerHTML='No hace falta terminar perfecto. Solo cerrar con cuidado.';
+    content.innerHTML='<div class="closingCardV88"><strong>🕯️ Entrada suave</strong><br><br>Elegí una forma de cerrar este momento: soltar una frase, agradecer algo mínimo, volver al cuerpo o dejar algo para mañana.</div>';
+    return;
+  }
+
+  currentClosingV88='🕯️ '+(last.text||'Por ahora, alcanza.');
+  phrase.innerHTML='Ya cerraste momentos antes. También podés cerrar este.';
+  content.innerHTML='<div class="closingCardV88"><strong>Último cierre guardado</strong><br><br>“'+escapeClosingV88(last.text)+'”<br><br><span class="closingSmallV88">'+escapeClosingV88(last.date||'')+'</span></div><div class="closingCardV88"><strong>🕯️ Cierres guardados:</strong> '+items.length+'<br><br><span class="closingSmallV88">No son finales definitivos. Son pausas amables.</span></div>';
+}
+function chooseClosingV88(kind){
+  const phrase=document.getElementById('closingPhraseV88');
+  const content=document.getElementById('closingContentV88');
+  const input=document.getElementById('closingTextV88');
+  const save=document.getElementById('closingSaveButtonV88');
+  input.style.display='block';
+  save.style.display='inline-block';
+  document.getElementById('closingResultV88').innerHTML='';
+
+  const data={
+    soltar:{title:'🍃 Soltar una frase', text:'Escribí algo que pueda quedar acá por ahora. No tiene que estar ordenado.', placeholder:'Por ahora suelto... / Esto puede esperar... / No necesito cargar con todo ahora...'},
+    agradecer:{title:'🤲 Agradecer algo mínimo', text:'No hace falta que haya sido un gran día. Buscá una señal pequeña que haya estado.', placeholder:'Hoy agradezco mínimamente... / Algo que estuvo fue...'},
+    cuerpo:{title:'🖐️ Volver al cuerpo', text:'Apoyá los pies, aflojá la mandíbula y escribí una frase desde el presente.', placeholder:'Estoy acá. Mi cuerpo puede descansar un poco de...'},
+    mañana:{title:'🌤️ Dejar algo para mañana', text:'Podés dejar una cosa pendiente sin resolverla ahora.', placeholder:'Mañana puedo volver a... / Por hoy dejo en pausa...'}
+  };
+  const d=data[kind]||data.soltar;
+  input.placeholder=d.placeholder;
+  content.innerHTML='<div class="closingCardV88"><strong>'+d.title+'</strong><br><br>'+d.text+'<br><br><span class="closingSmallV88">Una frase alcanza.</span></div>';
+  phrase.innerHTML='Por ahora, no tenés que sostener todo.';
+  currentClosingV88='🕯️ '+d.title;
+}
+function saveClosingV88(){
+  const input=document.getElementById('closingTextV88');
+  const text=input.value.trim();
+  if(!text){ alert('Escribí una frase mínima para cerrar.'); return; }
+  const items=getClosingsV88();
+  const item={text:text,date:new Date().toLocaleDateString('es-ES')};
+  items.push(item);
+  setClosingsV88(items);
+  currentClosingV88='🕯️ '+text;
+  input.value='';
+  document.getElementById('closingResultV88').innerHTML='🕯️ Cierre guardado. Por ahora, alcanza.';
+  document.getElementById('closingPhraseV88').innerHTML='Este momento ya tiene un cierre suave.';
+  document.getElementById('closingContentV88').innerHTML='<div class="closingCardV88"><strong>🕯️ Cierre de hoy</strong><br><br>“'+escapeClosingV88(text)+'”<br><br><em>Esto no borra lo vivido. Solo te permite dejarlo apoyado un rato.</em></div>';
+  if(typeof renderDashboard==='function') renderDashboard();
+}
+function showClosingHistoryV88(){
+  const items=getClosingsV88().slice(-8).reverse();
+  const content=document.getElementById('closingContentV88');
+  if(!items.length){
+    content.innerHTML='<div class="closingCardV88"><strong>🕯️ Todavía no hay cierres guardados</strong><br><br>Podés empezar con una sola frase: “por ahora, alcanza”.</div>';
+    return;
+  }
+  content.innerHTML=items.map(function(x){
+    return '<div class="closingCardV88">🕯️ “'+escapeClosingV88(x.text)+'”<br><br><span class="closingSmallV88">'+escapeClosingV88(x.date||'')+'</span></div>';
+  }).join('');
+  document.getElementById('closingPhraseV88').innerHTML='Estos son momentos que pudiste dejar apoyados.';
+}
+function saveCurrentClosingV88(){
+  if(!currentClosingV88) currentClosingV88='🕯️ Por ahora, alcanza.';
+  let favs=[];
+  try{ favs=JSON.parse(localStorage.getItem('favoriteMemories')||'[]'); }catch(e){ favs=[]; }
+  if(favs.includes(currentClosingV88)){ alert('⭐ Este cierre ya estaba en favoritos'); return; }
+  favs.push(currentClosingV88);
+  localStorage.setItem('favoriteMemories', JSON.stringify(favs));
+  alert('🕯️ Cierre guardado como favorito');
   if(typeof renderDashboard==='function') renderDashboard();
 }
 
