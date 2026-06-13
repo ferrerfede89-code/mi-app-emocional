@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>App Emocional V85</title>
+<title>App Emocional V86</title>
 
 <style>
 body {
@@ -967,6 +967,70 @@ body, .app, #circle, .action, .stats, .softButton, .moods button {
 }
 
 
+/* V86 - Bolsillo de calma */
+.pocketOrbV86{
+  width:150px;
+  height:150px;
+  border-radius:50%;
+  margin:24px auto;
+  background:radial-gradient(circle,#ffffff,#c4b5fd);
+  box-shadow:0 22px 60px rgba(139,92,246,.25);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:56px;
+  animation:pocketPulseV86 7s infinite ease-in-out;
+}
+@keyframes pocketPulseV86{
+  0%{transform:scale(1);opacity:.86;}
+  50%{transform:scale(1.1);opacity:1;}
+  100%{transform:scale(1);opacity:.86;}
+}
+.pocketPhraseV86{
+  font-size:21px;
+  font-weight:650;
+  line-height:1.45;
+  text-align:center;
+  padding:18px;
+  border-radius:22px;
+  background:rgba(245,243,255,.95);
+  margin:16px 0;
+}
+.pocketCardV86{
+  background:rgba(255,255,255,.92);
+  border-radius:24px;
+  padding:18px;
+  margin:14px 0;
+  line-height:1.55;
+  text-align:left;
+  box-shadow:0 12px 30px rgba(0,0,0,.08);
+}
+.pocketGridV86{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+  margin-top:14px;
+}
+.pocketItemV86{
+  border:none;
+  border-radius:20px;
+  padding:15px 12px;
+  background:rgba(255,255,255,.9);
+  font-size:15px;
+  line-height:1.35;
+  box-shadow:0 8px 20px rgba(0,0,0,.06);
+}
+.pocketItemV86 span{
+  display:block;
+  font-size:30px;
+  margin-bottom:6px;
+}
+.pocketSmallV86{
+  font-size:15px;
+  color:#64748b;
+  line-height:1.45;
+}
+
 </style>
 
 <style id="v48premium">
@@ -1133,6 +1197,9 @@ text-align:center;
     </button>
 <button class="action" onclick="openBridgeV85()" style="grid-column:1/3;background:#ccfbf1;font-weight:bold;">
       <span>🌉</span>Puente de regreso
+    </button>
+<button class="action" onclick="openPocketV86()" style="grid-column:1/3;background:#ede9fe;font-weight:bold;">
+      <span>🧺</span>Bolsillo de calma
     </button>
 <button class="action" onclick="openCapsuleV46()" style="grid-column:1/3;background:#fde68a;font-weight:bold;">
       <span>📬</span>Cápsula del tiempo
@@ -1783,6 +1850,7 @@ text-align:center;
 <button onclick="openLightsV83();closeJourneyHub();" class="softButton">🌟 Momentos de luz</button>
 <button onclick="openRefugeV84();closeJourneyHub();" class="softButton">🏡 Refugio interno</button>
 <button onclick="openBridgeV85();closeJourneyHub();" class="softButton">🌉 Puente de regreso</button>
+<button onclick="openPocketV86();closeJourneyHub();" class="softButton">🧺 Bolsillo de calma</button>
 
 <br><br>
 <button onclick="closeJourneyHub()" class="softButton">Volver</button>
@@ -2045,6 +2113,39 @@ Para esos momentos en los que te fuiste muy lejos por dentro. No busca forzarte 
 <button onclick="saveCurrentBridgeV85()" class="softButton">⭐ Guardar como favorito</button>
 <br>
 <button onclick="closeBridgeV85()" class="softButton">Volver</button>
+</div>
+
+
+
+<div id="pocketScreenV86" class="fullscreen" style="background:linear-gradient(180deg,#ede9fe,#dbeafe);overflow:auto;text-align:center;">
+<h1>🧺</h1>
+<h2>Bolsillo de calma</h2>
+<p style="font-size:17px;line-height:1.45;max-width:330px;margin:0 auto;">
+Un lugar pequeño para guardar recursos simples. No tiene que solucionar todo: solo acercarte algo que te cuide un poco.
+</p>
+<div class="pocketOrbV86">🧺</div>
+<div id="pocketPhraseV86" class="pocketPhraseV86">Elegí algo para llevar con vos.</div>
+<div id="pocketContentV86" class="rememberCard"></div>
+<div class="pocketGridV86">
+  <button class="pocketItemV86" onclick="choosePocketV86('frase')"><span>💬</span>Frase breve</button>
+  <button class="pocketItemV86" onclick="choosePocketV86('cuerpo')"><span>🖐️</span>Señal corporal</button>
+  <button class="pocketItemV86" onclick="choosePocketV86('accion')"><span>🌱</span>Acción mínima</button>
+  <button class="pocketItemV86" onclick="choosePocketV86('persona')"><span>🫂</span>Persona segura</button>
+</div>
+
+<div id="pocketWriteBoxV86" class="rememberCard" style="display:none;text-align:left;">
+  <strong>🧺 Guardar algo en mi bolsillo</strong><br><br>
+  <span class="pocketSmallV86">Puede ser una frase, una acción, un nombre, una canción, un olor o cualquier señal que te ayude a volver.</span>
+  <textarea id="pocketManualTextV86" class="textBox" style="margin-top:14px;" placeholder="Quiero llevar conmigo... / Cuando me cueste, me ayuda... / Puedo volver con..."></textarea>
+  <button onclick="saveManualPocketV86()" class="softButton">Guardar en bolsillo</button>
+</div>
+
+<br>
+<button onclick="openPocketWriterV86()" class="softButton">✍️ Guardar algo propio</button>
+<button onclick="showPocketSavedV86()" class="softButton">🧺 Ver mi bolsillo</button>
+<button onclick="saveCurrentPocketV86()" class="softButton">⭐ Guardar como favorito</button>
+<br>
+<button onclick="closePocketV86()" class="softButton">Volver</button>
 </div>
 
 <div id="searchScreen" class="fullscreen" style="background:linear-gradient(180deg,#ecfeff,#dbeafe);overflow:auto;text-align:center;">
@@ -2540,6 +2641,97 @@ function saveCurrentBridgeV85(){
   favs.push(currentBridgeV85);
   localStorage.setItem('favoriteMemories', JSON.stringify(favs));
   alert('🌉 Puente guardado como favorito');
+  if(typeof renderDashboard==='function') renderDashboard();
+}
+
+
+// V86 - Bolsillo de calma
+let currentPocketV86='';
+
+function openPocketV86(){
+  document.getElementById('pocketScreenV86').style.display='block';
+  renderPocketV86();
+  if(typeof addFootprintV79==='function') addFootprintV79('entro_bolsillo_calma');
+}
+function closePocketV86(){
+  document.getElementById('pocketScreenV86').style.display='none';
+}
+function escapePocketV86(str){
+  return String(str||'').replace(/[&<>'"]/g,function(c){
+    return {'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c];
+  });
+}
+function getPocketItemsV86(){
+  try{ return JSON.parse(localStorage.getItem('calmPocketV86')||'[]'); }catch(e){ return []; }
+}
+function setPocketItemsV86(items){
+  localStorage.setItem('calmPocketV86', JSON.stringify(items));
+}
+function renderPocketV86(){
+  const items=getPocketItemsV86();
+  const phrase=document.getElementById('pocketPhraseV86');
+  const content=document.getElementById('pocketContentV86');
+  const writeBox=document.getElementById('pocketWriteBoxV86');
+  if(writeBox) writeBox.style.display='none';
+  if(items.length){
+    currentPocketV86='🧺 '+items[items.length-1].text;
+    phrase.innerHTML='Tu bolsillo ya tiene algo para volver.';
+    content.innerHTML='<div class="pocketCardV86"><strong>🧺 Lo que llevás guardado</strong><br><br>'+items.slice(-4).reverse().map(function(it){return '• '+escapePocketV86(it.text)+' <span class="pocketSmallV86">('+escapePocketV86(it.date||'')+')</span>';}).join('<br><br>')+'</div>';
+  }else{
+    currentPocketV86='Puedo llevar una señal pequeña de calma conmigo.';
+    phrase.innerHTML='Elegí algo para llevar con vos.';
+    content.innerHTML='<div class="pocketCardV86"><strong>Entrada suave</strong><br><br>Este espacio arma un bolsillo emocional: una frase, una acción mínima, una señal del cuerpo o una persona segura para recordar cuando el día se vuelva pesado.</div>';
+  }
+}
+function choosePocketV86(type){
+  const data={
+    frase:{title:'💬 Frase breve',text:'No tengo que resolver toda mi vida en este minuto. Solo necesito atravesar este momento.'},
+    cuerpo:{title:'🖐️ Señal corporal',text:'Apoyar una mano en el pecho o en la mesa. Sentir contacto. Volver al cuerpo antes de pensar.'},
+    accion:{title:'🌱 Acción mínima',text:'Tomar agua, abrir una ventana, sentarme distinto o escribir una sola línea. Algo pequeño también cuenta.'},
+    persona:{title:'🫂 Persona segura',text:'Pensar en alguien que no exija explicaciones perfectas. Una frase alcanza: “hoy me cuesta un poco”.'}
+  }[type];
+  if(!data) return;
+  currentPocketV86=data.title+' · '+data.text;
+  document.getElementById('pocketPhraseV86').innerHTML='Esto puede ir en tu bolsillo.';
+  document.getElementById('pocketContentV86').innerHTML='<div class="pocketCardV86"><strong>'+escapePocketV86(data.title)+'</strong><br><br>'+escapePocketV86(data.text)+'<br><br><span class="pocketSmallV86">Podés guardarlo como favorito o escribir tu propia versión.</span></div>';
+}
+function openPocketWriterV86(){
+  const box=document.getElementById('pocketWriteBoxV86');
+  if(box) box.style.display='block';
+  document.getElementById('pocketPhraseV86').innerHTML='Tu bolsillo también puede tener tus palabras.';
+}
+function saveManualPocketV86(){
+  const input=document.getElementById('pocketManualTextV86');
+  const text=(input.value||'').trim();
+  if(!text){
+    document.getElementById('pocketPhraseV86').innerHTML='Una frase mínima alcanza para guardarla.';
+    return;
+  }
+  const now=new Date();
+  const items=getPocketItemsV86();
+  items.push({text,date:now.toLocaleDateString('es-ES'),createdAt:now.toISOString()});
+  setPocketItemsV86(items);
+  input.value='';
+  currentPocketV86='🧺 '+text;
+  renderPocketV86();
+  if(typeof renderDashboard==='function') renderDashboard();
+}
+function showPocketSavedV86(){
+  const items=getPocketItemsV86();
+  if(!items.length){
+    document.getElementById('pocketPhraseV86').innerHTML='Todavía no guardaste nada en tu bolsillo.';
+    document.getElementById('pocketContentV86').innerHTML='<div class="pocketCardV86">Podés elegir una de las opciones o escribir algo propio para crear el primero.</div>';
+    return;
+  }
+  renderPocketV86();
+}
+function saveCurrentPocketV86(){
+  if(!currentPocketV86){ alert('Todavía no hay algo para guardar.'); return; }
+  let favs=JSON.parse(localStorage.getItem('favoriteMemories')||'[]');
+  if(favs.includes(currentPocketV86)){ alert('⭐ Esto ya estaba en favoritos'); return; }
+  favs.push(currentPocketV86);
+  localStorage.setItem('favoriteMemories', JSON.stringify(favs));
+  alert('🧺 Guardado como favorito');
   if(typeof renderDashboard==='function') renderDashboard();
 }
 
