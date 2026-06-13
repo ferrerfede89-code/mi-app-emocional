@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>App Emocional V88</title>
+<title>App Emocional V89</title>
 
 <style>
 body {
@@ -1155,6 +1155,69 @@ body, .app, #circle, .action, .stats, .softButton, .moods button {
   line-height:1.45;
 }
 
+/* V89 - Señal para mañana */
+.tomorrowOrbV89{
+  width:150px;
+  height:150px;
+  border-radius:50%;
+  margin:24px auto;
+  background:radial-gradient(circle,#ffffff,#7dd3fc);
+  box-shadow:0 22px 60px rgba(14,165,233,.26);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:56px;
+  animation:tomorrowPulseV89 7s infinite ease-in-out;
+}
+@keyframes tomorrowPulseV89{
+  0%{transform:scale(1);opacity:.86;}
+  50%{transform:scale(1.1);opacity:1;}
+  100%{transform:scale(1);opacity:.86;}
+}
+.tomorrowPhraseV89{
+  font-size:21px;
+  font-weight:650;
+  line-height:1.45;
+  text-align:center;
+  padding:18px;
+  border-radius:22px;
+  background:rgba(224,242,254,.96);
+  margin:16px 0;
+}
+.tomorrowCardV89{
+  background:rgba(255,255,255,.92);
+  border-radius:24px;
+  padding:18px;
+  margin:14px 0;
+  line-height:1.55;
+  text-align:left;
+  box-shadow:0 12px 30px rgba(0,0,0,.08);
+}
+.tomorrowStepV89{
+  border:none;
+  border-radius:18px;
+  padding:14px 16px;
+  font-size:16px;
+  background:rgba(255,255,255,.92);
+  margin:7px 0;
+  width:100%;
+  text-align:left;
+}
+.tomorrowSignalV89{
+  background:linear-gradient(135deg,rgba(224,242,254,.96),rgba(240,253,244,.86));
+  border-radius:22px;
+  padding:16px;
+  margin:12px 0;
+  font-size:19px;
+  font-weight:620;
+  line-height:1.45;
+}
+.tomorrowSmallV89{
+  font-size:15px;
+  color:#64748b;
+  line-height:1.45;
+}
+
 </style>
 
 <style id="v48premium">
@@ -1330,6 +1393,9 @@ text-align:center;
     </button>
 <button class="action" onclick="openClosingV88()" style="grid-column:1/3;background:#fef3c7;font-weight:bold;">
       <span>🕯️</span>Ritual de cierre
+    </button>
+<button class="action" onclick="openTomorrowV89()" style="grid-column:1/3;background:#e0f2fe;font-weight:bold;">
+      <span>🌤️</span>Señal para mañana
     </button>
 <button class="action" onclick="openCapsuleV46()" style="grid-column:1/3;background:#fde68a;font-weight:bold;">
       <span>📬</span>Cápsula del tiempo
@@ -1983,6 +2049,7 @@ text-align:center;
 <button onclick="openPocketV86();closeJourneyHub();" class="softButton">🧺 Bolsillo de calma</button>
 <button onclick="openConstellationV87();closeJourneyHub();" class="softButton">🌌 Constelación emocional</button>
 <button onclick="openClosingV88();closeJourneyHub();" class="softButton">🕯️ Ritual de cierre</button>
+<button onclick="openTomorrowV89();closeJourneyHub();" class="softButton">🌤️ Señal para mañana</button>
 
 <br><br>
 <button onclick="closeJourneyHub()" class="softButton">Volver</button>
@@ -2322,6 +2389,31 @@ Para cerrar un momento sin tener que resolverlo todo. Un gesto pequeño para dec
 <button onclick="saveCurrentClosingV88()" class="softButton">⭐ Guardar cierre actual</button>
 <br>
 <button onclick="closeClosingV88()" class="softButton">Volver</button>
+</div>
+
+<div id="tomorrowScreenV89" class="fullscreen" style="background:linear-gradient(180deg,#e0f2fe,#dcfce7);overflow:auto;text-align:center;">
+<h1>🌤️</h1>
+<h2>Señal para mañana</h2>
+<p style="font-size:17px;line-height:1.45;max-width:330px;margin:0 auto;">
+No intenta predecir el día. Solo deja una pequeña luz preparada para cuando vuelvas a abrir la app.
+</p>
+<div class="tomorrowOrbV89">🌤️</div>
+<div id="tomorrowPhraseV89" class="tomorrowPhraseV89">Mañana no tiene que empezar perfecto.</div>
+<div id="tomorrowContentV89" class="rememberCard"></div>
+<div style="max-width:340px;margin:16px auto 0;text-align:left;">
+<button class="tomorrowStepV89" onclick="chooseTomorrowV89('intencion')">🌱 Dejar una intención mínima</button>
+<button class="tomorrowStepV89" onclick="chooseTomorrowV89('cuidado')">🫶 Preparar un cuidado</button>
+<button class="tomorrowStepV89" onclick="chooseTomorrowV89('frase')">💬 Frase para despertarme</button>
+<button class="tomorrowStepV89" onclick="chooseTomorrowV89('recordatorio')">🧭 Recordarme algo importante</button>
+</div>
+<textarea id="tomorrowTextV89" class="textBox" style="margin-top:18px;display:none;" placeholder="Mañana quiero recordar... / Mañana puedo empezar por... "></textarea>
+<button id="tomorrowSaveButtonV89" onclick="saveTomorrowV89()" class="softButton" style="margin-top:12px;display:none;">Guardar señal</button>
+<div id="tomorrowResultV89" style="margin-top:16px;font-weight:bold;line-height:1.45;"></div>
+<br>
+<button onclick="showTomorrowHistoryV89()" class="softButton">🌤️ Ver señales guardadas</button>
+<button onclick="saveCurrentTomorrowV89()" class="softButton">⭐ Guardar señal actual</button>
+<br>
+<button onclick="closeTomorrowV89()" class="softButton">Volver</button>
 </div>
 
 <div id="searchScreen" class="fullscreen" style="background:linear-gradient(180deg,#ecfeff,#dbeafe);overflow:auto;text-align:center;">
@@ -3125,6 +3217,131 @@ function saveCurrentClosingV88(){
   favs.push(currentClosingV88);
   localStorage.setItem('favoriteMemories', JSON.stringify(favs));
   alert('🕯️ Cierre guardado como favorito');
+  if(typeof renderDashboard==='function') renderDashboard();
+}
+
+
+// V89 - Señal para mañana
+let currentTomorrowV89='';
+let selectedTomorrowKindV89='';
+
+function openTomorrowV89(){
+  document.getElementById('tomorrowScreenV89').style.display='block';
+  renderTomorrowV89();
+  if(typeof addFootprintV79==='function') addFootprintV79('senal_para_manana');
+}
+function closeTomorrowV89(){
+  document.getElementById('tomorrowScreenV89').style.display='none';
+}
+function escapeTomorrowV89(str){
+  return String(str||'').replace(/[&<>'"]/g,function(c){
+    return {'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c];
+  });
+}
+function getTomorrowsV89(){
+  try{ return JSON.parse(localStorage.getItem('tomorrowSignalsV89')||'[]'); }catch(e){ return []; }
+}
+function setTomorrowsV89(items){
+  localStorage.setItem('tomorrowSignalsV89', JSON.stringify(items));
+}
+function buildAutomaticTomorrowV89(){
+  let diary=[];
+  let closings=[];
+  let lights=[];
+  try{ diary=JSON.parse(localStorage.getItem('diaryEntries')||'[]'); }catch(e){ diary=[]; }
+  try{ closings=JSON.parse(localStorage.getItem('closingRitualsV88')||'[]'); }catch(e){ closings=[]; }
+  try{ lights=JSON.parse(localStorage.getItem('lightMomentsV83')||'[]'); }catch(e){ lights=[]; }
+  const lastDiary=diary[diary.length-1];
+  const lastClose=closings[closings.length-1];
+  const lastLight=lights[lights.length-1];
+  if(lastClose && lastClose.text) return 'Mañana podés volver sin cargar con todo lo de hoy: “'+lastClose.text+'”.';
+  if(lastLight && lastLight.text) return 'Mañana buscá una luz parecida a esta: “'+lastLight.text+'”.';
+  if(lastDiary && lastDiary.text) return 'Mañana empezá por algo pequeño. Ya dejaste escrito que seguiste.';
+  return 'Mañana alcanza con aparecer de nuevo. Una cosa simple. Un paso chiquito.';
+}
+function renderTomorrowV89(){
+  const items=getTomorrowsV89();
+  const phrase=document.getElementById('tomorrowPhraseV89');
+  const content=document.getElementById('tomorrowContentV89');
+  const input=document.getElementById('tomorrowTextV89');
+  const save=document.getElementById('tomorrowSaveButtonV89');
+  const result=document.getElementById('tomorrowResultV89');
+  if(input) input.style.display='none';
+  if(save) save.style.display='none';
+  if(result) result.innerHTML='';
+
+  const automatic=buildAutomaticTomorrowV89();
+  currentTomorrowV89='🌤️ '+automatic;
+
+  if(!items.length){
+    phrase.innerHTML='Dejemos una señal pequeña para mañana.';
+    content.innerHTML='<div class="tomorrowCardV89"><strong>🌤️ Señal automática</strong><br><br><div class="tomorrowSignalV89">'+escapeTomorrowV89(automatic)+'</div><span class="tomorrowSmallV89">También podés escribir tu propia señal con los botones de abajo.</span></div>';
+    return;
+  }
+
+  const last=items[items.length-1];
+  currentTomorrowV89='🌤️ '+(last.text||automatic);
+  phrase.innerHTML='Ya dejaste luces preparadas para volver.';
+  content.innerHTML='<div class="tomorrowCardV89"><strong>Última señal guardada</strong><br><br><div class="tomorrowSignalV89">'+escapeTomorrowV89(last.text||'')+'</div><span class="tomorrowSmallV89">'+escapeTomorrowV89(last.date||'')+'</span></div><div class="tomorrowCardV89"><strong>🌤️ Señales guardadas:</strong> '+items.length+'<br><br><span class="tomorrowSmallV89">No son obligaciones. Son pequeñas puertas de entrada.</span></div>';
+}
+function chooseTomorrowV89(kind){
+  selectedTomorrowKindV89=kind;
+  const phrase=document.getElementById('tomorrowPhraseV89');
+  const content=document.getElementById('tomorrowContentV89');
+  const input=document.getElementById('tomorrowTextV89');
+  const save=document.getElementById('tomorrowSaveButtonV89');
+  document.getElementById('tomorrowResultV89').innerHTML='';
+  input.style.display='block';
+  save.style.display='inline-block';
+
+  const data={
+    intencion:{title:'🌱 Intención mínima', text:'Una intención chica ayuda más que una exigencia grande.', placeholder:'Mañana puedo empezar por...'},
+    cuidado:{title:'🫶 Cuidado preparado', text:'Dejá listo un gesto de cuidado para tu yo de mañana.', placeholder:'Mañana me voy a cuidar haciendo...'},
+    frase:{title:'💬 Frase para despertarme', text:'Una frase breve para abrir el día con menos peso.', placeholder:'Cuando despierte quiero leer...'},
+    recordatorio:{title:'🧭 Recordatorio importante', text:'Algo que no querés olvidar cuando el día empiece.', placeholder:'Mañana quiero recordar que...'}
+  };
+  const d=data[kind]||data.intencion;
+  input.placeholder=d.placeholder;
+  phrase.innerHTML='Mañana puede empezar con una señal, no con una exigencia.';
+  content.innerHTML='<div class="tomorrowCardV89"><strong>'+d.title+'</strong><br><br>'+d.text+'<br><br><span class="tomorrowSmallV89">Una frase alcanza.</span></div>';
+  currentTomorrowV89='🌤️ '+d.title;
+  setTimeout(function(){ input.focus(); },120);
+}
+function saveTomorrowV89(){
+  const input=document.getElementById('tomorrowTextV89');
+  const text=(input.value||'').trim();
+  if(!text){ alert('Escribí una señal mínima para mañana.'); return; }
+  const items=getTomorrowsV89();
+  items.push({text:text,kind:selectedTomorrowKindV89||'senal',date:new Date().toLocaleDateString('es-ES')});
+  setTomorrowsV89(items);
+  currentTomorrowV89='🌤️ '+text;
+  input.value='';
+  document.getElementById('tomorrowResultV89').innerHTML='🌤️ Señal guardada para mañana.';
+  document.getElementById('tomorrowPhraseV89').innerHTML='Tu yo de mañana ya tiene una pequeña luz esperándolo.';
+  document.getElementById('tomorrowContentV89').innerHTML='<div class="tomorrowCardV89"><strong>🌤️ Señal guardada</strong><br><br><div class="tomorrowSignalV89">'+escapeTomorrowV89(text)+'</div><em>No es una tarea. Es una forma amable de volver.</em></div>';
+  if(typeof renderDashboard==='function') renderDashboard();
+  if(typeof addFootprintV79==='function') addFootprintV79('guardo_senal_manana');
+}
+function showTomorrowHistoryV89(){
+  const items=getTomorrowsV89().slice(-8).reverse();
+  const content=document.getElementById('tomorrowContentV89');
+  if(!items.length){
+    content.innerHTML='<div class="tomorrowCardV89"><strong>🌤️ Todavía no hay señales guardadas</strong><br><br>Podés empezar con algo simple: “mañana solo necesito dar un paso”.</div>';
+    return;
+  }
+  content.innerHTML=items.map(function(x){
+    return '<div class="tomorrowCardV89"><div class="tomorrowSignalV89">'+escapeTomorrowV89(x.text)+'</div><span class="tomorrowSmallV89">'+escapeTomorrowV89(x.date||'')+'</span></div>';
+  }).join('');
+  document.getElementById('tomorrowPhraseV89').innerHTML='Estas son pequeñas luces que preparaste para volver.';
+}
+function saveCurrentTomorrowV89(){
+  if(!currentTomorrowV89) currentTomorrowV89='🌤️ Mañana alcanza con aparecer de nuevo.';
+  let favs=[];
+  try{ favs=JSON.parse(localStorage.getItem('favoriteMemories')||'[]'); }catch(e){ favs=[]; }
+  if(favs.includes(currentTomorrowV89)){ alert('⭐ Esta señal ya estaba en favoritos'); return; }
+  favs.push(currentTomorrowV89);
+  localStorage.setItem('favoriteMemories', JSON.stringify(favs));
+  alert('🌤️ Señal guardada como favorita');
   if(typeof renderDashboard==='function') renderDashboard();
 }
 
