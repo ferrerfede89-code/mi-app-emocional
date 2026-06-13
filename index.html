@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>App Emocional V89</title>
+<title>App Emocional V90</title>
 
 <style>
 body {
@@ -1218,6 +1218,83 @@ body, .app, #circle, .action, .stats, .softButton, .moods button {
   line-height:1.45;
 }
 
+
+/* V90 - Umbral de etapa */
+.thresholdOrbV90{
+  width:155px;
+  height:155px;
+  border-radius:50%;
+  margin:24px auto;
+  background:radial-gradient(circle,#ffffff,#a78bfa);
+  box-shadow:0 22px 64px rgba(124,58,237,.25);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:58px;
+  animation:thresholdPulseV90 8s infinite ease-in-out;
+}
+@keyframes thresholdPulseV90{
+  0%{transform:scale(1);opacity:.86;}
+  50%{transform:scale(1.11);opacity:1;}
+  100%{transform:scale(1);opacity:.86;}
+}
+.thresholdPhraseV90{
+  font-size:21px;
+  font-weight:650;
+  line-height:1.45;
+  text-align:center;
+  padding:18px;
+  border-radius:22px;
+  background:rgba(245,243,255,.96);
+  margin:16px 0;
+}
+.thresholdCardV90{
+  background:rgba(255,255,255,.92);
+  border-radius:24px;
+  padding:18px;
+  margin:14px 0;
+  line-height:1.55;
+  text-align:left;
+  box-shadow:0 12px 30px rgba(0,0,0,.08);
+}
+.thresholdSealV90{
+  background:linear-gradient(135deg,rgba(245,243,255,.98),rgba(219,234,254,.86));
+  border-radius:22px;
+  padding:16px;
+  margin:12px 0;
+  line-height:1.5;
+  text-align:left;
+}
+.thresholdGridV90{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+  margin-top:14px;
+}
+.thresholdMiniV90{
+  background:rgba(255,255,255,.78);
+  border-radius:16px;
+  padding:11px;
+  text-align:left;
+  font-size:14px;
+  line-height:1.4;
+}
+.thresholdStepV90{
+  border:none;
+  border-radius:18px;
+  padding:14px 16px;
+  font-size:16px;
+  background:rgba(255,255,255,.92);
+  margin:7px 0;
+  width:100%;
+  text-align:left;
+}
+.thresholdSmallV90{
+  font-size:15px;
+  color:#64748b;
+  line-height:1.45;
+}
+
 </style>
 
 <style id="v48premium">
@@ -1396,6 +1473,9 @@ text-align:center;
     </button>
 <button class="action" onclick="openTomorrowV89()" style="grid-column:1/3;background:#e0f2fe;font-weight:bold;">
       <span>🌤️</span>Señal para mañana
+    </button>
+<button class="action" onclick="openThresholdV90()" style="grid-column:1/3;background:#ede9fe;font-weight:bold;">
+      <span>🌌</span>Umbral de etapa
     </button>
 <button class="action" onclick="openCapsuleV46()" style="grid-column:1/3;background:#fde68a;font-weight:bold;">
       <span>📬</span>Cápsula del tiempo
@@ -2032,6 +2112,7 @@ text-align:center;
 <button onclick="openKeyMoments();closeJourneyHub();" class="softButton">🏆 Momentos clave</button>
 <button onclick="openLifeTimeline();closeJourneyHub();" class="softButton">📜 Línea de vida</button>
 <button onclick="openFullExport();closeJourneyHub();" class="softButton">📦 Historia completa</button>
+<button onclick="openThresholdV90();closeJourneyHub();" class="softButton">🌌 Umbral de etapa</button>
 <button onclick="openBackup();closeJourneyHub();" class="softButton">☁️ Respaldo</button>
 <button onclick="openRestoreCenter();closeJourneyHub();" class="softButton">💾 Restaurar</button>
 <button onclick="openJourneyReflection();closeJourneyHub();" class="softButton">🌟 Reflexión automática</button>
@@ -2414,6 +2495,33 @@ No intenta predecir el día. Solo deja una pequeña luz preparada para cuando vu
 <button onclick="saveCurrentTomorrowV89()" class="softButton">⭐ Guardar señal actual</button>
 <br>
 <button onclick="closeTomorrowV89()" class="softButton">Volver</button>
+</div>
+
+
+
+<div id="thresholdScreenV90" class="fullscreen" style="background:linear-gradient(180deg,#ede9fe,#dbeafe);overflow:auto;text-align:center;">
+<h1>🌌</h1>
+<h2>Umbral de etapa</h2>
+<p style="font-size:17px;line-height:1.45;max-width:330px;margin:0 auto;">
+Llegar hasta acá también es una señal. Este espacio reúne lo que fuiste dejando en el camino y lo convierte en un cierre suave de etapa.
+</p>
+<div class="thresholdOrbV90">🌌</div>
+<div id="thresholdPhraseV90" class="thresholdPhraseV90">No llegaste vacío hasta este punto.</div>
+<div id="thresholdContentV90" class="rememberCard"></div>
+
+<div class="thresholdCardV90">
+  <strong>✍️ Dejar una frase para cerrar esta etapa</strong><br><br>
+  <span class="thresholdSmallV90">Puede ser mínima: algo que aprendiste, algo que agradecés o algo que querés llevarte.</span>
+  <textarea id="thresholdTextV90" class="textBox" style="margin-top:14px;" placeholder="De esta etapa me llevo... / Hoy reconozco que... / Quiero seguir con..."></textarea>
+  <button onclick="saveThresholdReflectionV90()" class="softButton">Guardar cierre</button>
+  <div id="thresholdResultV90" style="margin-top:14px;font-weight:bold;line-height:1.45;"></div>
+</div>
+
+<button onclick="renderThresholdV90()" class="softButton">🌌 Volver a mirar</button>
+<button onclick="showThresholdHistoryV90()" class="softButton">📜 Ver cierres guardados</button>
+<button onclick="copyThresholdV90()" class="softButton">📋 Copiar resumen</button>
+<br>
+<button onclick="closeThresholdV90()" class="softButton">Volver</button>
 </div>
 
 <div id="searchScreen" class="fullscreen" style="background:linear-gradient(180deg,#ecfeff,#dbeafe);overflow:auto;text-align:center;">
@@ -7859,6 +7967,131 @@ function saveCurrentTreasureV81(){
   alert('💎 Tesoro guardado como favorito');
   if(typeof renderDashboard === 'function') renderDashboard();
 }
+
+// V90 - Umbral de etapa
+let currentThresholdSummaryV90 = '';
+
+function openThresholdV90(){
+  document.getElementById('thresholdScreenV90').style.display='block';
+  renderThresholdV90();
+  if(typeof addFootprintV79 === 'function') addFootprintV79('umbral_v90');
+}
+function closeThresholdV90(){
+  document.getElementById('thresholdScreenV90').style.display='none';
+}
+function escapeThresholdV90(str){
+  if(typeof escapeHTMLV563 === 'function') return escapeHTMLV563(str);
+  return String(str||'').replace(/[&<>"]/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]));
+}
+function getThresholdReflectionsV90(){
+  try{return JSON.parse(localStorage.getItem('thresholdReflectionsV90') || '[]');}
+  catch(e){return [];}
+}
+function getThresholdDataV90(){
+  const entries = JSON.parse(localStorage.getItem('diaryEntries') || '[]');
+  const favs = JSON.parse(localStorage.getItem('favoriteMemories') || '[]');
+  const capsules = JSON.parse(localStorage.getItem('timeCapsules') || '[]');
+  const moods = JSON.parse(localStorage.getItem('moods') || '{}');
+  const treasures = JSON.parse(localStorage.getItem('manualTreasuresV81') || '[]');
+  const lights = JSON.parse(localStorage.getItem('lightMomentsV83') || '[]');
+  const refuges = JSON.parse(localStorage.getItem('refugesV84') || '[]');
+  const bridges = JSON.parse(localStorage.getItem('bridgesV85') || '[]');
+  const pockets = JSON.parse(localStorage.getItem('pocketCalmV86') || '[]');
+  const stars = JSON.parse(localStorage.getItem('constellationStarsV87') || '[]');
+  const rituals = JSON.parse(localStorage.getItem('closingRitualsV88') || '[]');
+  const tomorrows = JSON.parse(localStorage.getItem('tomorrowSignalsV89') || '[]');
+  const footprints = Number(localStorage.getItem('footprintsV79') || '0');
+  return {entries,favs,capsules,moods,treasures,lights,refuges,bridges,pockets,stars,rituals,tomorrows,footprints};
+}
+function renderThresholdV90(){
+  const content = document.getElementById('thresholdContentV90');
+  const phrase = document.getElementById('thresholdPhraseV90');
+  const d = getThresholdDataV90();
+  const moodTotal = (d.moods.bien||0)+(d.moods.normal||0)+(d.moods.mal||0);
+  const totalSignals = d.entries.length + d.favs.length + d.capsules.length + d.treasures.length + d.lights.length + d.refuges.length + d.bridges.length + d.pockets.length + d.stars.length + d.rituals.length + d.tomorrows.length + d.footprints + moodTotal;
+
+  let title = 'Estás cruzando una etapa nueva.';
+  if(totalSignals === 0) title = 'Este umbral puede ser el primer punto del recorrido.';
+  else if(totalSignals < 6) title = 'Ya hay pequeñas señales de presencia.';
+  else if(totalSignals < 18) title = 'Tu recorrido empieza a tener forma.';
+  else title = 'Hay una historia suave acumulada en esta app.';
+  if(phrase) phrase.innerHTML = title;
+
+  const seals = [];
+  if(d.entries.length) seals.push('📖 Dejaste palabras escritas. Eso cuenta como presencia.');
+  if(d.favs.length) seals.push('⭐ Guardaste recuerdos favoritos. Algo elegiste conservar.');
+  if(d.treasures.length) seals.push('💎 Creaste tesoros propios. Hubo frases que merecieron volver.');
+  if(d.lights.length) seals.push('✨ Registraste momentos de luz. No todo fue sombra.');
+  if(d.refuges.length) seals.push('🏡 Construiste refugios internos. Aparecieron lugares de calma.');
+  if(d.bridges.length) seals.push('🌉 Usaste puentes de regreso. Buscaste volver a vos.');
+  if(d.pockets.length) seals.push('🎒 Guardaste recursos de calma para llevar con vos.');
+  if(d.stars.length) seals.push('🌌 Tu constelación empezó a unir recuerdos.');
+  if(d.rituals.length) seals.push('🕯️ Cerraste momentos con cuidado.');
+  if(d.tomorrows.length) seals.push('🌤️ Dejaste señales para mañana. Pensaste en tu yo futuro.');
+  if(d.footprints) seals.push('👣 Hay '+d.footprints+' huella(s) invisibles de presencia.');
+  if(moodTotal) seals.push('🙂 Registraste cómo estabas '+moodTotal+' vez/veces.');
+
+  const mini = [
+    ['📖 Diario', d.entries.length], ['⭐ Favoritos', d.favs.length],
+    ['💎 Tesoros', d.treasures.length], ['✨ Luces', d.lights.length],
+    ['🏡 Refugios', d.refuges.length], ['🌉 Puentes', d.bridges.length],
+    ['🎒 Bolsillo', d.pockets.length], ['🌤️ Mañana', d.tomorrows.length]
+  ];
+
+  let html = '';
+  html += '<div class="thresholdCardV90"><strong>🌌 Resumen del umbral</strong><br><br>';
+  html += totalSignals ? 'No es una evaluación. Es una forma de mirar todo lo que ya apareció sin exigirle perfección.' : 'Todavía no hay mucho guardado, y está bien. Un umbral también puede empezar en blanco.';
+  html += '<div class="thresholdGridV90">'+mini.map(m=>'<div class="thresholdMiniV90"><strong>'+m[0]+'</strong><br>'+m[1]+' señal(es)</div>').join('')+'</div></div>';
+
+  if(seals.length){
+    html += '<div class="thresholdCardV90"><strong>Sellos suaves de esta etapa</strong>';
+    html += seals.map(x=>'<div class="thresholdSealV90">'+escapeThresholdV90(x)+'</div>').join('');
+    html += '</div>';
+  } else {
+    html += '<div class="thresholdCardV90">🌱 Todavía no hace falta tener una historia. Podés empezar con una sola frase, una respiración o una señal pequeña.</div>';
+  }
+
+  const closing = totalSignals > 0 ? 'No tenés que demostrar que avanzaste. Haber vuelto a mirar ya es una forma de continuidad.' : 'No hay apuro. La primera señal también puede ser simplemente abrir este espacio.';
+  html += '<div class="thresholdPhraseV90">'+closing+'</div>';
+
+  currentThresholdSummaryV90 = 'Umbral de etapa V90\n\n' + mini.map(m=>m[0]+': '+m[1]).join('\n') + '\n\n' + seals.join('\n') + '\n\n' + closing;
+  if(content) content.innerHTML = html;
+}
+function saveThresholdReflectionV90(){
+  const input = document.getElementById('thresholdTextV90');
+  const result = document.getElementById('thresholdResultV90');
+  const text = (input && input.value ? input.value.trim() : '');
+  if(!text){ if(result) result.innerHTML='Escribí una frase mínima para cerrar esta etapa.'; return; }
+  const list = getThresholdReflectionsV90();
+  const item = {text:text,date:new Date().toLocaleDateString(),time:new Date().toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'})};
+  list.push(item);
+  localStorage.setItem('thresholdReflectionsV90', JSON.stringify(list));
+  if(input) input.value='';
+  if(result) result.innerHTML='🌌 Cierre guardado. Esta etapa ya tiene una frase propia.';
+  if(typeof addFootprintV79 === 'function') addFootprintV79('cierre_umbral');
+  if(typeof renderDashboard === 'function') renderDashboard();
+}
+function showThresholdHistoryV90(){
+  const content = document.getElementById('thresholdContentV90');
+  const list = getThresholdReflectionsV90();
+  if(!content) return;
+  if(!list.length){
+    content.innerHTML = '<div class="thresholdCardV90">Todavía no hay cierres guardados. Podés escribir uno ahora.</div>';
+    return;
+  }
+  content.innerHTML = '<div class="thresholdCardV90"><strong>📜 Cierres guardados</strong>' + list.slice().reverse().map(x=>
+    '<div class="thresholdSealV90"><div class="thresholdSmallV90">'+escapeThresholdV90(x.date||'')+' '+escapeThresholdV90(x.time||'')+'</div><br>“'+escapeThresholdV90(x.text)+'”</div>'
+  ).join('') + '</div>';
+}
+function copyThresholdV90(){
+  if(!currentThresholdSummaryV90) renderThresholdV90();
+  if(navigator.clipboard){
+    navigator.clipboard.writeText(currentThresholdSummaryV90).then(()=>alert('🌌 Resumen copiado'));
+  } else {
+    alert(currentThresholdSummaryV90);
+  }
+}
+
 </script>
 
 
