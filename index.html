@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>App Emocional V84</title>
+<title>App Emocional V85</title>
 
 <style>
 body {
@@ -896,6 +896,77 @@ body, .app, #circle, .action, .stats, .softButton, .moods button {
   line-height:1.45;
 }
 
+/* V85 - Puente de regreso */
+.bridgeOrbV85{
+  width:150px;
+  height:150px;
+  border-radius:50%;
+  margin:24px auto;
+  background:radial-gradient(circle,#ffffff,#a7f3d0);
+  box-shadow:0 22px 60px rgba(16,185,129,.25);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:56px;
+  animation:bridgePulseV85 7s infinite ease-in-out;
+}
+@keyframes bridgePulseV85{
+  0%{transform:scale(1);opacity:.86;}
+  50%{transform:scale(1.1);opacity:1;}
+  100%{transform:scale(1);opacity:.86;}
+}
+.bridgePhraseV85{
+  font-size:21px;
+  font-weight:650;
+  line-height:1.45;
+  text-align:center;
+  padding:18px;
+  border-radius:22px;
+  background:rgba(236,253,245,.95);
+  margin:16px 0;
+}
+.bridgeCardV85{
+  background:rgba(255,255,255,.92);
+  border-radius:24px;
+  padding:18px;
+  margin:14px 0;
+  line-height:1.55;
+  text-align:left;
+  box-shadow:0 12px 30px rgba(0,0,0,.08);
+}
+.bridgePathV85{
+  background:linear-gradient(135deg,rgba(236,253,245,.96),rgba(219,234,254,.86));
+  border-radius:28px;
+  padding:20px 14px;
+  margin:20px 0;
+  min-height:160px;
+  box-shadow:inset 0 0 32px rgba(16,185,129,.10), 0 12px 30px rgba(0,0,0,.06);
+}
+.bridgeStepV85{
+  background:rgba(255,255,255,.82);
+  border-radius:18px;
+  padding:12px 14px;
+  margin:10px 0;
+  line-height:1.45;
+  text-align:left;
+}
+.bridgeChoiceV85{
+  border:none;
+  border-radius:18px;
+  padding:14px 16px;
+  font-size:16px;
+  background:rgba(255,255,255,.92);
+  margin:7px 0;
+  width:100%;
+  text-align:left;
+}
+.bridgeSmallV85{
+  font-size:15px;
+  color:#64748b;
+  line-height:1.45;
+}
+
+
 </style>
 
 <style id="v48premium">
@@ -1059,6 +1130,9 @@ text-align:center;
     </button>
 <button class="action" onclick="openRefugeV84()" style="grid-column:1/3;background:#d1fae5;font-weight:bold;">
       <span>🏡</span>Refugio interno
+    </button>
+<button class="action" onclick="openBridgeV85()" style="grid-column:1/3;background:#ccfbf1;font-weight:bold;">
+      <span>🌉</span>Puente de regreso
     </button>
 <button class="action" onclick="openCapsuleV46()" style="grid-column:1/3;background:#fde68a;font-weight:bold;">
       <span>📬</span>Cápsula del tiempo
@@ -1708,6 +1782,7 @@ text-align:center;
 <button onclick="openSupportedV82();closeJourneyHub();" class="softButton">🫀 Qué te sostuvo</button>
 <button onclick="openLightsV83();closeJourneyHub();" class="softButton">🌟 Momentos de luz</button>
 <button onclick="openRefugeV84();closeJourneyHub();" class="softButton">🏡 Refugio interno</button>
+<button onclick="openBridgeV85();closeJourneyHub();" class="softButton">🌉 Puente de regreso</button>
 
 <br><br>
 <button onclick="closeJourneyHub()" class="softButton">Volver</button>
@@ -1938,6 +2013,38 @@ Un lugar imaginario para bajar un poco el ruido. No exige explicar nada: solo el
 <button onclick="saveCurrentRefugeV84()" class="softButton">⭐ Guardar como favorito</button>
 <br>
 <button onclick="closeRefugeV84()" class="softButton">Volver</button>
+</div>
+
+
+
+<div id="bridgeScreenV85" class="fullscreen" style="background:linear-gradient(180deg,#ccfbf1,#dbeafe);overflow:auto;text-align:center;">
+<h1>🌉</h1>
+<h2>Puente de regreso</h2>
+<p style="font-size:17px;line-height:1.45;max-width:330px;margin:0 auto;">
+Para esos momentos en los que te fuiste muy lejos por dentro. No busca forzarte a estar bien: solo tender un puente pequeño hacia acá.
+</p>
+<div class="bridgeOrbV85">🌉</div>
+<div id="bridgePhraseV85" class="bridgePhraseV85">Podemos volver de a un paso.</div>
+<div id="bridgePathV85" class="bridgePathV85"></div>
+<div id="bridgeContentV85" class="rememberCard"></div>
+<div style="max-width:340px;margin:16px auto 0;text-align:left;">
+<button class="bridgeChoiceV85" onclick="chooseBridgeV85('cuerpo')">🖐️ Volver al cuerpo</button>
+<button class="bridgeChoiceV85" onclick="chooseBridgeV85('presente')">👀 Volver al presente</button>
+<button class="bridgeChoiceV85" onclick="chooseBridgeV85('persona')">🫂 Volver a alguien</button>
+<button class="bridgeChoiceV85" onclick="chooseBridgeV85('accion')">🌱 Volver con una acción mínima</button>
+</div>
+<div id="bridgeWriteBoxV85" class="rememberCard" style="display:none;text-align:left;">
+  <strong>🌉 Guardar mi puente</strong><br><br>
+  <span class="bridgeSmallV85">Escribí una frase que pueda ayudarte a regresar cuando todo se sienta lejos.</span>
+  <textarea id="bridgeManualTextV85" class="textBox" style="margin-top:14px;" placeholder="Cuando me vaya lejos, puedo volver con... / Mi primer paso es..."></textarea>
+  <button onclick="saveManualBridgeV85()" class="softButton">Guardar puente</button>
+</div>
+<br>
+<button onclick="openBridgeWriterV85()" class="softButton">✍️ Escribir mi puente</button>
+<button onclick="showSavedBridgeV85()" class="softButton">🌉 Ver puente guardado</button>
+<button onclick="saveCurrentBridgeV85()" class="softButton">⭐ Guardar como favorito</button>
+<br>
+<button onclick="closeBridgeV85()" class="softButton">Volver</button>
 </div>
 
 <div id="searchScreen" class="fullscreen" style="background:linear-gradient(180deg,#ecfeff,#dbeafe);overflow:auto;text-align:center;">
@@ -2339,6 +2446,100 @@ function saveCurrentRefugeV84(){
   favs.push(currentRefugeV84);
   localStorage.setItem('favoriteMemories', JSON.stringify(favs));
   alert('🏡 Refugio guardado como favorito');
+  if(typeof renderDashboard==='function') renderDashboard();
+}
+
+
+// V85 - Puente de regreso
+let currentBridgeV85='';
+
+function openBridgeV85(){
+  document.getElementById('bridgeScreenV85').style.display='block';
+  renderBridgeV85();
+  if(typeof addFootprintV79==='function') addFootprintV79('entro_puente_regreso');
+}
+function closeBridgeV85(){
+  document.getElementById('bridgeScreenV85').style.display='none';
+}
+function escapeBridgeV85(str){
+  return String(str||'').replace(/[&<>'"]/g,function(c){
+    return {'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c];
+  });
+}
+function getSavedBridgeV85(){
+  try{ return JSON.parse(localStorage.getItem('returnBridgeV85')||'null'); }catch(e){ return null; }
+}
+function setSavedBridgeV85(obj){
+  localStorage.setItem('returnBridgeV85', JSON.stringify(obj));
+}
+function renderBridgeV85(){
+  const saved=getSavedBridgeV85();
+  const phrase=document.getElementById('bridgePhraseV85');
+  const path=document.getElementById('bridgePathV85');
+  const content=document.getElementById('bridgeContentV85');
+  const writeBox=document.getElementById('bridgeWriteBoxV85');
+  if(writeBox) writeBox.style.display='none';
+  if(saved && saved.text){
+    currentBridgeV85='🌉 '+saved.text;
+    phrase.innerHTML='Tu puente guardado sigue acá.';
+    path.innerHTML='<div class="bridgeStepV85">1. No tengo que volver de golpe.</div><div class="bridgeStepV85">2. Puedo elegir una señal pequeña.</div><div class="bridgeStepV85">3. '+escapeBridgeV85(saved.text)+'</div>';
+    content.innerHTML='<div class="bridgeCardV85"><strong>🌉 Puente guardado</strong><br><br><span class="bridgeSmallV85">'+escapeBridgeV85(saved.date||'')+'</span><br>'+escapeBridgeV85(saved.text)+'</div>';
+  }else{
+    currentBridgeV85='No tengo que volver de golpe. Un paso pequeño alcanza.';
+    phrase.innerHTML='Podemos volver de a un paso.';
+    path.innerHTML='<div class="bridgeStepV85">1. Nombrar: “me fui un poco lejos”.</div><div class="bridgeStepV85">2. Sentir una parte del cuerpo apoyada.</div><div class="bridgeStepV85">3. Elegir una acción mínima: agua, aire, mensaje o descanso.</div>';
+    content.innerHTML='<div class="bridgeCardV85"><strong>Entrada suave</strong><br><br>Este modo no exige explicar nada. Solo ofrece un camino corto para regresar al cuerpo, al presente o a una persona segura.</div>';
+  }
+}
+function chooseBridgeV85(type){
+  const data={
+    cuerpo:{title:'🖐️ Puente al cuerpo',steps:['Apoyá los pies o una mano en algo firme.','Notá una temperatura: frío, tibio o contacto.','Decí: “estoy acá, aunque sea un poco”.'],line:'Mi cuerpo puede ser el primer lugar al que vuelvo.'},
+    presente:{title:'👀 Puente al presente',steps:['Buscá tres formas alrededor tuyo.','Elegí un color y quedate mirándolo unos segundos.','Nombrá una cosa simple que esté pasando ahora.'],line:'No necesito entender todo para volver a este minuto.'},
+    persona:{title:'🫂 Puente a alguien',steps:['Pensá en una persona que no te exija explicarlo perfecto.','Prepará una frase mínima: “hoy me cuesta”.','Podés copiarla, guardarla o enviarla después.'],line:'No tengo que atravesarlo completamente solo.'},
+    accion:{title:'🌱 Puente con acción mínima',steps:['Tomar agua.','Abrir una ventana o cambiar de lugar.','Escribir una sola frase sin corregirla.'],line:'Una acción pequeña también cuenta como regreso.'}
+  }[type];
+  if(!data) return;
+  currentBridgeV85=data.title+' · '+data.line;
+  document.getElementById('bridgePhraseV85').innerHTML=data.line;
+  document.getElementById('bridgePathV85').innerHTML=data.steps.map((x,i)=>'<div class="bridgeStepV85">'+(i+1)+'. '+escapeBridgeV85(x)+'</div>').join('');
+  document.getElementById('bridgeContentV85').innerHTML='<div class="bridgeCardV85"><strong>'+escapeBridgeV85(data.title)+'</strong><br><br>'+escapeBridgeV85(data.line)+'<br><br><span class="bridgeSmallV85">No hace falta completar todo. Con un solo paso ya empezó el puente.</span></div>';
+}
+function openBridgeWriterV85(){
+  const box=document.getElementById('bridgeWriteBoxV85');
+  if(box) box.style.display='block';
+  document.getElementById('bridgePhraseV85').innerHTML='Tu puente puede tener tus palabras.';
+}
+function saveManualBridgeV85(){
+  const input=document.getElementById('bridgeManualTextV85');
+  const text=(input.value||'').trim();
+  if(!text){
+    document.getElementById('bridgePhraseV85').innerHTML='Una frase mínima alcanza para construirlo.';
+    return;
+  }
+  const now=new Date();
+  const obj={text,date:now.toLocaleDateString('es-ES'),createdAt:now.toISOString()};
+  setSavedBridgeV85(obj);
+  input.value='';
+  currentBridgeV85='🌉 '+text;
+  renderBridgeV85();
+  if(typeof renderDashboard==='function') renderDashboard();
+}
+function showSavedBridgeV85(){
+  const saved=getSavedBridgeV85();
+  if(!saved || !saved.text){
+    document.getElementById('bridgePhraseV85').innerHTML='Todavía no hay un puente escrito.';
+    document.getElementById('bridgeContentV85').innerHTML='<div class="bridgeCardV85">Podés elegir una opción o escribir una frase propia para crear el primero.</div>';
+    return;
+  }
+  renderBridgeV85();
+}
+function saveCurrentBridgeV85(){
+  if(!currentBridgeV85){ alert('Todavía no hay un puente para guardar.'); return; }
+  let favs=JSON.parse(localStorage.getItem('favoriteMemories')||'[]');
+  if(favs.includes(currentBridgeV85)){ alert('⭐ Este puente ya estaba en favoritos'); return; }
+  favs.push(currentBridgeV85);
+  localStorage.setItem('favoriteMemories', JSON.stringify(favs));
+  alert('🌉 Puente guardado como favorito');
   if(typeof renderDashboard==='function') renderDashboard();
 }
 
