@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>App Emocional V98</title>
+<title>App Emocional V99</title>
 
 <style>
 body {
@@ -1766,6 +1766,73 @@ body, .app, #circle, .action, .stats, .softButton, .moods button {
   line-height:1.55;color:#1f2937;text-align:left;box-shadow:0 12px 30px rgba(0,0,0,.08);
 }
 
+
+/* V99 - Museo de victorias silenciosas */
+.silentMuseumOrbV99{
+  width:155px;height:155px;border-radius:50%;margin:24px auto;
+  background:radial-gradient(circle,#ffffff,#fde68a 44%,#c084fc);
+  box-shadow:0 22px 70px rgba(192,132,252,.28),0 0 42px rgba(253,230,138,.25);
+  display:flex;align-items:center;justify-content:center;font-size:58px;
+  animation:silentMuseumPulseV99 8s infinite ease-in-out;
+}
+@keyframes silentMuseumPulseV99{
+  0%{transform:scale(1);opacity:.86;}
+  50%{transform:scale(1.1);opacity:1;}
+  100%{transform:scale(1);opacity:.86;}
+}
+.silentMuseumPhraseV99{
+  font-size:21px;font-weight:650;line-height:1.45;text-align:center;
+  padding:18px;border-radius:22px;background:rgba(255,255,255,.86);margin:16px 0;color:#1f2937;
+}
+.silentMuseumCardV99{
+  background:rgba(255,255,255,.92);border-radius:24px;padding:18px;margin:14px 0;
+  line-height:1.55;text-align:left;box-shadow:0 12px 30px rgba(0,0,0,.08);color:#1f2937;
+}
+.silentMuseumHallV99{
+  position:relative;min-height:360px;border-radius:30px;margin:20px 0;overflow:hidden;
+  background:
+    linear-gradient(180deg,rgba(254,243,199,.96),rgba(237,233,254,.95)),
+    radial-gradient(circle at 50% 8%,rgba(255,255,255,.85),transparent 18%);
+  box-shadow:inset 0 0 42px rgba(124,58,237,.10),0 16px 36px rgba(0,0,0,.08);
+  padding:18px 12px 24px;box-sizing:border-box;
+}
+.silentMuseumHallV99:before{
+  content:"";position:absolute;left:8%;right:8%;top:64px;height:8px;border-radius:999px;
+  background:rgba(120,53,15,.18);box-shadow:0 98px 0 rgba(120,53,15,.14),0 196px 0 rgba(120,53,15,.10);
+}
+.silentMuseumGridV99{
+  position:relative;z-index:2;display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:18px;
+}
+.silentPieceV99{
+  min-height:92px;border:none;border-radius:22px;padding:12px 10px;
+  background:rgba(255,255,255,.88);box-shadow:0 10px 24px rgba(0,0,0,.08);
+  color:#1f2937;text-align:center;font-size:13px;line-height:1.25;
+  animation:silentPieceFloatV99 6s infinite ease-in-out;
+}
+.silentPieceV99 span{display:block;font-size:30px;margin-bottom:6px;}
+@keyframes silentPieceFloatV99{
+  0%{transform:translateY(0) scale(1);opacity:.94;}
+  50%{transform:translateY(-5px) scale(1.02);opacity:1;}
+  100%{transform:translateY(0) scale(1);opacity:.94;}
+}
+.silentChoiceV99{
+  border:none;border-radius:18px;padding:14px 16px;font-size:16px;
+  background:rgba(255,255,255,.94);margin:7px 0;width:100%;text-align:left;color:#1f2937;
+}
+.silentInputV99{
+  width:100%;box-sizing:border-box;border:none;border-radius:18px;
+  padding:14px 16px;font-size:16px;margin-top:12px;background:rgba(255,255,255,.96);
+}
+.silentMemoryV99{
+  background:linear-gradient(135deg,rgba(255,255,255,.94),rgba(254,243,199,.82));
+  border-radius:20px;padding:14px;margin:10px 0;line-height:1.45;color:#1f2937;
+}
+.silentSignalV99{
+  background:linear-gradient(135deg,rgba(254,243,199,.96),rgba(237,233,254,.92));
+  border-radius:22px;padding:16px;margin:12px 0;font-size:18px;font-weight:620;line-height:1.45;color:#1f2937;
+}
+.silentSmallV99{font-size:15px;color:#64748b;line-height:1.45;}
+
 </style>
 
 <style id="v48premium">
@@ -1972,6 +2039,9 @@ text-align:center;
     </button>
 <button class="action" onclick="openFutureLetterV98()" style="grid-column:1/3;background:#fce7f3;font-weight:bold;">
       <span>✉️</span>Carta desde tu versión futura
+    </button>
+<button class="action" onclick="openSilentMuseumV99()" style="grid-column:1/3;background:#fef3c7;font-weight:bold;">
+      <span>🏛️</span>Museo de victorias silenciosas
     </button>
 
 <button class="action" onclick="openCapsuleV46()" style="grid-column:1/3;background:#fde68a;font-weight:bold;">
@@ -8576,6 +8646,141 @@ function saveSeedTextV77(){
     return String(str || '').replace(/[&<>"']/g,function(m){
       return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m];
     });
+  };
+})();
+</script>
+
+
+<div id="silentMuseumScreenV99" class="fullscreen" style="background:linear-gradient(180deg,#fff7ed,#ede9fe);color:#1f2937;overflow:auto;text-align:center;">
+  <h1>🏛️</h1>
+  <h2>Museo de victorias silenciosas</h2>
+  <p style="font-size:17px;line-height:1.45;max-width:330px;margin:0 auto;">
+    Hay logros que nadie aplaudió.<br><br>
+    Pero siguen siendo logros.
+  </p>
+
+  <div class="silentMuseumOrbV99">🏛️</div>
+
+  <div id="silentPhraseV99" class="silentMuseumPhraseV99">
+    Todo museo comienza con una sola pieza.
+  </div>
+
+  <div id="silentMuseumHallV99" class="silentMuseumHallV99">
+    <div id="silentMuseumGridV99" class="silentMuseumGridV99"></div>
+  </div>
+
+  <div class="silentMuseumCardV99">
+    <strong>Agregar una victoria silenciosa</strong><br>
+    <span class="silentSmallV99">No tiene que ser enorme. Si te costó y aun así lo hiciste, cuenta.</span>
+
+    <button class="silentChoiceV99" onclick="saveSilentVictoryV99('Me levanté aunque costaba')">🛏️ Me levanté aunque costaba</button>
+    <button class="silentChoiceV99" onclick="saveSilentVictoryV99('Respondí un mensaje')">💬 Respondí un mensaje</button>
+    <button class="silentChoiceV99" onclick="saveSilentVictoryV99('Salí a caminar')">🚶 Salí a caminar</button>
+    <button class="silentChoiceV99" onclick="saveSilentVictoryV99('Pedí ayuda')">🫂 Pedí ayuda</button>
+    <button class="silentChoiceV99" onclick="saveSilentVictoryV99('No me rendí hoy')">🌤️ No me rendí hoy</button>
+    <button class="silentChoiceV99" onclick="saveSilentVictoryV99('Descansé sin culpa')">🌙 Descansé sin culpa</button>
+
+    <input id="silentInputV99" class="silentInputV99" placeholder="Escribí otra victoria...">
+    <button onclick="saveCustomSilentVictoryV99()" class="softButton" style="margin-top:12px;">Guardar victoria</button>
+  </div>
+
+  <div id="silentSignalV99" class="silentSignalV99">
+    Aquí empieza la evidencia de que seguiste adelante.
+  </div>
+
+  <div id="silentHistoryV99" class="silentMuseumCardV99"></div>
+
+  <button onclick="closeSilentMuseumV99()" class="softButton">Volver</button>
+</div>
+
+<script>
+(function(){
+  function el(id){ return document.getElementById(id); }
+  function esc(str){
+    return String(str || '').replace(/[&<>"']/g,function(m){
+      return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m];
+    });
+  }
+  function shortText(text,max){
+    text=String(text||'');
+    return text.length>max ? text.slice(0,max-1)+'…' : text;
+  }
+  function today(){
+    try{return new Date().toLocaleDateString('es-ES',{day:'2-digit',month:'short'});}catch(e){return new Date().toLocaleDateString();}
+  }
+  function pieces(){ return ['🖼️','🏆','🎖️','💎','🏺','🕯️','📜','🌟']; }
+  function getList(){
+    try{return JSON.parse(localStorage.getItem('silentVictoriesV99')||'[]') || [];}catch(e){return [];}
+  }
+  function setList(list){ localStorage.setItem('silentVictoriesV99',JSON.stringify(list)); }
+  window.openSilentMuseumV99=function(){
+    var screen=el('silentMuseumScreenV99');
+    if(screen){ screen.style.display='block'; }
+    renderSilentMuseumV99();
+    if(typeof addFootprintV79==='function') addFootprintV79('abri_museo_victorias_silenciosas');
+  };
+  window.closeSilentMuseumV99=function(){
+    var screen=el('silentMuseumScreenV99');
+    if(screen){ screen.style.display='none'; }
+  };
+  window.saveSilentVictoryV99=function(text){
+    text=String(text||'').trim();
+    if(!text) return;
+    var list=getList();
+    var icons=pieces();
+    list.unshift({text:text, icon:icons[list.length % icons.length], date:today(), ts:Date.now()});
+    setList(list);
+    renderSilentMuseumV99();
+    var input=el('silentInputV99'); if(input) input.value='';
+  };
+  window.saveCustomSilentVictoryV99=function(){
+    var input=el('silentInputV99');
+    var text=input ? input.value.trim() : '';
+    if(!text) return;
+    saveSilentVictoryV99(text);
+  };
+  window.renderSilentMuseumV99=function(){
+    var list=getList();
+    var grid=el('silentMuseumGridV99');
+    var phrase=el('silentPhraseV99');
+    var signal=el('silentSignalV99');
+    var history=el('silentHistoryV99');
+    if(phrase){
+      if(list.length===0) phrase.innerHTML='Todo museo comienza con una sola pieza.';
+      else if(list.length<5) phrase.innerHTML='Ya hay evidencia de tu avance.';
+      else if(list.length<15) phrase.innerHTML='Hay más logros de los que recordabas.';
+      else phrase.innerHTML='Este museo demuestra que seguiste adelante incluso en días difíciles.';
+    }
+    if(signal){
+      signal.innerHTML=list.length===0
+        ? 'No necesitás una gran victoria. Una pequeña también puede entrar al museo.'
+        : 'Tu museo tiene '+list.length+' pieza'+(list.length===1?'':'s')+'. Ninguna es menor: todas cuentan.';
+    }
+    if(grid){
+      if(list.length===0){
+        grid.innerHTML='<div class="silentPieceV99" style="grid-column:1/3;"><span>🏛️</span>Tu primera pieza puede ser algo simple: haber llegado hasta acá.</div>';
+      }else{
+        grid.innerHTML=list.slice(0,8).map(function(item,idx){
+          return '<button class="silentPieceV99" onclick="showSilentVictoryV99('+idx+')"><span>'+esc(item.icon||'🖼️')+'</span>'+esc(shortText(item.text,38))+'</button>';
+        }).join('');
+      }
+    }
+    if(history){
+      if(list.length===0){
+        history.innerHTML='<strong>Galería vacía</strong><br><span class="silentSmallV99">Cuando guardes una victoria, aparecerá acá.</span>';
+      }else{
+        history.innerHTML='<strong>Últimas piezas guardadas</strong>'+list.slice(0,10).map(function(item){
+          return '<div class="silentMemoryV99"><strong>'+esc(item.icon||'🖼️')+' '+esc(item.text)+'</strong><br><span class="silentSmallV99">'+esc(item.date||'')+'</span></div>';
+        }).join('');
+      }
+    }
+  };
+  window.showSilentVictoryV99=function(index){
+    var item=getList()[index];
+    var phrase=el('silentPhraseV99');
+    if(item && phrase){
+      phrase.innerHTML=esc(item.icon||'🖼️')+' '+esc(item.text)+'<br><span class="silentSmallV99">Esto también fue una victoria. Aunque nadie la haya visto.</span>';
+    }
   };
 })();
 </script>
