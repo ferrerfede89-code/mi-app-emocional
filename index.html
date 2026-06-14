@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>App Emocional V97</title>
+<title>App Emocional V98</title>
 
 <style>
 body {
@@ -1690,6 +1690,82 @@ body, .app, #circle, .action, .stats, .softButton, .moods button {
   line-height:1.5;color:#1f2937;text-align:left;
 }
 
+
+/* V98 - Carta desde tu versión futura */
+.futureLetterOrbV98{
+  width:155px;height:155px;border-radius:50%;margin:24px auto;
+  background:radial-gradient(circle,#ffffff,#fed7aa 45%,#f9a8d4);
+  box-shadow:0 22px 70px rgba(249,168,212,.28),0 0 42px rgba(254,215,170,.25);
+  display:flex;align-items:center;justify-content:center;font-size:58px;
+  animation:futureLetterPulseV98 8s infinite ease-in-out;
+}
+@keyframes futureLetterPulseV98{
+  0%{transform:scale(1) rotate(-1deg);opacity:.86;}
+  50%{transform:scale(1.1) rotate(2deg);opacity:1;}
+  100%{transform:scale(1) rotate(-1deg);opacity:.86;}
+}
+.futureLetterPhraseV98{
+  font-size:21px;font-weight:650;line-height:1.45;text-align:center;
+  padding:18px;border-radius:22px;background:rgba(255,255,255,.82);margin:16px 0;color:#1f2937;
+}
+.futureLetterCardV98{
+  background:rgba(255,255,255,.90);border-radius:24px;padding:18px;margin:14px 0;
+  line-height:1.55;text-align:left;box-shadow:0 12px 30px rgba(0,0,0,.08);color:#1f2937;
+}
+.futureLetterSceneV98{
+  position:relative;min-height:260px;border-radius:30px;margin:20px 0;overflow:hidden;
+  background:linear-gradient(180deg,rgba(255,247,237,.96),rgba(252,231,243,.94));
+  box-shadow:inset 0 0 42px rgba(249,168,212,.10),0 16px 36px rgba(0,0,0,.08);
+  display:flex;align-items:center;justify-content:center;flex-direction:column;text-align:center;
+}
+.futureEnvelopeV98{
+  width:154px;height:104px;border-radius:18px;background:linear-gradient(135deg,#ffffff,#fed7aa);
+  box-shadow:0 18px 35px rgba(0,0,0,.10);
+  position:relative;margin:18px auto;animation:futureEnvelopeFloatV98 6s infinite ease-in-out;
+}
+.futureEnvelopeV98:before{
+  content:"";position:absolute;left:0;right:0;top:0;margin:auto;width:0;height:0;
+  border-left:77px solid transparent;border-right:77px solid transparent;border-top:58px solid rgba(249,168,212,.70);
+  border-radius:18px;
+}
+.futureEnvelopeV98:after{
+  content:"✉️";position:absolute;left:0;right:0;top:30px;font-size:36px;
+}
+@keyframes futureEnvelopeFloatV98{
+  0%{transform:translateY(0) rotate(-1deg);opacity:.9;}
+  50%{transform:translateY(-8px) rotate(2deg);opacity:1;}
+  100%{transform:translateY(0) rotate(-1deg);opacity:.9;}
+}
+.futureToneGridV98{
+  display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px;
+}
+.futureToneV98{
+  border:none;border-radius:18px;padding:13px 12px;font-size:15px;
+  background:rgba(255,255,255,.92);text-align:left;color:#1f2937;
+}
+.futureToneV98.selectedV98{
+  background:linear-gradient(135deg,#fed7aa,#fbcfe8);
+  font-weight:700;
+}
+.futureTextareaV98{
+  width:100%;min-height:150px;box-sizing:border-box;border:none;border-radius:18px;
+  padding:15px;font-size:16px;margin-top:12px;background:rgba(255,255,255,.96);
+  font-family:-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.45;
+}
+.futureLetterSavedV98{
+  background:linear-gradient(135deg,rgba(255,255,255,.94),rgba(252,231,243,.82));
+  border-radius:20px;padding:14px;margin:10px 0;line-height:1.45;color:#1f2937;
+}
+.futureLetterSignalV98{
+  background:linear-gradient(135deg,rgba(255,247,237,.96),rgba(252,231,243,.92));
+  border-radius:22px;padding:16px;margin:12px 0;font-size:18px;font-weight:620;line-height:1.45;color:#1f2937;
+}
+.futureLetterSmallV98{font-size:15px;color:#64748b;line-height:1.45;}
+.futureLetterOpenV98{
+  background:rgba(255,255,255,.94);border-radius:24px;padding:18px;margin:14px 0;
+  line-height:1.55;color:#1f2937;text-align:left;box-shadow:0 12px 30px rgba(0,0,0,.08);
+}
+
 </style>
 
 <style id="v48premium">
@@ -1893,6 +1969,9 @@ text-align:center;
     </button>
 <button class="action" onclick="openTouchedPeopleV97()" style="grid-column:1/3;background:#e0e7ff;font-weight:bold;">
       <span>🫂</span>Personas que tocaste
+    </button>
+<button class="action" onclick="openFutureLetterV98()" style="grid-column:1/3;background:#fce7f3;font-weight:bold;">
+      <span>✉️</span>Carta desde tu versión futura
     </button>
 
 <button class="action" onclick="openCapsuleV46()" style="grid-column:1/3;background:#fde68a;font-weight:bold;">
@@ -3166,6 +3245,48 @@ No es un mapa exacto. Es una forma suave de ver qué lugares internos apareciero
   </div>
   <div id="possibilityHistoryV95" class="possibilityCardV95"></div>
   <button onclick="closePossibilityTreeV95()" class="softButton">Volver</button>
+</div>
+
+
+<div id="futureLetterScreenV98" class="fullscreen" style="background:linear-gradient(180deg,#fff7ed,#fce7f3);color:#1f2937;">
+  <h1>✉️</h1>
+  <h2>Carta desde tu versión futura</h2>
+
+  <div class="futureLetterPhraseV98">
+    Alguien quiere escribirte con ternura.<br>
+    Ese alguien también sos vos.
+  </div>
+
+  <div class="futureLetterSceneV98">
+    <div class="futureEnvelopeV98"></div>
+    <div class="futureLetterSmallV98" style="max-width:310px;">
+      No es una predicción. Es una voz más adelante recordándote que este momento no es todo.
+    </div>
+  </div>
+
+  <div class="futureLetterCardV98">
+    <strong>Elegí el tono de la carta</strong>
+    <div class="futureToneGridV98">
+      <button id="futureTone_esperanza_V98" class="futureToneV98" onclick="chooseFutureToneV98('esperanza')">🌤️ Esperanza</button>
+      <button id="futureTone_fortaleza_V98" class="futureToneV98" onclick="chooseFutureToneV98('fortaleza')">💪 Fortaleza</button>
+      <button id="futureTone_perdon_V98" class="futureToneV98" onclick="chooseFutureToneV98('perdon')">🤍 Perdón</button>
+      <button id="futureTone_paciencia_V98" class="futureToneV98" onclick="chooseFutureToneV98('paciencia')">🌱 Paciencia</button>
+      <button id="futureTone_calma_V98" class="futureToneV98" onclick="chooseFutureToneV98('calma')" style="grid-column:1/3;">🌊 Calma</button>
+    </div>
+  </div>
+
+  <div class="futureLetterCardV98">
+    <strong>Escribí como si fueras tu yo del futuro</strong>
+    <textarea id="futureLetterTextV98" class="futureTextareaV98" placeholder="Querido yo de hoy..."></textarea>
+    <button onclick="saveFutureLetterV98()" class="softButton" style="margin-top:12px;">Guardar carta</button>
+    <button onclick="generateFutureLetterDraftV98()" class="softButton" style="margin-top:12px;">Darme una carta guía</button>
+    <button onclick="openRandomFutureLetterV98()" class="softButton" style="margin-top:12px;">Abrir una al azar</button>
+  </div>
+
+  <div id="futureLetterOpenV98" class="futureLetterOpenV98" style="display:none;"></div>
+  <div id="futureLetterLibraryV98" class="futureLetterCardV98"></div>
+
+  <button onclick="closeFutureLetterV98()" class="softButton">Volver</button>
 </div>
 
 <script>
@@ -8315,6 +8436,137 @@ function saveSeedTextV77(){
   };
 
   window.escapeHtmlTouchedV97=function(str){
+    return String(str || '').replace(/[&<>"']/g,function(m){
+      return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m];
+    });
+  };
+})();
+</script>
+
+
+<script>
+// V98 - Carta desde tu versión futura
+(function(){
+  function byId(id){ return document.getElementById(id); }
+  var currentToneV98='esperanza';
+
+  var toneLabels={
+    esperanza:'🌤️ Esperanza',
+    fortaleza:'💪 Fortaleza',
+    perdon:'🤍 Perdón',
+    paciencia:'🌱 Paciencia',
+    calma:'🌊 Calma'
+  };
+
+  var guideLetters={
+    esperanza:'Querido yo de hoy:\n\nSé que ahora puede parecer difícil ver más allá de este momento. Pero quiero que sepas algo: no todo termina en lo que sentís hoy.\n\nHay partes de vos que todavía están creciendo en silencio. Hay días más livianos esperándote. No necesitás llegar rápido. Sólo seguir respirando un poco más.\n\nCon ternura,\ntu versión futura.',
+    fortaleza:'Querido yo de hoy:\n\nNo te escribo para exigirte fuerza. Te escribo para recordarte que ya la tuviste muchas veces, incluso cuando nadie la vio.\n\nCada vez que seguiste, aunque fuera despacio, hubo una parte de vos eligiendo la vida. Eso también cuenta.\n\nEstoy orgulloso de vos.\n\ntu versión futura.',
+    perdon:'Querido yo de hoy:\n\nNo necesitás castigarte por no poder con todo. No eras una máquina. Estabas intentando atravesar algo pesado con las herramientas que tenías.\n\nQuiero que empieces a hablarte con menos dureza. Merecés un trato más suave, también de tu propia voz.\n\nTe abrazo,\ntu versión futura.',
+    paciencia:'Querido yo de hoy:\n\nNo todo lo que sana se nota de inmediato. Algunas cosas se acomodan muy lentamente, como raíces debajo de la tierra.\n\nNo te midas sólo por lo que ves hoy. También estás construyendo algo en silencio.\n\nUn paso pequeño sigue siendo un paso.\n\ntu versión futura.',
+    calma:'Querido yo de hoy:\n\nRespirá. No tenés que resolver tu vida entera ahora. Este momento pide presencia, no perfección.\n\nDejá que el día sea más pequeño. Dejá que tu cuerpo vuelva de a poco. Estoy acá, más adelante, y te prometo que este momento pasó.\n\nCon calma,\ntu versión futura.'
+  };
+
+  window.openFutureLetterV98=function(){
+    var screen=byId('futureLetterScreenV98');
+    if(screen){ screen.style.display='block'; }
+    chooseFutureToneV98(currentToneV98);
+    renderFutureLettersV98();
+  };
+
+  window.closeFutureLetterV98=function(){
+    var screen=byId('futureLetterScreenV98');
+    if(screen){ screen.style.display='none'; }
+  };
+
+  window.getFutureLettersV98=function(){
+    try{ return JSON.parse(localStorage.getItem('futureLettersV98') || '[]'); }
+    catch(e){ return []; }
+  };
+
+  window.setFutureLettersV98=function(items){
+    localStorage.setItem('futureLettersV98', JSON.stringify(items || []));
+  };
+
+  window.chooseFutureToneV98=function(tone){
+    currentToneV98=tone || 'esperanza';
+    Object.keys(toneLabels).forEach(function(k){
+      var b=byId('futureTone_'+k+'_V98');
+      if(b){ b.classList.toggle('selectedV98', k===currentToneV98); }
+    });
+  };
+
+  window.generateFutureLetterDraftV98=function(){
+    var box=byId('futureLetterTextV98');
+    if(box){ box.value=guideLetters[currentToneV98] || guideLetters.esperanza; }
+  };
+
+  window.saveFutureLetterV98=function(){
+    var box=byId('futureLetterTextV98');
+    var text=(box && box.value ? box.value.trim() : '');
+    if(!text){
+      alert('Escribí una carta o usá una carta guía primero.');
+      return;
+    }
+    var letters=getFutureLettersV98();
+    letters.unshift({
+      text:text,
+      tone:currentToneV98,
+      date:new Date().toISOString()
+    });
+    setFutureLettersV98(letters);
+    if(box){ box.value=''; }
+    renderFutureLettersV98();
+    showFutureLetterV98(letters[0], 'Carta guardada');
+  };
+
+  window.openRandomFutureLetterV98=function(){
+    var letters=getFutureLettersV98();
+    if(!letters.length){
+      var draft={text:guideLetters[currentToneV98] || guideLetters.esperanza, tone:currentToneV98, date:new Date().toISOString()};
+      showFutureLetterV98(draft, 'Carta guía');
+      return;
+    }
+    var item=letters[Math.floor(Math.random()*letters.length)];
+    showFutureLetterV98(item, 'Carta abierta al azar');
+  };
+
+  window.showFutureLetterV98=function(item,title){
+    var target=byId('futureLetterOpenV98');
+    if(!target || !item){ return; }
+    target.style.display='block';
+    target.innerHTML='<strong>✉️ '+escapeFutureHtmlV98(title || 'Carta')+'</strong><br><span class="futureLetterSmallV98">'+escapeFutureHtmlV98(toneLabels[item.tone] || 'Carta')+'</span><br><br>'+escapeFutureHtmlV98(item.text).replace(/\n/g,'<br>');
+    target.scrollIntoView({behavior:'smooth',block:'center'});
+  };
+
+  window.renderFutureLettersV98=function(){
+    var target=byId('futureLetterLibraryV98');
+    if(!target){ return; }
+    var letters=getFutureLettersV98();
+    if(!letters.length){
+      target.innerHTML='<strong>Biblioteca de cartas</strong><div class="futureLetterSignalV98">Todavía no hay cartas guardadas. Podés escribir una o pedir una carta guía.</div>';
+      return;
+    }
+    var html='<strong>Biblioteca de cartas</strong><div class="futureLetterSmallV98" style="margin-top:6px;">'+letters.length+' carta(s) guardada(s)</div>';
+    letters.slice(0,10).forEach(function(item,i){
+      html+='<div class="futureLetterSavedV98"><strong>'+(toneLabels[item.tone] || '✉️ Carta')+'</strong><br>'+
+      '<span class="futureLetterSmallV98">'+formatFutureDateV98(item.date)+'</span><br>'+
+      escapeFutureHtmlV98(shortFutureTextV98(item.text,90)).replace(/\n/g,'<br>')+
+      '<br><button class="softButton" onclick="showFutureLetterV98(getFutureLettersV98()['+i+'],\\'Carta guardada\\')" style="font-size:14px;padding:9px 12px;">Abrir</button></div>';
+    });
+    target.innerHTML=html;
+  };
+
+  window.formatFutureDateV98=function(value){
+    try{ return new Date(value).toLocaleDateString('es-ES',{day:'2-digit',month:'2-digit',year:'numeric'}); }
+    catch(e){ return ''; }
+  };
+
+  window.shortFutureTextV98=function(value,max){
+    value=String(value || '');
+    return value.length>max ? value.slice(0,max-1)+'…' : value;
+  };
+
+  window.escapeFutureHtmlV98=function(str){
     return String(str || '').replace(/[&<>"']/g,function(m){
       return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m];
     });
