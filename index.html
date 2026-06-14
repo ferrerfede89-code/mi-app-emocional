@@ -8115,6 +8115,54 @@ function saveSeedTextV77(){
 </script>
 
 
+
+<div id="peopleScreenV97" class="fullscreen" style="background:linear-gradient(180deg,#e0f2fe,#f8fafc);">
+<div class="possibilityCardV95">
+<div style="text-align:center">
+<div class="legacyOrbV96">🫂</div>
+<h2>Personas que tocaste</h2>
+<div id="peoplePhraseV97" class="possibilityPhraseV95">Algunas personas recibieron algo valioso de vos.</div>
+<input id="peopleInputV97" class="possibilityInputV95" placeholder="Nombre o descripción de la persona">
+<button class="softButton" onclick="savePersonV97()">Guardar vínculo</button>
+</div>
+<div id="peopleConstellationV97" class="legacySkyV96"></div>
+<div id="peopleListV97"></div>
+<div style="text-align:center"><button class="softButton" onclick="closePeopleV97()">Volver</button></div>
+</div>
+</div>
+
+
+<script>
+(function(){
+window.getPeopleV97=function(){return JSON.parse(localStorage.getItem('peopleV97')||'[]');};
+window.openPeopleV97=function(){document.getElementById('peopleScreenV97').style.display='block';renderPeopleV97();};
+window.closePeopleV97=function(){document.getElementById('peopleScreenV97').style.display='none';};
+window.savePersonV97=function(){
+ var v=document.getElementById('peopleInputV97').value.trim(); if(!v)return;
+ var arr=getPeopleV97(); arr.unshift({name:v,date:new Date().toLocaleDateString()});
+ localStorage.setItem('peopleV97',JSON.stringify(arr));
+ document.getElementById('peopleInputV97').value='';
+ renderPeopleV97();
+};
+window.renderPeopleV97=function(){
+ var arr=getPeopleV97(), sky=document.getElementById('peopleConstellationV97'), list=document.getElementById('peopleListV97');
+ if(!sky||!list)return;
+ sky.innerHTML='';
+ arr.slice(0,12).forEach(function(p,i){
+   var b=document.createElement('button');
+   b.className='legacyStarV96';
+   b.innerHTML='🫂';
+   b.style.left=(10+(i*17)%75)+'%';
+   b.style.top=(20+((i*53)%220))+'px';
+   b.onclick=function(){alert(p.name);};
+   sky.appendChild(b);
+ });
+ list.innerHTML=arr.map(function(p){return '<div class="legacyMemoryV96">'+p.name+'<br><small>'+p.date+'</small></div>';}).join('');
+ document.getElementById('peoplePhraseV97').innerHTML=arr.length? 'Has registrado '+arr.length+' personas importantes.' : 'Pensá en alguien que recibió algo bueno de vos.';
+};
+})();
+</script>
+
 </body>
 
 <script id="v57_2_final_diary_fix">
@@ -9205,6 +9253,54 @@ function showLifeMapZoneV94(key){
       return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m];
     });
   };
+})();
+</script>
+
+
+<div id="peopleScreenV97" class="fullscreen" style="background:linear-gradient(180deg,#e0f2fe,#f8fafc);">
+<div class="possibilityCardV95">
+<div style="text-align:center">
+<div class="legacyOrbV96">🫂</div>
+<h2>Personas que tocaste</h2>
+<div id="peoplePhraseV97" class="possibilityPhraseV95">Algunas personas recibieron algo valioso de vos.</div>
+<input id="peopleInputV97" class="possibilityInputV95" placeholder="Nombre o descripción de la persona">
+<button class="softButton" onclick="savePersonV97()">Guardar vínculo</button>
+</div>
+<div id="peopleConstellationV97" class="legacySkyV96"></div>
+<div id="peopleListV97"></div>
+<div style="text-align:center"><button class="softButton" onclick="closePeopleV97()">Volver</button></div>
+</div>
+</div>
+
+
+<script>
+(function(){
+window.getPeopleV97=function(){return JSON.parse(localStorage.getItem('peopleV97')||'[]');};
+window.openPeopleV97=function(){document.getElementById('peopleScreenV97').style.display='block';renderPeopleV97();};
+window.closePeopleV97=function(){document.getElementById('peopleScreenV97').style.display='none';};
+window.savePersonV97=function(){
+ var v=document.getElementById('peopleInputV97').value.trim(); if(!v)return;
+ var arr=getPeopleV97(); arr.unshift({name:v,date:new Date().toLocaleDateString()});
+ localStorage.setItem('peopleV97',JSON.stringify(arr));
+ document.getElementById('peopleInputV97').value='';
+ renderPeopleV97();
+};
+window.renderPeopleV97=function(){
+ var arr=getPeopleV97(), sky=document.getElementById('peopleConstellationV97'), list=document.getElementById('peopleListV97');
+ if(!sky||!list)return;
+ sky.innerHTML='';
+ arr.slice(0,12).forEach(function(p,i){
+   var b=document.createElement('button');
+   b.className='legacyStarV96';
+   b.innerHTML='🫂';
+   b.style.left=(10+(i*17)%75)+'%';
+   b.style.top=(20+((i*53)%220))+'px';
+   b.onclick=function(){alert(p.name);};
+   sky.appendChild(b);
+ });
+ list.innerHTML=arr.map(function(p){return '<div class="legacyMemoryV96">'+p.name+'<br><small>'+p.date+'</small></div>';}).join('');
+ document.getElementById('peoplePhraseV97').innerHTML=arr.length? 'Has registrado '+arr.length+' personas importantes.' : 'Pensá en alguien que recibió algo bueno de vos.';
+};
 })();
 </script>
 
