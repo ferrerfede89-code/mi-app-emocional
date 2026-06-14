@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>App Emocional V91</title>
+<title>App Emocional V92</title>
 
 <style>
 body {
@@ -1371,6 +1371,103 @@ body, .app, #circle, .action, .stats, .softButton, .moods button {
   font-size:14px;
 }
 
+
+/* V92 - Banda sonora emocional */
+.soundtrackOrbV92{
+  width:155px;
+  height:155px;
+  border-radius:50%;
+  margin:24px auto;
+  background:radial-gradient(circle,#ffffff,#93c5fd);
+  box-shadow:0 22px 64px rgba(59,130,246,.28);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:58px;
+  animation:soundtrackPulseV92 7.5s infinite ease-in-out;
+}
+@keyframes soundtrackPulseV92{
+  0%{transform:scale(1);opacity:.86;}
+  50%{transform:scale(1.11);opacity:1;}
+  100%{transform:scale(1);opacity:.86;}
+}
+.soundtrackPhraseV92{
+  font-size:21px;
+  font-weight:650;
+  line-height:1.45;
+  text-align:center;
+  padding:18px;
+  border-radius:22px;
+  background:rgba(224,242,254,.96);
+  margin:16px 0;
+}
+.soundtrackCardV92{
+  background:rgba(255,255,255,.92);
+  border-radius:24px;
+  padding:18px;
+  margin:14px 0;
+  line-height:1.55;
+  text-align:left;
+  box-shadow:0 12px 30px rgba(0,0,0,.08);
+}
+.soundtrackSceneV92{
+  border-radius:28px;
+  padding:22px 16px;
+  margin:20px 0;
+  min-height:175px;
+  text-align:center;
+  background:linear-gradient(180deg,rgba(255,255,255,.76),rgba(191,219,254,.88));
+  box-shadow:inset 0 0 34px rgba(59,130,246,.12), 0 12px 30px rgba(0,0,0,.07);
+}
+.soundtrackWaveV92{
+  display:flex;
+  justify-content:center;
+  align-items:end;
+  gap:7px;
+  height:76px;
+  margin:18px 0;
+}
+.soundtrackBarV92{
+  width:10px;
+  border-radius:999px;
+  background:linear-gradient(180deg,#ffffff,#60a5fa);
+  animation:soundtrackWaveV92 1.8s infinite ease-in-out;
+}
+.soundtrackBarV92:nth-child(1){height:28px;animation-delay:.1s;}
+.soundtrackBarV92:nth-child(2){height:46px;animation-delay:.25s;}
+.soundtrackBarV92:nth-child(3){height:68px;animation-delay:.4s;}
+.soundtrackBarV92:nth-child(4){height:42px;animation-delay:.55s;}
+.soundtrackBarV92:nth-child(5){height:56px;animation-delay:.7s;}
+.soundtrackBarV92:nth-child(6){height:34px;animation-delay:.85s;}
+@keyframes soundtrackWaveV92{
+  0%{transform:scaleY(.78);opacity:.72;}
+  50%{transform:scaleY(1.18);opacity:1;}
+  100%{transform:scaleY(.78);opacity:.72;}
+}
+.soundtrackChoiceV92{
+  border:none;
+  border-radius:18px;
+  padding:14px 16px;
+  font-size:16px;
+  background:rgba(255,255,255,.92);
+  margin:7px 0;
+  width:100%;
+  text-align:left;
+}
+.soundtrackMixV92{
+  background:linear-gradient(135deg,rgba(224,242,254,.96),rgba(245,243,255,.86));
+  border-radius:22px;
+  padding:16px;
+  margin:12px 0;
+  line-height:1.5;
+  font-size:18px;
+}
+.soundtrackSmallV92{
+  font-size:15px;
+  color:#64748b;
+  line-height:1.45;
+}
+
 </style>
 
 <style id="v48premium">
@@ -1556,6 +1653,9 @@ text-align:center;
 
 <button class="action" onclick="openTransformationsV91()" style="grid-column:1/3;background:#ccfbf1;font-weight:bold;">
       <span>🦋</span>Transformaciones
+    </button>
+<button class="action" onclick="openSoundtrackV92()" style="grid-column:1/3;background:#dbeafe;font-weight:bold;">
+      <span>🎵</span>Banda sonora emocional
     </button>
 <button class="action" onclick="openCapsuleV46()" style="grid-column:1/3;background:#fde68a;font-weight:bold;">
       <span>📬</span>Cápsula del tiempo
@@ -2193,6 +2293,8 @@ text-align:center;
 <button onclick="openLifeTimeline();closeJourneyHub();" class="softButton">📜 Línea de vida</button>
 <button onclick="openFullExport();closeJourneyHub();" class="softButton">📦 Historia completa</button>
 <button onclick="openThresholdV90();closeJourneyHub();" class="softButton">🌌 Umbral de etapa</button>
+<button onclick="openTransformationsV91();closeJourneyHub();" class="softButton">🦋 Transformaciones</button>
+<button onclick="openSoundtrackV92();closeJourneyHub();" class="softButton">🎵 Banda sonora emocional</button>
 <button onclick="openBackup();closeJourneyHub();" class="softButton">☁️ Respaldo</button>
 <button onclick="openRestoreCenter();closeJourneyHub();" class="softButton">💾 Restaurar</button>
 <button onclick="openJourneyReflection();closeJourneyHub();" class="softButton">🌟 Reflexión automática</button>
@@ -2624,6 +2726,43 @@ No compara para exigirte. Mira señales suaves de cambio: palabras, formas de vo
 <div id="transformationResultV91" style="margin-top:14px;font-weight:bold;line-height:1.45;"></div>
 <br>
 <button onclick="closeTransformationsV91()" class="softButton">Volver</button>
+</div>
+
+
+
+<div id="soundtrackScreenV92" class="fullscreen" style="background:linear-gradient(180deg,#dbeafe,#f5d0fe);overflow:auto;text-align:center;">
+<h1>🎵</h1>
+<h2>Banda sonora emocional</h2>
+<p style="font-size:17px;line-height:1.45;max-width:330px;margin:0 auto;">
+No busca tapar lo que sentís. Busca darle un clima suave, como si tu recorrido tuviera una música propia.
+</p>
+<div class="soundtrackOrbV92">🎧</div>
+<div id="soundtrackPhraseV92" class="soundtrackPhraseV92">Estoy escuchando el clima de tu recorrido...</div>
+<div class="soundtrackSceneV92">
+  <div id="soundtrackEmojiV92" style="font-size:54px;margin-top:8px;">🌊</div>
+  <div class="soundtrackWaveV92">
+    <div class="soundtrackBarV92"></div><div class="soundtrackBarV92"></div><div class="soundtrackBarV92"></div>
+    <div class="soundtrackBarV92"></div><div class="soundtrackBarV92"></div><div class="soundtrackBarV92"></div>
+  </div>
+  <div id="soundtrackNameV92" style="font-size:22px;font-weight:700;line-height:1.35;">Mar tranquilo</div>
+</div>
+<div id="soundtrackContentV92" class="rememberCard"></div>
+<div class="soundtrackCardV92">
+<strong>Elegí una dirección sonora</strong>
+<div style="margin-top:12px;">
+<button class="soundtrackChoiceV92" onclick="chooseSoundtrackV92('mar')">🌊 Mar tranquilo</button>
+<button class="soundtrackChoiceV92" onclick="chooseSoundtrackV92('lluvia')">🌧️ Lluvia lenta</button>
+<button class="soundtrackChoiceV92" onclick="chooseSoundtrackV92('bosque')">🌲 Bosque respirando</button>
+<button class="soundtrackChoiceV92" onclick="chooseSoundtrackV92('noche')">🌙 Noche segura</button>
+<button class="soundtrackChoiceV92" onclick="chooseSoundtrackV92('amanecer')">🌤️ Amanecer suave</button>
+</div>
+</div>
+<br>
+<button onclick="renderSoundtrackV92()" class="softButton">Crear mezcla emocional</button>
+<button onclick="saveSoundtrackV92()" class="softButton">⭐ Guardar esta banda sonora</button>
+<button onclick="showSoundtrackHistoryV92()" class="softButton">📜 Ver guardadas</button>
+<br>
+<button onclick="closeSoundtrackV92()" class="softButton">Volver</button>
 </div>
 
 <div id="searchScreen" class="fullscreen" style="background:linear-gradient(180deg,#ecfeff,#dbeafe);overflow:auto;text-align:center;">
@@ -8309,6 +8448,116 @@ function copyThresholdV90(){
   } else {
     alert(currentThresholdSummaryV90);
   }
+}
+
+
+// V92 - Banda sonora emocional
+let currentSoundtrackV92 = null;
+let currentSoundtrackSummaryV92 = '';
+function openSoundtrackV92(){
+  const el = document.getElementById('soundtrackScreenV92');
+  if(el) el.style.display='block';
+  renderSoundtrackV92();
+}
+function closeSoundtrackV92(){
+  const el = document.getElementById('soundtrackScreenV92');
+  if(el) el.style.display='none';
+}
+function escapeSoundtrackV92(text){
+  return String(text||'').replace(/[&<>'"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c];});
+}
+function getSoundtrackSavedV92(){
+  try{return JSON.parse(localStorage.getItem('soundtracksV92')||'[]');}catch(e){return [];}
+}
+function getSoundtrackMoodDataV92(){
+  let moods=[];
+  try{ moods = JSON.parse(localStorage.getItem('moods')||'[]'); }catch(e){ moods=[]; }
+  let diary=[];
+  try{ diary = JSON.parse(localStorage.getItem('diaryEntries')||'[]'); }catch(e){ diary=[]; }
+  let talk=[];
+  try{ talk = JSON.parse(localStorage.getItem('talkEntries')||'[]'); }catch(e){ talk=[]; }
+  const texts = []
+    .concat((diary||[]).map(x=>x.text||''))
+    .concat((talk||[]).map(x=>x.text||''));
+  return {moods:moods||[], texts:texts};
+}
+function inferSoundtrackV92(){
+  const data = getSoundtrackMoodDataV92();
+  const moodCounts = {bien:0,normal:0,mal:0};
+  (data.moods||[]).slice(-12).forEach(m=>{
+    const v = typeof m === 'string' ? m : (m.mood || m.value || '');
+    if(moodCounts[v] !== undefined) moodCounts[v]++;
+  });
+  const text = (data.texts||[]).slice(-12).join(' ').toLowerCase();
+  const words = {
+    mar:['calma','tranquilo','respirar','paz','descanso','suave'],
+    lluvia:['triste','llorar','cansado','dolor','noche','peso'],
+    bosque:['seguir','crecer','lento','semilla','volver','camino'],
+    noche:['miedo','ansiedad','solo','oscuro','dormir','seguro'],
+    amanecer:['esperanza','mañana','nuevo','puedo','luz','empezar']
+  };
+  let scores = {mar:0,lluvia:0,bosque:0,noche:0,amanecer:0};
+  Object.keys(words).forEach(k=>words[k].forEach(w=>{ if(text.includes(w)) scores[k]+=2; }));
+  scores.mar += moodCounts.bien*2 + moodCounts.normal;
+  scores.lluvia += moodCounts.mal*2;
+  scores.bosque += moodCounts.normal*2;
+  scores.noche += moodCounts.mal;
+  scores.amanecer += moodCounts.bien + (data.texts.length ? 1 : 0);
+  let best = Object.keys(scores).sort((a,b)=>scores[b]-scores[a])[0] || 'mar';
+  if(!data.moods.length && !data.texts.length) best='mar';
+  return best;
+}
+function soundtrackPresetV92(type){
+  const map = {
+    mar:{emoji:'🌊', name:'Mar tranquilo', phrase:'Una música baja, como agua que no exige nada.', why:'Tu recorrido pide amplitud: respirar, aflojar el cuerpo y dejar que el momento pase sin empujarlo.', mix:['olas lejanas','aire fresco','pulso lento']},
+    lluvia:{emoji:'🌧️', name:'Lluvia lenta', phrase:'Una lluvia suave para acompañar lo que pesa.', why:'Hay días donde no hace falta iluminar todo. A veces alcanza con un sonido que diga: podés bajar la guardia.', mix:['gotas suaves','ventana tibia','silencio cuidado']},
+    bosque:{emoji:'🌲', name:'Bosque respirando', phrase:'Una caminata lenta entre árboles quietos.', why:'Tu recorrido muestra señales de continuidad. No hace falta correr: algo puede crecer despacio.', mix:['hojas moviéndose','tierra húmeda','pasos lentos']},
+    noche:{emoji:'🌙', name:'Noche segura', phrase:'Un clima oscuro, pero acompañado.', why:'Cuando aparece miedo o cansancio, la app puede sonar como una presencia baja: no resuelve, pero se queda.', mix:['cielo profundo','respiración lenta','luz pequeña']},
+    amanecer:{emoji:'🌤️', name:'Amanecer suave', phrase:'Una luz temprana, sin obligación de estar bien.', why:'Hay señales de inicio: algo que quiere volver a empezar sin exigirse demasiado.', mix:['primer sol','aire limpio','movimiento leve']}
+  };
+  return map[type] || map.mar;
+}
+function chooseSoundtrackV92(type){
+  currentSoundtrackV92 = type;
+  renderSoundtrackV92(type);
+}
+function renderSoundtrackV92(type){
+  const selected = type || currentSoundtrackV92 || inferSoundtrackV92();
+  currentSoundtrackV92 = selected;
+  const p = soundtrackPresetV92(selected);
+  const phrase = document.getElementById('soundtrackPhraseV92');
+  const emoji = document.getElementById('soundtrackEmojiV92');
+  const name = document.getElementById('soundtrackNameV92');
+  const content = document.getElementById('soundtrackContentV92');
+  if(phrase) phrase.innerHTML = escapeSoundtrackV92(p.phrase);
+  if(emoji) emoji.innerHTML = p.emoji;
+  if(name) name.innerHTML = escapeSoundtrackV92(p.name);
+  const html = '<div class="soundtrackCardV92"><strong>🎧 Banda sugerida</strong>' +
+    '<div class="soundtrackMixV92"><strong>'+escapeSoundtrackV92(p.emoji+' '+p.name)+'</strong><br><br>'+escapeSoundtrackV92(p.why)+'</div>' +
+    '<div class="soundtrackSmallV92">Capas imaginadas:</div>' +
+    p.mix.map(x=>'<span class="transformChipV91">'+escapeSoundtrackV92(x)+'</span>').join('') +
+    '<br><br><div class="soundtrackSmallV92">No reproduce música real todavía: crea una dirección emocional para futuras versiones con sonido propio.</div></div>';
+  if(content) content.innerHTML = html;
+  currentSoundtrackSummaryV92 = 'Banda sonora emocional V92\n\n' + p.name + '\n' + p.phrase + '\n\n' + p.why + '\n\nCapas: ' + p.mix.join(', ');
+}
+function saveSoundtrackV92(){
+  const p = soundtrackPresetV92(currentSoundtrackV92 || inferSoundtrackV92());
+  const list = getSoundtrackSavedV92();
+  list.push({type:currentSoundtrackV92,name:p.name,phrase:p.phrase,date:new Date().toLocaleDateString(),time:new Date().toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'})});
+  localStorage.setItem('soundtracksV92', JSON.stringify(list));
+  if(typeof addFootprintV79 === 'function') addFootprintV79('banda_sonora');
+  const content = document.getElementById('soundtrackContentV92');
+  if(content) content.innerHTML += '<div class="soundtrackCardV92"><strong>⭐ Guardada.</strong><br>Esta banda sonora quedó en tu recorrido.</div>';
+  if(typeof renderDashboard === 'function') renderDashboard();
+}
+function showSoundtrackHistoryV92(){
+  const content = document.getElementById('soundtrackContentV92');
+  const list = getSoundtrackSavedV92();
+  if(!content) return;
+  if(!list.length){ content.innerHTML = '<div class="soundtrackCardV92">Todavía no hay bandas sonoras guardadas.</div>'; return; }
+  content.innerHTML = '<div class="soundtrackCardV92"><strong>📜 Bandas sonoras guardadas</strong>' + list.slice().reverse().map(x=>
+    '<div class="soundtrackMixV92"><div class="soundtrackSmallV92">'+escapeSoundtrackV92((x.date||'')+' '+(x.time||''))+'</div><strong>'+escapeSoundtrackV92(x.name||'Banda sonora')+'</strong><br>'+escapeSoundtrackV92(x.phrase||'')+'</div>'
+  ).join('') + '</div>';
 }
 
 </script>
