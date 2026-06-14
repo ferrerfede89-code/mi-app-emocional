@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>App Emocional V92</title>
+<title>App Emocional V92 sonido</title>
 
 <style>
 body {
@@ -2759,6 +2759,8 @@ No busca tapar lo que sentís. Busca darle un clima suave, como si tu recorrido 
 </div>
 <br>
 <button onclick="renderSoundtrackV92()" class="softButton">Crear mezcla emocional</button>
+<button onclick="playSoundtrackV92()" class="softButton">▶️ Escuchar</button>
+<button onclick="stopSoundtrackV92()" class="softButton">⏸️ Detener</button>
 <button onclick="saveSoundtrackV92()" class="softButton">⭐ Guardar esta banda sonora</button>
 <button onclick="showSoundtrackHistoryV92()" class="softButton">📜 Ver guardadas</button>
 <br>
@@ -8462,6 +8464,7 @@ function openSoundtrackV92(){
 function closeSoundtrackV92(){
   const el = document.getElementById('soundtrackScreenV92');
   if(el) el.style.display='none';
+  if(typeof stopSoundtrackV92 === 'function') stopSoundtrackV92();
 }
 function escapeSoundtrackV92(text){
   return String(text||'').replace(/[&<>'"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c];});
@@ -8536,10 +8539,102 @@ function renderSoundtrackV92(type){
     '<div class="soundtrackMixV92"><strong>'+escapeSoundtrackV92(p.emoji+' '+p.name)+'</strong><br><br>'+escapeSoundtrackV92(p.why)+'</div>' +
     '<div class="soundtrackSmallV92">Capas imaginadas:</div>' +
     p.mix.map(x=>'<span class="transformChipV91">'+escapeSoundtrackV92(x)+'</span>').join('') +
-    '<br><br><div class="soundtrackSmallV92">No reproduce música real todavía: crea una dirección emocional para futuras versiones con sonido propio.</div></div>';
+    '<br><br><div class="soundtrackSmallV92">Ahora puede emitir un ambiente suave generado dentro del propio HTML. Tocá ▶️ Escuchar para activarlo.</div></div>';
   if(content) content.innerHTML = html;
   currentSoundtrackSummaryV92 = 'Banda sonora emocional V92\n\n' + p.name + '\n' + p.phrase + '\n\n' + p.why + '\n\nCapas: ' + p.mix.join(', ');
 }
+
+// V92 sonido real generado en el navegador, sin archivos externos
+let soundtrackAudioCtxV92 = null;
+let soundtrackNodesV92 = [];
+let soundtrackNoiseTimerV92 = null;
+
+function stopSoundtrackV92(){
+  try{
+    if(soundtrackNoiseTimerV92){ clearInterval(soundtrackNoiseTimerV92); soundtrackNoiseTimerV92=null; }
+    soundtrackNodesV92.forEach(n=>{
+      try{ if(n.stop) n.stop(); }catch(e){}
+      try{ if(n.disconnect) n.disconnect(); }catch(e){}
+    });
+    soundtrackNodesV92=[];
+  }catch(e){}
+}
+
+function ensureSoundtrackAudioV92(){
+  const AudioCtx = window.AudioContext || window.webkitAudioContext;
+  if(!AudioCtx) return null;
+  if(!soundtrackAudioCtxV92) soundtrackAudioCtxV92 = new AudioCtx();
+  if(soundtrackAudioCtxV92.state === 'suspended') soundtrackAudioCtxV92.resume();
+  return soundtrackAudioCtxV92;
+}
+
+function makeToneV92(ctx, freq, type, gainValue){
+  const osc = ctx.createOscillator();
+  const gain = ctx.createGain();
+  osc.type = type || 'sine';
+  osc.frequency.value = freq;
+  gain.gain.value = 0.0001;
+  osc.connect(gain);
+  gain.connect(ctx.destination);
+  osc.start();
+  gain.gain.setTargetAtTime(gainValue, ctx.currentTime + 0.05, 0.8);
+  soundtrackNodesV92.push(osc,gain);
+  return {osc,gain};
+}
+
+function makeNoiseBurstV92(ctx, gainValue, duration, filterFreq){
+  const bufferSize = Math.max(1, Math.floor(ctx.sampleRate * duration));
+  const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+  const data = buffer.getChannelData(0);
+  for(let i=0;i<bufferSize;i++) data[i] = Math.random()*2-1;
+  const src = ctx.createBufferSource();
+  src.buffer = buffer;
+  const filter = ctx.createBiquadFilter();
+  filter.type = 'lowpass';
+  filter.frequency.value = filterFreq || 900;
+  const gain = ctx.createGain();
+  gain.gain.value = gainValue;
+  src.connect(filter); filter.connect(gain); gain.connect(ctx.destination);
+  src.start();
+  soundtrackNodesV92.push(src,filter,gain);
+}
+
+function playSoundtrackV92(){
+  const ctx = ensureSoundtrackAudioV92();
+  const content = document.getElementById('soundtrackContentV92');
+  if(!ctx){
+    if(content) content.innerHTML += '<div class="soundtrackCardV92"><strong>No pude activar audio en este navegador.</strong><br>Probalo desde Chrome/Safari actualizado.</div>';
+    return;
+  }
+  stopSoundtrackV92();
+  const type = currentSoundtrackV92 || inferSoundtrackV92();
+  const p = soundtrackPresetV92(type);
+
+  if(content) content.innerHTML += '<div class="soundtrackCardV92"><strong>🎧 Sonando:</strong> '+escapeSoundtrackV92(p.name)+'<br><span class="soundtrackSmallV92">Volumen suave. Usá ⏸️ Detener para cortarlo.</span></div>';
+
+  if(type === 'mar'){
+    makeToneV92(ctx, 174, 'sine', 0.035);
+    makeToneV92(ctx, 261.63, 'sine', 0.018);
+    soundtrackNoiseTimerV92 = setInterval(()=>makeNoiseBurstV92(ctx,0.025,1.2,650),900);
+  } else if(type === 'lluvia'){
+    makeToneV92(ctx, 196, 'sine', 0.018);
+    soundtrackNoiseTimerV92 = setInterval(()=>makeNoiseBurstV92(ctx,0.018,0.18,1800),120);
+  } else if(type === 'bosque'){
+    makeToneV92(ctx, 220, 'triangle', 0.024);
+    makeToneV92(ctx, 329.63, 'sine', 0.012);
+    soundtrackNoiseTimerV92 = setInterval(()=>makeNoiseBurstV92(ctx,0.014,0.35,2400),520);
+  } else if(type === 'noche'){
+    makeToneV92(ctx, 110, 'sine', 0.038);
+    makeToneV92(ctx, 164.81, 'sine', 0.015);
+    soundtrackNoiseTimerV92 = setInterval(()=>makeNoiseBurstV92(ctx,0.008,0.7,500),1400);
+  } else if(type === 'amanecer'){
+    makeToneV92(ctx, 261.63, 'sine', 0.022);
+    makeToneV92(ctx, 392.00, 'triangle', 0.014);
+    makeToneV92(ctx, 523.25, 'sine', 0.009);
+    soundtrackNoiseTimerV92 = setInterval(()=>makeNoiseBurstV92(ctx,0.01,0.28,3200),700);
+  }
+}
+
 function saveSoundtrackV92(){
   const p = soundtrackPresetV92(currentSoundtrackV92 || inferSoundtrackV92());
   const list = getSoundtrackSavedV92();
