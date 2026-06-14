@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>App Emocional V96</title>
+<title>App Emocional V97</title>
 
 <style>
 body {
@@ -1623,6 +1623,73 @@ body, .app, #circle, .action, .stats, .softButton, .moods button {
   background:rgba(255,255,255,.12);border-radius:22px;padding:16px;margin:14px 0;
   line-height:1.5;color:white;text-align:left;
 }
+
+/* V97 - Personas que tocaste */
+.touchedOrbV97{
+  width:155px;height:155px;border-radius:50%;margin:24px auto;
+  background:radial-gradient(circle,#ffffff,#bfdbfe 45%,#a78bfa);
+  box-shadow:0 22px 70px rgba(99,102,241,.28),0 0 42px rgba(191,219,254,.25);
+  display:flex;align-items:center;justify-content:center;font-size:58px;
+  animation:touchedPulseV97 8s infinite ease-in-out;
+}
+@keyframes touchedPulseV97{
+  0%{transform:scale(1);opacity:.86;}
+  50%{transform:scale(1.1);opacity:1;}
+  100%{transform:scale(1);opacity:.86;}
+}
+.touchedPhraseV97{
+  font-size:21px;font-weight:650;line-height:1.45;text-align:center;
+  padding:18px;border-radius:22px;background:rgba(255,255,255,.78);margin:16px 0;color:#1f2937;
+}
+.touchedCardV97{
+  background:rgba(255,255,255,.90);border-radius:24px;padding:18px;margin:14px 0;
+  line-height:1.55;text-align:left;box-shadow:0 12px 30px rgba(0,0,0,.08);color:#1f2937;
+}
+.touchedSkyV97{
+  position:relative;min-height:350px;border-radius:30px;margin:20px 0;overflow:hidden;
+  background:
+    radial-gradient(circle at 30% 18%,rgba(255,255,255,.62),transparent 12%),
+    linear-gradient(180deg,rgba(224,242,254,.96),rgba(237,233,254,.95));
+  box-shadow:inset 0 0 42px rgba(99,102,241,.10),0 16px 36px rgba(0,0,0,.08);
+}
+.touchedLineV97{
+  position:absolute;height:1px;background:linear-gradient(90deg,transparent,rgba(99,102,241,.25),transparent);
+  transform-origin:left center;z-index:1;
+}
+.touchedPersonV97{
+  position:absolute;border:none;border-radius:24px;padding:9px 11px;min-width:74px;
+  background:rgba(255,255,255,.88);box-shadow:0 10px 24px rgba(0,0,0,.08);
+  font-size:13px;line-height:1.25;text-align:center;color:#1f2937;z-index:2;
+  animation:touchedFloatV97 6s infinite ease-in-out;
+}
+.touchedPersonV97 span{display:block;font-size:27px;margin-bottom:3px;}
+@keyframes touchedFloatV97{
+  0%{transform:translateY(0) scale(1);opacity:.9;}
+  50%{transform:translateY(-6px) scale(1.03);opacity:1;}
+  100%{transform:translateY(0) scale(1);opacity:.9;}
+}
+.touchedChoiceV97{
+  border:none;border-radius:18px;padding:14px 16px;font-size:16px;
+  background:rgba(255,255,255,.92);margin:7px 0;width:100%;text-align:left;color:#1f2937;
+}
+.touchedInputV97{
+  width:100%;box-sizing:border-box;border:none;border-radius:18px;
+  padding:14px 16px;font-size:16px;margin-top:12px;background:rgba(255,255,255,.96);
+}
+.touchedMemoryV97{
+  background:linear-gradient(135deg,rgba(255,255,255,.92),rgba(224,242,254,.84));
+  border-radius:20px;padding:14px;margin:10px 0;line-height:1.45;color:#1f2937;
+}
+.touchedSignalV97{
+  background:linear-gradient(135deg,rgba(224,242,254,.96),rgba(237,233,254,.92));
+  border-radius:22px;padding:16px;margin:12px 0;font-size:18px;font-weight:620;line-height:1.45;color:#1f2937;
+}
+.touchedSmallV97{font-size:15px;color:#64748b;line-height:1.45;}
+.touchedSelectedV97{
+  background:rgba(255,255,255,.92);border-radius:22px;padding:16px;margin:14px 0;
+  line-height:1.5;color:#1f2937;text-align:left;
+}
+
 </style>
 
 <style id="v48premium">
@@ -1823,6 +1890,9 @@ text-align:center;
     </button>
 <button class="action" onclick="openLegacyV96()" style="grid-column:1/3;background:#dbeafe;font-weight:bold;">
       <span>✨</span>Legado invisible
+    </button>
+<button class="action" onclick="openTouchedPeopleV97()" style="grid-column:1/3;background:#e0e7ff;font-weight:bold;">
+      <span>🫂</span>Personas que tocaste
     </button>
 
 <button class="action" onclick="openCapsuleV46()" style="grid-column:1/3;background:#fde68a;font-weight:bold;">
@@ -8116,50 +8186,139 @@ function saveSeedTextV77(){
 
 
 
-<div id="peopleScreenV97" class="fullscreen" style="background:linear-gradient(180deg,#e0f2fe,#f8fafc);">
-<div class="possibilityCardV95">
-<div style="text-align:center">
-<div class="legacyOrbV96">🫂</div>
-<h2>Personas que tocaste</h2>
-<div id="peoplePhraseV97" class="possibilityPhraseV95">Algunas personas recibieron algo valioso de vos.</div>
-<input id="peopleInputV97" class="possibilityInputV95" placeholder="Nombre o descripción de la persona">
-<button class="softButton" onclick="savePersonV97()">Guardar vínculo</button>
-</div>
-<div id="peopleConstellationV97" class="legacySkyV96"></div>
-<div id="peopleListV97"></div>
-<div style="text-align:center"><button class="softButton" onclick="closePeopleV97()">Volver</button></div>
-</div>
-</div>
-
-
 <script>
+// V97 - Personas que tocaste
 (function(){
-window.getPeopleV97=function(){return JSON.parse(localStorage.getItem('peopleV97')||'[]');};
-window.openPeopleV97=function(){document.getElementById('peopleScreenV97').style.display='block';renderPeopleV97();};
-window.closePeopleV97=function(){document.getElementById('peopleScreenV97').style.display='none';};
-window.savePersonV97=function(){
- var v=document.getElementById('peopleInputV97').value.trim(); if(!v)return;
- var arr=getPeopleV97(); arr.unshift({name:v,date:new Date().toLocaleDateString()});
- localStorage.setItem('peopleV97',JSON.stringify(arr));
- document.getElementById('peopleInputV97').value='';
- renderPeopleV97();
-};
-window.renderPeopleV97=function(){
- var arr=getPeopleV97(), sky=document.getElementById('peopleConstellationV97'), list=document.getElementById('peopleListV97');
- if(!sky||!list)return;
- sky.innerHTML='';
- arr.slice(0,12).forEach(function(p,i){
-   var b=document.createElement('button');
-   b.className='legacyStarV96';
-   b.innerHTML='🫂';
-   b.style.left=(10+(i*17)%75)+'%';
-   b.style.top=(20+((i*53)%220))+'px';
-   b.onclick=function(){alert(p.name);};
-   sky.appendChild(b);
- });
- list.innerHTML=arr.map(function(p){return '<div class="legacyMemoryV96">'+p.name+'<br><small>'+p.date+'</small></div>';}).join('');
- document.getElementById('peoplePhraseV97').innerHTML=arr.length? 'Has registrado '+arr.length+' personas importantes.' : 'Pensá en alguien que recibió algo bueno de vos.';
-};
+  function byId(id){ return document.getElementById(id); }
+
+  window.openTouchedPeopleV97=function(){
+    var screen=byId('touchedPeopleScreenV97');
+    if(screen){ screen.style.display='block'; }
+    window.renderTouchedPeopleV97();
+  };
+
+  window.closeTouchedPeopleV97=function(){
+    var screen=byId('touchedPeopleScreenV97');
+    if(screen){ screen.style.display='none'; }
+  };
+
+  window.getTouchedPeopleV97=function(){
+    try{ return JSON.parse(localStorage.getItem('touchedPeopleV97') || '[]'); }
+    catch(e){ return []; }
+  };
+
+  window.setTouchedPeopleV97=function(items){
+    localStorage.setItem('touchedPeopleV97', JSON.stringify(items || []));
+  };
+
+  window.saveTouchedPersonV97=function(text,emoji){
+    text=String(text || '').trim();
+    if(!text){ return; }
+
+    var items=window.getTouchedPeopleV97();
+    var positions=[
+      {x:12,y:20},{x:39,y:14},{x:68,y:21},{x:23,y:41},{x:54,y:38},
+      {x:78,y:47},{x:14,y:66},{x:42,y:61},{x:68,y:72},{x:82,y:27},
+      {x:30,y:78},{x:56,y:82}
+    ];
+    var pos=positions[items.length % positions.length];
+
+    items.push({
+      text:text,
+      emoji:emoji || '🫂',
+      x:pos.x,
+      y:pos.y,
+      date:new Date().toLocaleDateString('es-ES',{day:'2-digit',month:'2-digit',year:'numeric'})
+    });
+
+    window.setTouchedPeopleV97(items);
+    window.renderTouchedPeopleV97();
+    var input=byId('touchedInputV97');
+    if(input){ input.value=''; }
+  };
+
+  window.saveCustomTouchedPersonV97=function(){
+    var input=byId('touchedInputV97');
+    var value=input ? input.value.trim() : '';
+    if(!value){ return; }
+    window.saveTouchedPersonV97(value,'🫂');
+  };
+
+  window.renderTouchedPeopleV97=function(){
+    var items=window.getTouchedPeopleV97();
+    var sky=byId('touchedSkyV97');
+    var history=byId('touchedHistoryV97');
+    var phrase=byId('touchedPhraseV97');
+    var signal=byId('touchedSignalV97');
+
+    if(phrase){
+      if(items.length===0){
+        phrase.innerHTML='Algunas personas se cruzaron con algo valioso de vos.';
+      }else if(items.length<4){
+        phrase.innerHTML='Cada vínculo recuerda que tu presencia pudo tocar a alguien.';
+      }else if(items.length<8){
+        phrase.innerHTML='Tu red empieza a mostrar personas que recibieron algo tuyo.';
+      }else{
+        phrase.innerHTML='Hay más vínculos alcanzados por vos de los que imaginás.';
+      }
+    }
+
+    if(signal){
+      if(items.length===0){
+        signal.innerHTML='Una persona alcanzada por tu presencia ya importa.';
+      }else if(items.length<4){
+        signal.innerHTML='Quizás no lo notaste. Pero alguien pudo sentirse menos solo por vos.';
+      }else if(items.length<8){
+        signal.innerHTML='Tus vínculos también son parte de tu historia.';
+      }else{
+        signal.innerHTML='No pasaste por el mundo sin tocar a nadie.';
+      }
+    }
+
+    if(sky){
+      if(items.length===0){
+        sky.innerHTML='<div style="position:absolute;left:22px;right:22px;top:120px;z-index:2;line-height:1.45;color:#475569;">Todavía no hay vínculos guardados.<br><br>Podés empezar por una persona a la que escuchaste, ayudaste o acompañaste.</div>';
+      }else{
+        var lines='';
+        if(items.length>1){
+          lines='<div class="touchedLineV97" style="left:18%;top:49%;width:65%;transform:rotate(10deg);"></div><div class="touchedLineV97" style="left:22%;top:61%;width:54%;transform:rotate(-18deg);"></div>';
+        }
+        sky.innerHTML=lines+items.map(function(item,idx){
+          return '<button class="touchedPersonV97" style="left:'+item.x+'%;top:'+item.y+'%;" onclick="showTouchedPersonV97('+idx+')"><span>'+escapeHtmlTouchedV97(item.emoji || '🫂')+'</span>'+escapeHtmlTouchedV97(shortTouchedV97(item.text,18))+'</button>';
+        }).join('');
+      }
+    }
+
+    if(history){
+      if(items.length===0){
+        history.innerHTML='<div class="touchedSmallV97">Aún no guardaste ningún vínculo.</div>';
+      }else{
+        history.innerHTML=items.slice().reverse().map(function(item){
+          return '<div class="touchedMemoryV97"><b>'+escapeHtmlTouchedV97(item.emoji || '🫂')+' '+escapeHtmlTouchedV97(shortTouchedV97(item.text,70))+'</b><br><span class="touchedSmallV97">'+escapeHtmlTouchedV97(item.date || '')+'</span></div>';
+        }).join('');
+      }
+    }
+  };
+
+  window.showTouchedPersonV97=function(index){
+    var items=window.getTouchedPeopleV97();
+    var item=items[index];
+    var box=byId('touchedSelectedV97');
+    if(!item || !box){ return; }
+    box.style.display='block';
+    box.innerHTML='<b>'+escapeHtmlTouchedV97(item.emoji || '🫂')+' Vínculo tocado</b><br><br>'+escapeHtmlTouchedV97(item.text)+'<br><br><span class="touchedSmallV97">Tal vez no supiste cuánto significó. Pero tu presencia pudo haber dejado algo.</span>';
+  };
+
+  window.shortTouchedV97=function(text,max){
+    text=String(text || '');
+    return text.length>max ? text.slice(0,max-1)+'…' : text;
+  };
+
+  window.escapeHtmlTouchedV97=function(str){
+    return String(str || '').replace(/[&<>"']/g,function(m){
+      return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m];
+    });
+  };
 })();
 </script>
 
@@ -9164,6 +9323,54 @@ function showLifeMapZoneV94(key){
 </div>
 
 
+<div id="touchedPeopleScreenV97" class="fullscreen" style="background:linear-gradient(180deg,#e0f2fe,#f8fafc);color:#1f2937;overflow:auto;text-align:center;">
+  <h1>🫂</h1>
+  <h2>Personas que tocaste</h2>
+  <p style="font-size:17px;line-height:1.45;max-width:330px;margin:0 auto;">
+    Quizás no lo viste, pero hubo personas que recibieron algo tuyo.<br><br>
+    Una escucha, una palabra, una presencia.
+  </p>
+
+  <div class="touchedOrbV97">🫂</div>
+
+  <div id="touchedPhraseV97" class="touchedPhraseV97">
+    Algunas personas se cruzaron con algo valioso de vos.
+  </div>
+
+  <div id="touchedSkyV97" class="touchedSkyV97"></div>
+
+  <div id="touchedSelectedV97" class="touchedSelectedV97" style="display:none;"></div>
+
+  <div class="touchedCardV97">
+    <b>Guardar un vínculo</b>
+    <div class="touchedSmallV97" style="margin-top:8px;">
+      No hace falta escribir un nombre real. Puede ser “un amigo”, “mi mamá”, “alguien del trabajo”.
+    </div>
+
+    <button class="touchedChoiceV97" onclick="saveTouchedPersonV97('Un amigo al que escuché','👂')">👂 Un amigo al que escuché</button>
+    <button class="touchedChoiceV97" onclick="saveTouchedPersonV97('Una persona a la que acompañé','🫂')">🫂 Una persona a la que acompañé</button>
+    <button class="touchedChoiceV97" onclick="saveTouchedPersonV97('Alguien a quien hice sonreír','😊')">😊 Alguien a quien hice sonreír</button>
+    <button class="touchedChoiceV97" onclick="saveTouchedPersonV97('Una persona a la que ayudé en silencio','🤲')">🤲 Alguien a quien ayudé</button>
+    <button class="touchedChoiceV97" onclick="saveTouchedPersonV97('Alguien que recibió una palabra mía','💬')">💬 Alguien que recibió una palabra mía</button>
+
+    <input id="touchedInputV97" class="touchedInputV97" placeholder="Escribir otra persona o vínculo..." />
+    <button class="softButton" onclick="saveCustomTouchedPersonV97()" style="margin-top:12px;">🫂 Guardar vínculo</button>
+  </div>
+
+  <div class="touchedCardV97">
+    <b>Vínculos guardados</b>
+    <div id="touchedHistoryV97" style="margin-top:12px;"></div>
+  </div>
+
+  <div id="touchedSignalV97" class="touchedSignalV97">
+    Una persona alcanzada por tu presencia ya importa.
+  </div>
+
+  <br>
+  <button onclick="closeTouchedPeopleV97()" class="softButton">Volver</button>
+</div>
+
+
 <script>
 // V95 - Árbol de posibilidades
 (function(){
@@ -9253,54 +9460,6 @@ function showLifeMapZoneV94(key){
       return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m];
     });
   };
-})();
-</script>
-
-
-<div id="peopleScreenV97" class="fullscreen" style="background:linear-gradient(180deg,#e0f2fe,#f8fafc);">
-<div class="possibilityCardV95">
-<div style="text-align:center">
-<div class="legacyOrbV96">🫂</div>
-<h2>Personas que tocaste</h2>
-<div id="peoplePhraseV97" class="possibilityPhraseV95">Algunas personas recibieron algo valioso de vos.</div>
-<input id="peopleInputV97" class="possibilityInputV95" placeholder="Nombre o descripción de la persona">
-<button class="softButton" onclick="savePersonV97()">Guardar vínculo</button>
-</div>
-<div id="peopleConstellationV97" class="legacySkyV96"></div>
-<div id="peopleListV97"></div>
-<div style="text-align:center"><button class="softButton" onclick="closePeopleV97()">Volver</button></div>
-</div>
-</div>
-
-
-<script>
-(function(){
-window.getPeopleV97=function(){return JSON.parse(localStorage.getItem('peopleV97')||'[]');};
-window.openPeopleV97=function(){document.getElementById('peopleScreenV97').style.display='block';renderPeopleV97();};
-window.closePeopleV97=function(){document.getElementById('peopleScreenV97').style.display='none';};
-window.savePersonV97=function(){
- var v=document.getElementById('peopleInputV97').value.trim(); if(!v)return;
- var arr=getPeopleV97(); arr.unshift({name:v,date:new Date().toLocaleDateString()});
- localStorage.setItem('peopleV97',JSON.stringify(arr));
- document.getElementById('peopleInputV97').value='';
- renderPeopleV97();
-};
-window.renderPeopleV97=function(){
- var arr=getPeopleV97(), sky=document.getElementById('peopleConstellationV97'), list=document.getElementById('peopleListV97');
- if(!sky||!list)return;
- sky.innerHTML='';
- arr.slice(0,12).forEach(function(p,i){
-   var b=document.createElement('button');
-   b.className='legacyStarV96';
-   b.innerHTML='🫂';
-   b.style.left=(10+(i*17)%75)+'%';
-   b.style.top=(20+((i*53)%220))+'px';
-   b.onclick=function(){alert(p.name);};
-   sky.appendChild(b);
- });
- list.innerHTML=arr.map(function(p){return '<div class="legacyMemoryV96">'+p.name+'<br><small>'+p.date+'</small></div>';}).join('');
- document.getElementById('peoplePhraseV97').innerHTML=arr.length? 'Has registrado '+arr.length+' personas importantes.' : 'Pensá en alguien que recibió algo bueno de vos.';
-};
 })();
 </script>
 
