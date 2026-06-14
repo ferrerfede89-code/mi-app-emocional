@@ -8538,6 +8538,12 @@ function saveSeedTextV77(){
     target.scrollIntoView({behavior:'smooth',block:'center'});
   };
 
+
+  window.openSavedFutureLetterV98=function(index){
+    var letters=getFutureLettersV98();
+    if(letters[index]){ showFutureLetterV98(letters[index],'Carta guardada'); }
+  };
+
   window.renderFutureLettersV98=function(){
     var target=byId('futureLetterLibraryV98');
     if(!target){ return; }
@@ -8551,7 +8557,7 @@ function saveSeedTextV77(){
       html+='<div class="futureLetterSavedV98"><strong>'+(toneLabels[item.tone] || '✉️ Carta')+'</strong><br>'+
       '<span class="futureLetterSmallV98">'+formatFutureDateV98(item.date)+'</span><br>'+
       escapeFutureHtmlV98(shortFutureTextV98(item.text,90)).replace(/\n/g,'<br>')+
-      '<br><button class="softButton" onclick="showFutureLetterV98(getFutureLettersV98()['+i+'],\\'Carta guardada\\')" style="font-size:14px;padding:9px 12px;">Abrir</button></div>';
+      '<br><button class="softButton" onclick="openSavedFutureLetterV98('+i+')" style="font-size:14px;padding:9px 12px;">Abrir</button></div>';
     });
     target.innerHTML=html;
   };
