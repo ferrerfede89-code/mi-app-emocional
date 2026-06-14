@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>App Emocional V93</title>
+<title>App Emocional V94</title>
 
 <style>
 body {
@@ -1451,6 +1451,53 @@ body, .app, #circle, .action, .stats, .softButton, .moods button {
   border-radius:20px;padding:14px;margin:10px 0;line-height:1.45;
 }
 
+
+/* V94 - Mapa emocional de la vida */
+.lifeMapOrbV94{
+  width:155px;height:155px;border-radius:50%;margin:24px auto;
+  background:radial-gradient(circle,#ffffff,#86efac);
+  box-shadow:0 22px 64px rgba(34,197,94,.25);
+  display:flex;align-items:center;justify-content:center;font-size:58px;
+  animation:lifeMapPulseV94 8s infinite ease-in-out;
+}
+@keyframes lifeMapPulseV94{
+  0%{transform:scale(1);opacity:.86;}
+  50%{transform:scale(1.1);opacity:1;}
+  100%{transform:scale(1);opacity:.86;}
+}
+.lifeMapPhraseV94{
+  font-size:21px;font-weight:650;line-height:1.45;text-align:center;
+  padding:18px;border-radius:22px;background:rgba(240,253,244,.96);margin:16px 0;
+}
+.lifeMapCardV94{
+  background:rgba(255,255,255,.92);border-radius:24px;padding:18px;margin:14px 0;
+  line-height:1.55;text-align:left;box-shadow:0 12px 30px rgba(0,0,0,.08);
+}
+.lifeMapWorldV94{
+  position:relative;min-height:310px;border-radius:30px;margin:20px 0;overflow:hidden;
+  background:linear-gradient(180deg,rgba(219,234,254,.95),rgba(220,252,231,.94));
+  box-shadow:inset 0 0 38px rgba(34,197,94,.10),0 14px 34px rgba(0,0,0,.07);
+}
+.lifeMapPathV94{
+  position:absolute;left:12%;right:12%;top:50%;height:3px;border-radius:999px;
+  background:linear-gradient(90deg,rgba(59,130,246,.15),rgba(34,197,94,.45),rgba(168,85,247,.25));
+}
+.lifeMapPlaceV94{
+  position:absolute;border:none;border-radius:22px;padding:10px 11px;background:rgba(255,255,255,.84);
+  box-shadow:0 10px 24px rgba(0,0,0,.08);font-size:13px;line-height:1.25;text-align:center;min-width:78px;
+}
+.lifeMapPlaceV94 span{display:block;font-size:28px;margin-bottom:3px;}
+.lifeMapPlaceV94.strongV94{background:rgba(254,249,195,.94);transform:scale(1.05);}
+.lifeMapLegendV94{
+  display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px;font-size:14px;
+}
+.lifeMapLegendItemV94{background:rgba(255,255,255,.76);border-radius:16px;padding:10px;text-align:left;}
+.lifeMapSmallV94{font-size:15px;color:#64748b;line-height:1.45;}
+.lifeMapSignalV94{
+  background:linear-gradient(135deg,rgba(240,253,244,.96),rgba(219,234,254,.86));
+  border-radius:22px;padding:16px;margin:12px 0;font-size:18px;font-weight:620;line-height:1.45;
+}
+
 </style>
 
 <style id="v48premium">
@@ -1642,6 +1689,9 @@ text-align:center;
     </button>
 <button class="action" onclick="openCeremoniesV93()" style="grid-column:1/3;background:#fef3c7;font-weight:bold;">
       <span>🕯️</span>Ceremonias personales
+    </button>
+<button class="action" onclick="openLifeMapV94()" style="grid-column:1/3;background:#dcfce7;font-weight:bold;">
+      <span>🗺️</span>Mapa emocional de la vida
     </button>
 <button class="action" onclick="openCapsuleV46()" style="grid-column:1/3;background:#fde68a;font-weight:bold;">
       <span>📬</span>Cápsula del tiempo
@@ -2298,6 +2348,7 @@ text-align:center;
 <button onclick="openClosingV88();closeJourneyHub();" class="softButton">🕯️ Ritual de cierre</button>
 <button onclick="openTomorrowV89();closeJourneyHub();" class="softButton">🌤️ Señal para mañana</button>
 <button onclick="openCeremoniesV93();closeJourneyHub();" class="softButton">🕯️ Ceremonias personales</button>
+<button onclick="openLifeMapV94();closeJourneyHub();" class="softButton">🗺️ Mapa emocional de la vida</button>
 
 <br><br>
 <button onclick="closeJourneyHub()" class="softButton">Volver</button>
@@ -2787,6 +2838,33 @@ Pequeños rituales para soltar, agradecer, reconocer o dejar descansar algo. No 
 <div id="ceremonyContentV93" class="rememberCard"></div>
 <br>
 <button onclick="closeCeremoniesV93()" class="softButton">Volver</button>
+</div>
+
+
+
+<div id="lifeMapScreenV94" class="fullscreen" style="background:linear-gradient(180deg,#dcfce7,#dbeafe);overflow:auto;text-align:center;">
+<h1>🗺️</h1>
+<h2>Mapa emocional de la vida</h2>
+<p style="font-size:17px;line-height:1.45;max-width:330px;margin:0 auto;">
+No es un mapa exacto. Es una forma suave de ver qué lugares internos aparecieron en tu recorrido.
+</p>
+<div class="lifeMapOrbV94">🗺️</div>
+<div id="lifeMapPhraseV94" class="lifeMapPhraseV94">Estoy dibujando tu mapa emocional...</div>
+
+<div class="lifeMapWorldV94" id="lifeMapWorldV94">
+  <div class="lifeMapPathV94"></div>
+  <button class="lifeMapPlaceV94" id="lifeMapPlaceLightV94" style="left:8%;top:18%;" onclick="showLifeMapZoneV94('luz')"><span>🌟</span>Luz</button>
+  <button class="lifeMapPlaceV94" id="lifeMapPlaceRefugeV94" style="right:8%;top:16%;" onclick="showLifeMapZoneV94('refugio')"><span>🏡</span>Refugio</button>
+  <button class="lifeMapPlaceV94" id="lifeMapPlaceGardenV94" style="left:12%;bottom:18%;" onclick="showLifeMapZoneV94('jardin')"><span>🌿</span>Jardín</button>
+  <button class="lifeMapPlaceV94" id="lifeMapPlaceBridgeV94" style="right:13%;bottom:18%;" onclick="showLifeMapZoneV94('puente')"><span>🌉</span>Puente</button>
+  <button class="lifeMapPlaceV94" id="lifeMapPlaceSeaV94" style="left:38%;top:41%;" onclick="showLifeMapZoneV94('mar')"><span>🌊</span>Mar</button>
+  <button class="lifeMapPlaceV94" id="lifeMapPlaceStarsV94" style="left:38%;bottom:5%;" onclick="showLifeMapZoneV94('estrellas')"><span>🌌</span>Cielo</button>
+</div>
+
+<div id="lifeMapContentV94" class="rememberCard"></div>
+<br>
+<button onclick="renderLifeMapV94()" class="softButton">Volver a mirar</button>
+<button onclick="closeLifeMapV94()" class="softButton">Volver</button>
 </div>
 
 <div id="searchScreen" class="fullscreen" style="background:linear-gradient(180deg,#ecfeff,#dbeafe);overflow:auto;text-align:center;">
@@ -8606,6 +8684,84 @@ function renderCeremonyHistoryV93(force){
   content.innerHTML='<div class="ceremonyCardV93"><strong>📜 Mis ceremonias</strong><br><br>'+last.map(x=>
     '<div class="ceremonyHistoryItemV93"><div class="ceremonySmallV93">'+escapeCeremonyV93(x.date)+' '+escapeCeremonyV93(x.time)+'</div><strong>'+escapeCeremonyV93(x.emoji)+' '+escapeCeremonyV93(x.title)+'</strong><br><br>“'+escapeCeremonyV93(x.text)+'”<br><br><span class="ceremonySmallV93">'+escapeCeremonyV93(x.final)+'</span></div>'
   ).join('')+'</div>';
+}
+</script>
+
+
+<script>
+// V94 - Mapa emocional de la vida
+function safeParseV94(key){
+  try{ return JSON.parse(localStorage.getItem(key)||'[]'); }catch(e){ return []; }
+}
+function countV94(key){
+  const v=safeParseV94(key);
+  return Array.isArray(v) ? v.length : 0;
+}
+function openLifeMapV94(){
+  const s=document.getElementById('lifeMapScreenV94');
+  if(s) s.style.display='block';
+  renderLifeMapV94();
+}
+function closeLifeMapV94(){
+  const s=document.getElementById('lifeMapScreenV94');
+  if(s) s.style.display='none';
+}
+function lifeMapDataV94(){
+  return {
+    luz: countV94('lightMomentsV83') + countV94('favoriteMemories'),
+    refugio: countV94('internalRefugeV84') + countV94('calmPocketV86'),
+    jardin: countV94('diaryEntries') + countV94('seedTextsV77'),
+    puente: countV94('returnBridgeV85') + countV94('tomorrowSignalsV89') + countV94('anchorEntriesV78'),
+    mar: countV94('closingRitualsV88') + countV94('ceremoniesV93'),
+    estrellas: countV94('manualTreasuresV81') + countV94('futureCapsulesV46')
+  };
+}
+const lifeMapZonesV94 = {
+  luz:{emoji:'🌟', title:'Zona de luz', empty:'Todavía está empezando. Cada momento de luz puede encender esta zona.', full:'Acá aparecen los momentos, favoritos y señales que te dieron un poco de claridad.'},
+  refugio:{emoji:'🏡', title:'Zona de refugio', empty:'Esta zona se construye con recursos que te hacen sentir a salvo.', full:'Acá viven los refugios, bolsillos de calma y recursos que podés volver a usar.'},
+  jardin:{emoji:'🌿', title:'Zona de crecimiento', empty:'El jardín se forma con registros, semillas y palabras que dejaste.', full:'Acá se ve que tu recorrido no fue quieto: algo fue brotando.'},
+  puente:{emoji:'🌉', title:'Zona de regreso', empty:'Esta zona aparece cuando encontrás pequeñas formas de volver a vos.', full:'Acá están los puentes, señales para mañana y anclajes que te ayudaron a volver.'},
+  mar:{emoji:'🌊', title:'Zona de descanso', empty:'Esta zona guarda cierres, ceremonias y formas de soltar un poco.', full:'Acá aparecen los momentos donde dejaste de sostener todo por un rato.'},
+  estrellas:{emoji:'🌌', title:'Zona de memoria profunda', empty:'Esta zona se enciende con tesoros, cápsulas y recuerdos guardados.', full:'Acá viven las cosas que quisiste volver a encontrar más adelante.'}
+};
+function renderLifeMapV94(){
+  const data=lifeMapDataV94();
+  const total=Object.values(data).reduce((a,b)=>a+b,0);
+  const phrase=document.getElementById('lifeMapPhraseV94');
+  const content=document.getElementById('lifeMapContentV94');
+  Object.keys(data).forEach(k=>{
+    const id={luz:'lifeMapPlaceLightV94',refugio:'lifeMapPlaceRefugeV94',jardin:'lifeMapPlaceGardenV94',puente:'lifeMapPlaceBridgeV94',mar:'lifeMapPlaceSeaV94',estrellas:'lifeMapPlaceStarsV94'}[k];
+    const el=document.getElementById(id);
+    if(el){ if(data[k]>0) el.classList.add('strongV94'); else el.classList.remove('strongV94'); }
+  });
+  if(phrase){
+    phrase.innerHTML = total ? 'Tu mapa ya tiene zonas encendidas. No son metas: son lugares internos a los que podés volver.' : 'Tu mapa todavía está en blanco. Eso también es un comienzo posible.';
+  }
+  if(content){
+    const strongest=Object.keys(data).sort((a,b)=>data[b]-data[a])[0];
+    const zone=lifeMapZonesV94[strongest];
+    content.innerHTML = '<div class="lifeMapCardV94"><strong>Lectura suave del mapa</strong><br><br>' +
+      (total ? 'La zona que más aparece ahora es <strong>'+zone.emoji+' '+zone.title+'</strong>.<br><br><div class="lifeMapSignalV94">No significa que sea lo único importante. Solo muestra dónde tu recorrido dejó más señales.</div>' : 'Todavía no hay suficientes señales para leer el mapa. Podés empezar con diario, momentos de luz, refugio, ceremonias o tesoros.') +
+      '<div class="lifeMapLegendV94">'+
+      '<div class="lifeMapLegendItemV94">🌟 Luz: '+data.luz+'</div>'+
+      '<div class="lifeMapLegendItemV94">🏡 Refugio: '+data.refugio+'</div>'+
+      '<div class="lifeMapLegendItemV94">🌿 Jardín: '+data.jardin+'</div>'+
+      '<div class="lifeMapLegendItemV94">🌉 Puente: '+data.puente+'</div>'+
+      '<div class="lifeMapLegendItemV94">🌊 Descanso: '+data.mar+'</div>'+
+      '<div class="lifeMapLegendItemV94">🌌 Memoria: '+data.estrellas+'</div>'+
+      '</div><br><span class="lifeMapSmallV94">Tocá una zona del mapa para leerla.</span></div>';
+  }
+}
+function showLifeMapZoneV94(key){
+  const data=lifeMapDataV94();
+  const zone=lifeMapZonesV94[key] || lifeMapZonesV94.luz;
+  const content=document.getElementById('lifeMapContentV94');
+  const phrase=document.getElementById('lifeMapPhraseV94');
+  const n=data[key]||0;
+  if(phrase) phrase.innerHTML=zone.emoji+' '+zone.title;
+  if(content){
+    content.innerHTML='<div class="lifeMapCardV94"><strong>'+zone.emoji+' '+zone.title+'</strong><br><br><div class="lifeMapSignalV94">'+(n?zone.full:zone.empty)+'</div><span class="lifeMapSmallV94">Señales encontradas en esta zona: '+n+'.</span></div>';
+  }
 }
 </script>
 
