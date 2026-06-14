@@ -8545,19 +8545,27 @@ function renderSoundtrackV92(type){
 }
 
 // V92 sonido real generado en el navegador, sin archivos externos
+// Versión estable: sin ráfagas bruscas, sin chasquidos, sin campanas cortadas.
 let soundtrackAudioCtxV92 = null;
 let soundtrackNodesV92 = [];
-let soundtrackNoiseTimerV92 = null;
+let soundtrackMasterGainV92 = null;
 
 function stopSoundtrackV92(){
   try{
-    if(soundtrackNoiseTimerV92){ clearInterval(soundtrackNoiseTimerV92); soundtrackNoiseTimerV92=null; }
-    soundtrackNodesV92.forEach(n=>{
-      try{ if(n.stop) n.stop(); }catch(e){}
-      try{ if(n.disconnect) n.disconnect(); }catch(e){}
-    });
-    soundtrackNodesV92=[];
-  }catch(e){}
+    const ctx = soundtrackAudioCtxV92;
+    if(soundtrackMasterGainV92 && ctx){
+      soundtrackMasterGainV92.gain.cancelScheduledValues(ctx.currentTime);
+      soundtrackMasterGainV92.gain.setTargetAtTime(0.0001, ctx.currentTime, 0.6);
+    }
+    setTimeout(()=>{
+      soundtrackNodesV92.forEach(n=>{
+        try{ if(n.stop) n.stop(); }catch(e){}
+        try{ if(n.disconnect) n.disconnect(); }catch(e){}
+      });
+      soundtrackNodesV92=[];
+      soundtrackMasterGainV92=null;
+    },900);
+  }catch(e){ soundtrackNodesV92=[]; soundtrackMasterGainV92=null; }
 }
 
 function ensureSoundtrackAudioV92(){
@@ -8568,35 +8576,88 @@ function ensureSoundtrackAudioV92(){
   return soundtrackAudioCtxV92;
 }
 
-function makeToneV92(ctx, freq, type, gainValue){
+function setupSoundtrackMasterV92(ctx, volume){
+  const master = ctx.createGain();
+  master.gain.value = 0.0001;
+  const compressor = ctx.createDynamicsCompressor();
+  compressor.threshold.value = -28;
+  compressor.knee.value = 24;
+  compressor.ratio.value = 8;
+  compressor.attack.value = 0.02;
+  compressor.release.value = 0.55;
+  master.connect(compressor);
+  compressor.connect(ctx.destination);
+  master.gain.setTargetAtTime(volume || 0.28, ctx.currentTime + 0.04, 1.2);
+  soundtrackMasterGainV92 = master;
+  soundtrackNodesV92.push(master, compressor);
+  return master;
+}
+
+function makeStableToneV92(ctx, master, freq, gainValue, type){
   const osc = ctx.createOscillator();
   const gain = ctx.createGain();
   osc.type = type || 'sine';
   osc.frequency.value = freq;
   gain.gain.value = 0.0001;
   osc.connect(gain);
-  gain.connect(ctx.destination);
+  gain.connect(master);
   osc.start();
-  gain.gain.setTargetAtTime(gainValue, ctx.currentTime + 0.05, 0.8);
-  soundtrackNodesV92.push(osc,gain);
+  gain.gain.setTargetAtTime(gainValue || 0.02, ctx.currentTime + 0.08, 1.4);
+  soundtrackNodesV92.push(osc, gain);
   return {osc,gain};
 }
 
-function makeNoiseBurstV92(ctx, gainValue, duration, filterFreq){
-  const bufferSize = Math.max(1, Math.floor(ctx.sampleRate * duration));
+function makeStableNoiseV92(ctx, master, gainValue, filterFreq, type){
+  const seconds = 5;
+  const bufferSize = Math.floor(ctx.sampleRate * seconds);
   const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
   const data = buffer.getChannelData(0);
-  for(let i=0;i<bufferSize;i++) data[i] = Math.random()*2-1;
+  let last = 0;
+  for(let i=0;i<bufferSize;i++){
+    // Suavizado simple para evitar textura digital áspera.
+    const white = Math.random()*2-1;
+    last = last * 0.985 + white * 0.015;
+    data[i] = last;
+  }
+  // cierre del loop suavizado para evitar click al repetir
+  const fade = Math.floor(ctx.sampleRate * 0.25);
+  for(let i=0;i<fade;i++){
+    const a = i / fade;
+    data[i] *= a;
+    data[bufferSize-1-i] *= a;
+  }
   const src = ctx.createBufferSource();
   src.buffer = buffer;
+  src.loop = true;
   const filter = ctx.createBiquadFilter();
-  filter.type = 'lowpass';
+  filter.type = type || 'lowpass';
   filter.frequency.value = filterFreq || 900;
+  filter.Q.value = 0.25;
   const gain = ctx.createGain();
-  gain.gain.value = gainValue;
-  src.connect(filter); filter.connect(gain); gain.connect(ctx.destination);
+  gain.gain.value = 0.0001;
+  src.connect(filter);
+  filter.connect(gain);
+  gain.connect(master);
   src.start();
-  soundtrackNodesV92.push(src,filter,gain);
+  gain.gain.setTargetAtTime(gainValue || 0.018, ctx.currentTime + 0.08, 1.8);
+  soundtrackNodesV92.push(src, filter, gain);
+  return {src,filter,gain};
+}
+
+function addVerySlowBreathV92(ctx, targetGain, minValue, maxValue, seconds){
+  if(!targetGain) return;
+  const lfo = ctx.createOscillator();
+  const lfoGain = ctx.createGain();
+  const center = (minValue + maxValue) / 2;
+  const depth = (maxValue - minValue) / 2;
+  lfo.type = 'sine';
+  lfo.frequency.value = 1 / (seconds || 8);
+  lfoGain.gain.value = depth;
+  targetGain.gain.value = center;
+  lfo.connect(lfoGain);
+  lfoGain.connect(targetGain.gain);
+  lfo.start();
+  soundtrackNodesV92.push(lfo, lfoGain);
 }
 
 function playSoundtrackV92(){
@@ -8607,32 +8668,39 @@ function playSoundtrackV92(){
     return;
   }
   stopSoundtrackV92();
-  const type = currentSoundtrackV92 || inferSoundtrackV92();
-  const p = soundtrackPresetV92(type);
+  setTimeout(()=>{
+    const type = currentSoundtrackV92 || inferSoundtrackV92();
+    const p = soundtrackPresetV92(type);
+    const master = setupSoundtrackMasterV92(ctx, 0.24);
 
-  if(content) content.innerHTML += '<div class="soundtrackCardV92"><strong>🎧 Sonando:</strong> '+escapeSoundtrackV92(p.name)+'<br><span class="soundtrackSmallV92">Volumen suave. Usá ⏸️ Detener para cortarlo.</span></div>';
+    if(content) content.innerHTML += '<div class="soundtrackCardV92"><strong>🎧 Sonando:</strong> '+escapeSoundtrackV92(p.name)+'<br><span class="soundtrackSmallV92">Versión estable: sonido más bajo, continuo y sin efectos bruscos.</span></div>';
 
-  if(type === 'mar'){
-    makeToneV92(ctx, 174, 'sine', 0.035);
-    makeToneV92(ctx, 261.63, 'sine', 0.018);
-    soundtrackNoiseTimerV92 = setInterval(()=>makeNoiseBurstV92(ctx,0.025,1.2,650),900);
-  } else if(type === 'lluvia'){
-    makeToneV92(ctx, 196, 'sine', 0.018);
-    soundtrackNoiseTimerV92 = setInterval(()=>makeNoiseBurstV92(ctx,0.018,0.18,1800),120);
-  } else if(type === 'bosque'){
-    makeToneV92(ctx, 220, 'triangle', 0.024);
-    makeToneV92(ctx, 329.63, 'sine', 0.012);
-    soundtrackNoiseTimerV92 = setInterval(()=>makeNoiseBurstV92(ctx,0.014,0.35,2400),520);
-  } else if(type === 'noche'){
-    makeToneV92(ctx, 110, 'sine', 0.038);
-    makeToneV92(ctx, 164.81, 'sine', 0.015);
-    soundtrackNoiseTimerV92 = setInterval(()=>makeNoiseBurstV92(ctx,0.008,0.7,500),1400);
-  } else if(type === 'amanecer'){
-    makeToneV92(ctx, 261.63, 'sine', 0.022);
-    makeToneV92(ctx, 392.00, 'triangle', 0.014);
-    makeToneV92(ctx, 523.25, 'sine', 0.009);
-    soundtrackNoiseTimerV92 = setInterval(()=>makeNoiseBurstV92(ctx,0.01,0.28,3200),700);
-  }
+    if(type === 'mar'){
+      makeStableToneV92(ctx, master, 130.81, 0.030, 'sine');
+      const air = makeStableNoiseV92(ctx, master, 0.030, 520, 'lowpass');
+      addVerySlowBreathV92(ctx, air.gain, 0.018, 0.038, 9);
+    } else if(type === 'lluvia'){
+      makeStableToneV92(ctx, master, 146.83, 0.018, 'sine');
+      const rain = makeStableNoiseV92(ctx, master, 0.026, 1250, 'lowpass');
+      addVerySlowBreathV92(ctx, rain.gain, 0.018, 0.030, 7);
+    } else if(type === 'bosque'){
+      makeStableToneV92(ctx, master, 174.61, 0.020, 'sine');
+      makeStableToneV92(ctx, master, 261.63, 0.010, 'sine');
+      const leaves = makeStableNoiseV92(ctx, master, 0.014, 760, 'lowpass');
+      addVerySlowBreathV92(ctx, leaves.gain, 0.008, 0.018, 10);
+    } else if(type === 'noche'){
+      makeStableToneV92(ctx, master, 98.00, 0.034, 'sine');
+      makeStableToneV92(ctx, master, 146.83, 0.014, 'sine');
+      const room = makeStableNoiseV92(ctx, master, 0.010, 420, 'lowpass');
+      addVerySlowBreathV92(ctx, room.gain, 0.006, 0.013, 12);
+    } else if(type === 'amanecer'){
+      makeStableToneV92(ctx, master, 196.00, 0.018, 'sine');
+      makeStableToneV92(ctx, master, 261.63, 0.012, 'sine');
+      makeStableToneV92(ctx, master, 329.63, 0.007, 'sine');
+      const light = makeStableNoiseV92(ctx, master, 0.006, 900, 'lowpass');
+      addVerySlowBreathV92(ctx, light.gain, 0.003, 0.008, 11);
+    }
+  }, 950);
 }
 
 function saveSoundtrackV92(){
