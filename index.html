@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>App Emocional V99</title>
+<title>App Emocional V100</title>
 
 <style>
 body {
@@ -1833,6 +1833,105 @@ body, .app, #circle, .action, .stats, .softButton, .moods button {
 }
 .silentSmallV99{font-size:15px;color:#64748b;line-height:1.45;}
 
+
+/* V100 - Hogar emocional */
+.emotionalHomeOrbV100{
+  width:158px;height:158px;border-radius:50%;margin:24px auto;
+  background:radial-gradient(circle,#ffffff,#fde68a 38%,#86efac 72%);
+  box-shadow:0 22px 70px rgba(34,197,94,.22),0 0 44px rgba(253,230,138,.30);
+  display:flex;align-items:center;justify-content:center;font-size:60px;
+  animation:homePulseV100 8s infinite ease-in-out;
+}
+@keyframes homePulseV100{
+  0%{transform:scale(1);opacity:.88;}
+  50%{transform:scale(1.1);opacity:1;}
+  100%{transform:scale(1);opacity:.88;}
+}
+.homePhraseV100{
+  font-size:21px;font-weight:650;line-height:1.45;text-align:center;
+  padding:18px;border-radius:22px;background:rgba(255,255,255,.84);
+  margin:16px 0;color:#1f2937;
+}
+.homeSceneV100{
+  position:relative;min-height:360px;border-radius:32px;margin:20px 0;overflow:hidden;
+  background:linear-gradient(180deg,rgba(219,234,254,.96),rgba(220,252,231,.95));
+  box-shadow:inset 0 0 42px rgba(34,197,94,.12),0 16px 36px rgba(0,0,0,.08);
+}
+.homeSkyV100{
+  position:absolute;left:0;right:0;top:0;height:44%;
+  background:radial-gradient(circle at 78% 22%,rgba(254,243,199,.95),transparent 16%),
+             linear-gradient(180deg,rgba(191,219,254,.72),rgba(255,255,255,0));
+}
+.homeGroundV100{
+  position:absolute;left:0;right:0;bottom:0;height:36%;
+  background:linear-gradient(180deg,rgba(187,247,208,.12),rgba(134,239,172,.68));
+}
+.homeHouseV100{
+  position:absolute;left:50%;bottom:72px;transform:translateX(-50%);
+  width:178px;height:132px;border-radius:24px 24px 18px 18px;
+  background:linear-gradient(135deg,#fff7ed,#fed7aa);
+  box-shadow:0 18px 34px rgba(0,0,0,.10);
+}
+.homeHouseV100:before{
+  content:"";position:absolute;left:18px;top:-62px;width:142px;height:142px;
+  background:linear-gradient(135deg,#fbbf24,#f97316);
+  transform:rotate(45deg);border-radius:20px;
+  box-shadow:0 10px 24px rgba(249,115,22,.14);
+}
+.homeDoorV100{
+  position:absolute;left:68px;bottom:0;width:44px;height:70px;border-radius:22px 22px 0 0;
+  background:linear-gradient(180deg,#92400e,#78350f);
+  z-index:2;
+}
+.homeWindowV100{
+  position:absolute;top:38px;width:34px;height:34px;border-radius:12px;
+  background:rgba(219,234,254,.92);z-index:2;box-shadow:inset 0 0 10px rgba(59,130,246,.15);
+}
+.homeWindowV100.left{left:26px;}
+.homeWindowV100.right{right:26px;}
+.homePathV100{
+  position:absolute;left:50%;bottom:0;transform:translateX(-50%);
+  width:86px;height:86px;border-radius:999px 999px 0 0;
+  background:linear-gradient(180deg,rgba(254,243,199,.88),rgba(251,191,36,.22));
+}
+.homeElementV100{
+  position:absolute;border:none;border-radius:22px;padding:10px 11px;min-width:72px;
+  background:rgba(255,255,255,.88);box-shadow:0 10px 24px rgba(0,0,0,.08);
+  font-size:13px;line-height:1.25;text-align:center;color:#1f2937;z-index:4;
+  animation:homeFloatV100 7s infinite ease-in-out;
+}
+.homeElementV100 span{display:block;font-size:27px;margin-bottom:3px;}
+@keyframes homeFloatV100{
+  0%{transform:translateY(0) scale(1);opacity:.92;}
+  50%{transform:translateY(-6px) scale(1.03);opacity:1;}
+  100%{transform:translateY(0) scale(1);opacity:.92;}
+}
+.homeRoomsV100{
+  display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px;
+}
+.homeRoomV100{
+  border:none;border-radius:20px;padding:14px 12px;background:rgba(255,255,255,.92);
+  box-shadow:0 8px 20px rgba(0,0,0,.06);font-size:15px;line-height:1.35;text-align:left;color:#1f2937;
+}
+.homeRoomV100 span{display:block;font-size:28px;margin-bottom:5px;}
+.homeStatsV100{
+  display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:14px 0;
+}
+.homeStatV100{
+  background:rgba(255,255,255,.84);border-radius:18px;padding:12px;text-align:left;
+  font-size:14px;line-height:1.35;
+}
+.homeStatV100 strong{font-size:22px;display:block;}
+.homeCardV100{
+  background:rgba(255,255,255,.90);border-radius:24px;padding:18px;margin:14px 0;
+  line-height:1.55;text-align:left;box-shadow:0 12px 30px rgba(0,0,0,.08);color:#1f2937;
+}
+.homeSignalV100{
+  background:linear-gradient(135deg,rgba(236,253,245,.96),rgba(254,243,199,.86));
+  border-radius:22px;padding:16px;margin:12px 0;font-size:18px;font-weight:620;line-height:1.45;color:#1f2937;
+}
+.homeSmallV100{font-size:15px;color:#64748b;line-height:1.45;}
+
 </style>
 
 <style id="v48premium">
@@ -2042,6 +2141,10 @@ text-align:center;
     </button>
 <button class="action" onclick="openSilentMuseumV99()" style="grid-column:1/3;background:#fef3c7;font-weight:bold;">
       <span>🏛️</span>Museo de victorias silenciosas
+    </button>
+
+<button class="action" onclick="openEmotionalHomeV100()" style="grid-column:1/3;background:#dcfce7;font-weight:bold;">
+      <span>🏡</span>Hogar emocional
     </button>
 
 <button class="action" onclick="openCapsuleV46()" style="grid-column:1/3;background:#fde68a;font-weight:bold;">
@@ -8780,6 +8883,145 @@ function saveSeedTextV77(){
     var phrase=el('silentPhraseV99');
     if(item && phrase){
       phrase.innerHTML=esc(item.icon||'🖼️')+' '+esc(item.text)+'<br><span class="silentSmallV99">Esto también fue una victoria. Aunque nadie la haya visto.</span>';
+    }
+  };
+})();
+</script>
+
+
+<div id="emotionalHomeScreenV100" class="fullscreen" style="background:linear-gradient(180deg,#ecfeff,#dcfce7);color:#1f2937;overflow:auto;text-align:center;">
+  <h1>🏡</h1>
+  <h2>Hogar emocional</h2>
+  <p style="font-size:17px;line-height:1.45;max-width:330px;margin:0 auto;">
+    Todo lo que construiste sigue aquí.<br><br>
+    Podés volver cuando lo necesites.
+  </p>
+
+  <div class="emotionalHomeOrbV100">🏡</div>
+
+  <div id="homePhraseV100" class="homePhraseV100">
+    Toda casa comienza con un primer ladrillo.
+  </div>
+
+  <div class="homeSceneV100">
+    <div class="homeSkyV100"></div>
+    <div class="homeGroundV100"></div>
+    <div class="homePathV100"></div>
+    <div class="homeHouseV100">
+      <div class="homeDoorV100"></div>
+      <div class="homeWindowV100 left"></div>
+      <div class="homeWindowV100 right"></div>
+    </div>
+    <button class="homeElementV100" style="left:12px;bottom:38px;" onclick="safeOpenHomeRoomV100('openPossibilityTreeV95')"><span>🌳</span>Jardín</button>
+    <button class="homeElementV100" style="right:12px;top:44px;" onclick="safeOpenHomeRoomV100('openLegacyV96')"><span>✨</span>Cielo</button>
+    <button class="homeElementV100" style="left:14px;top:114px;" onclick="safeOpenHomeRoomV100('openTouchedPeopleV97')"><span>🫂</span>Sala</button>
+    <button class="homeElementV100" style="right:14px;top:150px;" onclick="safeOpenHomeRoomV100('openFutureLetterV98')"><span>✉️</span>Escritorio</button>
+    <button class="homeElementV100" style="left:50%;bottom:18px;transform:translateX(-50%);" onclick="safeOpenHomeRoomV100('openSilentMuseumV99')"><span>🏛️</span>Galería</button>
+  </div>
+
+  <div id="homeStatsV100" class="homeStatsV100"></div>
+
+  <div class="homeCardV100">
+    <strong>Habitaciones de tu hogar</strong><br>
+    <span class="homeSmallV100">Cada habitación abre una parte de lo que ya construiste.</span>
+    <div class="homeRoomsV100">
+      <button class="homeRoomV100" onclick="safeOpenHomeRoomV100('openPossibilityTreeV95')"><span>🌳</span>Jardín<br><small>Posibilidades futuras</small></button>
+      <button class="homeRoomV100" onclick="safeOpenHomeRoomV100('openLegacyV96')"><span>✨</span>Cielo<br><small>Huellas invisibles</small></button>
+      <button class="homeRoomV100" onclick="safeOpenHomeRoomV100('openTouchedPeopleV97')"><span>🫂</span>Sala<br><small>Vínculos alcanzados</small></button>
+      <button class="homeRoomV100" onclick="safeOpenHomeRoomV100('openFutureLetterV98')"><span>✉️</span>Escritorio<br><small>Cartas futuras</small></button>
+      <button class="homeRoomV100" onclick="safeOpenHomeRoomV100('openSilentMuseumV99')"><span>🏛️</span>Galería<br><small>Victorias silenciosas</small></button>
+      <button class="homeRoomV100" onclick="safeOpenHomeRoomV100('openRefugeV84')"><span>🕯️</span>Refugio<br><small>Volver a la calma</small></button>
+    </div>
+  </div>
+
+  <div id="homeSignalV100" class="homeSignalV100">
+    Este hogar reúne señales de tu recorrido.
+  </div>
+
+  <button onclick="closeEmotionalHomeV100()" class="softButton">Volver</button>
+</div>
+
+<script>
+(function(){
+  function el(id){ return document.getElementById(id); }
+  function readList(key){
+    try{
+      var value=JSON.parse(localStorage.getItem(key)||'[]');
+      return Array.isArray(value) ? value : [];
+    }catch(e){ return []; }
+  }
+  function countAny(keys){
+    for(var i=0;i<keys.length;i++){
+      var list=readList(keys[i]);
+      if(list.length) return list.length;
+    }
+    return 0;
+  }
+  function closeAllKnownV100(){
+    var ids=[
+      'emotionalHomeScreenV100','possibilityTreeScreenV95','legacyScreenV96','touchedPeopleScreenV97',
+      'futureLetterScreenV98','silentMuseumScreenV99','refugeScreenV84'
+    ];
+    ids.forEach(function(id){ var node=el(id); if(node) node.style.display='none'; });
+  }
+  function counts(){
+    return {
+      possibilities: countAny(['possibilitiesV95','possibilityLeavesV95','possibilityTreeV95']),
+      legacy: countAny(['legacyStarsV96','legacyV96']),
+      touched: countAny(['touchedPeopleV97','peopleTouchedV97']),
+      letters: countAny(['futureLettersV98','futureLetterV98']),
+      victories: countAny(['silentVictoriesV99','silentMuseumV99'])
+    };
+  }
+  function total(c){ return c.possibilities+c.legacy+c.touched+c.letters+c.victories; }
+  function render(){
+    var c=counts(), t=total(c);
+    var phrase=el('homePhraseV100');
+    if(phrase){
+      if(t===0) phrase.innerHTML='Toda casa comienza con un primer ladrillo.';
+      else if(t<5) phrase.innerHTML='Este hogar ya empezó a guardar señales de tu recorrido.';
+      else if(t<15) phrase.innerHTML='Este hogar está creciendo con cada cosa que elegiste conservar.';
+      else phrase.innerHTML='Este hogar está lleno de señales de tu recorrido.';
+    }
+    var stats=el('homeStatsV100');
+    if(stats){
+      stats.innerHTML=
+        '<div class="homeStatV100"><strong>'+c.possibilities+'</strong>🌳 posibilidades</div>'+
+        '<div class="homeStatV100"><strong>'+c.legacy+'</strong>✨ huellas</div>'+
+        '<div class="homeStatV100"><strong>'+c.touched+'</strong>🫂 vínculos</div>'+
+        '<div class="homeStatV100"><strong>'+c.letters+'</strong>✉️ cartas</div>'+
+        '<div class="homeStatV100"><strong>'+c.victories+'</strong>🏛️ victorias</div>'+
+        '<div class="homeStatV100"><strong>'+t+'</strong>🏡 señales</div>';
+    }
+    var signal=el('homeSignalV100');
+    if(signal){
+      if(t===0) signal.innerHTML='No necesitás llenar todo hoy. El hogar ya existe porque podés volver.';
+      else if(t<5) signal.innerHTML='Hay algo tuyo guardado aquí. Eso ya es un comienzo.';
+      else if(t<15) signal.innerHTML='Tu hogar empieza a mostrar que hubo camino, sostén y pequeñas luces.';
+      else signal.innerHTML='No sólo sobreviviste. Construiste un lugar interno al que podés volver.';
+    }
+  }
+  window.openEmotionalHomeV100=function(){
+    var screen=el('emotionalHomeScreenV100');
+    if(screen){
+      screen.style.display='block';
+      render();
+      try{ window.scrollTo(0,0); }catch(e){}
+    }
+  };
+  window.closeEmotionalHomeV100=function(){
+    var screen=el('emotionalHomeScreenV100');
+    if(screen) screen.style.display='none';
+  };
+  window.safeOpenHomeRoomV100=function(fnName){
+    var home=el('emotionalHomeScreenV100');
+    if(home) home.style.display='none';
+    if(typeof window[fnName]==='function'){
+      window[fnName]();
+    }else{
+      if(home) home.style.display='block';
+      var signal=el('homeSignalV100');
+      if(signal) signal.innerHTML='Esta habitación todavía no está disponible, pero el hogar sigue aquí.';
     }
   };
 })();
