@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>App Emocional V92</title>
+<title>App Emocional V93</title>
 
 <style>
 body {
@@ -1407,6 +1407,50 @@ body, .app, #circle, .action, .stats, .softButton, .moods button {
 .soundtrackSmallV92{font-size:15px;color:#64748b;line-height:1.45;}
 .soundtrackVolumeV92{width:100%;margin-top:12px;}
 
+
+/* V93 - Ceremonias personales */
+.ceremonyOrbV93{
+  width:155px;height:155px;border-radius:50%;margin:24px auto;
+  background:radial-gradient(circle,#ffffff,#fbbf24);
+  box-shadow:0 22px 64px rgba(251,191,36,.28);
+  display:flex;align-items:center;justify-content:center;font-size:58px;
+  animation:ceremonyPulseV93 8s infinite ease-in-out;
+}
+@keyframes ceremonyPulseV93{
+  0%{transform:scale(1);opacity:.86;filter:brightness(1);}
+  50%{transform:scale(1.1);opacity:1;filter:brightness(1.08);}
+  100%{transform:scale(1);opacity:.86;filter:brightness(1);}
+}
+.ceremonyPhraseV93{
+  font-size:21px;font-weight:650;line-height:1.45;text-align:center;
+  padding:18px;border-radius:22px;background:rgba(254,243,199,.96);margin:16px 0;
+}
+.ceremonyCardV93{
+  background:rgba(255,255,255,.92);border-radius:24px;padding:18px;margin:14px 0;
+  line-height:1.55;text-align:left;box-shadow:0 12px 30px rgba(0,0,0,.08);
+}
+.ceremonyChoiceV93{
+  border:none;border-radius:18px;padding:14px 16px;font-size:16px;
+  background:rgba(255,255,255,.92);margin:7px 0;width:100%;text-align:left;
+}
+.ceremonySceneV93{
+  min-height:170px;border-radius:28px;padding:22px 16px;margin:20px 0;text-align:center;
+  background:linear-gradient(135deg,rgba(254,243,199,.96),rgba(221,214,254,.82));
+  box-shadow:inset 0 0 32px rgba(251,191,36,.10), 0 12px 30px rgba(0,0,0,.06);
+}
+.ceremonySceneEmojiV93{font-size:58px;margin:12px 0;animation:ceremonyFloatV93 6s infinite ease-in-out;}
+@keyframes ceremonyFloatV93{
+  0%{transform:translateY(0) scale(1);opacity:.9;}
+  50%{transform:translateY(-8px) scale(1.06);opacity:1;}
+  100%{transform:translateY(0) scale(1);opacity:.9;}
+}
+.ceremonyNowV93{font-size:20px;font-weight:650;line-height:1.45;}
+.ceremonySmallV93{font-size:15px;color:#64748b;line-height:1.45;}
+.ceremonyHistoryItemV93{
+  background:linear-gradient(135deg,rgba(255,255,255,.88),rgba(254,249,195,.70));
+  border-radius:20px;padding:14px;margin:10px 0;line-height:1.45;
+}
+
 </style>
 
 <style id="v48premium">
@@ -1595,6 +1639,9 @@ text-align:center;
     </button>
 <button class="action" onclick="openSoundtrackV92()" style="grid-column:1/3;background:#dbeafe;font-weight:bold;">
       <span>🎵</span>Banda sonora emocional
+    </button>
+<button class="action" onclick="openCeremoniesV93()" style="grid-column:1/3;background:#fef3c7;font-weight:bold;">
+      <span>🕯️</span>Ceremonias personales
     </button>
 <button class="action" onclick="openCapsuleV46()" style="grid-column:1/3;background:#fde68a;font-weight:bold;">
       <span>📬</span>Cápsula del tiempo
@@ -2250,6 +2297,7 @@ text-align:center;
 <button onclick="openConstellationV87();closeJourneyHub();" class="softButton">🌌 Constelación emocional</button>
 <button onclick="openClosingV88();closeJourneyHub();" class="softButton">🕯️ Ritual de cierre</button>
 <button onclick="openTomorrowV89();closeJourneyHub();" class="softButton">🌤️ Señal para mañana</button>
+<button onclick="openCeremoniesV93();closeJourneyHub();" class="softButton">🕯️ Ceremonias personales</button>
 
 <br><br>
 <button onclick="closeJourneyHub()" class="softButton">Volver</button>
@@ -2702,6 +2750,43 @@ Esta versión usa archivos MP3 reales del repositorio. Sonidos más limpios, sin
 <div id="soundtrackContentV92" class="rememberCard"></div>
 <br>
 <button onclick="closeSoundtrackV92()" class="softButton">Volver</button>
+</div>
+
+
+<div id="ceremoniesScreenV93" class="fullscreen" style="background:linear-gradient(180deg,#fef3c7,#ddd6fe);overflow:auto;text-align:center;">
+<h1>🕯️</h1>
+<h2>Ceremonias personales</h2>
+<p style="font-size:17px;line-height:1.45;max-width:330px;margin:0 auto;">
+Pequeños rituales para soltar, agradecer, reconocer o dejar descansar algo. No hacen magia. Solo crean un gesto para no cargar todo igual.
+</p>
+<div class="ceremonyOrbV93" id="ceremonyOrbV93">🕯️</div>
+<div id="ceremonyPhraseV93" class="ceremonyPhraseV93">Elegí una ceremonia suave para este momento.</div>
+
+<div class="ceremonySceneV93">
+  <div id="ceremonySceneEmojiV93" class="ceremonySceneEmojiV93">🕯️</div>
+  <div id="ceremonyNowV93" class="ceremonyNowV93">Todavía no elegiste una ceremonia.</div>
+  <div id="ceremonyHintV93" class="ceremonySmallV93" style="margin-top:10px;">Podés elegir una opción, escribir una frase y guardarla.</div>
+</div>
+
+<div class="ceremonyCardV93">
+  <strong>Elegí una ceremonia</strong><br><br>
+  <button class="ceremonyChoiceV93" onclick="chooseCeremonyV93('soltar')">🕯️ Soltar algo por un momento</button>
+  <button class="ceremonyChoiceV93" onclick="chooseCeremonyV93('agradecer')">🌱 Agradecer algo que estuvo cerca</button>
+  <button class="ceremonyChoiceV93" onclick="chooseCeremonyV93('logro')">🏆 Reconocer un logro pequeño</button>
+  <button class="ceremonyChoiceV93" onclick="chooseCeremonyV93('preocupacion')">🌊 Dejar descansar una preocupación</button>
+</div>
+
+<div class="ceremonyCardV93">
+  <strong id="ceremonyWriteTitleV93">Escribí una frase mínima</strong><br><br>
+  <textarea id="ceremonyTextV93" class="textBox" placeholder="Hoy quiero dejar escrito..."></textarea>
+  <button onclick="saveCeremonyV93()" class="softButton">Guardar ceremonia</button>
+  <button onclick="renderCeremonyHistoryV93()" class="softButton">📜 Ver ceremonias</button>
+  <div id="ceremonyResultV93" style="margin-top:14px;font-weight:bold;line-height:1.45;"></div>
+</div>
+
+<div id="ceremonyContentV93" class="rememberCard"></div>
+<br>
+<button onclick="closeCeremoniesV93()" class="softButton">Volver</button>
 </div>
 
 <div id="searchScreen" class="fullscreen" style="background:linear-gradient(180deg,#ecfeff,#dbeafe);overflow:auto;text-align:center;">
@@ -8445,6 +8530,83 @@ function playSoundtrackV92(){
 function pauseSoundtrackV92(){ if(soundtrackAudioV92) soundtrackAudioV92.pause(); }
 function stopSoundtrackV92(){ if(soundtrackAudioV92){ soundtrackAudioV92.pause(); soundtrackAudioV92.currentTime=0; } }
 function setSoundtrackVolumeV92(v){ if(soundtrackAudioV92) soundtrackAudioV92.volume=Number(v); }
+</script>
+
+
+<script>
+// V93 - Ceremonias personales
+let ceremonyCurrentV93 = 'soltar';
+const ceremonyMapV93 = {
+  soltar:{emoji:'🕯️', title:'Soltar algo por un momento', placeholder:'Hoy dejo descansar esto...', phrase:'No desaparece. Solo dejás de sostenerlo por un momento.', final:'No desapareció. Solo dejaste de cargarlo igual que antes.'},
+  agradecer:{emoji:'🌱', title:'Agradecer algo que estuvo cerca', placeholder:'Hoy agradezco...', phrase:'Las cosas pequeñas también sostienen una vida.', final:'Lo pequeño también cuenta cuando ayudó a seguir.'},
+  logro:{emoji:'🏆', title:'Reconocer un logro pequeño', placeholder:'Hoy reconozco que logré...', phrase:'Aunque parezca pequeño, esto cuenta.', final:'Lo que hiciste cuenta. No necesita ser enorme para ser real.'},
+  preocupacion:{emoji:'🌊', title:'Dejar descansar una preocupación', placeholder:'No necesito resolver esto ahora...', phrase:'Puede esperar. Vos también merecés descansar.', final:'La preocupación puede quedar acá un rato. No tenés que resolver todo ahora.'}
+};
+function escapeCeremonyV93(t){
+  return String(t||'').replace(/[&<>"']/g, function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});
+}
+function getCeremoniesV93(){
+  try{return JSON.parse(localStorage.getItem('ceremoniesV93')||'[]');}catch(e){return [];}
+}
+function openCeremoniesV93(){
+  const s=document.getElementById('ceremoniesScreenV93');
+  if(s) s.style.display='block';
+  chooseCeremonyV93(ceremonyCurrentV93 || 'soltar');
+  renderCeremonyHistoryV93(false);
+}
+function closeCeremoniesV93(){
+  const s=document.getElementById('ceremoniesScreenV93');
+  if(s) s.style.display='none';
+}
+function chooseCeremonyV93(key){
+  const data=ceremonyMapV93[key] || ceremonyMapV93.soltar;
+  ceremonyCurrentV93=key;
+  const orb=document.getElementById('ceremonyOrbV93');
+  const emoji=document.getElementById('ceremonySceneEmojiV93');
+  const now=document.getElementById('ceremonyNowV93');
+  const phrase=document.getElementById('ceremonyPhraseV93');
+  const hint=document.getElementById('ceremonyHintV93');
+  const title=document.getElementById('ceremonyWriteTitleV93');
+  const text=document.getElementById('ceremonyTextV93');
+  const result=document.getElementById('ceremonyResultV93');
+  if(orb) orb.innerHTML=data.emoji;
+  if(emoji) emoji.innerHTML=data.emoji;
+  if(now) now.innerHTML=data.title;
+  if(phrase) phrase.innerHTML=data.phrase;
+  if(hint) hint.innerHTML='Esta ceremonia no exige que te sientas distinto. Solo marca un gesto.';
+  if(title) title.innerHTML=data.title;
+  if(text) text.placeholder=data.placeholder;
+  if(result) result.innerHTML='';
+}
+function saveCeremonyV93(){
+  const textEl=document.getElementById('ceremonyTextV93');
+  const result=document.getElementById('ceremonyResultV93');
+  const text=(textEl && textEl.value ? textEl.value.trim() : '');
+  const data=ceremonyMapV93[ceremonyCurrentV93] || ceremonyMapV93.soltar;
+  if(!text){ if(result) result.innerHTML='Una frase mínima alcanza para guardar la ceremonia.'; return; }
+  const list=getCeremoniesV93();
+  const item={type:ceremonyCurrentV93, title:data.title, emoji:data.emoji, text:text, final:data.final, date:new Date().toLocaleDateString(), time:new Date().toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'})};
+  list.push(item);
+  localStorage.setItem('ceremoniesV93', JSON.stringify(list));
+  if(textEl) textEl.value='';
+  if(result) result.innerHTML=data.emoji+' Ceremonia guardada. '+data.final;
+  if(typeof addFootprintV79 === 'function') addFootprintV79('ceremonia');
+  if(typeof renderDashboard === 'function') renderDashboard();
+  renderCeremonyHistoryV93(true);
+}
+function renderCeremonyHistoryV93(force){
+  const content=document.getElementById('ceremonyContentV93');
+  if(!content) return;
+  const list=getCeremoniesV93();
+  if(!list.length){
+    content.innerHTML='<div class="ceremonyCardV93">Todavía no hay ceremonias guardadas. Podés empezar con una frase muy simple.</div>';
+    return;
+  }
+  const last=list.slice().reverse().slice(0,8);
+  content.innerHTML='<div class="ceremonyCardV93"><strong>📜 Mis ceremonias</strong><br><br>'+last.map(x=>
+    '<div class="ceremonyHistoryItemV93"><div class="ceremonySmallV93">'+escapeCeremonyV93(x.date)+' '+escapeCeremonyV93(x.time)+'</div><strong>'+escapeCeremonyV93(x.emoji)+' '+escapeCeremonyV93(x.title)+'</strong><br><br>“'+escapeCeremonyV93(x.text)+'”<br><br><span class="ceremonySmallV93">'+escapeCeremonyV93(x.final)+'</span></div>'
+  ).join('')+'</div>';
+}
 </script>
 
 </html>
