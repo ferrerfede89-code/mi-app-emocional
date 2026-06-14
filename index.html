@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>App Emocional V90</title>
+<title>App Emocional V91</title>
 
 <style>
 body {
@@ -1295,6 +1295,82 @@ body, .app, #circle, .action, .stats, .softButton, .moods button {
   line-height:1.45;
 }
 
+
+
+/* V91 - Transformaciones */
+.transformOrbV91{
+  width:155px;
+  height:155px;
+  border-radius:50%;
+  margin:24px auto;
+  background:radial-gradient(circle,#ffffff,#5eead4);
+  box-shadow:0 22px 64px rgba(20,184,166,.28);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:58px;
+  animation:transformPulseV91 8s infinite ease-in-out;
+}
+@keyframes transformPulseV91{
+  0%{transform:scale(1) rotate(-1deg);opacity:.86;}
+  50%{transform:scale(1.12) rotate(2deg);opacity:1;}
+  100%{transform:scale(1) rotate(-1deg);opacity:.86;}
+}
+.transformPhraseV91{
+  font-size:21px;
+  font-weight:650;
+  line-height:1.45;
+  text-align:center;
+  padding:18px;
+  border-radius:22px;
+  background:rgba(204,251,241,.96);
+  margin:16px 0;
+}
+.transformCardV91{
+  background:rgba(255,255,255,.92);
+  border-radius:24px;
+  padding:18px;
+  margin:14px 0;
+  line-height:1.55;
+  text-align:left;
+  box-shadow:0 12px 30px rgba(0,0,0,.08);
+}
+.transformPairV91{
+  display:grid;
+  grid-template-columns:1fr;
+  gap:10px;
+  margin:12px 0;
+}
+.transformBeforeV91,.transformAfterV91{
+  border-radius:20px;
+  padding:14px;
+  line-height:1.45;
+}
+.transformBeforeV91{background:rgba(237,233,254,.90);}
+.transformAfterV91{background:rgba(204,251,241,.90);}
+.transformSignalV91{
+  background:linear-gradient(135deg,rgba(237,233,254,.96),rgba(204,251,241,.86));
+  border-radius:22px;
+  padding:16px;
+  margin:12px 0;
+  font-size:18px;
+  font-weight:620;
+  line-height:1.45;
+}
+.transformSmallV91{
+  font-size:15px;
+  color:#64748b;
+  line-height:1.45;
+}
+.transformChipV91{
+  background:rgba(255,255,255,.78);
+  border-radius:999px;
+  padding:8px 12px;
+  display:inline-block;
+  margin:4px;
+  font-size:14px;
+}
+
 </style>
 
 <style id="v48premium">
@@ -1476,6 +1552,10 @@ text-align:center;
     </button>
 <button class="action" onclick="openThresholdV90()" style="grid-column:1/3;background:#ede9fe;font-weight:bold;">
       <span>🌌</span>Umbral de etapa
+    </button>
+
+<button class="action" onclick="openTransformationsV91()" style="grid-column:1/3;background:#ccfbf1;font-weight:bold;">
+      <span>🦋</span>Transformaciones
     </button>
 <button class="action" onclick="openCapsuleV46()" style="grid-column:1/3;background:#fde68a;font-weight:bold;">
       <span>📬</span>Cápsula del tiempo
@@ -2522,6 +2602,28 @@ Llegar hasta acá también es una señal. Este espacio reúne lo que fuiste deja
 <button onclick="copyThresholdV90()" class="softButton">📋 Copiar resumen</button>
 <br>
 <button onclick="closeThresholdV90()" class="softButton">Volver</button>
+</div>
+
+
+
+<div id="transformationsScreenV91" class="fullscreen" style="background:linear-gradient(180deg,#ede9fe,#ccfbf1);overflow:auto;text-align:center;">
+<h1>🦋</h1>
+<h2>Transformaciones</h2>
+<p style="font-size:17px;line-height:1.45;max-width:330px;margin:0 auto;">
+No compara para exigirte. Mira señales suaves de cambio: palabras, formas de volver, pequeñas luces y recursos que empezaron a aparecer.
+</p>
+<div class="transformOrbV91">🦋</div>
+<div id="transformPhraseV91" class="transformPhraseV91">Estoy mirando tu recorrido con cuidado...</div>
+<div id="transformContentV91" class="rememberCard"></div>
+<br>
+<button onclick="renderTransformationsV91()" class="softButton">Volver a mirar</button>
+<button onclick="saveTransformationNoteV91()" class="softButton">Guardar esta mirada</button>
+<button onclick="showTransformationHistoryV91()" class="softButton">Ver miradas guardadas</button>
+<br>
+<textarea id="transformationTextV91" class="textBox" style="margin-top:14px;" placeholder="Si querés, completá esta transformación con tus palabras..."></textarea>
+<div id="transformationResultV91" style="margin-top:14px;font-weight:bold;line-height:1.45;"></div>
+<br>
+<button onclick="closeTransformationsV91()" class="softButton">Volver</button>
 </div>
 
 <div id="searchScreen" class="fullscreen" style="background:linear-gradient(180deg,#ecfeff,#dbeafe);overflow:auto;text-align:center;">
@@ -6258,6 +6360,123 @@ function openGardenV80(){
 }
 function closeGardenV80(){
   document.getElementById('gardenScreenV80').style.display='none';
+}
+
+
+
+// V91 - Transformaciones
+let currentTransformationSummaryV91 = '';
+function openTransformationsV91(){
+  document.getElementById('transformationsScreenV91').style.display='block';
+  renderTransformationsV91();
+}
+function closeTransformationsV91(){
+  document.getElementById('transformationsScreenV91').style.display='none';
+}
+function escapeTransformV91(str){
+  if(typeof escapeHTMLV563 === 'function') return escapeHTMLV563(str);
+  return String(str||'').replace(/[&<>\"]/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;'}[m]));
+}
+function getTransformationNotesV91(){
+  try{return JSON.parse(localStorage.getItem('transformationNotesV91') || '[]');}
+  catch(e){return [];}
+}
+function getTransformDiaryTextV91(entry){
+  if(!entry) return '';
+  return String(entry.text || entry.content || entry.message || entry.note || '');
+}
+function splitTransformWordsV91(text){
+  return String(text||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9ñáéíóúü\s]/gi,' ').split(/\s+/).filter(w=>w.length>3);
+}
+function countTransformWordsV91(entries){
+  const counts = {};
+  entries.forEach(e=>splitTransformWordsV91(getTransformDiaryTextV91(e)).forEach(w=>counts[w]=(counts[w]||0)+1));
+  return counts;
+}
+function topTransformWordsV91(counts){
+  return Object.entries(counts).sort((a,b)=>b[1]-a[1]).slice(0,6).map(x=>x[0]);
+}
+function renderTransformationsV91(){
+  const content = document.getElementById('transformContentV91');
+  const phrase = document.getElementById('transformPhraseV91');
+  if(!content) return;
+  let entries=[];
+  try{entries = JSON.parse(localStorage.getItem('diaryEntries') || '[]');}catch(e){entries=[];}
+  let favs=[]; try{favs = JSON.parse(localStorage.getItem('favoriteMemories') || '[]');}catch(e){}
+  let treasures=[]; try{treasures = JSON.parse(localStorage.getItem('manualTreasuresV81') || '[]');}catch(e){}
+  let lights=[]; try{lights = JSON.parse(localStorage.getItem('lightMomentsV83') || '[]');}catch(e){}
+  let refuges=[]; try{refuges = JSON.parse(localStorage.getItem('refugesV84') || '[]');}catch(e){}
+  let bridges=[]; try{bridges = JSON.parse(localStorage.getItem('bridgesV85') || '[]');}catch(e){}
+  let pockets=[]; try{pockets = JSON.parse(localStorage.getItem('pocketCalmV86') || '[]');}catch(e){}
+  let rituals=[]; try{rituals = JSON.parse(localStorage.getItem('closingRitualsV88') || '[]');}catch(e){}
+  let tomorrows=[]; try{tomorrows = JSON.parse(localStorage.getItem('tomorrowSignalsV89') || '[]');}catch(e){}
+  const totalSignals = entries.length+favs.length+treasures.length+lights.length+refuges.length+bridges.length+pockets.length+rituals.length+tomorrows.length;
+  const first = entries.slice(0, Math.max(1, Math.ceil(entries.length/3)));
+  const recent = entries.slice(Math.max(0, entries.length-Math.max(1, Math.ceil(entries.length/3))));
+  const firstWords = topTransformWordsV91(countTransformWordsV91(first));
+  const recentWords = topTransformWordsV91(countTransformWordsV91(recent));
+  const firstAvg = first.length ? Math.round(first.reduce((a,e)=>a+getTransformDiaryTextV91(e).length,0)/first.length) : 0;
+  const recentAvg = recent.length ? Math.round(recent.reduce((a,e)=>a+getTransformDiaryTextV91(e).length,0)/recent.length) : 0;
+
+  let title = 'Toda transformación puede empezar con una señal pequeña.';
+  if(entries.length >= 6) title = 'Hay cambios suaves apareciendo en tu forma de expresarte.';
+  if(totalSignals >= 12) title = 'Tu recorrido ya no es solo registro: empieza a mostrar movimiento.';
+  if(phrase) phrase.innerHTML = title;
+
+  let html = '<div class="transformCardV91"><strong>🦋 Lectura suave</strong><br><br>';
+  html += totalSignals ? 'No es diagnóstico ni evaluación. Es una mirada poética sobre las señales que fuiste dejando.' : 'Todavía hay pocas señales guardadas. Aun así, abrir este espacio ya puede ser una primera transformación.';
+  html += '</div>';
+
+  if(entries.length >= 2){
+    html += '<div class="transformCardV91"><strong>📖 De antes a ahora</strong>';
+    html += '<div class="transformPairV91"><div class="transformBeforeV91"><strong>Antes aparecían palabras como:</strong><br>'+(firstWords.length?firstWords.map(w=>'<span class="transformChipV91">'+escapeTransformV91(w)+'</span>').join(''):'Todavía no hay suficientes palabras para mirar el inicio.')+'</div>';
+    html += '<div class="transformAfterV91"><strong>Ahora aparecen palabras como:</strong><br>'+(recentWords.length?recentWords.map(w=>'<span class="transformChipV91">'+escapeTransformV91(w)+'</span>').join(''):'Todavía no hay suficientes palabras recientes.')+'</div></div>';
+    if(recentAvg > firstAvg + 10) html += '<div class="transformSignalV91">Estás dejando más espacio para expresarte. Tus últimas entradas parecen más amplias.</div>';
+    else if(firstAvg > recentAvg + 10) html += '<div class="transformSignalV91">Tus últimas entradas son más breves. A veces decir menos también puede ser una forma de cuidado.</div>';
+    else html += '<div class="transformSignalV91">Tu forma de escribir se mantiene con una presencia parecida. Hay continuidad.</div>';
+    html += '</div>';
+  } else {
+    html += '<div class="transformCardV91">🌱 Cuando haya más entradas, este espacio podrá mostrar cambios entre tus primeras palabras y las más recientes.</div>';
+  }
+
+  const signals=[];
+  if(lights.length) signals.push('✨ Aparecieron momentos de luz: no todo quedó contado desde el peso.');
+  if(refuges.length) signals.push('🏡 Construiste refugios internos: la calma empezó a tener lugar propio.');
+  if(bridges.length) signals.push('🌉 Usaste puentes de regreso: hubo intentos de volver a vos.');
+  if(pockets.length) signals.push('🧺 Guardaste recursos de calma: empezaste a llevar herramientas contigo.');
+  if(treasures.length) signals.push('💎 Guardaste tesoros: algo valioso pidió ser recordado.');
+  if(rituals.length) signals.push('🕯️ Cerraste momentos: apareció una forma más cuidadosa de terminar el día.');
+  if(tomorrows.length) signals.push('🌤️ Dejaste señales para mañana: tu yo futuro empezó a tener un lugar.');
+  if(favs.length) signals.push('⭐ Elegiste favoritos: reconociste qué recuerdos merecían volver.');
+  if(signals.length){
+    html += '<div class="transformCardV91"><strong>Señales de transformación</strong>' + signals.map(s=>'<div class="transformSignalV91">'+escapeTransformV91(s)+'</div>').join('') + '</div>';
+  }
+
+  const closing = totalSignals ? 'No necesitás cambiar de golpe. A veces transformarse es volver distinto al mismo lugar.' : 'La transformación también puede empezar en blanco, sin apuro y sin obligación de explicar nada.';
+  html += '<div class="transformPhraseV91">'+closing+'</div>';
+  currentTransformationSummaryV91 = 'Transformaciones V91\n\n' + title + '\n\n' + signals.join('\n') + '\n\n' + closing;
+  content.innerHTML = html;
+}
+function saveTransformationNoteV91(){
+  const input = document.getElementById('transformationTextV91');
+  const result = document.getElementById('transformationResultV91');
+  const text = (input && input.value ? input.value.trim() : 'Hoy miré mi transformación con suavidad.');
+  const list = getTransformationNotesV91();
+  list.push({text:text, summary:currentTransformationSummaryV91, date:new Date().toLocaleDateString(), time:new Date().toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'})});
+  localStorage.setItem('transformationNotesV91', JSON.stringify(list));
+  if(input) input.value='';
+  if(result) result.innerHTML='🦋 Mirada guardada. Esta transformación queda en tu recorrido.';
+  if(typeof addFootprintV79 === 'function') addFootprintV79('transformacion');
+  if(typeof renderDashboard === 'function') renderDashboard();
+}
+function showTransformationHistoryV91(){
+  const content = document.getElementById('transformContentV91');
+  const list = getTransformationNotesV91();
+  if(!content) return;
+  if(!list.length){ content.innerHTML='<div class="transformCardV91">Todavía no hay miradas guardadas.</div>'; return; }
+  content.innerHTML = '<div class="transformCardV91"><strong>🦋 Miradas guardadas</strong>' + list.slice().reverse().map(x=>
+    '<div class="transformSignalV91"><div class="transformSmallV91">'+escapeTransformV91(x.date||'')+' '+escapeTransformV91(x.time||'')+'</div><br>'+escapeTransformV91(x.text||'')+'</div>'
+  ).join('') + '</div>';
 }
 
 </script>
