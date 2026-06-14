@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>App Emocional V95</title>
+<title>App Emocional V96</title>
 
 <style>
 body {
@@ -1539,6 +1539,90 @@ body, .app, #circle, .action, .stats, .softButton, .moods button {
 .possibilityHistoryItemV95{background:linear-gradient(135deg,rgba(255,255,255,.88),rgba(236,252,203,.72));border-radius:20px;padding:14px;margin:10px 0;line-height:1.45;}
 .possibilitySmallV95{font-size:15px;color:#64748b;line-height:1.45;}
 
+
+
+/* V96 - Legado invisible */
+.legacyOrbV96{
+  width:155px;height:155px;border-radius:50%;margin:24px auto;
+  background:radial-gradient(circle,#ffffff,#fde68a 42%,#60a5fa);
+  box-shadow:0 22px 70px rgba(96,165,250,.30),0 0 42px rgba(253,230,138,.25);
+  display:flex;align-items:center;justify-content:center;font-size:58px;
+  animation:legacyOrbPulseV96 8s infinite ease-in-out;
+}
+@keyframes legacyOrbPulseV96{
+  0%{transform:scale(1);opacity:.86;filter:brightness(1);}
+  50%{transform:scale(1.1);opacity:1;filter:brightness(1.12);}
+  100%{transform:scale(1);opacity:.86;filter:brightness(1);}
+}
+.legacyPhraseV96{
+  font-size:21px;font-weight:650;line-height:1.45;text-align:center;
+  padding:18px;border-radius:22px;background:rgba(255,255,255,.10);
+  margin:16px 0;color:white;
+  box-shadow:inset 0 0 22px rgba(255,255,255,.05);
+}
+.legacyCardV96{
+  background:rgba(255,255,255,.10);border-radius:24px;padding:18px;margin:14px 0;
+  line-height:1.55;text-align:left;box-shadow:0 12px 30px rgba(0,0,0,.16);
+  color:white;
+}
+.legacySkyV96{
+  position:relative;min-height:350px;border-radius:30px;margin:20px 0;overflow:hidden;
+  background:
+    radial-gradient(circle at 20% 18%, rgba(255,255,255,.18), transparent 10%),
+    radial-gradient(circle at 80% 12%, rgba(253,230,138,.18), transparent 12%),
+    linear-gradient(180deg,#1e1b4b,#0f172a 64%,#020617);
+  box-shadow:inset 0 0 42px rgba(255,255,255,.08),0 16px 36px rgba(2,6,23,.28);
+}
+.legacySkyV96:before{
+  content:"";
+  position:absolute;inset:0;
+  background-image:
+    radial-gradient(circle,rgba(255,255,255,.55) 1px,transparent 1.5px),
+    radial-gradient(circle,rgba(253,230,138,.45) 1px,transparent 1.5px);
+  background-size:52px 52px,76px 76px;
+  background-position:8px 12px,24px 30px;
+  opacity:.38;
+}
+.legacyStarV96{
+  position:absolute;border:none;border-radius:999px;width:46px;height:46px;
+  background:rgba(255,255,255,.12);color:#fde68a;font-size:25px;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 0 24px rgba(253,230,138,.58),0 0 45px rgba(96,165,250,.18);
+  animation:legacyTwinkleV96 5.4s infinite ease-in-out;
+  z-index:2;
+}
+.legacyStarV96.brightV96{
+  width:54px;height:54px;font-size:31px;background:rgba(253,230,138,.16);
+  box-shadow:0 0 32px rgba(253,230,138,.72),0 0 64px rgba(147,197,253,.28);
+}
+@keyframes legacyTwinkleV96{
+  0%{transform:scale(1);opacity:.78;}
+  50%{transform:scale(1.15);opacity:1;}
+  100%{transform:scale(1);opacity:.78;}
+}
+.legacyChoiceV96{
+  border:none;border-radius:18px;padding:14px 16px;font-size:16px;
+  background:rgba(255,255,255,.92);margin:7px 0;width:100%;text-align:left;color:#1f2937;
+}
+.legacyInputV96{
+  width:100%;box-sizing:border-box;border:none;border-radius:18px;
+  padding:14px 16px;font-size:16px;margin-top:12px;background:rgba(255,255,255,.92);
+}
+.legacySignalV96{
+  background:linear-gradient(135deg,rgba(30,41,59,.64),rgba(59,130,246,.24));
+  border:1px solid rgba(255,255,255,.14);
+  border-radius:22px;padding:16px;margin:12px 0;font-size:18px;font-weight:620;
+  line-height:1.45;color:white;
+}
+.legacyMemoryV96{
+  background:linear-gradient(135deg,rgba(255,255,255,.12),rgba(253,230,138,.10));
+  border-radius:20px;padding:14px;margin:10px 0;line-height:1.45;color:white;
+}
+.legacySmallV96{font-size:15px;color:rgba(226,232,240,.86);line-height:1.45;}
+.legacySelectedV96{
+  background:rgba(255,255,255,.12);border-radius:22px;padding:16px;margin:14px 0;
+  line-height:1.5;color:white;text-align:left;
+}
 </style>
 
 <style id="v48premium">
@@ -1736,6 +1820,9 @@ text-align:center;
     </button>
 <button class="action" onclick="openPossibilityTreeV95()" style="grid-column:1/3;background:#ecfccb;font-weight:bold;">
       <span>🌳</span>Árbol de posibilidades
+    </button>
+<button class="action" onclick="openLegacyV96()" style="grid-column:1/3;background:#dbeafe;font-weight:bold;">
+      <span>✨</span>Legado invisible
     </button>
 
 <button class="action" onclick="openCapsuleV46()" style="grid-column:1/3;background:#fde68a;font-weight:bold;">
@@ -7893,6 +7980,141 @@ function saveSeedTextV77(){
 
 </script>
 
+
+<script>
+// V96 - Legado invisible
+(function(){
+  function byId(id){ return document.getElementById(id); }
+
+  window.openLegacyV96=function(){
+    var screen=byId('legacyScreenV96');
+    if(screen){ screen.style.display='block'; }
+    window.renderLegacyV96();
+  };
+
+  window.closeLegacyV96=function(){
+    var screen=byId('legacyScreenV96');
+    if(screen){ screen.style.display='none'; }
+  };
+
+  window.getLegacyStarsV96=function(){
+    try{ return JSON.parse(localStorage.getItem('legacyStarsV96') || '[]'); }
+    catch(e){ return []; }
+  };
+
+  window.setLegacyStarsV96=function(items){
+    localStorage.setItem('legacyStarsV96', JSON.stringify(items || []));
+  };
+
+  window.saveLegacyStarV96=function(text,emoji){
+    text=String(text || '').trim();
+    if(!text){ return; }
+
+    var items=window.getLegacyStarsV96();
+    var positions=[
+      {x:13,y:18},{x:40,y:13},{x:68,y:20},{x:25,y:38},{x:54,y:35},
+      {x:78,y:44},{x:13,y:62},{x:42,y:58},{x:67,y:68},{x:82,y:23},
+      {x:31,y:76},{x:57,y:82}
+    ];
+    var pos=positions[items.length % positions.length];
+
+    items.push({
+      text:text,
+      emoji:emoji || '✨',
+      x:pos.x,
+      y:pos.y,
+      date:new Date().toLocaleDateString('es-ES',{day:'2-digit',month:'2-digit',year:'numeric'})
+    });
+
+    window.setLegacyStarsV96(items);
+    window.renderLegacyV96();
+    var input=byId('legacyInputV96');
+    if(input){ input.value=''; }
+  };
+
+  window.saveCustomLegacyStarV96=function(){
+    var input=byId('legacyInputV96');
+    var value=input ? input.value.trim() : '';
+    if(!value){ return; }
+    window.saveLegacyStarV96(value,'⭐');
+  };
+
+  window.renderLegacyV96=function(){
+    var items=window.getLegacyStarsV96();
+    var sky=byId('legacySkyV96');
+    var history=byId('legacyHistoryV96');
+    var phrase=byId('legacyPhraseV96');
+    var signal=byId('legacySignalV96');
+
+    if(phrase){
+      if(items.length===0){
+        phrase.innerHTML='Hay cosas que hiciste que siguen viviendo en otros, aunque no puedas verlas.';
+      }else if(items.length<4){
+        phrase.innerHTML='Cada estrella recuerda que alguna vez fuiste presencia para alguien.';
+      }else if(items.length<8){
+        phrase.innerHTML='Tu cielo empieza a mostrar huellas que tal vez habías olvidado.';
+      }else{
+        phrase.innerHTML='Hay más personas alcanzadas por vos de las que imaginás.';
+      }
+    }
+
+    if(signal){
+      if(items.length===0){
+        signal.innerHTML='Incluso una sola luz rompe un poco la oscuridad.';
+      }else if(items.length<4){
+        signal.innerHTML='Quizás nunca te lo dijeron. Pero estuviste ahí.';
+      }else if(items.length<8){
+        signal.innerHTML='Tu paso también dejó señales en otras vidas.';
+      }else{
+        signal.innerHTML='Tu existencia tuvo efecto. Más de una vez.';
+      }
+    }
+
+    if(sky){
+      if(items.length===0){
+        sky.innerHTML='<div style="position:absolute;left:22px;right:22px;top:120px;z-index:2;line-height:1.45;color:rgba(255,255,255,.82);">Todavía no hay estrellas guardadas.<br><br>Podés crear una con un gesto pequeño que recuerdes.</div>';
+      }else{
+        sky.innerHTML=items.map(function(item,idx){
+          var bright=idx%3===0 ? ' brightV96' : '';
+          return '<button class="legacyStarV96'+bright+'" style="left:'+item.x+'%;top:'+item.y+'%;" onclick="showLegacyStarV96('+idx+')">'+escapeHtmlV96(item.emoji || '✨')+'</button>';
+        }).join('');
+      }
+    }
+
+    if(history){
+      if(items.length===0){
+        history.innerHTML='<div class="legacySmallV96">Aún no guardaste ninguna huella.</div>';
+      }else{
+        history.innerHTML=items.slice().reverse().map(function(item){
+          return '<div class="legacyMemoryV96"><b>'+escapeHtmlV96(item.emoji || '✨')+' '+escapeHtmlV96(shortTextV96(item.text,68))+'</b><br><span class="legacySmallV96">'+escapeHtmlV96(item.date || '')+'</span></div>';
+        }).join('');
+      }
+    }
+  };
+
+  window.showLegacyStarV96=function(index){
+    var items=window.getLegacyStarsV96();
+    var item=items[index];
+    var box=byId('legacySelectedV96');
+    if(!item || !box){ return; }
+    box.style.display='block';
+    box.innerHTML='<b>'+escapeHtmlV96(item.emoji || '✨')+' Huella invisible</b><br><br>'+escapeHtmlV96(item.text)+'<br><br><span class="legacySmallV96">Tal vez fue pequeño. Pero pequeño no significa inexistente.</span>';
+  };
+
+  window.shortTextV96=function(text,max){
+    text=String(text || '');
+    return text.length>max ? text.slice(0,max-1)+'…' : text;
+  };
+
+  window.escapeHtmlV96=function(str){
+    return String(str || '').replace(/[&<>"']/g,function(m){
+      return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m];
+    });
+  };
+})();
+</script>
+
+
 </body>
 
 <script id="v57_2_final_diary_fix">
@@ -8843,6 +9065,56 @@ function showLifeMapZoneV94(key){
   }
 }
 </script>
+
+
+<div id="legacyScreenV96" class="fullscreen" style="background:linear-gradient(180deg,#111827,#020617);color:white;overflow:auto;text-align:center;">
+  <h1>✨</h1>
+  <h2>Legado invisible</h2>
+  <p style="font-size:17px;line-height:1.45;max-width:330px;margin:0 auto;">
+    Hay cosas que hiciste que quizás nadie te nombró.<br><br>
+    Pero pudieron haber dejado una luz en alguien.
+  </p>
+
+  <div class="legacyOrbV96">🌟</div>
+
+  <div id="legacyPhraseV96" class="legacyPhraseV96">
+    Tu existencia también dejó señales fuera de vos.
+  </div>
+
+  <div id="legacySkyV96" class="legacySkyV96"></div>
+
+  <div id="legacySelectedV96" class="legacySelectedV96" style="display:none;"></div>
+
+  <div class="legacyCardV96">
+    <b>Crear una estrella</b>
+    <div class="legacySmallV96" style="margin-top:8px;">
+      Elegí una huella o escribí una propia.
+    </div>
+
+    <button class="legacyChoiceV96" onclick="saveLegacyStarV96('Escuché a alguien cuando lo necesitaba','👂')">👂 Escuché a alguien</button>
+    <button class="legacyChoiceV96" onclick="saveLegacyStarV96('Ayudé a alguien aunque fuera en algo pequeño','🤲')">🤲 Ayudé en algo pequeño</button>
+    <button class="legacyChoiceV96" onclick="saveLegacyStarV96('Acompañé a alguien en un momento difícil','🫂')">🫂 Acompañé a alguien</button>
+    <button class="legacyChoiceV96" onclick="saveLegacyStarV96('Hice sonreír a alguien','😊')">😊 Hice sonreír a alguien</button>
+    <button class="legacyChoiceV96" onclick="saveLegacyStarV96('Dije una palabra que pudo aliviar','💬')">💬 Dije una palabra de apoyo</button>
+    <button class="legacyChoiceV96" onclick="saveLegacyStarV96('Enseñé algo que otra persona pudo llevarse','🕯️')">🕯️ Enseñé algo</button>
+
+    <input id="legacyInputV96" class="legacyInputV96" placeholder="Escribir otra huella invisible..." />
+    <button class="softButton" onclick="saveCustomLegacyStarV96()" style="margin-top:12px;">⭐ Convertir en estrella</button>
+  </div>
+
+  <div class="legacyCardV96">
+    <b>Estrellas guardadas</b>
+    <div id="legacyHistoryV96" style="margin-top:12px;"></div>
+  </div>
+
+  <div id="legacySignalV96" class="legacySignalV96">
+    Incluso una sola luz rompe un poco la oscuridad.
+  </div>
+
+  <br>
+  <button onclick="closeLegacyV96()" class="softButton">Volver</button>
+</div>
+
 
 <script>
 // V95 - Árbol de posibilidades
