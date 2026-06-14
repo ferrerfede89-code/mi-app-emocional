@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>App Emocional V94</title>
+<title>App Emocional V95</title>
 
 <style>
 body {
@@ -1500,6 +1500,87 @@ body, .app, #circle, .action, .stats, .softButton, .moods button {
 
 </style>
 
+
+
+/* V95 - Árbol de posibilidades */
+.possibilityOrbV95{
+  width:155px;height:155px;border-radius:50%;margin:24px auto;
+  background:radial-gradient(circle,#ffffff,#bef264);
+  box-shadow:0 22px 64px rgba(132,204,22,.28);
+  display:flex;align-items:center;justify-content:center;font-size:58px;
+  animation:possibilityPulseV95 8s infinite ease-in-out;
+}
+@keyframes possibilityPulseV95{
+  0%{transform:scale(1);opacity:.86;}
+  50%{transform:scale(1.1);opacity:1;}
+  100%{transform:scale(1);opacity:.86;}
+}
+.possibilityPhraseV95{
+  font-size:21px;font-weight:650;line-height:1.45;text-align:center;
+  padding:18px;border-radius:22px;background:rgba(247,254,231,.96);margin:16px 0;
+}
+.possibilityCardV95{
+  background:rgba(255,255,255,.92);border-radius:24px;padding:18px;margin:14px 0;
+  line-height:1.55;text-align:left;box-shadow:0 12px 30px rgba(0,0,0,.08);
+}
+.possibilityTreeV95{
+  position:relative;min-height:330px;border-radius:32px;margin:20px 0;overflow:hidden;
+  background:linear-gradient(180deg,rgba(219,234,254,.95),rgba(220,252,231,.96));
+  box-shadow:inset 0 0 40px rgba(132,204,22,.12),0 14px 34px rgba(0,0,0,.07);
+}
+.possibilitySunV95{
+  position:absolute;top:18px;right:22px;font-size:42px;opacity:.72;
+  animation:possibilitySunV95 9s infinite ease-in-out;
+}
+@keyframes possibilitySunV95{
+  0%{transform:translateY(0) scale(1);opacity:.62;}
+  50%{transform:translateY(-5px) scale(1.05);opacity:.86;}
+  100%{transform:translateY(0) scale(1);opacity:.62;}
+}
+.possibilityTrunkV95{
+  position:absolute;left:50%;bottom:28px;width:34px;height:145px;transform:translateX(-50%);
+  background:linear-gradient(180deg,#a16207,#854d0e);border-radius:24px 24px 10px 10px;
+  box-shadow:0 12px 24px rgba(120,53,15,.18);
+}
+.possibilityBranchV95{
+  position:absolute;left:50%;bottom:145px;width:4px;height:125px;background:rgba(120,53,15,.55);
+  border-radius:999px;transform-origin:bottom center;
+}
+.possibilityBranchV95.b1{transform:rotate(-52deg);}
+.possibilityBranchV95.b2{transform:rotate(-27deg);}
+.possibilityBranchV95.b3{transform:rotate(0deg);}
+.possibilityBranchV95.b4{transform:rotate(27deg);}
+.possibilityBranchV95.b5{transform:rotate(52deg);}
+.possibilityLeafV95{
+  position:absolute;border:none;border-radius:22px;padding:10px 12px;
+  background:linear-gradient(135deg,rgba(255,255,255,.94),rgba(220,252,231,.88));
+  box-shadow:0 10px 24px rgba(0,0,0,.09);font-size:13px;line-height:1.25;
+  text-align:center;max-width:118px;animation:possibilityLeafV95 6s infinite ease-in-out;
+}
+.possibilityLeafV95 span{display:block;font-size:25px;margin-bottom:3px;}
+@keyframes possibilityLeafV95{
+  0%{transform:translateY(0) rotate(-1deg);opacity:.88;}
+  50%{transform:translateY(-5px) rotate(1deg);opacity:1;}
+  100%{transform:translateY(0) rotate(-1deg);opacity:.88;}
+}
+.possibilityChoiceV95{
+  border:none;border-radius:18px;padding:14px 16px;font-size:16px;
+  background:rgba(255,255,255,.92);margin:7px 0;width:100%;text-align:left;
+}
+.possibilityInputV95{
+  width:100%;box-sizing:border-box;border:none;border-radius:18px;padding:14px 16px;
+  font-size:16px;background:rgba(255,255,255,.94);margin-top:10px;
+}
+.possibilitySignalV95{
+  background:linear-gradient(135deg,rgba(247,254,231,.96),rgba(219,234,254,.86));
+  border-radius:22px;padding:16px;margin:12px 0;font-size:18px;font-weight:620;line-height:1.45;
+}
+.possibilityHistoryItemV95{
+  background:linear-gradient(135deg,rgba(255,255,255,.9),rgba(240,253,244,.76));
+  border-radius:20px;padding:13px 14px;margin:9px 0;line-height:1.45;
+}
+.possibilitySmallV95{font-size:15px;color:#64748b;line-height:1.45;}
+
 <style id="v48premium">
 .app{
  backdrop-filter: blur(18px);
@@ -1692,6 +1773,9 @@ text-align:center;
     </button>
 <button class="action" onclick="openLifeMapV94()" style="grid-column:1/3;background:#dcfce7;font-weight:bold;">
       <span>🗺️</span>Mapa emocional de la vida
+    </button>
+<button class="action" onclick="openPossibilityTreeV95()" style="grid-column:1/3;background:#ecfccb;font-weight:bold;">
+      <span>🌳</span>Árbol de posibilidades
     </button>
 <button class="action" onclick="openCapsuleV46()" style="grid-column:1/3;background:#fde68a;font-weight:bold;">
       <span>📬</span>Cápsula del tiempo
@@ -2930,6 +3014,52 @@ No es un mapa exacto. Es una forma suave de ver qué lugares internos apareciero
 <div id="statsAdvancedContent" class="rememberCard"></div>
 <br>
 <button onclick="closeStats()" class="softButton">Volver</button>
+</div>
+
+
+<div id="possibilityTreeScreenV95" class="fullscreen" style="background:linear-gradient(180deg,#ecfccb,#dbeafe);overflow:auto;text-align:center;">
+  <h1>🌳</h1>
+  <h2>Árbol de posibilidades</h2>
+  <p style="font-size:17px;line-height:1.45;max-width:330px;margin:0 auto;">
+    No tenés que decidir tu futuro ahora.<br><br>
+    Solo recordar que todavía pueden existir caminos.
+  </p>
+
+  <div class="possibilityOrbV95">🌱</div>
+  <div id="possibilityPhraseV95" class="possibilityPhraseV95">
+    Una posibilidad pequeña también cuenta.
+  </div>
+
+  <div class="possibilityTreeV95" id="possibilityTreeV95">
+    <div class="possibilitySunV95">🌤️</div>
+    <div class="possibilityBranchV95 b1"></div>
+    <div class="possibilityBranchV95 b2"></div>
+    <div class="possibilityBranchV95 b3"></div>
+    <div class="possibilityBranchV95 b4"></div>
+    <div class="possibilityBranchV95 b5"></div>
+    <div class="possibilityTrunkV95"></div>
+    <div id="possibilityLeavesV95"></div>
+  </div>
+
+  <div class="possibilityCardV95">
+    <strong>Elegí una hoja posible</strong><br><br>
+    <button class="possibilityChoiceV95" onclick="addPossibilityV95('☕','Compartir un café con alguien')">☕ Compartir un café con alguien</button>
+    <button class="possibilityChoiceV95" onclick="addPossibilityV95('🚶','Caminar por un lugar nuevo')">🚶 Caminar por un lugar nuevo</button>
+    <button class="possibilityChoiceV95" onclick="addPossibilityV95('📚','Aprender algo pequeño')">📚 Aprender algo pequeño</button>
+    <button class="possibilityChoiceV95" onclick="addPossibilityV95('🎵','Escuchar una canción especial')">🎵 Escuchar una canción especial</button>
+    <button class="possibilityChoiceV95" onclick="addPossibilityV95('🌅','Tener un día más liviano')">🌅 Tener un día más liviano</button>
+    <button class="possibilityChoiceV95" onclick="addPossibilityV95('😊','Reír otra vez')">😊 Reír otra vez</button>
+  </div>
+
+  <div class="possibilityCardV95">
+    <strong>Crear una posibilidad propia</strong>
+    <input id="customPossibilityV95" class="possibilityInputV95" placeholder="Ej: volver a sentir entusiasmo por algo">
+    <button onclick="addCustomPossibilityV95()" class="softButton" style="margin-top:12px;">Guardar posibilidad</button>
+  </div>
+
+  <div id="possibilityHistoryV95" class="possibilityCardV95"></div>
+
+  <button onclick="closePossibilityTreeV95()" class="softButton">Volver</button>
 </div>
 
 <script>
@@ -8763,6 +8893,112 @@ function showLifeMapZoneV94(key){
     content.innerHTML='<div class="lifeMapCardV94"><strong>'+zone.emoji+' '+zone.title+'</strong><br><br><div class="lifeMapSignalV94">'+(n?zone.full:zone.empty)+'</div><span class="lifeMapSmallV94">Señales encontradas en esta zona: '+n+'.</span></div>';
   }
 }
+
+
+// V95 - Árbol de posibilidades
+function openPossibilityTreeV95(){
+  const s=document.getElementById('possibilityTreeScreenV95');
+  if(s) s.style.display='block';
+  renderPossibilityTreeV95();
+  if(typeof addFootprintV79==='function') addFootprintV79('miro_posibilidades');
+}
+function closePossibilityTreeV95(){
+  const s=document.getElementById('possibilityTreeScreenV95');
+  if(s) s.style.display='none';
+}
+function getPossibilitiesV95(){
+  try{
+    return JSON.parse(localStorage.getItem('possibilitiesV95')||'[]');
+  }catch(e){
+    return [];
+  }
+}
+function savePossibilitiesV95(list){
+  localStorage.setItem('possibilitiesV95', JSON.stringify(list));
+}
+function addPossibilityV95(emoji,text){
+  const list=getPossibilitiesV95();
+  list.unshift({
+    emoji:emoji,
+    text:text,
+    date:new Date().toLocaleDateString()
+  });
+  savePossibilitiesV95(list.slice(0,24));
+  renderPossibilityTreeV95();
+  const phrase=document.getElementById('possibilityPhraseV95');
+  if(phrase) phrase.innerHTML='🌿 No tiene que pasar hoy. Alcanza con que exista.';
+}
+function addCustomPossibilityV95(){
+  const input=document.getElementById('customPossibilityV95');
+  const value=input ? input.value.trim() : '';
+  if(!value){
+    const phrase=document.getElementById('possibilityPhraseV95');
+    if(phrase) phrase.innerHTML='Podés escribir algo muy pequeño. No hace falta que sea un gran plan.';
+    return;
+  }
+  addPossibilityV95('🍃', value);
+  if(input) input.value='';
+}
+function renderPossibilityTreeV95(){
+  const leaves=document.getElementById('possibilityLeavesV95');
+  const history=document.getElementById('possibilityHistoryV95');
+  const phrase=document.getElementById('possibilityPhraseV95');
+  const list=getPossibilitiesV95();
+
+  const positions=[
+    {left:'11%',top:'72px'}, {left:'32%',top:'36px'}, {left:'58%',top:'38px'},
+    {left:'70%',top:'92px'}, {left:'19%',top:'145px'}, {left:'48%',top:'112px'},
+    {left:'63%',top:'178px'}, {left:'8%',top:'205px'}, {left:'37%',top:'220px'},
+    {left:'70%',top:'235px'}
+  ];
+
+  if(leaves){
+    if(list.length===0){
+      leaves.innerHTML='<div class="possibilityLeafV95" style="left:30%;top:118px;"><span>🍃</span>Tu primera posibilidad puede ser mínima.</div>';
+    }else{
+      leaves.innerHTML=list.slice(0,10).map((item,i)=>{
+        const pos=positions[i%positions.length];
+        return '<button class="possibilityLeafV95" style="left:'+pos.left+';top:'+pos.top+';" onclick="showPossibilityDetailV95('+i+')"><span>'+item.emoji+'</span>'+escapeHtmlV95(shortTextV95(item.text,32))+'</button>';
+      }).join('');
+    }
+  }
+
+  if(phrase){
+    if(list.length===0) phrase.innerHTML='No hace falta creer en todas las posibilidades. Empezá con una.';
+    else if(list.length<4) phrase.innerHTML='Tu árbol ya tiene '+list.length+' posibilidad'+(list.length===1?'':'es')+'.';
+    else phrase.innerHTML='No todas van a ocurrir. Pero siguen existiendo.';
+  }
+
+  if(history){
+    if(list.length===0){
+      history.innerHTML='<strong>Todavía no hay hojas guardadas.</strong><br><br><span class="possibilitySmallV95">Elegí una posibilidad o escribí una propia. El árbol va creciendo de a poco.</span>';
+    }else{
+      history.innerHTML='<strong>Hojas guardadas</strong><br><br>'+
+        list.slice(0,8).map((item,i)=>
+          '<div class="possibilityHistoryItemV95"><strong>'+item.emoji+' '+escapeHtmlV95(item.text)+'</strong><br><span class="possibilitySmallV95">'+item.date+'</span></div>'
+        ).join('')+
+        '<div class="possibilitySignalV95">🌳 Este árbol no exige futuro. Solo te recuerda que todavía puede abrirse algo.</div>';
+    }
+  }
+}
+function showPossibilityDetailV95(index){
+  const list=getPossibilitiesV95();
+  const item=list[index];
+  const phrase=document.getElementById('possibilityPhraseV95');
+  if(item && phrase){
+    phrase.innerHTML=item.emoji+' '+escapeHtmlV95(item.text)+'<br><span class="possibilitySmallV95">No tenés que hacerlo ahora. Solo dejarlo vivo como posibilidad.</span>';
+  }
+}
+function shortTextV95(text,max){
+  text=String(text||'');
+  return text.length>max ? text.slice(0,max-1)+'…' : text;
+}
+function escapeHtmlV95(str){
+  return String(str||'').replace(/[&<>"']/g,function(m){
+    return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'})[m];
+  });
+}
+
 </script>
 
 </html>
