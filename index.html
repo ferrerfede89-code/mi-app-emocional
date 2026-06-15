@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>App Emocional V104</title>
+<title>App Emocional V105</title>
 
 <style>
 body {
@@ -2123,6 +2123,126 @@ body, .app, #circle, .action, .stats, .softButton, .moods button {
 }
 .energySmallV104{font-size:15px;color:#64748b;line-height:1.45;}
 
+
+
+/* V105 - Pulido premium pantalla inicial */
+body{
+  background:
+    radial-gradient(circle at 20% 10%, rgba(255,255,255,.72), transparent 24%),
+    radial-gradient(circle at 88% 18%, rgba(186,230,253,.65), transparent 22%),
+    linear-gradient(180deg,#e0f7fa 0%,#bfe6ff 42%,#7db9f5 100%);
+  padding:18px 0;
+}
+.app{
+  position:relative;
+  overflow:hidden;
+  border:1px solid rgba(255,255,255,.62);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  box-shadow:0 24px 70px rgba(15,23,42,.15), inset 0 1px 0 rgba(255,255,255,.6);
+}
+.app:before{
+  content:"";
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  background:
+    radial-gradient(circle at 50% 0%, rgba(255,255,255,.72), transparent 28%),
+    linear-gradient(180deg, rgba(255,255,255,.38), transparent 36%);
+  opacity:.78;
+}
+.app > *{ position:relative; z-index:1; }
+.premiumTopV105{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  margin-bottom:18px;
+}
+.premiumBrandV105{
+  font-size:13px;
+  color:#64748b;
+  letter-spacing:.2px;
+}
+.premiumBadgeV105{
+  font-size:12px;
+  font-weight:700;
+  color:#2563eb;
+  background:rgba(219,234,254,.88);
+  border:1px solid rgba(147,197,253,.55);
+  border-radius:999px;
+  padding:7px 10px;
+}
+.premiumHeroV105{
+  border-radius:30px;
+  padding:20px 16px 18px;
+  margin-bottom:18px;
+  text-align:center;
+  background:linear-gradient(180deg,rgba(255,255,255,.74),rgba(240,249,255,.56));
+  box-shadow:inset 0 0 28px rgba(255,255,255,.45),0 14px 32px rgba(37,99,235,.08);
+}
+.premiumHeroTitleV105{
+  font-size:26px;
+  font-weight:780;
+  letter-spacing:-.5px;
+  line-height:1.12;
+  color:#172554;
+  margin:0 0 8px;
+}
+.premiumHeroSubV105{
+  font-size:15px;
+  color:#64748b;
+  line-height:1.45;
+  margin:0 auto 18px;
+  max-width:310px;
+}
+.premiumHeroV105 #circle{
+  margin-bottom:14px;
+  box-shadow:0 20px 44px rgba(59,130,246,.32),0 0 0 10px rgba(255,255,255,.40);
+}
+.premiumPrimaryV105{
+  border:none;
+  border-radius:999px;
+  padding:13px 18px;
+  font-size:15px;
+  font-weight:750;
+  background:linear-gradient(135deg,#ffffff,#dbeafe);
+  color:#1e3a8a;
+  box-shadow:0 10px 24px rgba(59,130,246,.14);
+}
+.premiumQuickV105{
+  display:grid;
+  grid-template-columns:1fr 1fr 1fr;
+  gap:8px;
+  margin:14px 0 20px;
+}
+.premiumChipV105{
+  border:none;
+  border-radius:18px;
+  padding:11px 8px;
+  background:rgba(255,255,255,.70);
+  box-shadow:0 8px 18px rgba(15,23,42,.05);
+  font-size:13px;
+  line-height:1.25;
+  color:#334155;
+}
+.premiumChipV105 span{display:block;font-size:21px;margin-bottom:3px;}
+.section-title{
+  font-size:15px;
+  color:#334155;
+  letter-spacing:.1px;
+}
+.action{
+  transition:transform .18s ease, box-shadow .18s ease, background .3s ease;
+}
+.action:active,.premiumChipV105:active,.premiumPrimaryV105:active{
+  transform:scale(.98);
+}
+@media (max-width:360px){
+  .premiumHeroTitleV105{font-size:24px;}
+  .premiumQuickV105{grid-template-columns:1fr;}
+}
+
 </style>
 
 <style id="v48premium">
@@ -2186,12 +2306,29 @@ text-align:center;
 </div>
 
 <div class="app" id="appCard">
-  <div class="presence" id="presenceText">Estoy acá.</div>
+  <div class="premiumTopV105">
+    <div class="premiumBrandV105">App Emocional</div>
+    <div class="premiumBadgeV105">V105 · pulido premium</div>
+  </div>
 
-  <div id="circle">Tocar</div>
+  <div class="premiumHeroV105">
+    <div class="presence" id="presenceText">Estoy acá.</div>
+    <h1 class="premiumHeroTitleV105">Un lugar suave para volver a vos.</h1>
+    <p class="premiumHeroSubV105">No tenés que ordenar todo. Elegí un gesto pequeño y empezamos desde ahí.</p>
+
+    <div id="circle">Tocar</div>
+
+    <button class="premiumPrimaryV105" onclick="document.getElementById('circle').click()">Entrar suave</button>
+  </div>
 
   <div class="message" id="message">
     No hace falta resolver todo ahora.
+  </div>
+
+  <div class="premiumQuickV105">
+    <button class="premiumChipV105" onclick="openBreathing()"><span>🫁</span>Respirar</button>
+    <button class="premiumChipV105" onclick="openCareCompassV102()"><span>🧭</span>Cuidarme</button>
+    <button class="premiumChipV105" onclick="openEnergyLighthouseV104()"><span>🔆</span>Energía</button>
   </div>
 
   
