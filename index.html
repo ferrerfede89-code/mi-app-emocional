@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>App Emocional V103</title>
+<title>App Emocional V104</title>
 
 <style>
 body {
@@ -2068,6 +2068,61 @@ body, .app, #circle, .action, .stats, .softButton, .moods button {
 .thermoHistoryItemV103{background:linear-gradient(135deg,rgba(255,255,255,.90),rgba(224,242,254,.70));border-radius:20px;padding:14px;margin:10px 0;line-height:1.45;}
 .thermoSmallV103{font-size:15px;color:#64748b;line-height:1.45;}
 
+
+/* V104 - Faro de energía */
+.energyOrbV104{
+  width:155px;height:155px;border-radius:50%;margin:24px auto;
+  background:radial-gradient(circle,#ffffff,#bae6fd 45%,#fef3c7);
+  box-shadow:0 22px 70px rgba(14,165,233,.25),0 0 42px rgba(254,243,199,.25);
+  display:flex;align-items:center;justify-content:center;font-size:58px;
+  animation:energyPulseV104 8s infinite ease-in-out;
+}
+@keyframes energyPulseV104{
+  0%{transform:scale(1);opacity:.86;filter:brightness(1);}
+  50%{transform:scale(1.1);opacity:1;filter:brightness(1.08);}
+  100%{transform:scale(1);opacity:.86;filter:brightness(1);}
+}
+.energyPhraseV104{
+  font-size:21px;font-weight:650;line-height:1.45;text-align:center;
+  padding:18px;border-radius:22px;background:rgba(255,255,255,.82);margin:16px 0;color:#1f2937;
+}
+.energyCardV104{
+  background:rgba(255,255,255,.92);border-radius:24px;padding:18px;margin:14px 0;
+  line-height:1.55;text-align:left;box-shadow:0 12px 30px rgba(0,0,0,.08);color:#1f2937;
+}
+.energySeaV104{
+  position:relative;min-height:260px;border-radius:30px;margin:20px 0;overflow:hidden;
+  background:linear-gradient(180deg,rgba(224,242,254,.96),rgba(254,243,199,.88));
+  box-shadow:inset 0 0 42px rgba(14,165,233,.10),0 16px 36px rgba(0,0,0,.08);
+  display:flex;align-items:center;justify-content:center;flex-direction:column;text-align:center;
+}
+.energyBeamV104{
+  width:118px;height:118px;border-radius:50%;background:radial-gradient(circle,#ffffff,#fef08a);
+  display:flex;align-items:center;justify-content:center;font-size:50px;
+  box-shadow:0 0 36px rgba(250,204,21,.38),0 18px 38px rgba(0,0,0,.08);
+  animation:energyBeamFloatV104 6s infinite ease-in-out;
+}
+@keyframes energyBeamFloatV104{
+  0%{transform:translateY(0) scale(1);opacity:.9;}
+  50%{transform:translateY(-8px) scale(1.07);opacity:1;}
+  100%{transform:translateY(0) scale(1);opacity:.9;}
+}
+.energyLevelsV104{display:grid;grid-template-columns:1fr;gap:10px;margin-top:14px;}
+.energyChoiceV104{
+  border:none;border-radius:18px;padding:14px 16px;font-size:16px;
+  background:rgba(255,255,255,.92);text-align:left;color:#1f2937;
+}
+.energyChoiceV104.selectedV104{background:linear-gradient(135deg,#bae6fd,#fef3c7);font-weight:700;}
+.energyPlanV104{
+  background:linear-gradient(135deg,rgba(224,242,254,.96),rgba(254,243,199,.90));
+  border-radius:22px;padding:16px;margin:12px 0;font-size:18px;font-weight:620;line-height:1.45;color:#1f2937;
+}
+.energyHistoryItemV104{
+  background:linear-gradient(135deg,rgba(255,255,255,.92),rgba(224,242,254,.74));
+  border-radius:20px;padding:14px;margin:10px 0;line-height:1.45;color:#1f2937;
+}
+.energySmallV104{font-size:15px;color:#64748b;line-height:1.45;}
+
 </style>
 
 <style id="v48premium">
@@ -2293,6 +2348,10 @@ text-align:center;
 
 <button class="action" onclick="openThermometerV103()" style="grid-column:1/3;background:#ffe4e6;font-weight:bold;">
       <span>🌡️</span>Termómetro emocional
+    </button>
+
+<button class="action" onclick="openEnergyLighthouseV104()" style="grid-column:1/3;background:#fef9c3;font-weight:bold;">
+      <span>🔆</span>Faro de energía
     </button>
 
 
@@ -9578,6 +9637,95 @@ function saveSeedTextV77(){
 })();
 </script>
 
+
+<script>
+// V104 - Faro de energía
+(function(){
+  function byId(id){ return document.getElementById(id); }
+  function esc(str){
+    return String(str || '').replace(/[&<>"']/g,function(m){
+      return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m];
+    });
+  }
+  var dataV104={
+    baja:{
+      title:'Hoy la energía está baja. No hay que exigirse más de lo posible.',
+      plan:'Gesto sugerido: tomar agua, sentarte cómodo y elegir una sola acción mínima. Lo mínimo también cuenta.',
+      scene:'Modo linterna pequeña: avanzar muy despacio también es avanzar.',
+      beam:'🪫'
+    },
+    suave:{
+      title:'Hay una energía suave. Puede alcanzar para algo simple y cuidado.',
+      plan:'Gesto sugerido: ordenar una cosa pequeña, respirar un minuto o escribir una frase. Sin convertirlo en obligación.',
+      scene:'Modo tarde tranquila: una cosa pequeña puede ser suficiente.',
+      beam:'🌥️'
+    },
+    media:{
+      title:'Hay energía media. Podés sostener lo básico sin apurarte.',
+      plan:'Gesto sugerido: elegir dos pasos concretos y dejar espacio para descansar después.',
+      scene:'Modo claridad: lo importante puede hacerse sin presión.',
+      beam:'🌤️'
+    },
+    alta:{
+      title:'Hay energía alta. Podés usarla con cuidado, sin gastarla toda.',
+      plan:'Gesto sugerido: hacer algo que te acerque a vos, pero reservar una parte para cerrar el día en calma.',
+      scene:'Modo sol amable: expandirte sin quemarte.',
+      beam:'☀️'
+    }
+  };
+  window.openEnergyLighthouseV104=function(){
+    var s=byId('energyScreenV104');
+    if(s){ s.style.display='block'; }
+    renderEnergyV104();
+  };
+  window.closeEnergyLighthouseV104=function(){
+    var s=byId('energyScreenV104');
+    if(s){ s.style.display='none'; }
+  };
+  window.getEnergyHistoryV104=function(){
+    try{ return JSON.parse(localStorage.getItem('energyHistoryV104') || '[]'); }
+    catch(e){ return []; }
+  };
+  window.saveEnergyV104=function(level,emoji){
+    var info=dataV104[level] || dataV104.media;
+    var list=window.getEnergyHistoryV104();
+    list.unshift({level:level,emoji:emoji,date:new Date().toLocaleString('es-ES',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'})});
+    localStorage.setItem('energyHistoryV104', JSON.stringify(list.slice(0,20)));
+    updateEnergyViewV104(level);
+    renderEnergyV104(level);
+  };
+  window.updateEnergyViewV104=function(level){
+    var info=dataV104[level] || dataV104.media;
+    var phrase=byId('energyPhraseV104');
+    var plan=byId('energyPlanV104');
+    var beam=byId('energyBeamV104');
+    var scene=byId('energySceneTextV104');
+    if(phrase){ phrase.innerHTML=esc(info.title); }
+    if(plan){ plan.innerHTML=esc(info.plan); }
+    if(beam){ beam.innerHTML=esc(info.beam); }
+    if(scene){ scene.innerHTML=esc(info.scene); }
+    document.querySelectorAll('.energyChoiceV104').forEach(function(btn){
+      btn.classList.toggle('selectedV104', btn.getAttribute('data-level')===level);
+    });
+  };
+  window.renderEnergyV104=function(activeLevel){
+    var history=byId('energyHistoryV104');
+    var list=window.getEnergyHistoryV104();
+    if(!activeLevel && list.length){ activeLevel=list[0].level; updateEnergyViewV104(activeLevel); }
+    if(history){
+      if(!list.length){
+        history.innerHTML='<span class="energySmallV104">Todavía no hay señales guardadas. Elegí una energía para encender tu primer faro.</span>';
+      }else{
+        history.innerHTML=list.slice(0,8).map(function(item){
+          var info=dataV104[item.level] || dataV104.media;
+          return '<div class="energyHistoryItemV104"><strong>'+esc(item.emoji)+' '+esc(item.level)+'</strong><br><span class="energySmallV104">'+esc(item.date)+' · '+esc(info.scene)+'</span></div>';
+        }).join('');
+      }
+    }
+  };
+})();
+</script>
+
 </body>
 
 <script id="v57_2_final_diary_fix">
@@ -10626,6 +10774,45 @@ function showLifeMapZoneV94(key){
   <button onclick="closeTouchedPeopleV97()" class="softButton">Volver</button>
 </div>
 
+
+
+<div id="energyScreenV104" class="fullscreen" style="background:linear-gradient(180deg,#e0f2fe,#fef3c7);color:#1f2937;text-align:center;">
+  <h1>🔆</h1>
+  <h2>Faro de energía</h2>
+  <p class="energySmallV104">No mide rendimiento. Solo te ayuda a ver cuánta energía hay hoy y qué gesto pequeño podría cuidarla.</p>
+
+  <div class="energyOrbV104">🔆</div>
+  <div id="energyPhraseV104" class="energyPhraseV104">Elegí cómo está tu energía ahora.</div>
+
+  <div class="energySeaV104">
+    <div class="energyBeamV104" id="energyBeamV104">🌤️</div>
+    <div id="energySceneTextV104" style="font-size:20px;font-weight:650;margin-top:18px;line-height:1.45;max-width:280px;">
+      Tu energía no tiene que estar alta para que este día cuente.
+    </div>
+  </div>
+
+  <div class="energyCardV104">
+    <b>¿Cómo está tu energía?</b>
+    <div class="energyLevelsV104">
+      <button class="energyChoiceV104" data-level="baja" onclick="saveEnergyV104('baja','🪫')">🪫 Muy baja: necesito ir despacio</button>
+      <button class="energyChoiceV104" data-level="suave" onclick="saveEnergyV104('suave','🌥️')">🌥️ Suave: puedo con algo pequeño</button>
+      <button class="energyChoiceV104" data-level="media" onclick="saveEnergyV104('media','🌤️')">🌤️ Media: puedo sostener lo básico</button>
+      <button class="energyChoiceV104" data-level="alta" onclick="saveEnergyV104('alta','☀️')">☀️ Alta: puedo expandirme un poco</button>
+    </div>
+  </div>
+
+  <div id="energyPlanV104" class="energyPlanV104">
+    Un faro no empuja al mar. Solo marca una dirección amable.
+  </div>
+
+  <div class="energyCardV104">
+    <b>Últimas señales</b>
+    <div id="energyHistoryV104" style="margin-top:12px;"></div>
+  </div>
+
+  <br>
+  <button onclick="closeEnergyLighthouseV104()" class="softButton">Volver</button>
+</div>
 
 <script>
 // V95 - Árbol de posibilidades
