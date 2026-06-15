@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>App Emocional V105</title>
+<title>App Emocional V106</title>
 
 <style>
 body {
@@ -2243,6 +2243,89 @@ body{
   .premiumQuickV105{grid-template-columns:1fr;}
 }
 
+
+
+/* V106 - Menú principal por categorías */
+.premiumBadgeV105{color:#0f766e;background:rgba(204,251,241,.88);border-color:rgba(94,234,212,.55);}
+.menuIntroV106{
+  margin: 10px 0 14px;
+  padding: 15px 16px;
+  border-radius: 24px;
+  background: linear-gradient(135deg, rgba(255,255,255,.82), rgba(240,253,250,.64));
+  box-shadow: inset 0 0 24px rgba(255,255,255,.48), 0 12px 28px rgba(15,23,42,.06);
+  color:#475569;
+  font-size:14px;
+  line-height:1.45;
+}
+.menuCategoriesV106{
+  display:grid;
+  grid-template-columns:1fr;
+  gap:14px;
+  margin-bottom:26px;
+}
+.menuCategoryV106{
+  border-radius:28px;
+  padding:15px 14px 14px;
+  background:rgba(255,255,255,.62);
+  border:1px solid rgba(255,255,255,.62);
+  box-shadow:0 14px 34px rgba(15,23,42,.07);
+}
+.menuCategoryHeaderV106{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  margin-bottom:12px;
+}
+.menuCategoryTitleV106{
+  font-size:16px;
+  font-weight:800;
+  color:#1e293b;
+  letter-spacing:-.1px;
+}
+.menuCategoryHintV106{
+  font-size:12px;
+  color:#64748b;
+  background:rgba(248,250,252,.82);
+  border-radius:999px;
+  padding:6px 9px;
+  white-space:nowrap;
+}
+.menuGridV106{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+}
+.menuGridV106 .action{
+  margin:0;
+  min-height:78px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+}
+.menuGridV106 .action.featuredV106{
+  grid-column:1/3;
+  min-height:70px;
+  text-align:left;
+  align-items:flex-start;
+  padding-left:16px;
+}
+.menuGridV106 .action.featuredV106 span{
+  display:inline-block;
+  margin-right:6px;
+}
+.menuCategoryV106.calm{background:linear-gradient(135deg,rgba(219,234,254,.66),rgba(255,255,255,.62));}
+.menuCategoryV106.express{background:linear-gradient(135deg,rgba(254,243,199,.62),rgba(255,255,255,.62));}
+.menuCategoryV106.memory{background:linear-gradient(135deg,rgba(220,252,231,.62),rgba(255,255,255,.62));}
+.menuCategoryV106.deep{background:linear-gradient(135deg,rgba(237,233,254,.62),rgba(255,255,255,.62));}
+.menuCategoryV106.safety{background:linear-gradient(135deg,rgba(255,228,230,.64),rgba(255,255,255,.62));}
+@media (max-width:360px){
+  .menuGridV106{grid-template-columns:1fr;}
+  .menuGridV106 .action.featuredV106{grid-column:1;}
+  .menuCategoryHeaderV106{align-items:flex-start;flex-direction:column;}
+}
+
 </style>
 
 <style id="v48premium">
@@ -2294,162 +2377,102 @@ text-align:center;
       <span class="companionEmoji">🌙</span>Luna<br><span class="small">calma y silencio</span>
     </button>
     <button class="companionCard" onclick="chooseCompanion('zorro')">
-      <span class="companionEmoji">🦊</span>Zorro<br><span class="small">curiosidad suave</span>
-    </button>
-    <button class="companionCard" onclick="chooseCompanion('ballena')">
-      <span class="companionEmoji">🐳</span>Ballena<br><span class="small">presencia profunda</span>
-    </button>
-    <button class="companionCard" onclick="chooseCompanion('nube')" style="grid-column:1/3;">
-      <span class="companionEmoji">☁️</span>Nube<br><span class="small">alivio y descanso</span>
-    </button>
-  </div>
+ <div class="section-title">¿Qué necesitás ahora?</div>
+<div class="menuIntroV106">
+  Para que no se sienta como una lista larga, ahora el menú está ordenado por intención: calmar, expresar, recordar, recorrer o pedir apoyo.
 </div>
 
-<div class="app" id="appCard">
-  <div class="premiumTopV105">
-    <div class="premiumBrandV105">App Emocional</div>
-    <div class="premiumBadgeV105">V105 · pulido premium</div>
+<div class="menuCategoriesV106">
+
+  <div class="menuCategoryV106 calm">
+    <div class="menuCategoryHeaderV106">
+      <div class="menuCategoryTitleV106">🌬️ Calmar el cuerpo</div>
+      <div class="menuCategoryHintV106">cuando necesitás bajar intensidad</div>
+    </div>
+    <div class="menuGridV106">
+      <button class="action" onclick="openBreathing()"><span>🫁</span>Respirar</button>
+      <button class="action" onclick="openStay()"><span>🌊</span>Quedarme</button>
+      <button class="action" onclick="openSleep()"><span>🌙</span>Dormir</button>
+      <button class="action" onclick="openAnchorV78()"><span>⚓</span>Anclaje rápido</button>
+      <button class="action featuredV106" onclick="openCareCompassV102()"><span>🧭</span>Brújula de cuidado</button>
+    </div>
   </div>
 
-  <div class="premiumHeroV105">
-    <div class="presence" id="presenceText">Estoy acá.</div>
-    <h1 class="premiumHeroTitleV105">Un lugar suave para volver a vos.</h1>
-    <p class="premiumHeroSubV105">No tenés que ordenar todo. Elegí un gesto pequeño y empezamos desde ahí.</p>
-
-    <div id="circle">Tocar</div>
-
-    <button class="premiumPrimaryV105" onclick="document.getElementById('circle').click()">Entrar suave</button>
+  <div class="menuCategoryV106 express">
+    <div class="menuCategoryHeaderV106">
+      <div class="menuCategoryTitleV106">🔥 Expresar y soltar</div>
+      <div class="menuCategoryHintV106">cuando algo pide salida</div>
+    </div>
+    <div class="menuGridV106">
+      <button class="action" onclick="openRelease()"><span>🔥</span>Liberar</button>
+      <button class="action" onclick="openTalk()"><span>💬</span>Hablar</button>
+      <button class="action" onclick="openDiary()"><span>📖</span>Diario ⭐</button>
+      <button class="action" onclick="openThermometerV103()"><span>🌡️</span>Termómetro emocional</button>
+      <button class="action featuredV106" onclick="openEnergyLighthouseV104()"><span>🔆</span>Faro de energía</button>
+    </div>
   </div>
 
-  <div class="message" id="message">
-    No hace falta resolver todo ahora.
+  <div class="menuCategoryV106 memory">
+    <div class="menuCategoryHeaderV106">
+      <div class="menuCategoryTitleV106">🌱 Recordar recursos</div>
+      <div class="menuCategoryHintV106">cuando necesitás una señal</div>
+    </div>
+    <div class="menuGridV106">
+      <button class="action" onclick="openRemember()"><span>🧠</span>Recordar ⭐</button>
+      <button class="action" onclick="openSpark()"><span>😊</span>Chispa</button>
+      <button class="action" onclick="openMorning()"><span>🌱</span>Empezar</button>
+      <button class="action" onclick="openAtmosphere()"><span>🎵</span>Ambiente</button>
+      <button class="action" onclick="openCalendar()"><span>📅</span>Calendario</button>
+      <button class="action" onclick="openSeedModeV77()"><span>🌱</span>Modo semilla</button>
+      <button class="action" onclick="openFootprintsV79()"><span>👣</span>Huellas invisibles</button>
+      <button class="action" onclick="openGardenV80()"><span>🌿</span>Jardín emocional</button>
+      <button class="action" onclick="openTreasuresV81()"><span>💎</span>Tesoros olvidados</button>
+      <button class="action" onclick="openSupportedV82()"><span>🤲</span>Qué te sostuvo</button>
+      <button class="action" onclick="openLightsV83()"><span>✨</span>Momentos de luz</button>
+      <button class="action" onclick="openRefugeV84()"><span>🏕️</span>Refugio interno</button>
+      <button class="action" onclick="openBridgeV85()"><span>🌉</span>Puente de regreso</button>
+      <button class="action" onclick="openPocketV86()"><span>🧺</span>Bolsillo de calma</button>
+    </div>
   </div>
 
-  <div class="premiumQuickV105">
-    <button class="premiumChipV105" onclick="openBreathing()"><span>🫁</span>Respirar</button>
-    <button class="premiumChipV105" onclick="openCareCompassV102()"><span>🧭</span>Cuidarme</button>
-    <button class="premiumChipV105" onclick="openEnergyLighthouseV104()"><span>🔆</span>Energía</button>
+  <div class="menuCategoryV106 deep">
+    <div class="menuCategoryHeaderV106">
+      <div class="menuCategoryTitleV106">🗺️ Recorrido profundo</div>
+      <div class="menuCategoryHintV106">historia, sentido y futuro</div>
+    </div>
+    <div class="menuGridV106">
+      <button class="action featuredV106" onclick="openJourneyHub()"><span>🗺️</span>Mi recorrido</button>
+      <button class="action" onclick="openConstellationV87()"><span>🌌</span>Constelación emocional</button>
+      <button class="action" onclick="openClosingV88()"><span>🕯️</span>Ritual de cierre</button>
+      <button class="action" onclick="openTomorrowV89()"><span>🌤️</span>Señal para mañana</button>
+      <button class="action" onclick="openThresholdV90()"><span>🌌</span>Umbral de etapa</button>
+      <button class="action" onclick="openTransformationsV91()"><span>🦋</span>Transformaciones</button>
+      <button class="action" onclick="openSoundtrackV92()"><span>🎵</span>Banda sonora emocional</button>
+      <button class="action" onclick="openCeremoniesV93()"><span>🕯️</span>Ceremonias personales</button>
+      <button class="action" onclick="openLifeMapV94()"><span>🗺️</span>Mapa emocional de la vida</button>
+      <button class="action" onclick="openPossibilityTreeV95()"><span>🌳</span>Árbol de posibilidades</button>
+      <button class="action" onclick="openLegacyV96()"><span>✨</span>Legado invisible</button>
+      <button class="action" onclick="openTouchedPeopleV97()"><span>🫂</span>Personas que tocaste</button>
+      <button class="action" onclick="openFutureLetterV98()"><span>✉️</span>Carta futura</button>
+      <button class="action" onclick="openSilentMuseumV99()"><span>🏛️</span>Victorias silenciosas</button>
+      <button class="action" onclick="openEmotionalHomeV100()"><span>🏡</span>Hogar emocional</button>
+      <button class="action" onclick="openProfileV101()"><span>👤</span>Perfil emocional</button>
+      <button class="action featuredV106" onclick="openCapsuleV46()"><span>📬</span>Cápsula del tiempo</button>
+    </div>
   </div>
 
-  
-<div id="pastMessageCard" class="rememberCard" style="margin-bottom:18px;display:none;">
-  <div style="font-weight:700;">🎁 Mensaje del pasado</div>
-  <div id="pastMessageContent" style="margin-top:10px;"></div>
-</div>
+  <div class="menuCategoryV106 safety">
+    <div class="menuCategoryHeaderV106">
+      <div class="menuCategoryTitleV106">🚨 Apoyo y conexión</div>
+      <div class="menuCategoryHintV106">cuando no querés estar solo</div>
+    </div>
+    <div class="menuGridV106">
+      <button class="action" onclick="openConnect()"><span>🫂</span>Conectar</button>
+      <button class="action featuredV106" onclick="openSupport()"><span>🚨</span>Apoyo rápido</button>
+    </div>
+  </div>
 
-
-<div id="anniversaryCard" class="rememberCard" style="margin-bottom:18px;display:none;">
-  <div style="font-weight:700;">📅 Recuerdo aniversario</div>
-  <div id="anniversaryContent" style="margin-top:10px;"></div>
-</div>
-
-
-<div id="dashboardCard" class="rememberCard" style="margin-bottom:18px;background:linear-gradient(135deg,#f0fdf4,#dbeafe);border:1px solid rgba(255,255,255,.5);">
-<div style="font-weight:700;font-size:16px;">📊 Resumen rápido</div>
-<div id="dashboardContent" style="margin-top:10px;">Cargando...</div>
-</div>
-
-<div class="section-title">¿Qué necesitás ahora?</div>
-
-  <div class="actions">
-    
-    <button class="action" onclick="openBreathing()">
-      <span>🫁</span>Respirar
-    </button>
-    <button class="action" onclick="openRelease()">
-      <span>🔥</span>Liberar
-    </button>
-    <button class="action" onclick="openConnect()">
-      <span>🫂</span>Conectar
-    </button>
-    <button class="action" onclick="openStay()">
-      <span>🌊</span>Quedarme
-    </button>
-    <button class="action" onclick="openSpark()">
-      <span>😊</span>Chispa
-    </button>
-    <button class="action" onclick="openAtmosphere()">
-      <span>🎵</span>Ambiente
-    </button>
-    <button class="action" onclick="openTalk()">
-      <span>💬</span>Hablar
-    </button>
-    <button class="action" onclick="openDiary()">
-      <span>📖</span>Diario ⭐
-    </button>
-    <button class="action" onclick="openSleep()">
-      <span>🌙</span>Dormir
-    </button>
-    <button class="action" onclick="openMorning()">
-      <span>🌱</span>Empezar
-    </button>
-    <button class="action" onclick="openCalendar()">
-      <span>📅</span>Calendario
-    </button>
-    <button class="action" onclick="openRemember()">
-      <span>🧠</span>Recordar ⭐
-    </button>
-    
-    
-    
-    
-    
-    
-    
-    
-    <button class="action" onclick="openJourneyHub()" style="grid-column:1/3;background:#dcfce7;font-weight:bold;">
-      <span>🗺️</span>Mi recorrido
-    </button>
-<button class="action" onclick="openSeedModeV77()" style="grid-column:1/3;background:#bbf7d0;font-weight:bold;">
-      <span>🌱</span>Modo semilla
-    </button>
-<button class="action" onclick="openAnchorV78()" style="grid-column:1/3;background:#dbeafe;font-weight:bold;">
-      <span>⚓</span>Anclaje rápido
-    </button>
-<button class="action" onclick="openFootprintsV79()" style="grid-column:1/3;background:#ecfccb;font-weight:bold;">
-      <span>👣</span>Huellas invisibles
-    </button>
-<button class="action" onclick="openGardenV80()" style="grid-column:1/3;background:#dcfce7;font-weight:bold;">
-      <span>🌿</span>Jardín emocional
-    </button>
-<button class="action" onclick="openTreasuresV81()" style="grid-column:1/3;background:#fef3c7;font-weight:bold;">
-      <span>💎</span>Tesoros olvidados
-    </button>
-<button class="action" onclick="openSupportedV82()" style="grid-column:1/3;background:#ffe4e6;font-weight:bold;">
-      <span>🫀</span>Qué te sostuvo
-    </button>
-<button class="action" onclick="openLightsV83()" style="grid-column:1/3;background:#fef9c3;font-weight:bold;">
-      <span>🌟</span>Momentos de luz
-    </button>
-<button class="action" onclick="openRefugeV84()" style="grid-column:1/3;background:#d1fae5;font-weight:bold;">
-      <span>🏡</span>Refugio interno
-    </button>
-<button class="action" onclick="openBridgeV85()" style="grid-column:1/3;background:#ccfbf1;font-weight:bold;">
-      <span>🌉</span>Puente de regreso
-    </button>
-<button class="action" onclick="openPocketV86()" style="grid-column:1/3;background:#ede9fe;font-weight:bold;">
-      <span>🧺</span>Bolsillo de calma
-    </button>
-<button class="action" onclick="openConstellationV87()" style="grid-column:1/3;background:#e0e7ff;font-weight:bold;">
-      <span>🌌</span>Constelación emocional
-    </button>
-<button class="action" onclick="openClosingV88()" style="grid-column:1/3;background:#fef3c7;font-weight:bold;">
-      <span>🕯️</span>Ritual de cierre
-    </button>
-<button class="action" onclick="openTomorrowV89()" style="grid-column:1/3;background:#e0f2fe;font-weight:bold;">
-      <span>🌤️</span>Señal para mañana
-    </button>
-<button class="action" onclick="openThresholdV90()" style="grid-column:1/3;background:#ede9fe;font-weight:bold;">
-      <span>🌌</span>Umbral de etapa
-    </button>
-
-<button class="action" onclick="openTransformationsV91()" style="grid-column:1/3;background:#ccfbf1;font-weight:bold;">
-      <span>🦋</span>Transformaciones
-    </button>
-<button class="action" onclick="openSoundtrackV92()" style="grid-column:1/3;background:#dbeafe;font-weight:bold;">
-      <span>🎵</span>Banda sonora emocional
-    </button>
-<button class="action" onclick="openCeremoniesV93()" style="grid-column:1/3;background:#fef3c7;font-weight:bold;">
+</div>oniesV93()" style="grid-column:1/3;background:#fef3c7;font-weight:bold;">
       <span>🕯️</span>Ceremonias personales
     </button>
 <button class="action" onclick="openLifeMapV94()" style="grid-column:1/3;background:#dcfce7;font-weight:bold;">
