@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>App Emocional V101</title>
+<title>App Emocional V102</title>
 
 <style>
 body {
@@ -1999,6 +1999,51 @@ body, .app, #circle, .action, .stats, .softButton, .moods button {
   border-radius:22px;padding:16px;margin:12px 0;font-size:18px;font-weight:650;line-height:1.45;text-align:center;
 }
 
+
+/* V102 - Brújula de cuidado */
+.compassOrbV102{
+  width:158px;height:158px;border-radius:50%;margin:24px auto;
+  background:radial-gradient(circle,#ffffff,#bae6fd 42%,#c4b5fd);
+  box-shadow:0 22px 70px rgba(14,165,233,.22),0 0 42px rgba(196,181,253,.25);
+  display:flex;align-items:center;justify-content:center;font-size:60px;
+  animation:compassPulseV102 8s infinite ease-in-out;
+}
+@keyframes compassPulseV102{
+  0%{transform:scale(1) rotate(-2deg);opacity:.88;}
+  50%{transform:scale(1.1) rotate(2deg);opacity:1;}
+  100%{transform:scale(1) rotate(-2deg);opacity:.88;}
+}
+.compassPhraseV102{
+  font-size:21px;font-weight:650;line-height:1.45;text-align:center;
+  padding:18px;border-radius:22px;background:rgba(255,255,255,.84);
+  margin:16px 0;color:#1f2937;box-shadow:0 10px 26px rgba(0,0,0,.06);
+}
+.compassCardV102{
+  background:rgba(255,255,255,.92);border-radius:24px;padding:18px;margin:14px 0;
+  line-height:1.55;text-align:left;box-shadow:0 12px 30px rgba(0,0,0,.08);color:#1f2937;
+}
+.compassGridV102{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px;}
+.compassChoiceV102{
+  border:none;border-radius:20px;padding:15px 12px;background:rgba(255,255,255,.93);
+  font-size:15px;line-height:1.35;box-shadow:0 8px 20px rgba(0,0,0,.06);text-align:left;color:#1f2937;
+}
+.compassChoiceV102 span{display:block;font-size:31px;margin-bottom:6px;text-align:center;}
+.compassChoiceV102.selectedV102{background:linear-gradient(135deg,#dbeafe,#ede9fe);font-weight:700;}
+.compassSceneV102{
+  min-height:190px;border-radius:30px;padding:22px 16px;margin:20px 0;text-align:center;
+  background:linear-gradient(135deg,rgba(224,242,254,.96),rgba(237,233,254,.90));
+  box-shadow:inset 0 0 36px rgba(99,102,241,.10),0 14px 34px rgba(0,0,0,.07);
+}
+.compassNeedleV102{font-size:64px;margin:14px 0;animation:compassNeedleV102 5.5s infinite ease-in-out;}
+@keyframes compassNeedleV102{0%{transform:rotate(-7deg) scale(1);opacity:.9;}50%{transform:rotate(7deg) scale(1.06);opacity:1;}100%{transform:rotate(-7deg) scale(1);opacity:.9;}}
+.compassPlanV102{
+  background:linear-gradient(135deg,rgba(255,255,255,.92),rgba(224,242,254,.82));
+  border-radius:22px;padding:16px;margin:12px 0;font-size:18px;font-weight:620;line-height:1.45;color:#1f2937;
+}
+.compassStepV102{background:rgba(255,255,255,.78);border-radius:18px;padding:12px 14px;margin:9px 0;line-height:1.45;}
+.compassHistoryItemV102{background:linear-gradient(135deg,rgba(255,255,255,.90),rgba(237,233,254,.70));border-radius:20px;padding:14px;margin:10px 0;line-height:1.45;}
+.compassSmallV102{font-size:15px;color:#64748b;line-height:1.45;}
+
 </style>
 
 <style id="v48premium">
@@ -2216,6 +2261,10 @@ text-align:center;
 
 <button class="action" onclick="openProfileV101()" style="grid-column:1/3;background:#dbeafe;font-weight:bold;">
       <span>👤</span>Perfil emocional
+    </button>
+
+<button class="action" onclick="openCareCompassV102()" style="grid-column:1/3;background:#e0f2fe;font-weight:bold;">
+      <span>🧭</span>Brújula de cuidado
     </button>
 
 
@@ -9309,6 +9358,114 @@ function saveSeedTextV77(){
     var saved=getProfile();
     if(saved.avatar){ selectedAvatarV101=saved.avatar; setThemeFromAvatar(saved.avatar); }
   }catch(e){}
+})();
+</script>
+
+
+<div id="careCompassScreenV102" class="fullscreen" style="background:linear-gradient(180deg,#e0f2fe,#ede9fe);color:#1f2937;overflow:auto;text-align:center;">
+  <h1>🧭</h1>
+  <h2>Brújula de cuidado</h2>
+  <p class="compassSmallV102" style="text-align:center;">
+    Un lugar para elegir hacia dónde volver cuando no sabés por dónde empezar.
+  </p>
+
+  <div class="compassOrbV102" id="compassOrbV102">🧭</div>
+
+  <div id="compassPhraseV102" class="compassPhraseV102">
+    No tenés que resolver todo. Solo elegir una dirección amable.
+  </div>
+
+  <div class="compassSceneV102">
+    <div class="compassNeedleV102" id="compassNeedleV102">🧭</div>
+    <div id="compassCurrentV102" class="compassPlanV102">Elegí una dirección de cuidado.</div>
+  </div>
+
+  <div class="compassCardV102">
+    <strong>¿Qué dirección necesitás ahora?</strong>
+    <div class="compassGridV102">
+      <button class="compassChoiceV102" onclick="chooseCompassV102('calma')"><span>🌊</span>Calma</button>
+      <button class="compassChoiceV102" onclick="chooseCompassV102('energia')"><span>🌤️</span>Energía suave</button>
+      <button class="compassChoiceV102" onclick="chooseCompassV102('contacto')"><span>🫂</span>Contacto</button>
+      <button class="compassChoiceV102" onclick="chooseCompassV102('descanso')"><span>🌙</span>Descanso</button>
+      <button class="compassChoiceV102" onclick="chooseCompassV102('claridad')" style="grid-column:1/3;"><span>🔎</span>Claridad</button>
+    </div>
+  </div>
+
+  <div class="compassCardV102">
+    <strong>Plan mínimo de 3 pasos</strong>
+    <div id="compassPlanV102" style="margin-top:12px;"></div>
+    <button onclick="saveCompassMomentV102()" class="softButton" style="font-weight:bold;margin-top:10px;">Guardar esta dirección</button>
+  </div>
+
+  <div class="compassCardV102">
+    <strong>Direcciones guardadas</strong>
+    <div id="compassHistoryV102" style="margin-top:12px;"></div>
+  </div>
+
+  <div id="compassSignalV102" class="compassPlanV102">
+    La brújula no exige avanzar rápido. Solo volver a orientarte.
+  </div>
+
+  <button onclick="closeCareCompassV102()" class="softButton">Volver</button>
+</div>
+
+<script>
+(function(){
+  var KEY='careCompassV102';
+  var selected='calma';
+  var data={
+    calma:{emoji:'🌊',label:'Calma',phrase:'Bajar el volumen interno también es avanzar.',steps:['Apoyá ambos pies en el suelo.','Inhalá lento y exhalá un poco más largo.','Elegí una sola cosa pequeña para hacer después.']},
+    energia:{emoji:'🌤️',label:'Energía suave',phrase:'No necesitás fuerza total. Con un poco alcanza.',steps:['Tomá agua o mojate la cara.','Mové hombros y manos durante 20 segundos.','Hacé una acción mínima: abrir ventana, ordenar una cosa, sentarte derecho.']},
+    contacto:{emoji:'🫂',label:'Contacto',phrase:'No tenés que atravesarlo todo en soledad.',steps:['Pensá en una persona segura.','Mandá un mensaje simple: “¿estás?” o “necesito hablar un momento”.','Si no podés escribir, abrí la app de mensajes y dejala lista.']},
+    descanso:{emoji:'🌙',label:'Descanso',phrase:'Descansar también cuida tu futuro.',steps:['Bajá una luz o alejás la pantalla unos minutos.','Aflojá mandíbula, hombros y manos.','Permitite una pausa sin justificarla.']},
+    claridad:{emoji:'🔎',label:'Claridad',phrase:'Cuando todo se mezcla, una pregunta puede ordenar.',steps:['Nombrá lo que sentís con una palabra.','Separá: qué pasó, qué pienso, qué necesito.','Elegí el próximo paso más pequeño, no el perfecto.']}
+  };
+  function el(id){return document.getElementById(id);}
+  function safe(str){return String(str||'').replace(/[&<>"']/g,function(m){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m];});}
+  function getHistory(){try{return JSON.parse(localStorage.getItem(KEY)||'[]')||[];}catch(e){return []}}
+  function saveHistory(list){localStorage.setItem(KEY,JSON.stringify(list));}
+  window.openCareCompassV102=function(){
+    var screen=el('careCompassScreenV102');
+    if(screen) screen.style.display='block';
+    renderCompassV102();
+    if(navigator.vibrate) navigator.vibrate([25,35,25]);
+    try{window.scrollTo(0,0);}catch(e){}
+  };
+  window.closeCareCompassV102=function(){var screen=el('careCompassScreenV102'); if(screen) screen.style.display='none';};
+  window.chooseCompassV102=function(kind){
+    selected=data[kind]?kind:'calma';
+    renderCompassV102();
+  };
+  window.saveCompassMomentV102=function(){
+    var d=data[selected]||data.calma;
+    var list=getHistory();
+    list.unshift({kind:selected,label:d.label,emoji:d.emoji,date:new Date().toLocaleDateString('es-ES')});
+    saveHistory(list.slice(0,30));
+    var signal=el('compassSignalV102');
+    if(signal) signal.innerHTML=safe(d.emoji)+' Dirección guardada: '+safe(d.label)+'. Podés volver a ella cuando lo necesites.';
+    renderCompassV102();
+  };
+  window.renderCompassV102=function(){
+    var d=data[selected]||data.calma;
+    var orb=el('compassOrbV102'), needle=el('compassNeedleV102'), phrase=el('compassPhraseV102'), current=el('compassCurrentV102'), plan=el('compassPlanV102'), history=el('compassHistoryV102');
+    if(orb) orb.textContent=d.emoji;
+    if(needle) needle.textContent=d.emoji;
+    if(phrase) phrase.textContent=d.phrase;
+    if(current) current.innerHTML=safe(d.emoji)+' <strong>'+safe(d.label)+'</strong><br><span class="compassSmallV102">Una dirección posible para este momento.</span>';
+    Array.prototype.forEach.call(document.querySelectorAll('.compassChoiceV102'),function(btn){
+      btn.classList.remove('selectedV102');
+      if(btn.getAttribute('onclick') && btn.getAttribute('onclick').indexOf("'"+selected+"'")>-1) btn.classList.add('selectedV102');
+    });
+    if(plan){
+      plan.innerHTML=d.steps.map(function(step,i){return '<div class="compassStepV102"><strong>'+(i+1)+'.</strong> '+safe(step)+'</div>';}).join('');
+    }
+    if(history){
+      var list=getHistory();
+      history.innerHTML=list.length ? list.slice(0,8).map(function(item){
+        return '<div class="compassHistoryItemV102"><strong>'+safe(item.emoji)+' '+safe(item.label)+'</strong><br><span class="compassSmallV102">'+safe(item.date)+'</span></div>';
+      }).join('') : '<span class="compassSmallV102">Todavía no guardaste direcciones. Podés empezar con una sola.</span>';
+    }
+  };
 })();
 </script>
 
