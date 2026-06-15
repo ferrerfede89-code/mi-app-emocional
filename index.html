@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>App Emocional V102</title>
+<title>App Emocional V103</title>
 
 <style>
 body {
@@ -2044,6 +2044,30 @@ body, .app, #circle, .action, .stats, .softButton, .moods button {
 .compassHistoryItemV102{background:linear-gradient(135deg,rgba(255,255,255,.90),rgba(237,233,254,.70));border-radius:20px;padding:14px;margin:10px 0;line-height:1.45;}
 .compassSmallV102{font-size:15px;color:#64748b;line-height:1.45;}
 
+
+/* V103 - Termómetro emocional */
+.thermoOrbV103{
+  width:155px;height:155px;border-radius:50%;margin:24px auto;
+  background:radial-gradient(circle,#ffffff,#bae6fd 45%,#fda4af);
+  box-shadow:0 22px 70px rgba(14,165,233,.22),0 0 42px rgba(251,113,133,.18);
+  display:flex;align-items:center;justify-content:center;font-size:58px;
+  animation:thermoPulseV103 8s infinite ease-in-out;
+}
+@keyframes thermoPulseV103{0%{transform:scale(1);opacity:.86;}50%{transform:scale(1.1);opacity:1;}100%{transform:scale(1);opacity:.86;}}
+.thermoPhraseV103{font-size:21px;font-weight:650;line-height:1.45;text-align:center;padding:18px;border-radius:22px;background:rgba(255,255,255,.84);margin:16px 0;color:#1f2937;}
+.thermoCardV103{background:rgba(255,255,255,.92);border-radius:24px;padding:18px;margin:14px 0;line-height:1.55;text-align:left;box-shadow:0 12px 30px rgba(0,0,0,.08);color:#1f2937;}
+.thermoScaleV103{background:linear-gradient(135deg,rgba(219,234,254,.96),rgba(255,228,230,.88));border-radius:28px;padding:20px 14px;margin:20px 0;text-align:center;box-shadow:inset 0 0 32px rgba(14,165,233,.10),0 12px 30px rgba(0,0,0,.06);}
+.thermoMeterV103{height:22px;border-radius:999px;background:linear-gradient(90deg,#bae6fd,#bbf7d0,#fde68a,#fecaca);overflow:hidden;box-shadow:inset 0 0 12px rgba(255,255,255,.55);margin:16px 0;position:relative;}
+.thermoMarkerV103{position:absolute;top:-6px;width:34px;height:34px;border-radius:50%;background:white;box-shadow:0 8px 18px rgba(0,0,0,.16);display:flex;align-items:center;justify-content:center;transition:left .45s ease;}
+.thermoGridV103{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px;}
+.thermoChoiceV103{border:none;border-radius:18px;padding:14px 12px;font-size:15px;background:rgba(255,255,255,.92);text-align:left;color:#1f2937;line-height:1.35;}
+.thermoChoiceV103 span{display:block;font-size:30px;text-align:center;margin-bottom:6px;}
+.thermoChoiceV103.selectedV103{background:linear-gradient(135deg,#e0f2fe,#ffe4e6);font-weight:700;}
+.thermoPlanV103{background:linear-gradient(135deg,rgba(255,255,255,.90),rgba(240,249,255,.78));border-radius:22px;padding:16px;margin:12px 0;font-size:18px;font-weight:620;line-height:1.45;}
+.thermoStepV103{background:rgba(255,255,255,.80);border-radius:18px;padding:12px 14px;margin:9px 0;line-height:1.45;font-weight:400;}
+.thermoHistoryItemV103{background:linear-gradient(135deg,rgba(255,255,255,.90),rgba(224,242,254,.70));border-radius:20px;padding:14px;margin:10px 0;line-height:1.45;}
+.thermoSmallV103{font-size:15px;color:#64748b;line-height:1.45;}
+
 </style>
 
 <style id="v48premium">
@@ -2265,6 +2289,10 @@ text-align:center;
 
 <button class="action" onclick="openCareCompassV102()" style="grid-column:1/3;background:#e0f2fe;font-weight:bold;">
       <span>🧭</span>Brújula de cuidado
+    </button>
+
+<button class="action" onclick="openThermometerV103()" style="grid-column:1/3;background:#ffe4e6;font-weight:bold;">
+      <span>🌡️</span>Termómetro emocional
     </button>
 
 
@@ -9465,6 +9493,87 @@ function saveSeedTextV77(){
         return '<div class="compassHistoryItemV102"><strong>'+safe(item.emoji)+' '+safe(item.label)+'</strong><br><span class="compassSmallV102">'+safe(item.date)+'</span></div>';
       }).join('') : '<span class="compassSmallV102">Todavía no guardaste direcciones. Podés empezar con una sola.</span>';
     }
+  };
+})();
+</script>
+
+
+<!-- V103 - Termómetro emocional -->
+<div id="thermometerScreenV103" class="fullscreen" style="background:linear-gradient(180deg,#e0f2fe,#ffe4e6);color:#1f2937;overflow:auto;text-align:center;">
+  <h1>🌡️</h1>
+  <h2>Termómetro emocional</h2>
+  <p class="thermoSmallV103" style="text-align:center;">No es para juzgar cómo estás. Es para medir con suavidad y elegir el próximo gesto posible.</p>
+
+  <div class="thermoOrbV103" id="thermoOrbV103">🌡️</div>
+  <div id="thermoPhraseV103" class="thermoPhraseV103">Tu estado no tiene que explicarse perfecto.</div>
+
+  <div class="thermoScaleV103">
+    <div style="font-weight:700;">Nivel de carga interna</div>
+    <div class="thermoMeterV103"><div id="thermoMarkerV103" class="thermoMarkerV103" style="left:8%;">🌊</div></div>
+    <div id="thermoCurrentV103" class="thermoPlanV103">Elegí el nivel que más se parece a este momento.</div>
+  </div>
+
+  <div class="thermoCardV103">
+    <strong>¿Cómo está tu temperatura emocional?</strong>
+    <div class="thermoGridV103">
+      <button class="thermoChoiceV103" onclick="chooseThermoV103('baja')"><span>🌊</span>Baja<br><small>Necesito moverme un poco.</small></button>
+      <button class="thermoChoiceV103" onclick="chooseThermoV103('media')"><span>🌤️</span>Media<br><small>Puedo sostenerme.</small></button>
+      <button class="thermoChoiceV103" onclick="chooseThermoV103('alta')"><span>🔥</span>Alta<br><small>Estoy muy cargado.</small></button>
+      <button class="thermoChoiceV103" onclick="chooseThermoV103('nube')"><span>🌫️</span>Nublada<br><small>No sé bien qué siento.</small></button>
+    </div>
+  </div>
+
+  <div class="thermoCardV103">
+    <strong>Próximo gesto sugerido</strong>
+    <div id="thermoPlanV103" style="margin-top:12px;"></div>
+    <button onclick="saveThermoV103()" class="softButton" style="font-weight:bold;margin-top:10px;">Guardar medición</button>
+  </div>
+
+  <div class="thermoCardV103">
+    <strong>Últimas mediciones</strong>
+    <div id="thermoHistoryV103" style="margin-top:12px;"></div>
+  </div>
+
+  <div id="thermoSignalV103" class="thermoPlanV103">Medir también es cuidarte.</div>
+  <button onclick="closeThermometerV103()" class="softButton">Volver</button>
+</div>
+
+<script id="v103_thermometer">
+(function(){
+  var KEY='thermometerV103';
+  var selected='media';
+  var data={
+    baja:{emoji:'🌊',label:'Baja',pos:'8%',phrase:'Cuando la energía está baja, no hace falta exigirte intensidad.',steps:['Tomá un poco de agua o cambiá de postura.','Elegí una acción de menos de dos minutos.','No busques motivación completa: buscá una chispa mínima.']},
+    media:{emoji:'🌤️',label:'Media',pos:'36%',phrase:'Hay suficiente estabilidad para elegir con calma.',steps:['Nombrá una cosa que sí podés hacer ahora.','Elegí una prioridad pequeña.','Hacé una pausa antes de pasar a lo siguiente.']},
+    alta:{emoji:'🔥',label:'Alta',pos:'70%',phrase:'Si todo está muy cargado, primero bajamos la temperatura.',steps:['Aflojá mandíbula, hombros y manos.','Exhalá lento tres veces.','No decidas todo ahora: elegí solo el próximo minuto.']},
+    nube:{emoji:'🌫️',label:'Nublada',pos:'88%',phrase:'No saber qué sentís también es información.',steps:['Escribí una palabra suelta, aunque no sea exacta.','Mirate alrededor y nombrá tres objetos.','Permitite no entenderlo todo todavía.']}
+  };
+  function el(id){return document.getElementById(id);}
+  function safe(str){return String(str||'').replace(/[&<>"']/g,function(m){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m];});}
+  function read(){try{return JSON.parse(localStorage.getItem(KEY)||'[]');}catch(e){return [];}}
+  function write(list){try{localStorage.setItem(KEY,JSON.stringify(list.slice(0,20)));}catch(e){}}
+  window.openThermometerV103=function(){var s=el('thermometerScreenV103'); if(s){s.style.display='block'; renderThermoV103();}};
+  window.closeThermometerV103=function(){var s=el('thermometerScreenV103'); if(s) s.style.display='none';};
+  window.chooseThermoV103=function(kind){selected=kind||'media'; renderThermoV103();};
+  window.saveThermoV103=function(){
+    var d=data[selected]||data.media;
+    var list=read();
+    list.unshift({emoji:d.emoji,label:d.label,date:new Date().toLocaleString('es-ES',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'})});
+    write(list);
+    var sig=el('thermoSignalV103'); if(sig) sig.innerHTML='Guardado: '+safe(d.emoji)+' '+safe(d.label)+'. Ya tenés una señal más de vos.';
+    renderThermoV103();
+  };
+  window.renderThermoV103=function(){
+    var d=data[selected]||data.media;
+    var phrase=el('thermoPhraseV103'), marker=el('thermoMarkerV103'), current=el('thermoCurrentV103'), plan=el('thermoPlanV103'), history=el('thermoHistoryV103'), orb=el('thermoOrbV103');
+    if(phrase) phrase.innerHTML=safe(d.phrase);
+    if(marker){marker.style.left=d.pos; marker.innerHTML=safe(d.emoji);}
+    if(orb) orb.innerHTML=safe(d.emoji);
+    if(current) current.innerHTML=safe(d.emoji)+' <strong>'+safe(d.label)+'</strong><br><span class="thermoSmallV103">Esto no define tu día. Solo orienta el siguiente gesto.</span>';
+    Array.prototype.forEach.call(document.querySelectorAll('.thermoChoiceV103'),function(btn){btn.classList.remove('selectedV103'); if(btn.getAttribute('onclick') && btn.getAttribute('onclick').indexOf("'"+selected+"'")>-1) btn.classList.add('selectedV103');});
+    if(plan) plan.innerHTML=d.steps.map(function(step,i){return '<div class="thermoStepV103"><strong>'+(i+1)+'.</strong> '+safe(step)+'</div>';}).join('');
+    var list=read();
+    if(history) history.innerHTML=list.length ? list.slice(0,8).map(function(item){return '<div class="thermoHistoryItemV103"><strong>'+safe(item.emoji)+' '+safe(item.label)+'</strong><br><span class="thermoSmallV103">'+safe(item.date)+'</span></div>';}).join('') : '<span class="thermoSmallV103">Todavía no guardaste mediciones. Una sola ya alcanza para empezar.</span>';
   };
 })();
 </script>
