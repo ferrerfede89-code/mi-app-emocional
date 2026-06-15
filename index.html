@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>App Emocional V100</title>
+<title>App Emocional V101</title>
 
 <style>
 body {
@@ -1932,6 +1932,73 @@ body, .app, #circle, .action, .stats, .softButton, .moods button {
 }
 .homeSmallV100{font-size:15px;color:#64748b;line-height:1.45;}
 
+
+/* V101 - Perfil emocional */
+.profileOrbV101{
+  width:158px;height:158px;border-radius:50%;margin:24px auto;
+  background:radial-gradient(circle,#ffffff,#bfdbfe 42%,#a7f3d0);
+  box-shadow:0 22px 70px rgba(59,130,246,.22),0 0 42px rgba(167,243,208,.25);
+  display:flex;align-items:center;justify-content:center;font-size:60px;
+  animation:profilePulseV101 8s infinite ease-in-out;
+}
+@keyframes profilePulseV101{
+  0%{transform:scale(1);opacity:.88;}
+  50%{transform:scale(1.1);opacity:1;}
+  100%{transform:scale(1);opacity:.88;}
+}
+.profilePhraseV101{
+  font-size:21px;font-weight:650;line-height:1.45;text-align:center;
+  padding:18px;border-radius:22px;background:rgba(255,255,255,.84);
+  margin:16px 0;color:#1f2937;box-shadow:0 10px 26px rgba(0,0,0,.06);
+}
+.profileCardV101{
+  background:rgba(255,255,255,.92);border-radius:24px;padding:18px;margin:14px 0;
+  line-height:1.55;text-align:left;box-shadow:0 12px 30px rgba(0,0,0,.08);color:#1f2937;
+}
+.profileInputV101{
+  width:100%;box-sizing:border-box;border:none;border-radius:18px;
+  padding:14px 16px;font-size:16px;margin:7px 0;background:rgba(255,255,255,.96);
+  box-shadow:inset 0 0 0 1px rgba(148,163,184,.18);
+}
+.profileAvatarGridV101{
+  display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px;
+}
+.profileAvatarV101{
+  border:none;border-radius:20px;padding:14px 12px;font-size:15px;
+  background:rgba(255,255,255,.92);text-align:left;color:#1f2937;
+  box-shadow:0 8px 20px rgba(0,0,0,.05);
+}
+.profileAvatarV101 span{display:block;font-size:30px;margin-bottom:4px;}
+.profileAvatarV101.selectedV101{
+  background:linear-gradient(135deg,#dcfce7,#dbeafe);
+  font-weight:750;box-shadow:0 12px 28px rgba(59,130,246,.14);
+}
+.profileIdentityV101{
+  text-align:center;background:linear-gradient(135deg,rgba(255,255,255,.96),rgba(219,234,254,.82));
+  border-radius:28px;padding:20px;margin:18px 0;box-shadow:0 14px 34px rgba(0,0,0,.08);
+}
+.profileAvatarBigV101{font-size:64px;margin:8px 0;}
+.profileNameV101{font-size:24px;font-weight:800;margin-top:6px;}
+.profileNickV101{font-size:16px;color:#64748b;margin-top:2px;}
+.profileQuoteV101{
+  margin-top:12px;font-size:19px;font-weight:650;line-height:1.45;
+  padding:14px;border-radius:20px;background:rgba(255,255,255,.72);
+}
+.profileStatsGridV101{
+  display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px;
+}
+.profileStatV101{
+  background:rgba(255,255,255,.80);border-radius:18px;padding:13px;text-align:center;
+  box-shadow:0 8px 18px rgba(0,0,0,.05);
+}
+.profileStatNumberV101{font-size:26px;font-weight:800;}
+.profileStatLabelV101{font-size:13px;color:#64748b;line-height:1.3;}
+.profileSmallV101{font-size:15px;color:#64748b;line-height:1.45;}
+.profileSignalV101{
+  background:linear-gradient(135deg,rgba(220,252,231,.96),rgba(219,234,254,.86));
+  border-radius:22px;padding:16px;margin:12px 0;font-size:18px;font-weight:650;line-height:1.45;text-align:center;
+}
+
 </style>
 
 <style id="v48premium">
@@ -2146,6 +2213,11 @@ text-align:center;
 <button class="action" onclick="openEmotionalHomeV100()" style="grid-column:1/3;background:#dcfce7;font-weight:bold;">
       <span>🏡</span>Hogar emocional
     </button>
+
+<button class="action" onclick="openProfileV101()" style="grid-column:1/3;background:#dbeafe;font-weight:bold;">
+      <span>👤</span>Perfil emocional
+    </button>
+
 
 <button class="action" onclick="openCapsuleV46()" style="grid-column:1/3;background:#fde68a;font-weight:bold;">
       <span>📬</span>Cápsula del tiempo
@@ -9024,6 +9096,219 @@ function saveSeedTextV77(){
       if(signal) signal.innerHTML='Esta habitación todavía no está disponible, pero el hogar sigue aquí.';
     }
   };
+})();
+</script>
+
+
+<div id="profileScreenV101" class="fullscreen" style="background:linear-gradient(180deg,#eff6ff,#dcfce7);color:#1f2937;overflow:auto;text-align:center;">
+  <h1>👤</h1>
+  <h2>Perfil emocional</h2>
+  <p class="profileSmallV101" style="text-align:center;">
+    Este espacio guarda tu identidad dentro de la app.
+  </p>
+
+  <div class="profileOrbV101" id="profileOrbV101">👤</div>
+
+  <div id="profilePhraseV101" class="profilePhraseV101">
+    Tu recorrido importa.
+  </div>
+
+  <div class="profileCardV101">
+    <strong>🪪 Tu nombre en la app</strong>
+    <input id="profileNameInputV101" class="profileInputV101" placeholder="Nombre">
+    <input id="profileNickInputV101" class="profileInputV101" placeholder="Apodo opcional">
+    <input id="profileQuoteInputV101" class="profileInputV101" placeholder="Frase personal: Un paso a la vez.">
+  </div>
+
+  <div class="profileCardV101">
+    <strong>Avatar emocional</strong>
+    <div class="profileAvatarGridV101" id="profileAvatarGridV101">
+      <button class="profileAvatarV101" onclick="selectProfileAvatarV101('brote')"><span>🌱</span>Brote</button>
+      <button class="profileAvatarV101" onclick="selectProfileAvatarV101('ballena')"><span>🐋</span>Ballena tranquila</button>
+      <button class="profileAvatarV101" onclick="selectProfileAvatarV101('zorro')"><span>🦊</span>Zorro resiliente</button>
+      <button class="profileAvatarV101" onclick="selectProfileAvatarV101('luna')"><span>🌙</span>Luna serena</button>
+      <button class="profileAvatarV101" onclick="selectProfileAvatarV101('nube')" style="grid-column:1/3;"><span>☁️</span>Nube suave</button>
+    </div>
+  </div>
+
+  <button onclick="saveProfileV101()" class="softButton" style="font-weight:bold;">Guardar perfil</button>
+  <button onclick="renderProfileV101()" class="softButton">Actualizar tarjeta</button>
+
+  <div id="profileIdentityV101" class="profileIdentityV101"></div>
+
+  <div class="profileCardV101">
+    <strong>📊 Mi recorrido</strong>
+    <div id="profileStatsV101" class="profileStatsGridV101"></div>
+  </div>
+
+  <div id="profileSignalV101" class="profileSignalV101">
+    Todo recorrido comienza con una primera huella.
+  </div>
+
+  <button onclick="closeProfileV101()" class="softButton">Volver</button>
+</div>
+
+<script>
+(function(){
+  var KEY='perfilEmocionalV101';
+  var avatars={
+    brote:{emoji:'🌱',label:'Brote',theme:'theme-brote'},
+    ballena:{emoji:'🐋',label:'Ballena tranquila',theme:'theme-ballena'},
+    zorro:{emoji:'🦊',label:'Zorro resiliente',theme:'theme-zorro'},
+    luna:{emoji:'🌙',label:'Luna serena',theme:'theme-luna'},
+    nube:{emoji:'☁️',label:'Nube suave',theme:'theme-nube'}
+  };
+  var selectedAvatarV101='brote';
+
+  function el(id){ return document.getElementById(id); }
+  function safeText(str){
+    return String(str || '').replace(/[&<>"']/g,function(m){
+      return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m];
+    });
+  }
+  function readListCount(key){
+    try{
+      var raw=localStorage.getItem(key);
+      if(!raw) return 0;
+      var parsed=JSON.parse(raw);
+      return Array.isArray(parsed) ? parsed.length : 0;
+    }catch(e){ return 0; }
+  }
+  function getProfile(){
+    try{
+      return JSON.parse(localStorage.getItem(KEY) || '{}') || {};
+    }catch(e){ return {}; }
+  }
+  function setThemeFromAvatar(avatar){
+    var data=avatars[avatar] || avatars.brote;
+    try{
+      document.body.classList.remove('theme-brote','theme-ballena','theme-zorro','theme-luna','theme-nube');
+      document.body.classList.add(data.theme);
+    }catch(e){}
+  }
+  function getStats(){
+    return {
+      cartas:readListCount('futureLettersV98'),
+      personas:readListCount('touchedPeopleV97'),
+      posibilidades:readListCount('possibilitiesV95'),
+      estrellas:readListCount('legacyStarsV96'),
+      victorias:readListCount('silentVictoriesV99'),
+      tesoros:readListCount('manualTreasuresV81')
+    };
+  }
+  function totalStats(s){
+    return (s.cartas||0)+(s.personas||0)+(s.posibilidades||0)+(s.estrellas||0)+(s.victorias||0)+(s.tesoros||0);
+  }
+
+  window.openProfileV101=function(){
+    var p=getProfile();
+    selectedAvatarV101=p.avatar || selectedAvatarV101 || 'brote';
+    var name=el('profileNameInputV101'), nick=el('profileNickInputV101'), quote=el('profileQuoteInputV101');
+    if(name) name.value=p.name || '';
+    if(nick) nick.value=p.nick || '';
+    if(quote) quote.value=p.quote || '';
+    var screen=el('profileScreenV101');
+    if(screen){ screen.style.display='block'; }
+    renderProfileV101();
+    try{ window.scrollTo(0,0); }catch(e){}
+  };
+
+  window.closeProfileV101=function(){
+    var screen=el('profileScreenV101');
+    if(screen) screen.style.display='none';
+  };
+
+  window.selectProfileAvatarV101=function(avatar){
+    selectedAvatarV101=avatar || 'brote';
+    setThemeFromAvatar(selectedAvatarV101);
+    renderProfileV101(false);
+  };
+
+  window.saveProfileV101=function(){
+    var p={
+      name:(el('profileNameInputV101') && el('profileNameInputV101').value.trim()) || '',
+      nick:(el('profileNickInputV101') && el('profileNickInputV101').value.trim()) || '',
+      quote:(el('profileQuoteInputV101') && el('profileQuoteInputV101').value.trim()) || '',
+      avatar:selectedAvatarV101 || 'brote',
+      updatedAt:new Date().toLocaleDateString('es-ES')
+    };
+    localStorage.setItem(KEY, JSON.stringify(p));
+    setThemeFromAvatar(p.avatar);
+    renderProfileV101();
+  };
+
+  window.renderProfileV101=function(loadStored){
+    if(loadStored !== false){
+      var p=getProfile();
+      selectedAvatarV101=p.avatar || selectedAvatarV101 || 'brote';
+    }
+    var current=getProfile();
+    var avatar=avatars[selectedAvatarV101] || avatars.brote;
+    var nameValue=(el('profileNameInputV101') && el('profileNameInputV101').value.trim()) || current.name || 'Tu nombre';
+    var nickValue=(el('profileNickInputV101') && el('profileNickInputV101').value.trim()) || current.nick || '';
+    var quoteValue=(el('profileQuoteInputV101') && el('profileQuoteInputV101').value.trim()) || current.quote || 'Un paso a la vez.';
+
+    var orb=el('profileOrbV101');
+    if(orb) orb.textContent=avatar.emoji;
+
+    Array.prototype.forEach.call(document.querySelectorAll('.profileAvatarV101'),function(btn){
+      btn.classList.remove('selectedV101');
+      if(btn.getAttribute('onclick') && btn.getAttribute('onclick').indexOf("'" + selectedAvatarV101 + "'")>-1){
+        btn.classList.add('selectedV101');
+      }
+    });
+
+    var stats=getStats();
+    var total=totalStats(stats);
+
+    var phrase='Tu recorrido importa.';
+    if(total===0) phrase='Todavía no hace falta tener todo armado. Empezar también cuenta.';
+    else if(total<8) phrase='Todo recorrido comienza con una primera huella.';
+    else if(total<25) phrase='Has avanzado más de lo que crees.';
+    else phrase='Tu historia ya está dejando señales para el futuro.';
+
+    var phraseEl=el('profilePhraseV101');
+    if(phraseEl) phraseEl.textContent=phrase;
+
+    var identity=el('profileIdentityV101');
+    if(identity){
+      identity.innerHTML=
+        '<div class="profileAvatarBigV101">'+safeText(avatar.emoji)+'</div>'+
+        '<div class="profileNameV101">'+safeText(nameValue)+'</div>'+
+        (nickValue ? '<div class="profileNickV101">@'+safeText(nickValue)+'</div>' : '')+
+        '<div class="profileQuoteV101">“'+safeText(quoteValue)+'”</div>'+
+        '<div class="profileSmallV101" style="margin-top:10px;">'+safeText(avatar.label)+'</div>';
+    }
+
+    var statsEl=el('profileStatsV101');
+    if(statsEl){
+      var data=[
+        ['✉️',stats.cartas,'Cartas futuras'],
+        ['🫂',stats.personas,'Personas'],
+        ['🌳',stats.posibilidades,'Posibilidades'],
+        ['✨',stats.estrellas,'Estrellas'],
+        ['🏛️',stats.victorias,'Victorias'],
+        ['💎',stats.tesoros,'Tesoros']
+      ];
+      statsEl.innerHTML=data.map(function(x){
+        return '<div class="profileStatV101"><div>'+x[0]+'</div><div class="profileStatNumberV101">'+x[1]+'</div><div class="profileStatLabelV101">'+x[2]+'</div></div>';
+      }).join('');
+    }
+
+    var signal=el('profileSignalV101');
+    if(signal){
+      signal.textContent= total>=25
+        ? 'Este perfil reúne señales concretas de todo lo que venís construyendo.'
+        : total>=8
+          ? 'Tu perfil ya empieza a mostrar un camino emocional propio.'
+          : 'No necesitás tener mucho guardado para que tu recorrido tenga valor.';
+    }
+  };
+
+  try{
+    var saved=getProfile();
+    if(saved.avatar){ selectedAvatarV101=saved.avatar; setThemeFromAvatar(saved.avatar); }
+  }catch(e){}
 })();
 </script>
 
