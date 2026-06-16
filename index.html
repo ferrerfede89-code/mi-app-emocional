@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>App Emocional V106</title>
+<title>App Emocional V107</title>
 
 <style>
 body {
@@ -2269,6 +2269,34 @@ body{
   .categoryDividerV106{grid-column:1;}
 }
 
+
+
+/* V107 - Coherencia emocional premium */
+.presenceV107{
+  text-align:center;
+  margin: -8px 0 18px;
+  padding: 13px 15px;
+  border-radius: 22px;
+  background: linear-gradient(135deg, rgba(255,255,255,.78), rgba(224,242,254,.72));
+  color:#475569;
+  font-size:15px;
+  line-height:1.45;
+  box-shadow: inset 0 0 18px rgba(255,255,255,.35);
+}
+.emotionalSignatureV107{
+  margin: 12px 0 18px;
+  padding: 14px 16px;
+  border-radius: 22px;
+  background: rgba(255,255,255,.64);
+  color:#64748b;
+  font-size:14px;
+  line-height:1.45;
+  text-align:center;
+}
+.premiumPrimaryV105, .premiumChipV105, .action, .softButton{
+  -webkit-tap-highlight-color: transparent;
+}
+
 </style>
 
 <style id="v48premium">
@@ -2334,7 +2362,7 @@ text-align:center;
 <div class="app" id="appCard">
   <div class="premiumTopV105">
     <div class="premiumBrandV105">App Emocional</div>
-    <div class="premiumBadgeV105">V106 · menú ordenado</div>
+    <div class="premiumBadgeV105">V107 · voz emocional</div>
   </div>
 
   <div class="premiumHeroV105">
@@ -2350,6 +2378,9 @@ text-align:center;
   <div class="message" id="message">
     No hace falta resolver todo ahora.
   </div>
+
+  <div id="presenceMessageV107" class="presenceV107">Podemos ir paso a paso.</div>
+  <div class="emotionalSignatureV107">Elegí una puerta. Yo me quedo cerca mientras entrás.</div>
 
   <div class="premiumQuickV105">
     <button class="premiumChipV105" onclick="openBreathing()"><span>🫁</span>Respirar</button>
@@ -9888,6 +9919,92 @@ function saveSeedTextV77(){
       }
     }
   };
+})();
+</script>
+
+
+
+<script id="v107_emotional_coherence">
+// V107 - Coherencia emocional premium: voz dinámica, presencia y microcopy suave
+(function(){
+  function byId(id){ return document.getElementById(id); }
+  function hour(){ return new Date().getHours(); }
+
+  function saludoDinamicoV107(){
+    var h=hour();
+    if(h < 12) return '🌅 Buen día. Me alegra que estés acá.';
+    if(h < 19) return '☀️ ¿Cómo viene tu día hasta ahora? Podemos empezar suave.';
+    if(h < 22) return '🌙 Gracias por volver. No hace falta traer todo ordenado.';
+    return '🌌 Llegaste hasta acá hoy. Eso también cuenta.';
+  }
+
+  function subtituloDinamicoV107(){
+    var h=hour();
+    if(h < 12) return 'Elegí un gesto pequeño para abrir el día sin exigirte de más.';
+    if(h < 19) return 'Elegí una puerta simple. La app te acompaña sin apurarte.';
+    return 'Elegí una forma amable de cerrar, soltar o simplemente estar.';
+  }
+
+  var frasesV107=[
+    'Estoy acá. No tenés que hacerlo perfecto.',
+    'Podemos ir paso a paso.',
+    'Respirá. No hace falta correr.',
+    'Un momento pequeño también puede cuidarte.',
+    'No tenés que resolver todo hoy.',
+    'Aunque sea difícil, llegaste hasta acá.',
+    'Podés empezar por lo más simple.',
+    'Me quedo cerca mientras elegís.'
+  ];
+
+  function rotatePresenceV107(){
+    var el=byId('presenceMessageV107');
+    if(!el) return;
+    var msg=frasesV107[Math.floor(Math.random()*frasesV107.length)];
+    el.textContent=msg;
+  }
+
+  function improveMicrocopyV107(){
+    var primary=document.querySelector('.premiumPrimaryV105');
+    if(primary) primary.textContent='Entrar despacio';
+
+    var chips=document.querySelectorAll('.premiumChipV105');
+    if(chips && chips.length>=3){
+      chips[0].innerHTML='<span>🫁</span>Respirar un poco';
+      chips[1].innerHTML='<span>🧭</span>Cuidarme ahora';
+      chips[2].innerHTML='<span>🔆</span>Ver mi energía';
+    }
+
+    document.querySelectorAll('button').forEach(function(btn){
+      var t=(btn.textContent||'').trim();
+      if(t==='Guardar') btn.textContent='Guardar para mí';
+      if(t==='Volver') btn.textContent='Volver despacio';
+      if(t==='Cerrar') btn.textContent='Ya terminé aquí';
+    });
+  }
+
+  window.mensajeGuardadoV107=function(){
+    var frases=[
+      '🌱 Gracias por compartir esto.',
+      '✨ Lo guardé para vos.',
+      '🤍 Esto ahora forma parte de tu historia.',
+      '🌤️ Puede parecer pequeño, pero importa.',
+      '🫂 Me alegra que lo hayas escrito.'
+    ];
+    alert(frases[Math.floor(Math.random()*frases.length)]);
+  };
+
+  function initV107(){
+    var msg=byId('message');
+    if(msg) msg.innerHTML=saludoDinamicoV107();
+    var sub=document.querySelector('.premiumHeroSubV105');
+    if(sub) sub.textContent=subtituloDinamicoV107();
+    rotatePresenceV107();
+    improveMicrocopyV107();
+    setInterval(rotatePresenceV107,15000);
+  }
+
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',initV107);
+  else initV107();
 })();
 </script>
 
