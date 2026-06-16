@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>App Emocional V107</title>
+<title>App Emocional V108</title>
 
 <style>
 body {
@@ -2295,6 +2295,139 @@ body{
 }
 .premiumPrimaryV105, .premiumChipV105, .action, .softButton{
   -webkit-tap-highlight-color: transparent;
+}
+
+
+
+/* V108 - Animaciones premium y transiciones suaves */
+:root{
+  --v108-ease: cubic-bezier(.22,1,.36,1);
+}
+body{
+  background-size: 140% 140%;
+  animation: v108SkyDrift 18s ease-in-out infinite;
+}
+.app{
+  animation: v108AppEnter .72s var(--v108-ease) both;
+  will-change: transform, opacity;
+}
+#circle{
+  animation: v108BreathGlow 7.5s ease-in-out infinite;
+  will-change: transform, box-shadow;
+}
+.message, .presence, #presenceMessage{
+  animation: v108SoftTextIn .75s var(--v108-ease) both;
+}
+.action, .softButton, .moods button, .companionCard,
+.energyChoiceV104, .energyMiniV104, .thermoChoiceV103,
+.compassChoiceV102, .profileChoiceV101{
+  transition: transform .22s var(--v108-ease), box-shadow .22s var(--v108-ease), background .22s ease, opacity .22s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+.action:active, .softButton:active, .moods button:active, .companionCard:active,
+.energyChoiceV104:active, .energyMiniV104:active, .thermoChoiceV103:active,
+.compassChoiceV102:active, .profileChoiceV101:active{
+  transform: scale(.975);
+}
+.action:hover, .softButton:hover, .companionCard:hover{
+  transform: translateY(-2px);
+  box-shadow: 0 13px 28px rgba(15,23,42,.09);
+}
+.actions .action{
+  animation: v108CardRise .55s var(--v108-ease) both;
+}
+.actions .action:nth-child(1){animation-delay:.04s;}
+.actions .action:nth-child(2){animation-delay:.08s;}
+.actions .action:nth-child(3){animation-delay:.12s;}
+.actions .action:nth-child(4){animation-delay:.16s;}
+.actions .action:nth-child(5){animation-delay:.20s;}
+.actions .action:nth-child(6){animation-delay:.24s;}
+.actions .action:nth-child(7){animation-delay:.28s;}
+.actions .action:nth-child(8){animation-delay:.32s;}
+.fullscreen{
+  animation: v108ScreenOpen .38s var(--v108-ease) both;
+  backdrop-filter: blur(2px);
+}
+.fullscreen > *{
+  animation: v108ContentFloat .55s var(--v108-ease) both;
+}
+.stats, .premiumHeroV105, .premiumCategoryV106,
+.energyCardV104, .thermoCardV103, .compassCardV102,
+.profileCardV101, .diaryEntry, .supportCard,
+.strengthCard, .rememberCard{
+  animation: v108CardRise .55s var(--v108-ease) both;
+}
+.textBox, input, textarea{
+  transition: box-shadow .25s ease, transform .25s var(--v108-ease), background .25s ease;
+}
+.textBox:focus, input:focus, textarea:focus{
+  outline: none;
+  transform: translateY(-1px);
+  box-shadow: 0 0 0 3px rgba(96,165,250,.18), 0 12px 28px rgba(15,23,42,.08);
+}
+.v108-toast{
+  position: fixed;
+  left: 50%;
+  bottom: 24px;
+  transform: translateX(-50%) translateY(24px);
+  z-index: 12000;
+  max-width: 320px;
+  width: calc(100% - 42px);
+  background: rgba(255,255,255,.94);
+  color: #1f2937;
+  border-radius: 22px;
+  padding: 14px 16px;
+  box-shadow: 0 18px 42px rgba(15,23,42,.18);
+  text-align: center;
+  line-height: 1.35;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .35s ease, transform .35s var(--v108-ease);
+  backdrop-filter: blur(10px);
+}
+.v108-toast.show{
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+.v108-visible{
+  animation: v108CardRise .55s var(--v108-ease) both;
+}
+@keyframes v108SkyDrift{
+  0%{background-position:50% 0%;}
+  50%{background-position:50% 100%;}
+  100%{background-position:50% 0%;}
+}
+@keyframes v108AppEnter{
+  from{opacity:0;transform:translateY(18px) scale(.985);}
+  to{opacity:1;transform:translateY(0) scale(1);}
+}
+@keyframes v108BreathGlow{
+  0%,100%{transform:scale(1);box-shadow:0 18px 35px rgba(75,159,225,.35);}
+  50%{transform:scale(1.035);box-shadow:0 25px 52px rgba(75,159,225,.42);}
+}
+@keyframes v108SoftTextIn{
+  from{opacity:0;transform:translateY(8px);}
+  to{opacity:1;transform:translateY(0);}
+}
+@keyframes v108CardRise{
+  from{opacity:0;transform:translateY(12px);}
+  to{opacity:1;transform:translateY(0);}
+}
+@keyframes v108ScreenOpen{
+  from{opacity:0;transform:scale(.992);}
+  to{opacity:1;transform:scale(1);}
+}
+@keyframes v108ContentFloat{
+  from{opacity:0;transform:translateY(10px);}
+  to{opacity:1;transform:translateY(0);}
+}
+@media (prefers-reduced-motion: reduce){
+  *, *::before, *::after{
+    animation-duration: .001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .001ms !important;
+    scroll-behavior: auto !important;
+  }
 }
 
 </style>
@@ -10005,6 +10138,62 @@ function saveSeedTextV77(){
 
   if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',initV107);
   else initV107();
+})();
+</script>
+
+
+
+<script>
+// V108 - Animaciones premium no invasivas
+(function(){
+  function ready(fn){
+    if(document.readyState !== 'loading') fn();
+    else document.addEventListener('DOMContentLoaded', fn);
+  }
+  function toast(text){
+    var el=document.getElementById('v108Toast');
+    if(!el){
+      el=document.createElement('div');
+      el.id='v108Toast';
+      el.className='v108-toast';
+      document.body.appendChild(el);
+    }
+    el.textContent=text;
+    el.classList.add('show');
+    clearTimeout(window.__v108ToastTimer);
+    window.__v108ToastTimer=setTimeout(function(){ el.classList.remove('show'); },2200);
+  }
+  window.v108Toast=toast;
+  ready(function(){
+    document.body.classList.add('v108-ready');
+    var circle=document.getElementById('circle');
+    if(circle){
+      circle.addEventListener('click',function(){
+        circle.style.transform='scale(1.045)';
+        setTimeout(function(){ circle.style.transform=''; },280);
+      });
+    }
+    document.querySelectorAll('.action, .softButton, .moods button, .companionCard').forEach(function(btn){
+      btn.addEventListener('click',function(){
+        if(navigator.vibrate){ try{ navigator.vibrate(8); }catch(e){} }
+      });
+    });
+    var observer=new MutationObserver(function(mutations){
+      mutations.forEach(function(m){
+        if(m.type==='attributes' && m.attributeName==='style'){
+          var el=m.target;
+          if(el.classList && el.classList.contains('fullscreen') && getComputedStyle(el).display !== 'none'){
+            el.classList.remove('v108-visible');
+            void el.offsetWidth;
+            el.classList.add('v108-visible');
+          }
+        }
+      });
+    });
+    document.querySelectorAll('.fullscreen').forEach(function(screen){
+      observer.observe(screen,{attributes:true,attributeFilter:['style']});
+    });
+  });
 })();
 </script>
 
