@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
-<title>App Emocional V112</title>
+<title>App Emocional V113</title>
 
 <style>
 body {
@@ -2677,6 +2677,73 @@ input, textarea, select {
   }
 }
 
+
+
+/* V113 - Faro Interior */
+.lighthouseOrbV113{
+  width:158px;height:158px;border-radius:50%;margin:24px auto;
+  background:radial-gradient(circle,#ffffff,#fde68a 38%,#38bdf8);
+  box-shadow:0 24px 76px rgba(14,165,233,.28),0 0 52px rgba(253,230,138,.30);
+  display:flex;align-items:center;justify-content:center;font-size:58px;
+  animation:lighthousePulseV113 7s infinite ease-in-out;
+}
+@keyframes lighthousePulseV113{
+  0%{transform:scale(1);opacity:.86;filter:brightness(1);} 
+  50%{transform:scale(1.11);opacity:1;filter:brightness(1.12);} 
+  100%{transform:scale(1);opacity:.86;filter:brightness(1);} 
+}
+.lighthouseSceneV113{
+  position:relative;min-height:260px;border-radius:30px;margin:20px 0;overflow:hidden;
+  background:linear-gradient(180deg,#0f172a 0%,#1e3a8a 58%,#bae6fd 100%);
+  box-shadow:inset 0 0 42px rgba(255,255,255,.10),0 16px 36px rgba(15,23,42,.18);
+}
+.lighthouseBeamV113{
+  position:absolute;left:48%;top:58px;width:220px;height:70px;
+  background:linear-gradient(90deg,rgba(253,230,138,.55),rgba(255,255,255,.04));
+  transform-origin:left center;transform:rotate(-12deg);
+  clip-path:polygon(0 45%,100% 0,100% 100%,0 55%);
+  animation:lighthouseBeamMoveV113 5.8s infinite ease-in-out;
+}
+@keyframes lighthouseBeamMoveV113{
+  0%{transform:rotate(-18deg);opacity:.55;} 
+  50%{transform:rotate(12deg);opacity:.88;} 
+  100%{transform:rotate(-18deg);opacity:.55;} 
+}
+.lighthouseTowerV113{
+  position:absolute;left:50%;bottom:34px;width:58px;height:150px;transform:translateX(-50%);
+  border-radius:28px 28px 10px 10px;background:linear-gradient(180deg,#f8fafc,#cbd5e1);
+  box-shadow:0 12px 28px rgba(0,0,0,.18);
+}
+.lighthouseTopV113{
+  position:absolute;left:50%;bottom:174px;width:78px;height:46px;transform:translateX(-50%);
+  border-radius:22px;background:linear-gradient(135deg,#fef3c7,#f59e0b);
+  box-shadow:0 0 32px rgba(253,230,138,.45);
+}
+.lighthouseWaterV113{
+  position:absolute;left:0;right:0;bottom:0;height:72px;
+  background:linear-gradient(180deg,rgba(186,230,253,.72),rgba(14,165,233,.70));
+}
+.lighthouseCardV113{
+  background:rgba(255,255,255,.92);border-radius:24px;padding:18px;margin:14px 0;
+  line-height:1.55;text-align:left;box-shadow:0 12px 30px rgba(0,0,0,.08);
+}
+.lighthouseSignalV113{
+  background:linear-gradient(135deg,rgba(224,242,254,.98),rgba(254,243,199,.90));
+  border-radius:24px;padding:18px;margin:14px 0;font-size:20px;font-weight:680;line-height:1.45;text-align:center;
+}
+.lighthouseChoiceV113{
+  border:none;border-radius:18px;padding:14px 16px;font-size:16px;
+  background:rgba(255,255,255,.92);margin:7px 0;width:100%;text-align:left;
+}
+.lighthouseChoiceV113.selectedV113{
+  background:linear-gradient(135deg,#fef3c7,#dbeafe);font-weight:700;
+}
+.lighthouseHistoryItemV113{
+  background:linear-gradient(135deg,rgba(255,255,255,.90),rgba(224,242,254,.74));
+  border-radius:20px;padding:14px;margin:10px 0;line-height:1.45;
+}
+.lighthouseSmallV113{font-size:15px;color:#64748b;line-height:1.45;}
+
 </style>
 
 <style id="v48premium">
@@ -2858,7 +2925,7 @@ text-align:center;
 <div class="app" id="appCard">
   <div class="premiumTopV105">
     <div class="premiumBrandV105">App Emocional</div>
-    <div class="premiumBadgeV105">V111 · museo emocional</div>
+    <div class="premiumBadgeV105">V113 · faro interior</div>
   </div>
 
   <div class="premiumHeroV105">
@@ -3069,6 +3136,11 @@ text-align:center;
 <button class="action" onclick="openLibraryV112()" style="grid-column:1/3;background:#fef3c7;font-weight:bold;">
       <span>📚</span>Biblioteca de aprendizajes
     </button>
+
+<button class="action" onclick="openLighthouseV113()" style="grid-column:1/3;background:#e0f2fe;font-weight:bold;">
+      <span>🌊</span>Faro interior
+    </button>
+
 
 
 <button class="action" onclick="openCapsuleV46()" style="grid-column:1/3;background:#fde68a;font-weight:bold;">
@@ -11026,6 +11098,138 @@ function saveSeedTextV77(){
       el.style.transform='scale(1.02)';
       setTimeout(function(){ el.style.transform='scale(1)'; },600);
     }
+  };
+})();
+</script>
+
+
+
+<!-- V113 - Faro Interior -->
+<div id="lighthouseScreenV113" class="fullscreen" style="background:linear-gradient(180deg,#e0f2fe,#fef3c7);">
+  <h1>🌊</h1>
+  <h2>Faro Interior</h2>
+  <div class="lighthouseOrbV113">🕯️</div>
+
+  <div class="lighthouseSceneV113">
+    <div class="lighthouseBeamV113"></div>
+    <div class="lighthouseTopV113"></div>
+    <div class="lighthouseTowerV113"></div>
+    <div class="lighthouseWaterV113"></div>
+  </div>
+
+  <div class="lighthouseSignalV113" id="lighthouseSignalV113">
+    Elegí una señal para este momento. No tiene que resolver todo: solo alumbrar el próximo paso.
+  </div>
+
+  <div class="lighthouseCardV113">
+    <strong>¿Qué necesitás iluminar ahora?</strong><br><br>
+    <button class="lighthouseChoiceV113" onclick="chooseLighthouseV113('calma','Necesito bajar la intensidad y volver al cuerpo.')">🌬️ Calma</button>
+    <button class="lighthouseChoiceV113" onclick="chooseLighthouseV113('claridad','Necesito distinguir qué es urgente y qué puede esperar.')">🧭 Claridad</button>
+    <button class="lighthouseChoiceV113" onclick="chooseLighthouseV113('compania','Necesito recordar que no tengo que atravesarlo solo.')">🤍 Compañía</button>
+    <button class="lighthouseChoiceV113" onclick="chooseLighthouseV113('valor','Necesito dar un paso pequeño aunque tenga miedo.')">🔥 Valor suave</button>
+    <button class="lighthouseChoiceV113" onclick="chooseLighthouseV113('descanso','Necesito permiso para pausar sin culparme.')">🌙 Descanso</button>
+  </div>
+
+  <div class="lighthouseCardV113">
+    <strong>Crear mi propia señal</strong><br><br>
+    <textarea id="lighthouseInputV113" class="textBox" placeholder="Ejemplo: hoy solo necesito respirar y ordenar una cosa pequeña."></textarea>
+    <button onclick="saveCustomLighthouseV113()" class="softButton">Guardar señal</button>
+    <div id="lighthouseSaveMessageV113" class="lighthouseSmallV113"></div>
+  </div>
+
+  <div class="lighthouseCardV113">
+    <strong>Señales guardadas</strong>
+    <div id="lighthouseHistoryV113"></div>
+  </div>
+
+  <button onclick="renderLighthouseV113()" class="softButton">Actualizar faro</button>
+  <button onclick="closeLighthouseV113()" class="softButton">Volver despacio</button>
+</div>
+
+<script>
+// V113 - Faro Interior
+(function(){
+  function byId(id){ return document.getElementById(id); }
+  function escapeHtmlV113(str){
+    return String(str || '').replace(/[&<>"']/g,function(m){
+      return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m];
+    });
+  }
+  function getSignalsV113(){
+    try{
+      var parsed=JSON.parse(localStorage.getItem('emotionalLighthouseV113') || '[]');
+      return Array.isArray(parsed) ? parsed : [];
+    }catch(e){ return []; }
+  }
+  function setSignalsV113(items){
+    localStorage.setItem('emotionalLighthouseV113', JSON.stringify(items || []));
+  }
+  function dateV113(){
+    try{return new Date().toLocaleDateString('es-ES',{day:'2-digit',month:'short',year:'numeric'});}catch(e){return ''+new Date().toLocaleDateString();}
+  }
+  window.openLighthouseV113=function(){
+    var screen=byId('lighthouseScreenV113');
+    if(screen) screen.style.display='block';
+    renderLighthouseV113();
+  };
+  window.closeLighthouseV113=function(){
+    var screen=byId('lighthouseScreenV113');
+    if(screen) screen.style.display='none';
+  };
+  window.chooseLighthouseV113=function(type,text){
+    var phrases={
+      calma:'🌬️ Tu faro dice: bajá un cambio. Volvé a una respiración, después a una acción.',
+      claridad:'🧭 Tu faro dice: separá lo enorme en una sola cosa posible.',
+      compania:'🤍 Tu faro dice: no hace falta estar fuerte para pedir compañía.',
+      valor:'🔥 Tu faro dice: el coraje también puede ser pequeño y temblar.',
+      descanso:'🌙 Tu faro dice: pausar también es una forma de cuidarte.'
+    };
+    var signal=byId('lighthouseSignalV113');
+    if(signal) signal.innerHTML=phrases[type] || escapeHtmlV113(text);
+    var items=getSignalsV113();
+    items.push({type:type,text:text,date:dateV113()});
+    setSignalsV113(items);
+    renderLighthouseV113();
+  };
+  window.saveCustomLighthouseV113=function(){
+    var input=byId('lighthouseInputV113');
+    var msg=byId('lighthouseSaveMessageV113');
+    var text=input ? input.value.trim() : '';
+    if(!text){
+      if(msg) msg.innerHTML='Escribí una señal primero. Puede ser mínima.';
+      return;
+    }
+    var items=getSignalsV113();
+    items.push({type:'propia',text:text,date:dateV113()});
+    setSignalsV113(items);
+    if(input) input.value='';
+    if(msg) msg.innerHTML='✨ Señal guardada en tu faro.';
+    var signal=byId('lighthouseSignalV113');
+    if(signal) signal.innerHTML='🕯️ '+escapeHtmlV113(text);
+    renderLighthouseV113();
+  };
+  window.deleteLighthouseV113=function(index){
+    var items=getSignalsV113();
+    items.splice(index,1);
+    setSignalsV113(items);
+    renderLighthouseV113();
+  };
+  window.renderLighthouseV113=function(){
+    var history=byId('lighthouseHistoryV113');
+    var items=getSignalsV113();
+    if(!history) return;
+    if(!items.length){
+      history.innerHTML='<p class="lighthouseSmallV113">Todavía no hay señales guardadas. Podés elegir una de arriba para empezar.</p>';
+      return;
+    }
+    history.innerHTML=items.slice().reverse().map(function(item,revIndex){
+      var realIndex=items.length-1-revIndex;
+      return '<div class="lighthouseHistoryItemV113">'+
+        '<strong>'+escapeHtmlV113(item.text)+'</strong><br>'+
+        '<span class="lighthouseSmallV113">'+escapeHtmlV113(item.date || '')+'</span><br>'+
+        '<button onclick="deleteLighthouseV113('+realIndex+')" class="softButton" style="margin-top:10px;">Quitar</button>'+ 
+      '</div>';
+    }).join('');
   };
 })();
 </script>
