@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
-<title>App Emocional V117</title>
+<title>App Emocional V118</title>
 
 <style>
 body {
@@ -3123,6 +3123,162 @@ input, textarea, select {
   100%{transform:scale(.92);opacity:.82;}
 }
 
+
+
+/* V118 - Brújula de decisión suave */
+.compass118Wrap{
+  min-height:100%;
+  background:
+    radial-gradient(circle at 24% 8%,rgba(255,255,255,.78),transparent 18%),
+    radial-gradient(circle at 82% 2%,rgba(221,214,254,.58),transparent 22%),
+    linear-gradient(180deg,#e0f2fe,#ede9fe 58%,#f8fafc);
+  color:#1f2937;
+}
+.compass118Header{
+  text-align:center;
+  max-width:430px;
+  margin:0 auto;
+}
+.compass118Orb{
+  width:160px;
+  height:160px;
+  border-radius:50%;
+  margin:22px auto 18px;
+  background:radial-gradient(circle,#ffffff,#c4b5fd 45%,#38bdf8);
+  box-shadow:0 24px 70px rgba(124,58,237,.22),0 0 42px rgba(56,189,248,.20);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:58px;
+  animation:compass118Pulse 8s infinite ease-in-out;
+}
+@keyframes compass118Pulse{
+  0%{transform:scale(1) rotate(-1deg);opacity:.88;}
+  50%{transform:scale(1.1) rotate(2deg);opacity:1;}
+  100%{transform:scale(1) rotate(-1deg);opacity:.88;}
+}
+.compass118Phrase{
+  font-size:21px;
+  font-weight:650;
+  line-height:1.45;
+  text-align:center;
+  padding:18px;
+  border-radius:24px;
+  background:rgba(255,255,255,.84);
+  margin:16px auto;
+  max-width:430px;
+  box-shadow:0 12px 30px rgba(0,0,0,.06);
+}
+.compass118Card{
+  background:rgba(255,255,255,.91);
+  border-radius:26px;
+  padding:18px;
+  margin:14px auto;
+  line-height:1.55;
+  text-align:left;
+  box-shadow:0 12px 30px rgba(0,0,0,.08);
+  max-width:430px;
+}
+.compass118Small{
+  font-size:15px;
+  color:#64748b;
+  line-height:1.45;
+}
+.compass118Grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+  margin-top:14px;
+}
+.compass118Choice{
+  border:none;
+  border-radius:20px;
+  padding:15px 12px;
+  background:rgba(255,255,255,.94);
+  font-size:15px;
+  line-height:1.35;
+  text-align:left;
+  color:#1f2937;
+  box-shadow:0 8px 20px rgba(0,0,0,.06);
+}
+.compass118Choice span{
+  display:block;
+  font-size:30px;
+  margin-bottom:6px;
+}
+.compass118Choice.selected118{
+  background:linear-gradient(135deg,#ddd6fe,#bae6fd);
+  font-weight:700;
+}
+.compass118Input{
+  width:100%;
+  box-sizing:border-box;
+  border:none;
+  border-radius:20px;
+  padding:15px;
+  min-height:96px;
+  font-size:16px;
+  background:rgba(255,255,255,.96);
+  margin-top:12px;
+}
+.compass118Question{
+  background:linear-gradient(135deg,rgba(237,233,254,.96),rgba(224,242,254,.92));
+  border-radius:24px;
+  padding:18px;
+  margin:16px 0;
+  font-size:19px;
+  font-weight:650;
+  line-height:1.45;
+}
+.compass118Steps{
+  background:rgba(255,255,255,.78);
+  border-radius:22px;
+  padding:15px;
+  margin:12px 0;
+}
+.compass118Step{
+  background:rgba(255,255,255,.84);
+  border-radius:18px;
+  padding:12px 14px;
+  margin:9px 0;
+  line-height:1.45;
+}
+.compass118Button{
+  border:none;
+  border-radius:18px;
+  padding:13px 15px;
+  font-size:16px;
+  background:rgba(255,255,255,.94);
+  margin:6px 4px 0 0;
+  color:#1f2937;
+}
+.compass118Button.primary{
+  background:linear-gradient(135deg,#c4b5fd,#7dd3fc);
+  font-weight:700;
+}
+.compass118Seal{
+  background:linear-gradient(135deg,rgba(237,233,254,.96),rgba(224,242,254,.96));
+  border-radius:22px;
+  padding:16px;
+  margin-top:14px;
+  font-size:18px;
+  font-weight:620;
+  line-height:1.45;
+}
+.compass118HistoryItem{
+  background:linear-gradient(135deg,rgba(255,255,255,.92),rgba(237,233,254,.78));
+  border-radius:20px;
+  padding:14px;
+  margin:10px 0;
+  line-height:1.45;
+}
+.compass118Date{
+  display:block;
+  font-size:13px;
+  color:#64748b;
+  margin-top:6px;
+}
+
 </style>
 
 <style id="v48premium">
@@ -3603,6 +3759,12 @@ text-align:center;
       <span>🧰</span>Botiquín emocional inmediato
     </button>
 
+
+
+
+<button class="action" onclick="openCompassV118()" style="grid-column:1/3;background:#ede9fe;font-weight:bold;">
+      <span>🧭</span>Brújula de decisión suave
+    </button>
 
 
 <button class="action" onclick="openCapsuleV46()" style="grid-column:1/3;background:#fde68a;font-weight:bold;">
@@ -12383,6 +12545,238 @@ function saveSeedTextV77(){
       '</div>';
     }).join('');
   }
+})();
+</script>
+
+
+<!-- V118 - Brújula de decisión suave -->
+<div id="compassScreenV118" class="fullscreen compass118Wrap">
+  <div class="compass118Header">
+    <button class="softButton" onclick="closeCompassV118()">← Volver</button>
+    <div class="compass118Orb">🧭</div>
+    <h2>Brújula de decisión suave</h2>
+    <div class="compass118Phrase">
+      Cuando no sabés qué hacer, no necesitás una respuesta perfecta. Necesitás una dirección amable para el próximo paso.
+    </div>
+  </div>
+
+  <div class="compass118Card">
+    <strong>¿Qué tipo de decisión te pesa?</strong>
+    <p class="compass118Small">Elegí una opción. La app no decide por vos: te ayuda a bajar ruido y mirar con más claridad.</p>
+    <div class="compass118Grid" id="compass118Choices"></div>
+  </div>
+
+  <div class="compass118Card">
+    <strong>Lo que estás intentando decidir</strong>
+    <textarea id="compass118Text" class="compass118Input" placeholder="Ej: responder un mensaje, salir o quedarme, pedir ayuda, empezar algo pequeño..."></textarea>
+    <button class="compass118Button primary" onclick="generateCompassV118()">Orientarme</button>
+    <button class="compass118Button" onclick="nextCompassQuestionV118()">Otra pregunta</button>
+  </div>
+
+  <div class="compass118Card">
+    <strong>Pregunta brújula</strong>
+    <div id="compass118Question" class="compass118Question"></div>
+    <div id="compass118Steps" class="compass118Steps"></div>
+    <button class="compass118Button primary" onclick="saveCompassV118()">Guardar esta orientación</button>
+    <div id="compass118Seal" class="compass118Seal" style="display:none;"></div>
+  </div>
+
+  <div class="compass118Card">
+    <strong>Orientaciones guardadas</strong>
+    <div id="compass118History"></div>
+  </div>
+</div>
+
+<script>
+/* V118 - Brújula de decisión suave */
+(function(){
+  var selectedCompassV118='pequena';
+  var compassIndexV118=0;
+
+  var compassTypesV118=[
+    {
+      id:'pequena',
+      emoji:'🌱',
+      label:'Paso pequeño',
+      questions:[
+        '¿Cuál sería la versión más pequeña y posible de esto?',
+        '¿Qué acción de 2 minutos te acercaría apenas un poco?',
+        '¿Qué podrías hacer sin exigirte hacerlo perfecto?'
+      ],
+      steps:[
+        'Reducí la decisión a un gesto mínimo.',
+        'Elegí algo que puedas empezar aunque no tengas toda la energía.',
+        'Después de hacerlo, volvé a preguntarte cómo estás.'
+      ]
+    },
+    {
+      id:'cuidado',
+      emoji:'🫂',
+      label:'Cuidado personal',
+      questions:[
+        '¿Qué opción te trata con más respeto ahora mismo?',
+        '¿Qué decisión cuidaría tu cuerpo y tu calma?',
+        '¿Qué elegirías si tuvieras que hablarte como a alguien querido?'
+      ],
+      steps:[
+        'Separá culpa de cuidado.',
+        'Buscá la opción que no te abandone a vos.',
+        'Permitite elegir algo amable aunque sea simple.'
+      ]
+    },
+    {
+      id:'limite',
+      emoji:'🛡️',
+      label:'Poner un límite',
+      questions:[
+        '¿Qué límite te daría un poco más de aire?',
+        '¿Qué parte de esta situación no querés cargar solo/a?',
+        '¿Qué frase breve podría protegerte sin explicar demasiado?'
+      ],
+      steps:[
+        'Nombrá qué te está sobrepasando.',
+        'Armá una frase corta: “ahora no puedo”, “necesito tiempo”, “prefiero hacerlo después”.',
+        'Recordá que un límite no necesita ser agresivo para ser válido.'
+      ]
+    },
+    {
+      id:'vinculo',
+      emoji:'💬',
+      label:'Hablar con alguien',
+      questions:[
+        '¿Qué necesitás que la otra persona entienda de verdad?',
+        '¿Qué mensaje sería honesto sin abrir una discusión enorme?',
+        '¿A quién podrías escribirle una frase simple ahora?'
+      ],
+      steps:[
+        'Escribí primero sin enviar.',
+        'Sacá explicaciones de más y dejá solo lo esencial.',
+        'Mandá el mensaje solo si te deja un poco más en paz.'
+      ]
+    }
+  ];
+
+  function byIdV118(id){ return document.getElementById(id); }
+
+  function escapeCompassV118(text){
+    return String(text || '').replace(/[&<>"']/g,function(ch){
+      return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'})[ch];
+    });
+  }
+
+  function getCompassTypeV118(){
+    return compassTypesV118.filter(function(item){ return item.id===selectedCompassV118; })[0] || compassTypesV118[0];
+  }
+
+  function readCompassHistoryV118(){
+    try{ return JSON.parse(localStorage.getItem('compassHistoryV118') || '[]'); }
+    catch(e){ return []; }
+  }
+
+  function writeCompassHistoryV118(items){
+    localStorage.setItem('compassHistoryV118', JSON.stringify(items.slice(0,18)));
+  }
+
+  function renderCompassChoicesV118(){
+    var box=byIdV118('compass118Choices');
+    if(!box) return;
+    box.innerHTML=compassTypesV118.map(function(item){
+      return '<button class="compass118Choice '+(item.id===selectedCompassV118?'selected118':'')+'" onclick="selectCompassV118(\''+item.id+'\')">'+
+        '<span>'+item.emoji+'</span>'+escapeCompassV118(item.label)+'</button>';
+    }).join('');
+  }
+
+  function renderCompassQuestionV118(){
+    var type=getCompassTypeV118();
+    var question=type.questions[compassIndexV118 % type.questions.length];
+    var q=byIdV118('compass118Question');
+    var s=byIdV118('compass118Steps');
+    if(q) q.innerHTML=escapeCompassV118(question);
+    if(s){
+      s.innerHTML=type.steps.map(function(step){
+        return '<div class="compass118Step">'+escapeCompassV118(step)+'</div>';
+      }).join('');
+    }
+    var seal=byIdV118('compass118Seal');
+    if(seal) seal.style.display='none';
+  }
+
+  function renderCompassHistoryV118(){
+    var box=byIdV118('compass118History');
+    if(!box) return;
+    var items=readCompassHistoryV118();
+    if(!items.length){
+      box.innerHTML='<p class="compass118Small">Todavía no guardaste orientaciones. Cuando una pregunta te ordene, podés dejarla acá.</p>';
+      return;
+    }
+    box.innerHTML=items.map(function(item){
+      return '<div class="compass118HistoryItem"><strong>'+escapeCompassV118(item.type)+'</strong><br>'+
+        escapeCompassV118(item.question)+
+        (item.text ? '<p>'+escapeCompassV118(item.text)+'</p>' : '')+
+        '<span class="compass118Date">'+escapeCompassV118(item.date)+'</span></div>';
+    }).join('');
+  }
+
+  window.openCompassV118=function(){
+    var screen=byIdV118('compassScreenV118');
+    if(screen) screen.style.display='block';
+    renderCompassChoicesV118();
+    renderCompassQuestionV118();
+    renderCompassHistoryV118();
+  };
+
+  window.closeCompassV118=function(){
+    var screen=byIdV118('compassScreenV118');
+    if(screen) screen.style.display='none';
+  };
+
+  window.selectCompassV118=function(id){
+    selectedCompassV118=id;
+    compassIndexV118=0;
+    renderCompassChoicesV118();
+    renderCompassQuestionV118();
+  };
+
+  window.nextCompassQuestionV118=function(){
+    compassIndexV118++;
+    renderCompassQuestionV118();
+  };
+
+  window.generateCompassV118=function(){
+    var textBox=byIdV118('compass118Text');
+    var seal=byIdV118('compass118Seal');
+    var type=getCompassTypeV118();
+    var text=textBox ? textBox.value.trim() : '';
+    renderCompassQuestionV118();
+    if(seal){
+      seal.style.display='block';
+      seal.innerHTML=text ?
+        'Para esto: “'+escapeCompassV118(text)+'”, no busques resolver todo. Elegí solo el próximo paso que te deje un poco más acompañado/a.' :
+        'No hace falta escribir perfecto. Podés empezar por elegir una pregunta y respirar antes de decidir.';
+    }
+  };
+
+  window.saveCompassV118=function(){
+    var type=getCompassTypeV118();
+    var question=type.questions[compassIndexV118 % type.questions.length];
+    var textBox=byIdV118('compass118Text');
+    var text=textBox ? textBox.value.trim() : '';
+    var items=readCompassHistoryV118();
+    items.unshift({
+      type:type.emoji+' '+type.label,
+      question:question,
+      text:text,
+      date:new Date().toLocaleString('es-ES')
+    });
+    writeCompassHistoryV118(items);
+    var seal=byIdV118('compass118Seal');
+    if(seal){
+      seal.style.display='block';
+      seal.innerHTML='Orientación guardada. No necesitás decidir toda tu vida hoy: solo cuidar el próximo paso.';
+    }
+    if(textBox) textBox.value='';
+    renderCompassHistoryV118();
+  };
 })();
 </script>
 
