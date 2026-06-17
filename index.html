@@ -2962,6 +2962,167 @@ input, textarea, select {
   100%{transform:scale(1);opacity:.82;}
 }
 
+
+/* V117 - Botiquín emocional inmediato */
+.firstAid117Wrap{
+  min-height:100%;
+  background:
+    radial-gradient(circle at 25% 10%,rgba(255,255,255,.75),transparent 18%),
+    radial-gradient(circle at 80% 0%,rgba(187,247,208,.55),transparent 22%),
+    linear-gradient(180deg,#dbeafe,#dcfce7 60%,#f8fafc);
+  color:#1f2937;
+}
+.firstAid117Header{
+  text-align:center;
+  max-width:430px;
+  margin:0 auto;
+}
+.firstAid117Orb{
+  width:158px;
+  height:158px;
+  border-radius:50%;
+  margin:22px auto 18px;
+  background:radial-gradient(circle,#ffffff,#86efac 45%,#60a5fa);
+  box-shadow:0 24px 70px rgba(34,197,94,.25),0 0 42px rgba(96,165,250,.22);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:58px;
+  animation:firstAid117Pulse 7.5s infinite ease-in-out;
+}
+@keyframes firstAid117Pulse{
+  0%{transform:scale(1);opacity:.88;}
+  50%{transform:scale(1.1);opacity:1;}
+  100%{transform:scale(1);opacity:.88;}
+}
+.firstAid117Phrase{
+  font-size:21px;
+  font-weight:650;
+  line-height:1.45;
+  text-align:center;
+  padding:18px;
+  border-radius:24px;
+  background:rgba(255,255,255,.84);
+  margin:16px auto;
+  max-width:430px;
+  box-shadow:0 12px 30px rgba(0,0,0,.06);
+}
+.firstAid117Card{
+  background:rgba(255,255,255,.91);
+  border-radius:26px;
+  padding:18px;
+  margin:14px auto;
+  line-height:1.55;
+  text-align:left;
+  box-shadow:0 12px 30px rgba(0,0,0,.08);
+  max-width:430px;
+}
+.firstAid117Small{
+  font-size:15px;
+  color:#64748b;
+  line-height:1.45;
+}
+.firstAid117Grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+  margin-top:14px;
+}
+.firstAid117Choice{
+  border:none;
+  border-radius:20px;
+  padding:15px 12px;
+  background:rgba(255,255,255,.94);
+  font-size:15px;
+  line-height:1.35;
+  text-align:left;
+  color:#1f2937;
+  box-shadow:0 8px 20px rgba(0,0,0,.06);
+}
+.firstAid117Choice span{
+  display:block;
+  font-size:30px;
+  margin-bottom:6px;
+}
+.firstAid117Choice.selected117{
+  background:linear-gradient(135deg,#bbf7d0,#bfdbfe);
+  font-weight:700;
+}
+.firstAid117Plan{
+  background:linear-gradient(135deg,rgba(240,253,244,.96),rgba(219,234,254,.90));
+  border-radius:24px;
+  padding:18px;
+  margin:16px 0;
+  line-height:1.55;
+}
+.firstAid117Step{
+  background:rgba(255,255,255,.82);
+  border-radius:18px;
+  padding:13px 14px;
+  margin:10px 0;
+  line-height:1.45;
+}
+.firstAid117Button{
+  border:none;
+  border-radius:18px;
+  padding:13px 15px;
+  font-size:16px;
+  background:rgba(255,255,255,.94);
+  margin:6px 4px 0 0;
+  color:#1f2937;
+}
+.firstAid117Button.primary{
+  background:linear-gradient(135deg,#86efac,#93c5fd);
+  font-weight:700;
+}
+.firstAid117Textarea{
+  width:100%;
+  box-sizing:border-box;
+  border:none;
+  border-radius:20px;
+  padding:15px;
+  min-height:105px;
+  font-size:16px;
+  background:rgba(255,255,255,.96);
+  margin-top:12px;
+}
+.firstAid117Seal{
+  background:linear-gradient(135deg,rgba(220,252,231,.96),rgba(224,242,254,.96));
+  border-radius:22px;
+  padding:16px;
+  margin-top:14px;
+  font-size:18px;
+  font-weight:620;
+  line-height:1.45;
+}
+.firstAid117HistoryItem{
+  background:linear-gradient(135deg,rgba(255,255,255,.92),rgba(220,252,231,.78));
+  border-radius:20px;
+  padding:14px;
+  margin:10px 0;
+  line-height:1.45;
+}
+.firstAid117Date{
+  display:block;
+  font-size:13px;
+  color:#64748b;
+  margin-top:6px;
+}
+.firstAid117Breath{
+  width:118px;
+  height:118px;
+  border-radius:50%;
+  margin:18px auto;
+  background:radial-gradient(circle,#ffffff,#bfdbfe);
+  box-shadow:0 18px 48px rgba(59,130,246,.22);
+  animation:firstAid117Breath 8s infinite ease-in-out;
+}
+@keyframes firstAid117Breath{
+  0%{transform:scale(.92);opacity:.82;}
+  45%{transform:scale(1.18);opacity:1;}
+  100%{transform:scale(.92);opacity:.82;}
+}
+
 </style>
 
 <style id="v48premium">
@@ -3435,6 +3596,11 @@ text-align:center;
 
 <button class="action" onclick="openUnsentLetterV116()" style="grid-column:1/3;background:#fce7f3;font-weight:bold;">
       <span>💌</span>Carta que nunca enviaste
+    </button>
+
+
+<button class="action" onclick="openFirstAidV117()" style="grid-column:1/3;background:#dcfce7;font-weight:bold;">
+      <span>🧰</span>Botiquín emocional inmediato
     </button>
 
 
@@ -11945,6 +12111,281 @@ function saveSeedTextV77(){
 })();
 </script>
 
+
+
+<!-- V117 - Botiquín emocional inmediato -->
+<div id="firstAidScreenV117" class="fullscreen firstAid117Wrap">
+  <div class="firstAid117Header">
+    <button class="softButton" onclick="closeFirstAidV117()">← Volver</button>
+    <div class="firstAid117Orb">🧰</div>
+    <h2>Botiquín emocional inmediato</h2>
+    <div class="firstAid117Phrase">
+      Cuando todo se siente demasiado, no hay que resolver la vida entera. Solo hacer el próximo gesto seguro.
+    </div>
+  </div>
+
+  <div class="firstAid117Card">
+    <strong>Elegí qué necesitás ahora</strong>
+    <p class="firstAid117Small">La app te arma una secuencia corta. No reemplaza pedir ayuda si estás en riesgo, pero puede acompañarte a bajar un poco la intensidad.</p>
+    <div class="firstAid117Grid" id="firstAid117Choices"></div>
+  </div>
+
+  <div class="firstAid117Card">
+    <strong>Secuencia de cuidado</strong>
+    <div class="firstAid117Breath"></div>
+    <div id="firstAid117Plan" class="firstAid117Plan"></div>
+    <button class="firstAid117Button primary" onclick="completeFirstAidV117()">Lo hice</button>
+    <button class="firstAid117Button" onclick="nextFirstAidV117()">Otra secuencia</button>
+    <div id="firstAid117Seal" class="firstAid117Seal" style="display:none;"></div>
+  </div>
+
+  <div class="firstAid117Card">
+    <strong>Dejar una nota breve</strong>
+    <p class="firstAid117Small">Podés guardar qué te ayudó, qué no, o qué necesitás recordar la próxima vez.</p>
+    <textarea id="firstAid117Note" class="firstAid117Textarea" placeholder="Ahora me ayudó... / La próxima necesito..."></textarea>
+    <button class="firstAid117Button primary" onclick="saveFirstAidNoteV117()">Guardar nota</button>
+  </div>
+
+  <div class="firstAid117Card">
+    <strong>Notas guardadas</strong>
+    <div id="firstAid117History"></div>
+  </div>
+</div>
+
+<script>
+/* V117 - Botiquín emocional inmediato */
+(function(){
+  var selectedV117='ansiedad';
+  var rotationV117=0;
+
+  var kitsV117=[
+    {
+      id:'ansiedad',
+      emoji:'🌬️',
+      label:'Ansiedad',
+      intro:'Primero bajamos velocidad. Después pensamos.',
+      steps:[
+        'Apoyá ambos pies en el suelo y nombrá 3 cosas que ves.',
+        'Inhalá contando 4. Exhalá contando 6. Repetí 3 veces.',
+        'Decite: “no tengo que resolver todo ahora; solo atravesar este minuto”.'
+      ]
+    },
+    {
+      id:'tristeza',
+      emoji:'🫂',
+      label:'Tristeza',
+      intro:'No hay que pelear con lo que duele. Hay que sostenerlo con suavidad.',
+      steps:[
+        'Poné una mano en el pecho o abrazate los hombros durante unos segundos.',
+        'Escribí una frase simple: “hoy me pesa…”',
+        'Elegí una acción mínima: agua, ducha, ventana, cama ordenada o mensaje a alguien.'
+      ]
+    },
+    {
+      id:'enojo',
+      emoji:'🔥',
+      label:'Enojo',
+      intro:'La energía puede salir sin lastimarte ni lastimar.',
+      steps:[
+        'Soltá la mandíbula y aflojá los hombros.',
+        'Apretá una almohada, una toalla o tus manos durante 10 segundos y soltá.',
+        'Escribí qué límite aparece detrás del enojo.'
+      ]
+    },
+    {
+      id:'bloqueo',
+      emoji:'🧊',
+      label:'Bloqueo',
+      intro:'Cuando no sale nada, empezamos por algo muy pequeño.',
+      steps:[
+        'Mové los dedos de las manos y los pies lentamente.',
+        'Elegí una sola acción de 30 segundos.',
+        'Decite: “empezar pequeño también cuenta”.'
+      ]
+    },
+    {
+      id:'soledad',
+      emoji:'📞',
+      label:'Soledad',
+      intro:'No tenés que poder con todo en silencio.',
+      steps:[
+        'Pensá en una persona segura, aunque no tengas ganas de explicar todo.',
+        'Mandá un mensaje simple: “¿podés acompañarme un momento?”',
+        'Si no querés escribir, abrí una nota y dejá una sola palabra de cómo estás.'
+      ]
+    },
+    {
+      id:'cuerpo',
+      emoji:'🫧',
+      label:'Cuerpo tenso',
+      intro:'El cuerpo no es enemigo. Está avisando que necesita cuidado.',
+      steps:[
+        'Tomá agua lentamente o mojate las manos con agua fresca.',
+        'Estirá cuello, hombros y espalda sin forzar.',
+        'Respirá mirando un punto fijo hasta que la intensidad baje un poco.'
+      ]
+    }
+  ];
+
+  function q117(id){ return document.getElementById(id); }
+
+  function escapeV117(text){
+    return String(text||'').replace(/[&<>"']/g,function(c){
+      return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c];
+    });
+  }
+
+  function shortV117(text,max){
+    text=String(text||'').trim();
+    return text.length>max ? text.slice(0,max-1)+'…' : text;
+  }
+
+  function currentKitV117(){
+    return kitsV117.filter(function(k){return k.id===selectedV117;})[0] || kitsV117[0];
+  }
+
+  function getNotesV117(){
+    try{ return JSON.parse(localStorage.getItem('firstAidNotesV117')||'[]'); }
+    catch(e){ return []; }
+  }
+
+  function setNotesV117(items){
+    localStorage.setItem('firstAidNotesV117',JSON.stringify(items||[]));
+  }
+
+  window.openFirstAidV117=function(){
+    var screen=q117('firstAidScreenV117');
+    if(screen) screen.style.display='block';
+    renderChoicesV117();
+    renderPlanV117();
+    renderHistoryV117();
+    var seal=q117('firstAid117Seal');
+    if(seal) seal.style.display='none';
+    if(navigator.vibrate) navigator.vibrate(35);
+  };
+
+  window.closeFirstAidV117=function(){
+    var screen=q117('firstAidScreenV117');
+    if(screen) screen.style.display='none';
+  };
+
+  window.selectFirstAidV117=function(id){
+    selectedV117=id;
+    rotationV117=0;
+    renderChoicesV117();
+    renderPlanV117();
+    var seal=q117('firstAid117Seal');
+    if(seal) seal.style.display='none';
+  };
+
+  function renderChoicesV117(){
+    var box=q117('firstAid117Choices');
+    if(!box) return;
+    box.innerHTML=kitsV117.map(function(k){
+      return '<button class="firstAid117Choice '+(k.id===selectedV117?'selected117':'')+'" onclick="selectFirstAidV117(\''+k.id+'\')">'+
+        '<span>'+escapeV117(k.emoji)+'</span>'+escapeV117(k.label)+
+      '</button>';
+    }).join('');
+  }
+
+  function renderPlanV117(){
+    var box=q117('firstAid117Plan');
+    if(!box) return;
+    var kit=currentKitV117();
+    var steps=kit.steps.slice();
+    if(rotationV117%2===1){
+      steps=steps.slice(1).concat(steps[0]);
+    }
+    box.innerHTML='<strong>'+escapeV117(kit.emoji+' '+kit.intro)+'</strong>'+
+      steps.map(function(step,index){
+        return '<div class="firstAid117Step"><strong>Paso '+(index+1)+':</strong> '+escapeV117(step)+'</div>';
+      }).join('');
+  }
+
+  window.nextFirstAidV117=function(){
+    rotationV117++;
+    renderPlanV117();
+    var seal=q117('firstAid117Seal');
+    if(seal){
+      seal.style.display='block';
+      seal.innerHTML='🫧 Cambié el orden. Probá solo el primer paso si todo se siente demasiado.';
+    }
+  };
+
+  window.completeFirstAidV117=function(){
+    var kit=currentKitV117();
+    var notes=getNotesV117();
+    notes.unshift({
+      text:'Completé una secuencia de '+kit.label,
+      type:kit.id,
+      emoji:kit.emoji,
+      date:new Date().toLocaleDateString('es-ES',{day:'2-digit',month:'2-digit',year:'numeric'})
+    });
+    setNotesV117(notes.slice(0,40));
+    var seal=q117('firstAid117Seal');
+    if(seal){
+      seal.style.display='block';
+      seal.innerHTML='🧰 Hecho. No era resolver todo: era darte una señal de cuidado en este momento.';
+    }
+    renderHistoryV117();
+    if(navigator.vibrate) navigator.vibrate(45);
+  };
+
+  window.saveFirstAidNoteV117=function(){
+    var area=q117('firstAid117Note');
+    var seal=q117('firstAid117Seal');
+    var value=area ? area.value.trim() : '';
+    if(!value){
+      if(seal){
+        seal.style.display='block';
+        seal.innerHTML='🌱 Podés guardar una frase mínima. Incluso “tomar agua me ayudó” alcanza.';
+      }
+      return;
+    }
+    var kit=currentKitV117();
+    var notes=getNotesV117();
+    notes.unshift({
+      text:value,
+      type:kit.id,
+      emoji:kit.emoji,
+      date:new Date().toLocaleDateString('es-ES',{day:'2-digit',month:'2-digit',year:'numeric'})
+    });
+    setNotesV117(notes.slice(0,40));
+    if(area) area.value='';
+    if(seal){
+      seal.style.display='block';
+      seal.innerHTML='🧰 Nota guardada. La próxima vez no empezás desde cero.';
+    }
+    renderHistoryV117();
+  };
+
+  window.deleteFirstAidNoteV117=function(index){
+    var notes=getNotesV117();
+    notes.splice(index,1);
+    setNotesV117(notes);
+    renderHistoryV117();
+  };
+
+  function renderHistoryV117(){
+    var box=q117('firstAid117History');
+    if(!box) return;
+    var notes=getNotesV117();
+    if(!notes.length){
+      box.innerHTML='<p class="firstAid117Small">Todavía no hay notas. Cuando completes una secuencia o escribas algo, quedará acá.</p>';
+      return;
+    }
+    box.innerHTML=notes.slice(0,12).map(function(item,index){
+      return '<div class="firstAid117HistoryItem">'+
+        '<strong>'+escapeV117((item.emoji||'🧰')+' Registro de cuidado')+'</strong>'+
+        '<p>'+escapeV117(shortV117(item.text,220))+'</p>'+
+        '<span class="firstAid117Date">'+escapeV117(item.date||'')+'</span>'+
+        '<button class="firstAid117Button" onclick="deleteFirstAidNoteV117('+index+')">Borrar</button>'+
+      '</div>';
+    }).join('');
+  }
+})();
+</script>
+
 </body>
 
 <script id="v57_2_final_diary_fix">
@@ -13346,4 +13787,3 @@ function showLifeMapZoneV94(key){
 
 </body>
 </html>
-<!-- V117 preparada como base para la siguiente iteración -->
