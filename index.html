@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
-<title>App Emocional V110</title>
+<title>App Emocional V111</title>
 
 <style>
 body {
@@ -2699,6 +2699,57 @@ input, textarea, select {
 .softButton{
  box-shadow:0 8px 20px rgba(0,0,0,.06);
 }
+
+/* V111 - Museo de tu Historia */
+.museumOrbV111{
+  width:155px;height:155px;border-radius:50%;margin:24px auto;
+  background:radial-gradient(circle,#ffffff,#ddd6fe 45%,#93c5fd);
+  box-shadow:0 24px 72px rgba(99,102,241,.26),0 0 42px rgba(147,197,253,.22);
+  display:flex;align-items:center;justify-content:center;font-size:58px;
+  animation:museumPulseV111 8s infinite ease-in-out;
+}
+@keyframes museumPulseV111{
+  0%{transform:scale(1);opacity:.88;}
+  50%{transform:scale(1.1);opacity:1;}
+  100%{transform:scale(1);opacity:.88;}
+}
+.museumHeroV111{
+  background:linear-gradient(135deg,rgba(255,255,255,.94),rgba(238,242,255,.9));
+  border-radius:28px;padding:20px;margin:18px 0;line-height:1.55;
+  box-shadow:0 14px 34px rgba(0,0,0,.08);
+}
+.museumQuoteV111{
+  font-size:21px;font-weight:700;line-height:1.45;text-align:center;
+  padding:18px;border-radius:24px;background:rgba(255,255,255,.82);margin:16px 0;
+}
+.museumGridV111{
+  display:grid;grid-template-columns:1fr;gap:12px;margin:18px 0;
+}
+.museumRoomV111{
+  border:none;border-radius:24px;padding:17px;background:rgba(255,255,255,.9);
+  box-shadow:0 12px 28px rgba(0,0,0,.08);text-align:left;line-height:1.45;
+}
+.museumRoomV111 strong{font-size:17px;}
+.museumCountV111{
+  float:right;background:#eef2ff;border-radius:999px;padding:5px 10px;font-size:13px;font-weight:700;
+}
+.museumPreviewV111{
+  margin-top:10px;color:#64748b;font-size:14px;
+}
+.museumDetailV111{
+  background:rgba(255,255,255,.92);border-radius:24px;padding:18px;margin:16px 0;
+  line-height:1.55;box-shadow:0 12px 30px rgba(0,0,0,.08);
+}
+.museumMemoryV111{
+  background:linear-gradient(135deg,rgba(255,255,255,.95),rgba(240,253,244,.84));
+  border-radius:18px;padding:13px;margin:10px 0;line-height:1.45;
+}
+.museumSmallV111{font-size:15px;color:#64748b;line-height:1.45;}
+.museumFinalV111{
+  background:linear-gradient(135deg,rgba(219,234,254,.96),rgba(237,233,254,.92));
+  border-radius:24px;padding:18px;margin:18px 0;font-size:19px;font-weight:700;line-height:1.45;text-align:center;
+}
+
 </style>
 
 </head>
@@ -2742,7 +2793,7 @@ text-align:center;
 <div class="app" id="appCard">
   <div class="premiumTopV105">
     <div class="premiumBrandV105">App Emocional</div>
-    <div class="premiumBadgeV105">V110 · demo premium</div>
+    <div class="premiumBadgeV105">V111 · museo emocional</div>
   </div>
 
   <div class="premiumHeroV105">
@@ -2787,11 +2838,11 @@ text-align:center;
 </div>
 <div class="finalSealV110">
   <div class="finalSealV110Top">
-    <div class="finalSealV110Title">✨ Demo premium final</div>
-    <div class="finalSealV110Badge">V110</div>
+    <div class="finalSealV110Title">🏛️ Museo emocional activo</div>
+    <div class="finalSealV110Badge">V111</div>
   </div>
   <div class="finalSealV110Text">
-    Esta versión reúne el recorrido completo: calma inmediata, registro emocional, memoria, futuro y compañía suave.
+    Esta versión empieza a reunir tu recorrido en un museo personal: recuerdos, luces, tesoros, vínculos y posibilidades.
   </div>
   <div class="finalSealV110Checklist">
     <div class="finalSealV110Item">✅ Mobile optimizada</div>
@@ -2943,6 +2994,10 @@ text-align:center;
 
 <button class="action" onclick="openEnergyLighthouseV104()" style="grid-column:1/3;background:#fef9c3;font-weight:bold;">
       <span>🔆</span>Faro de energía
+    </button>
+
+<button class="action" onclick="openMuseumV111()" style="grid-column:1/3;background:#ede9fe;font-weight:bold;">
+      <span>🏛️</span>Museo de tu historia
     </button>
 
 
@@ -10512,6 +10567,213 @@ function saveSeedTextV77(){
   }else{
     markFinalVersion();
   }
+})();
+</script>
+
+
+<!-- V111 - Museo de tu Historia -->
+<div id="museumScreenV111" class="fullscreen" style="background:linear-gradient(180deg,#eef2ff,#bfdbfe);">
+  <h1>🏛️</h1>
+  <h2>Museo de tu Historia</h2>
+  <div class="museumOrbV111">🏛️</div>
+
+  <div class="museumHeroV111">
+    <strong>Este no es un resumen frío.</strong><br>
+    Es un lugar para mirar las pruebas de que seguiste caminando, incluso cuando no parecía evidente.
+  </div>
+
+  <div class="museumQuoteV111" id="museumQuoteV111">
+    Tu vida es más grande que tus días difíciles.
+  </div>
+
+  <div class="museumGridV111" id="museumRoomsV111"></div>
+
+  <div class="museumDetailV111" id="museumDetailV111">
+    Tocá una sala para verla con más calma.
+  </div>
+
+  <div class="museumFinalV111" id="museumFinalV111">
+    Aquí están las pruebas de que tu historia continuó escribiéndose.
+  </div>
+
+  <button onclick="renderMuseumV111()" class="softButton">Actualizar museo</button>
+  <button onclick="closeMuseumV111()" class="softButton">Volver despacio</button>
+</div>
+
+
+<script>
+// V111 - Museo de tu Historia
+(function(){
+  function byId(id){ return document.getElementById(id); }
+
+  function safeList(key){
+    try{
+      var raw=localStorage.getItem(key);
+      if(!raw) return [];
+      var parsed=JSON.parse(raw);
+      if(Array.isArray(parsed)) return parsed;
+      if(parsed && typeof parsed==='object') return [parsed];
+      if(typeof parsed==='string') return parsed ? [parsed] : [];
+      return [];
+    }catch(e){ return []; }
+  }
+
+  function cleanText(value){
+    if(value===null || value===undefined) return "";
+    if(typeof value==='string') return value;
+    if(typeof value==='number') return String(value);
+    if(typeof value==='object'){
+      var fields=['text','note','message','phrase','title','content','memory','name','person','signal','answer','date'];
+      for(var i=0;i<fields.length;i++){
+        if(value[fields[i]]) return String(value[fields[i]]);
+      }
+      try{ return JSON.stringify(value); }catch(e){ return ""; }
+    }
+    return String(value);
+  }
+
+  function escapeHtml(str){
+    return String(str || '').replace(/[&<>"']/g,function(m){
+      return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m];
+    });
+  }
+
+  function shortText(str,max){
+    str=String(str || '').trim();
+    return str.length>max ? str.slice(0,max-1)+'…' : str;
+  }
+
+  function collectRoom(keys){
+    var out=[];
+    keys.forEach(function(key){
+      safeList(key).forEach(function(item){
+        var t=cleanText(item);
+        if(t && t !== '{}' && out.indexOf(t)===-1) out.push(t);
+      });
+    });
+    return out.slice(0,18);
+  }
+
+  function museumRooms(){
+    return [
+      {
+        id:'growth',
+        icon:'🌱',
+        title:'Crecimientos',
+        subtitle:'Lo que fue brotando de a poco.',
+        keys:['seedMomentsV77','seedTextsV77','transformationNotesV91','thresholdReflectionsV90','diaryEntries']
+      },
+      {
+        id:'light',
+        icon:'☀️',
+        title:'Momentos de luz',
+        subtitle:'Pequeñas escenas que hicieron respirar.',
+        keys:['lightMomentsV83','favoriteMemories','silentVictoriesV99']
+      },
+      {
+        id:'treasures',
+        icon:'💎',
+        title:'Tesoros encontrados',
+        subtitle:'Frases, recuerdos y señales que valen.',
+        keys:['manualTreasuresV81','favoriteMemories','rememberCount']
+      },
+      {
+        id:'people',
+        icon:'❤️',
+        title:'Personas importantes',
+        subtitle:'Presencias que dejaron algo en vos.',
+        keys:['touchedPeopleV97']
+      },
+      {
+        id:'possibilities',
+        icon:'🌈',
+        title:'Posibilidades descubiertas',
+        subtitle:'Caminos que todavía pueden abrirse.',
+        keys:['possibilitiesV95','tomorrowSignalsV89','bridgesV85','returnBridgeV85']
+      },
+      {
+        id:'home',
+        icon:'🏡',
+        title:'Refugios y calma',
+        subtitle:'Lugares internos para volver.',
+        keys:['internalRefugeV84','refugesV84','calmPocketV86','pocketCalmV86','anchorEntriesV78','anchorMomentsV78']
+      },
+      {
+        id:'future',
+        icon:'✉️',
+        title:'Futuro y legado',
+        subtitle:'Cartas, cápsulas y señales hacia adelante.',
+        keys:['futureLettersV98','futureCapsulesV46','futureCapsules','futureCapsule','timeCapsules','legacyStarsV96']
+      }
+    ].map(function(room){
+      room.items=collectRoom(room.keys);
+      return room;
+    });
+  }
+
+  window.openMuseumV111=function(){
+    var screen=byId('museumScreenV111');
+    if(screen) screen.style.display='block';
+    renderMuseumV111();
+  };
+
+  window.closeMuseumV111=function(){
+    var screen=byId('museumScreenV111');
+    if(screen) screen.style.display='none';
+  };
+
+  window.renderMuseumV111=function(){
+    var rooms=museumRooms();
+    var total=rooms.reduce(function(sum,r){ return sum+r.items.length; },0);
+    var container=byId('museumRoomsV111');
+    var quote=byId('museumQuoteV111');
+    var final=byId('museumFinalV111');
+
+    if(quote){
+      quote.innerHTML = total>0
+        ? 'Tu historia ya tiene '+total+' señales guardadas.'
+        : 'Tu museo todavía está empezando. Una sola señal también cuenta.';
+    }
+
+    if(container){
+      container.innerHTML=rooms.map(function(r){
+        var preview=r.items.length ? shortText(r.items[0],82) : 'Esta sala todavía espera su primera memoria.';
+        return '<button class="museumRoomV111" onclick="openMuseumRoomV111(\\''+r.id+'\\')">'+
+          '<span class="museumCountV111">'+r.items.length+'</span>'+
+          '<strong>'+r.icon+' '+escapeHtml(r.title)+'</strong><br>'+
+          '<span class="museumSmallV111">'+escapeHtml(r.subtitle)+'</span>'+
+          '<div class="museumPreviewV111">'+escapeHtml(preview)+'</div>'+
+        '</button>';
+      }).join('');
+    }
+
+    if(final){
+      final.innerHTML = total>0
+        ? 'Aunque hubo días difíciles, hay rastros de vida, vínculos, cuidado y futuro.'
+        : 'No hace falta llenar todo hoy. El museo empieza con una sola cosa que quieras recordar.';
+    }
+  };
+
+  window.openMuseumRoomV111=function(id){
+    var rooms=museumRooms();
+    var room=rooms.find(function(r){ return r.id===id; });
+    var detail=byId('museumDetailV111');
+    if(!room || !detail) return;
+
+    if(!room.items.length){
+      detail.innerHTML =
+        '<h3>'+room.icon+' '+escapeHtml(room.title)+'</h3>'+
+        '<p class="museumSmallV111">Todavía no hay recuerdos en esta sala. Podés seguir usando la app y volver más adelante.</p>';
+      return;
+    }
+
+    detail.innerHTML =
+      '<h3>'+room.icon+' '+escapeHtml(room.title)+'</h3>'+
+      '<p class="museumSmallV111">'+escapeHtml(room.subtitle)+'</p>'+
+      room.items.map(function(item){
+        return '<div class="museumMemoryV111">'+escapeHtml(shortText(item,220))+'</div>';
+      }).join('');
+  };
 })();
 </script>
 
