@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
-<title>App Emocional V113</title>
+<title>App Emocional V114</title>
 
 <style>
 body {
@@ -2744,6 +2744,65 @@ input, textarea, select {
 }
 .lighthouseSmallV113{font-size:15px;color:#64748b;line-height:1.45;}
 
+
+
+/* V114 - Museo de tus avances */
+.museum114Orb{
+  width:158px;height:158px;border-radius:50%;margin:24px auto;
+  background:radial-gradient(circle,#ffffff,#c4b5fd 45%,#60a5fa);
+  box-shadow:0 24px 70px rgba(99,102,241,.28),0 0 42px rgba(196,181,253,.26);
+  display:flex;align-items:center;justify-content:center;font-size:60px;
+  animation:museum114Pulse 8s infinite ease-in-out;
+}
+@keyframes museum114Pulse{
+  0%{transform:scale(1);opacity:.86;filter:brightness(1);}
+  50%{transform:scale(1.1);opacity:1;filter:brightness(1.08);}
+  100%{transform:scale(1);opacity:.86;filter:brightness(1);}
+}
+.museum114Hero{
+  background:rgba(255,255,255,.82);border-radius:26px;padding:18px;margin:16px 0;
+  line-height:1.55;box-shadow:0 12px 30px rgba(0,0,0,.08);
+}
+.museum114Quote{
+  font-size:21px;font-weight:650;line-height:1.45;text-align:center;
+  padding:18px;border-radius:22px;background:rgba(238,242,255,.94);margin:16px 0;
+}
+.museum114Stats{
+  display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:18px 0;
+}
+.museum114Stat{
+  background:rgba(255,255,255,.86);border-radius:20px;padding:14px 10px;text-align:center;
+  box-shadow:0 8px 22px rgba(0,0,0,.06);
+}
+.museum114Number{font-size:28px;font-weight:800;color:#4f46e5;display:block;}
+.museum114Label{font-size:13px;color:#64748b;line-height:1.3;}
+.museum114Rooms{display:grid;grid-template-columns:1fr;gap:12px;margin:18px 0;}
+.museum114Room{
+  border:none;border-radius:24px;padding:17px;background:rgba(255,255,255,.9);
+  box-shadow:0 12px 30px rgba(0,0,0,.08);text-align:left;font-size:16px;line-height:1.45;
+}
+.museum114RoomTop{display:flex;justify-content:space-between;align-items:center;gap:10px;}
+.museum114RoomIcon{font-size:28px;margin-right:5px;}
+.museum114Count{background:#eef2ff;color:#4338ca;border-radius:999px;padding:6px 10px;font-size:13px;font-weight:700;}
+.museum114Small{font-size:14px;color:#64748b;line-height:1.45;}
+.museum114Preview{
+  margin-top:11px;padding:12px;border-radius:18px;background:rgba(238,242,255,.72);
+  font-size:14px;color:#475569;line-height:1.45;
+}
+.museum114Detail{
+  background:rgba(255,255,255,.88);border-radius:26px;padding:18px;margin:18px 0;
+  box-shadow:0 12px 30px rgba(0,0,0,.08);line-height:1.55;
+}
+.museum114Memory{
+  background:linear-gradient(135deg,rgba(255,255,255,.92),rgba(238,242,255,.82));
+  border-radius:20px;padding:14px;margin:10px 0;line-height:1.45;text-align:left;
+}
+.museum114MemoryDate{font-size:13px;color:#64748b;margin-top:6px;display:block;}
+.museum114Seal{
+  background:linear-gradient(135deg,rgba(224,242,254,.92),rgba(237,233,254,.92));
+  border-radius:24px;padding:18px;margin:18px 0;font-size:18px;font-weight:650;line-height:1.45;
+}
+
 </style>
 
 <style id="v48premium">
@@ -2925,7 +2984,7 @@ text-align:center;
 <div class="app" id="appCard">
   <div class="premiumTopV105">
     <div class="premiumBrandV105">App Emocional</div>
-    <div class="premiumBadgeV105">V113 · faro interior</div>
+    <div class="premiumBadgeV105">V114 · museo de avances</div>
   </div>
 
   <div class="premiumHeroV105">
@@ -3137,8 +3196,8 @@ text-align:center;
       <span>📚</span>Biblioteca de aprendizajes
     </button>
 
-<button class="action" onclick="openLighthouseV113()" style="grid-column:1/3;background:#e0f2fe;font-weight:bold;">
-      <span>🌊</span>Faro interior
+<button class="action" onclick="openAdvancesMuseumV114()" style="grid-column:1/3;background:#ddd6fe;font-weight:bold;">
+      <span>🏛️</span>Museo de tus avances
     </button>
 
 
@@ -12410,6 +12469,225 @@ function showLifeMapZoneV94(key){
     return String(str || '').replace(/[&<>"']/g,function(m){
       return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m];
     });
+  };
+})();
+</script>
+
+
+
+<!-- V114 - Museo de tus avances -->
+<div id="advancesMuseumScreenV114" class="fullscreen" style="background:linear-gradient(180deg,#eef2ff,#bfdbfe);text-align:center;">
+  <h1>🏛️</h1>
+  <h2>Museo de tus avances</h2>
+  <div class="museum114Orb">🏛️</div>
+
+  <div class="museum114Hero">
+    <strong>Acá se reúnen las pruebas de que avanzaste.</strong><br>
+    No solo aparecen los días grandes. También los gestos mínimos, las luces pequeñas, las personas, las cartas y las señales que fuiste dejando en la app.
+  </div>
+
+  <div class="museum114Quote" id="museum114Quote">Cargando tu museo...</div>
+
+  <div class="museum114Stats" id="museum114Stats"></div>
+
+  <div class="museum114Rooms" id="museum114Rooms"></div>
+
+  <div class="museum114Detail" id="museum114Detail">
+    Tocá una sala para verla por dentro.
+  </div>
+
+  <div class="museum114Seal" id="museum114Seal">
+    Tu historia es más grande que un día difícil.
+  </div>
+
+  <button onclick="renderAdvancesMuseumV114()" class="softButton">Actualizar museo</button>
+  <button onclick="closeAdvancesMuseumV114()" class="softButton">Volver despacio</button>
+</div>
+
+<script>
+// V114 - Museo de tus avances
+(function(){
+  function byId(id){ return document.getElementById(id); }
+
+  function escapeHtmlV114(str){
+    return String(str || '').replace(/[&<>"']/g,function(m){
+      return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m];
+    });
+  }
+
+  function shortTextV114(str,max){
+    str=String(str || '').replace(/\s+/g,' ').trim();
+    return str.length>max ? str.slice(0,max-1)+'…' : str;
+  }
+
+  function safeParseV114(key){
+    try{
+      var raw=localStorage.getItem(key);
+      if(!raw) return [];
+      var parsed=JSON.parse(raw);
+      return normalizeV114(parsed,key);
+    }catch(e){
+      var rawText=localStorage.getItem(key);
+      return rawText ? [{text:rawText,key:key,date:''}] : [];
+    }
+  }
+
+  function normalizeV114(value,key){
+    var out=[];
+    function pushText(text,date){
+      text=String(text || '').trim();
+      if(text) out.push({text:text,key:key,date:date || ''});
+    }
+    if(Array.isArray(value)){
+      value.forEach(function(item){
+        if(typeof item==='string' || typeof item==='number'){
+          pushText(item,'');
+        }else if(item && typeof item==='object'){
+          var date=item.date || item.day || item.createdAt || item.fecha || '';
+          var text=item.text || item.title || item.message || item.note || item.value || item.name || item.phrase || item.content || item.memory || item.letter || item.signal || item.moment || item.description;
+          if(!text){
+            var parts=[];
+            ['emoji','type','before','after','what','why','person','need','energy','level'].forEach(function(k){
+              if(item[k]) parts.push(item[k]);
+            });
+            text=parts.join(' · ');
+          }
+          pushText(text,date);
+        }
+      });
+    }else if(value && typeof value==='object'){
+      Object.keys(value).forEach(function(k){
+        var item=value[k];
+        if(typeof item==='string' || typeof item==='number') pushText(item,'');
+        else if(item && typeof item==='object'){
+          var date=item.date || item.day || item.createdAt || item.fecha || '';
+          var text=item.text || item.title || item.message || item.note || item.value || item.name || item.phrase || item.content || item.memory || item.letter || item.signal || item.moment || item.description;
+          pushText(text,date);
+        }
+      });
+    }else if(typeof value==='string' || typeof value==='number'){
+      pushText(value,'');
+    }
+    return out;
+  }
+
+  function collectV114(keys){
+    var found=[];
+    keys.forEach(function(key){
+      found=found.concat(safeParseV114(key));
+    });
+    var seen={};
+    return found.filter(function(item){
+      var sig=(item.text+'|'+item.date).toLowerCase();
+      if(seen[sig]) return false;
+      seen[sig]=true;
+      return true;
+    });
+  }
+
+  function roomsV114(){
+    return [
+      {
+        id:'strengths',icon:'💪',title:'Fortalezas detectadas',subtitle:'Lo que apareció en vos incluso cuando costaba.',
+        keys:['strengthsV76','detectedStrengthsV76','strengthHistory','strengths','emotionalStrengths','transformationNotesV91','thresholdReflectionsV90']
+      },
+      {
+        id:'lights',icon:'☀️',title:'Momentos de luz',subtitle:'Pequeñas escenas que le dieron aire al día.',
+        keys:['lightMomentsV83','favoriteMemories','silentVictoriesV99']
+      },
+      {
+        id:'treasures',icon:'💎',title:'Tesoros encontrados',subtitle:'Frases, recuerdos y señales que valen.',
+        keys:['manualTreasuresV81','favoriteMemories','invisibleFootprintsV79']
+      },
+      {
+        id:'people',icon:'❤️',title:'Personas que tocaste',subtitle:'Vínculos, presencias y huellas compartidas.',
+        keys:['touchedPeopleV97','legacyStarsV96']
+      },
+      {
+        id:'future',icon:'✉️',title:'Cartas y futuro',subtitle:'Mensajes hacia adelante, cápsulas y posibilidades.',
+        keys:['futureLettersV98','futureCapsulesV46','futureCapsules','futureCapsule','tomorrowSignalsV89','possibilitiesV95']
+      },
+      {
+        id:'care',icon:'🧭',title:'Cuidado y regreso',subtitle:'Puentes, refugios, calma, faros y aprendizajes.',
+        keys:['internalRefugeV84','calmPocketV86','returnBridgeV85','closingRitualsV88','emotionalLearningsV112','emotionalLighthouseV113','energyHistoryV104','diaryEntries','ceremoniesV93']
+      }
+    ].map(function(room){ room.items=collectV114(room.keys); return room; });
+  }
+
+  window.openAdvancesMuseumV114=function(){
+    var screen=byId('advancesMuseumScreenV114');
+    if(screen) screen.style.display='block';
+    renderAdvancesMuseumV114();
+  };
+
+  window.closeAdvancesMuseumV114=function(){
+    var screen=byId('advancesMuseumScreenV114');
+    if(screen) screen.style.display='none';
+  };
+
+  window.renderAdvancesMuseumV114=function(){
+    var rooms=roomsV114();
+    var total=rooms.reduce(function(sum,r){ return sum+r.items.length; },0);
+    var stats=byId('museum114Stats');
+    var quote=byId('museum114Quote');
+    var list=byId('museum114Rooms');
+    var detail=byId('museum114Detail');
+    var seal=byId('museum114Seal');
+
+    if(quote){
+      quote.innerHTML = total>0
+        ? 'Tu museo ya guarda '+total+' señales de avance. Algunas fueron enormes. Otras fueron apenas un paso. Todas cuentan.'
+        : 'Tu museo todavía está casi vacío. No pasa nada: una sola señal también puede ser el inicio de una historia.';
+    }
+
+    if(stats){
+      stats.innerHTML=rooms.map(function(r){
+        return '<div class="museum114Stat"><span class="museum114Number">'+r.items.length+'</span><span class="museum114Label">'+escapeHtmlV114(r.title)+'</span></div>';
+      }).join('');
+    }
+
+    if(list){
+      list.innerHTML=rooms.map(function(r){
+        var preview=r.items.length ? shortTextV114(r.items[0].text,94) : 'Todavía no hay recuerdos en esta sala.';
+        return '<button class="museum114Room" onclick="openAdvancesMuseumRoomV114(\''+r.id+'\')">'+
+          '<div class="museum114RoomTop"><div><span class="museum114RoomIcon">'+r.icon+'</span><strong>'+escapeHtmlV114(r.title)+'</strong></div><span class="museum114Count">'+r.items.length+'</span></div>'+
+          '<div class="museum114Small">'+escapeHtmlV114(r.subtitle)+'</div>'+
+          '<div class="museum114Preview">'+escapeHtmlV114(preview)+'</div>'+
+        '</button>';
+      }).join('');
+    }
+
+    if(detail){
+      detail.innerHTML = total>0
+        ? 'Tocá una sala para mirar sus recuerdos. No tenés que ver todo de una vez.'
+        : 'Cuando guardes luces, tesoros, cartas, personas o aprendizajes, aparecerán acá.';
+    }
+
+    if(seal){
+      seal.innerHTML = total>0
+        ? '🏆 Hay evidencia de que seguiste. Incluso en silencio, incluso despacio.'
+        : '🌱 El museo empieza cuando guardás una primera señal.';
+    }
+  };
+
+  window.openAdvancesMuseumRoomV114=function(id){
+    var room=roomsV114().filter(function(r){ return r.id===id; })[0];
+    var detail=byId('museum114Detail');
+    if(!room || !detail) return;
+
+    if(!room.items.length){
+      detail.innerHTML='<h3>'+room.icon+' '+escapeHtmlV114(room.title)+'</h3><p class="museum114Small">Esta sala todavía está vacía. Seguí usando la app y volverá a llenarse con señales reales.</p>';
+      return;
+    }
+
+    detail.innerHTML='<h3>'+room.icon+' '+escapeHtmlV114(room.title)+'</h3>'+
+      '<p class="museum114Small">'+escapeHtmlV114(room.subtitle)+'</p>'+
+      room.items.slice(0,18).map(function(item,index){
+        return '<div class="museum114Memory"><strong>'+escapeHtmlV114(shortTextV114(item.text,240))+'</strong>'+
+          (item.date ? '<span class="museum114MemoryDate">'+escapeHtmlV114(item.date)+'</span>' : '')+
+        '</div>';
+      }).join('')+
+      (room.items.length>18 ? '<p class="museum114Small">Y '+(room.items.length-18)+' señales más guardadas en esta sala.</p>' : '');
   };
 })();
 </script>
