@@ -10738,7 +10738,7 @@ function saveSeedTextV77(){
     if(container){
       container.innerHTML=rooms.map(function(r){
         var preview=r.items.length ? shortText(r.items[0],82) : 'Esta sala todavía espera su primera memoria.';
-        return '<button class="museumRoomV111" onclick="openMuseumRoomV111(\\''+r.id+'\\')">'+
+        return "<button class=\"museumRoomV111\" onclick=\"openMuseumRoomV111(\'"+r.id+"\')\">"+
           '<span class="museumCountV111">'+r.items.length+'</span>'+
           '<strong>'+r.icon+' '+escapeHtml(r.title)+'</strong><br>'+
           '<span class="museumSmallV111">'+escapeHtml(r.subtitle)+'</span>'+
