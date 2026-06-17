@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
-<title>App Emocional V109</title>
+<title>App Emocional V110</title>
 
 <style>
 body {
@@ -2603,6 +2603,80 @@ input, textarea, select {
   }
 }
 
+
+/* V110 - Demo premium final */
+.finalSealV110{
+  background:linear-gradient(135deg,rgba(255,255,255,.94),rgba(224,242,254,.88));
+  border:1px solid rgba(255,255,255,.68);
+  border-radius:26px;
+  padding:18px;
+  margin:0 0 20px;
+  box-shadow:0 14px 34px rgba(15,23,42,.08);
+  line-height:1.45;
+}
+.finalSealV110Top{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  margin-bottom:10px;
+}
+.finalSealV110Title{
+  font-weight:800;
+  font-size:16px;
+}
+.finalSealV110Badge{
+  font-size:12px;
+  padding:7px 10px;
+  border-radius:999px;
+  background:rgba(59,130,246,.10);
+  color:#2563eb;
+  font-weight:700;
+  white-space:nowrap;
+}
+.finalSealV110Text{
+  color:#475569;
+  font-size:14px;
+}
+.finalSealV110Checklist{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:8px;
+  margin-top:14px;
+}
+.finalSealV110Item{
+  background:rgba(255,255,255,.72);
+  border-radius:16px;
+  padding:9px 10px;
+  font-size:13px;
+  color:#334155;
+}
+.finalFooterV110{
+  text-align:center;
+  font-size:12px;
+  color:#64748b;
+  margin-top:18px;
+  padding-top:14px;
+  border-top:1px solid rgba(148,163,184,.20);
+}
+.action, .softButton, .premiumChipV105, .premiumPrimaryV105, .moods button, .companionCard{
+  -webkit-tap-highlight-color: transparent;
+}
+.action:active, .softButton:active, .premiumChipV105:active, .premiumPrimaryV105:active, .moods button:active, .companionCard:active{
+  transform:scale(.985);
+}
+@media (max-width:380px){
+  .finalSealV110Checklist{grid-template-columns:1fr;}
+  .finalSealV110Top{align-items:flex-start;flex-direction:column;}
+}
+@media (prefers-reduced-motion: reduce){
+  *, *:before, *:after{
+    animation-duration:.001ms !important;
+    animation-iteration-count:1 !important;
+    scroll-behavior:auto !important;
+  }
+}
+
 </style>
 
 <style id="v48premium">
@@ -2668,7 +2742,7 @@ text-align:center;
 <div class="app" id="appCard">
   <div class="premiumTopV105">
     <div class="premiumBrandV105">App Emocional</div>
-    <div class="premiumBadgeV105">V107 · voz emocional</div>
+    <div class="premiumBadgeV105">V110 · demo premium</div>
   </div>
 
   <div class="premiumHeroV105">
@@ -2710,6 +2784,21 @@ text-align:center;
 <div id="dashboardCard" class="rememberCard" style="margin-bottom:18px;background:linear-gradient(135deg,#f0fdf4,#dbeafe);border:1px solid rgba(255,255,255,.5);">
 <div style="font-weight:700;font-size:16px;">📊 Resumen rápido</div>
 <div id="dashboardContent" style="margin-top:10px;">Cargando...</div>
+</div>
+<div class="finalSealV110">
+  <div class="finalSealV110Top">
+    <div class="finalSealV110Title">✨ Demo premium final</div>
+    <div class="finalSealV110Badge">V110</div>
+  </div>
+  <div class="finalSealV110Text">
+    Esta versión reúne el recorrido completo: calma inmediata, registro emocional, memoria, futuro y compañía suave.
+  </div>
+  <div class="finalSealV110Checklist">
+    <div class="finalSealV110Item">✅ Mobile optimizada</div>
+    <div class="finalSealV110Item">✅ Voz emocional</div>
+    <div class="finalSealV110Item">✅ Animaciones suaves</div>
+    <div class="finalSealV110Item">✅ Demo lista</div>
+  </div>
 </div>
 
 <div class="section-title">¿Qué necesitás ahora?</div>
@@ -10394,6 +10483,35 @@ function saveSeedTextV77(){
       }
     });
   });
+})();
+</script>
+
+
+<script>
+/* V110 - sello final de experiencia */
+(function(){
+  window.APP_EMOCIONAL_VERSION = "V110";
+  function markFinalVersion(){
+    var brand = document.querySelector(".premiumBrandV105");
+    if(brand && !brand.dataset.v110){
+      brand.dataset.v110 = "true";
+      brand.title = "Demo premium final V110";
+    }
+    var message = document.getElementById("presenceMessageV107");
+    if(message && !message.dataset.v110){
+      message.dataset.v110 = "true";
+      setTimeout(function(){
+        if(message.innerText && message.innerText.trim().length){
+          message.innerText = message.innerText;
+        }
+      },300);
+    }
+  }
+  if(document.readyState === "loading"){
+    document.addEventListener("DOMContentLoaded", markFinalVersion);
+  }else{
+    markFinalVersion();
+  }
 })();
 </script>
 
