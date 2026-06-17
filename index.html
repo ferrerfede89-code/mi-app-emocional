@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
-<title>App Emocional V114</title>
+<title>App Emocional V115</title>
 
 <style>
 body {
@@ -2943,6 +2943,76 @@ input, textarea, select {
 
 </style>
 
+
+<style>
+/* V115 - Tu línea de vida emocional */
+.lifeLineOrbV115{
+  width:155px;height:155px;border-radius:50%;margin:24px auto;
+  background:radial-gradient(circle,#ffffff,#bae6fd 42%,#a7f3d0);
+  box-shadow:0 24px 72px rgba(14,165,233,.24),0 0 42px rgba(16,185,129,.20);
+  display:flex;align-items:center;justify-content:center;font-size:58px;
+  animation:lifeLinePulseV115 8s infinite ease-in-out;
+}
+@keyframes lifeLinePulseV115{
+  0%{transform:scale(1);opacity:.88;}
+  50%{transform:scale(1.1);opacity:1;}
+  100%{transform:scale(1);opacity:.88;}
+}
+.lifeLineHeroV115{
+  background:linear-gradient(135deg,rgba(255,255,255,.94),rgba(224,242,254,.90));
+  border-radius:28px;padding:20px;margin:18px 0;line-height:1.55;
+  box-shadow:0 14px 34px rgba(0,0,0,.08);
+}
+.lifeLineQuoteV115{
+  font-size:21px;font-weight:700;line-height:1.45;text-align:center;
+  padding:18px;border-radius:24px;background:rgba(255,255,255,.84);margin:16px 0;
+}
+.lifeLineStatsV115{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:16px 0;}
+.lifeLineStatV115{background:rgba(255,255,255,.86);border-radius:20px;padding:14px;box-shadow:0 10px 24px rgba(0,0,0,.06);}
+.lifeLineNumberV115{display:block;font-size:30px;font-weight:800;color:#0284c7;}
+.lifeLineLabelV115{font-size:13px;color:#64748b;line-height:1.3;}
+.lifeLinePathV115{
+  position:relative;margin:22px 0;padding:14px 0 8px;
+}
+.lifeLinePathV115:before{
+  content:"";position:absolute;left:25px;top:0;bottom:0;width:4px;border-radius:999px;
+  background:linear-gradient(180deg,#bae6fd,#a7f3d0,#ddd6fe,#fef3c7);
+  box-shadow:0 0 20px rgba(14,165,233,.18);
+}
+.lifeLineEventV115{
+  position:relative;margin:0 0 14px 0;padding-left:62px;text-align:left;
+  animation:lifeLineInV115 .55s ease both;
+}
+@keyframes lifeLineInV115{
+  from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}
+}
+.lifeLineDotV115{
+  position:absolute;left:9px;top:12px;width:36px;height:36px;border-radius:50%;
+  background:rgba(255,255,255,.95);display:flex;align-items:center;justify-content:center;font-size:21px;
+  box-shadow:0 10px 24px rgba(0,0,0,.10),0 0 0 5px rgba(224,242,254,.72);
+}
+.lifeLineCardV115{
+  background:rgba(255,255,255,.92);border-radius:24px;padding:16px;line-height:1.48;
+  box-shadow:0 12px 30px rgba(0,0,0,.08);
+}
+.lifeLineCardV115 strong{font-size:16px;}
+.lifeLineMetaV115{font-size:13px;color:#64748b;margin-top:8px;line-height:1.35;}
+.lifeLineTagV115{display:inline-block;background:#e0f2fe;color:#075985;border-radius:999px;padding:5px 9px;font-size:12px;font-weight:700;margin-top:8px;}
+.lifeLineEmptyV115{
+  background:rgba(255,255,255,.88);border-radius:24px;padding:18px;margin:16px 0;
+  line-height:1.55;box-shadow:0 12px 30px rgba(0,0,0,.08);
+}
+.lifeLineInputV115{
+  width:100%;box-sizing:border-box;border:none;border-radius:18px;padding:14px 16px;
+  font-size:16px;background:rgba(255,255,255,.96);min-height:92px;margin:10px 0;
+}
+.lifeLineSealV115{
+  background:linear-gradient(135deg,rgba(224,242,254,.96),rgba(220,252,231,.92));
+  border-radius:24px;padding:18px;margin:18px 0;font-size:19px;font-weight:700;line-height:1.45;text-align:center;
+}
+.lifeLineFilterV115{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin:12px 0;}
+.lifeLineFilterV115 button{border:none;border-radius:999px;padding:9px 12px;background:rgba(255,255,255,.9);font-size:14px;}
+</style>
 </head>
 
 <body>
@@ -2984,7 +3054,7 @@ text-align:center;
 <div class="app" id="appCard">
   <div class="premiumTopV105">
     <div class="premiumBrandV105">App Emocional</div>
-    <div class="premiumBadgeV105">V114 · museo de avances</div>
+    <div class="premiumBadgeV105">V115 · línea de vida emocional</div>
   </div>
 
   <div class="premiumHeroV105">
@@ -3198,6 +3268,10 @@ text-align:center;
 
 <button class="action" onclick="openAdvancesMuseumV114()" style="grid-column:1/3;background:#ddd6fe;font-weight:bold;">
       <span>🏛️</span>Museo de tus avances
+    </button>
+
+<button class="action" onclick="openLifeLineV115()" style="grid-column:1/3;background:#e0f2fe;font-weight:bold;">
+      <span>🧵</span>Tu línea de vida emocional
     </button>
 
 
@@ -8201,7 +8275,7 @@ function closeTransformationsV91(){
 }
 function escapeTransformV91(str){
   if(typeof escapeHTMLV563 === 'function') return escapeHTMLV563(str);
-  return String(str||'').replace(/[&<>\"]/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;'}[m]));
+  return String(str||'').replace(/[&<>"]/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]));
 }
 function getTransformationNotesV91(){
   try{return JSON.parse(localStorage.getItem('transformationNotesV91') || '[]');}
@@ -10939,7 +11013,7 @@ function saveSeedTextV77(){
     if(container){
       container.innerHTML=rooms.map(function(r){
         var preview=r.items.length ? shortText(r.items[0],82) : 'Esta sala todavía espera su primera memoria.';
-        return "<button class=\"museumRoomV111\" onclick=\"openMuseumRoomV111(\'"+r.id+"\')\">"+
+        return "<button class="museumRoomV111" onclick="openMuseumRoomV111(\'"+r.id+"\')">"+
           '<span class="museumCountV111">'+r.items.length+'</span>'+
           '<strong>'+r.icon+' '+escapeHtml(r.title)+'</strong><br>'+
           '<span class="museumSmallV111">'+escapeHtml(r.subtitle)+'</span>'+
@@ -11289,6 +11363,236 @@ function saveSeedTextV77(){
         '<button onclick="deleteLighthouseV113('+realIndex+')" class="softButton" style="margin-top:10px;">Quitar</button>'+ 
       '</div>';
     }).join('');
+  };
+})();
+</script>
+
+
+
+<!-- V115 - Tu línea de vida emocional -->
+<div id="lifeLineScreenV115" class="fullscreen" style="background:linear-gradient(180deg,#e0f2fe,#dcfce7);text-align:center;">
+  <h1>🧵</h1>
+  <h2>Tu línea de vida emocional</h2>
+  <div class="lifeLineOrbV115">🧵</div>
+
+  <div class="lifeLineHeroV115">
+    <strong>No fueron eventos aislados.</strong><br>
+    Esta pantalla une tus gestos, recuerdos, luces, aprendizajes, posibilidades y avances en una misma historia.
+  </div>
+
+  <div class="lifeLineQuoteV115" id="lifeLineQuoteV115">Cargando tu recorrido...</div>
+  <div class="lifeLineStatsV115" id="lifeLineStatsV115"></div>
+
+  <div class="lifeLineFilterV115">
+    <button onclick="renderLifeLineV115('all')">Todo</button>
+    <button onclick="renderLifeLineV115('light')">Luces</button>
+    <button onclick="renderLifeLineV115('treasure')">Tesoros</button>
+    <button onclick="renderLifeLineV115('future')">Futuro</button>
+    <button onclick="renderLifeLineV115('care')">Cuidado</button>
+  </div>
+
+  <div id="lifeLinePathV115" class="lifeLinePathV115"></div>
+
+  <div class="lifeLineHeroV115" style="text-align:left;">
+    <strong>Agregar un hito manual</strong><br>
+    También podés guardar algo que la app no haya registrado todavía.
+    <textarea id="lifeLineInputV115" class="lifeLineInputV115" placeholder="Ejemplo: Hoy pedí ayuda aunque me costaba."></textarea>
+    <button onclick="saveLifeLineMilestoneV115()" class="softButton">Guardar hito</button>
+  </div>
+
+  <div class="lifeLineSealV115" id="lifeLineSealV115">
+    Todavía estás escribiendo esta historia.
+  </div>
+
+  <button onclick="renderLifeLineV115('all')" class="softButton">Actualizar línea</button>
+  <button onclick="closeLifeLineV115()" class="softButton">Volver despacio</button>
+</div>
+
+<script>
+// V115 - Tu línea de vida emocional
+(function(){
+  function byId(id){ return document.getElementById(id); }
+  function escapeHtmlV115(str){
+    return String(str || '').replace(/[&<>"']/g,function(m){
+      return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m];
+    });
+  }
+  function shortTextV115(str,max){
+    str=String(str || '').replace(/\s+/g,' ').trim();
+    return str.length>max ? str.slice(0,max-1)+'…' : str;
+  }
+  function parseDateV115(value){
+    if(!value) return 0;
+    if(typeof value==='number') return value;
+    var d=new Date(value);
+    if(!isNaN(d.getTime())) return d.getTime();
+    var m=String(value).match(/(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{2,4})/);
+    if(m){
+      var year=Number(m[3]); if(year<100) year+=2000;
+      return new Date(year,Number(m[2])-1,Number(m[1])).getTime();
+    }
+    return 0;
+  }
+  function todayV115(){
+    try{return new Date().toLocaleDateString('es-ES',{day:'2-digit',month:'2-digit',year:'numeric'});}catch(e){return new Date().toLocaleDateString();}
+  }
+  function normalizeItemsV115(value,key,config){
+    var out=[];
+    function push(text,date,extra){
+      text=String(text || '').trim();
+      if(!text) return;
+      out.push({
+        text:text,
+        date:date || '',
+        time:parseDateV115(date || (extra && extra.createdAt) || ''),
+        key:key,
+        type:config.type,
+        icon:config.icon,
+        title:config.title,
+        tag:config.tag
+      });
+    }
+    if(Array.isArray(value)){
+      value.forEach(function(item){
+        if(typeof item==='string' || typeof item==='number') push(item,'',{});
+        else if(item && typeof item==='object'){
+          var date=item.date || item.day || item.createdAt || item.fecha || item.savedAt || '';
+          var text=item.text || item.title || item.message || item.note || item.value || item.name || item.phrase || item.content || item.memory || item.letter || item.signal || item.moment || item.description || item.after || item.learning;
+          if(!text){
+            var parts=[];
+            ['emoji','type','before','after','what','why','person','need','energy','level','tone'].forEach(function(k){ if(item[k]) parts.push(item[k]); });
+            text=parts.join(' · ');
+          }
+          push(text,date,item);
+        }
+      });
+    }else if(value && typeof value==='object'){
+      Object.keys(value).forEach(function(k){
+        var item=value[k];
+        if(typeof item==='string' || typeof item==='number') push(item,'',{});
+        else if(item && typeof item==='object'){
+          var date=item.date || item.day || item.createdAt || item.fecha || item.savedAt || '';
+          var text=item.text || item.title || item.message || item.note || item.value || item.name || item.phrase || item.content || item.memory || item.letter || item.signal || item.moment || item.description || item.after || item.learning;
+          push(text,date,item);
+        }
+      });
+    }else if(typeof value==='string' || typeof value==='number'){
+      push(value,'',{});
+    }
+    return out;
+  }
+  function readKeyV115(key,config){
+    try{
+      var raw=localStorage.getItem(key);
+      if(!raw) return [];
+      return normalizeItemsV115(JSON.parse(raw),key,config);
+    }catch(e){
+      var rawText=localStorage.getItem(key);
+      return rawText ? normalizeItemsV115(rawText,key,config) : [];
+    }
+  }
+  function configsV115(){
+    return [
+      {type:'seed',icon:'🌱',title:'Primeros pasos',tag:'Inicio',keys:['diaryEntries','seedModeV77','invisibleFootprintsV79']},
+      {type:'light',icon:'⭐',title:'Momentos de luz',tag:'Luz',keys:['lightMomentsV83','favoriteMemories','silentVictoriesV99']},
+      {type:'treasure',icon:'💎',title:'Tesoros encontrados',tag:'Tesoro',keys:['manualTreasuresV81','favoriteMemories','strengthsV76','detectedStrengthsV76','strengthHistory']},
+      {type:'bridge',icon:'🌉',title:'Puentes cruzados',tag:'Regreso',keys:['returnBridgeV85','internalRefugeV84','calmPocketV86','closingRitualsV88','energyHistoryV104']},
+      {type:'possibility',icon:'🌳',title:'Posibilidades descubiertas',tag:'Posibilidad',keys:['possibilitiesV95','tomorrowSignalsV89','futureCapsulesV46','futureCapsules','futureLettersV98']},
+      {type:'care',icon:'🧭',title:'Aprendizajes y cuidado',tag:'Cuidado',keys:['emotionalLearningsV112','careCompassV102','emotionalLighthouseV113','ceremoniesV93','thresholdReflectionsV90','transformationNotesV91']},
+      {type:'people',icon:'🫂',title:'Vínculos y huellas',tag:'Vínculo',keys:['touchedPeopleV97','legacyStarsV96']},
+      {type:'manual',icon:'🧵',title:'Hitos manuales',tag:'Hito',keys:['lifeLineMilestonesV115']}
+    ];
+  }
+  function collectLifeLineV115(){
+    var all=[];
+    configsV115().forEach(function(cfg){
+      cfg.keys.forEach(function(key){ all=all.concat(readKeyV115(key,cfg)); });
+    });
+    var seen={};
+    all=all.filter(function(item){
+      var sig=(item.text+'|'+item.type+'|'+item.date).toLowerCase();
+      if(seen[sig]) return false;
+      seen[sig]=true;
+      return true;
+    });
+    all.sort(function(a,b){
+      if(a.time && b.time) return a.time-b.time;
+      if(a.time && !b.time) return -1;
+      if(!a.time && b.time) return 1;
+      return 0;
+    });
+    return all;
+  }
+  function filterTypeV115(item,filter){
+    if(!filter || filter==='all') return true;
+    if(filter==='future') return item.type==='possibility';
+    if(filter==='care') return item.type==='bridge' || item.type==='care';
+    return item.type===filter;
+  }
+  window.openLifeLineV115=function(){
+    var screen=byId('lifeLineScreenV115');
+    if(screen) screen.style.display='block';
+    renderLifeLineV115('all');
+    if(navigator.vibrate) navigator.vibrate(35);
+  };
+  window.closeLifeLineV115=function(){
+    var screen=byId('lifeLineScreenV115');
+    if(screen) screen.style.display='none';
+  };
+  window.renderLifeLineV115=function(filter){
+    filter=filter || 'all';
+    var all=collectLifeLineV115();
+    var items=all.filter(function(item){ return filterTypeV115(item,filter); });
+    var path=byId('lifeLinePathV115');
+    var quote=byId('lifeLineQuoteV115');
+    var stats=byId('lifeLineStatsV115');
+    var seal=byId('lifeLineSealV115');
+    var counts={light:0,treasure:0,bridge:0,possibility:0,care:0,people:0,seed:0,manual:0};
+    all.forEach(function(item){ counts[item.type]=(counts[item.type]||0)+1; });
+    if(stats){
+      stats.innerHTML=''+
+        '<div class="lifeLineStatV115"><span class="lifeLineNumberV115">'+all.length+'</span><span class="lifeLineLabelV115">hitos reunidos</span></div>'+
+        '<div class="lifeLineStatV115"><span class="lifeLineNumberV115">'+(counts.light+counts.treasure+counts.bridge+counts.possibility+counts.care+counts.people+counts.manual)+'</span><span class="lifeLineLabelV115">pruebas de avance</span></div>';
+    }
+    if(quote){
+      if(all.length===0) quote.innerHTML='Todavía no hay línea escrita. Una sola acción ya puede ser el primer punto.';
+      else if(all.length<5) quote.innerHTML='Tu historia ya empezó a dejar señales.';
+      else if(all.length<15) quote.innerHTML='Cuando mirás todo junto, aparecen avances que antes parecían sueltos.';
+      else quote.innerHTML='Tu recorrido tiene más continuidad de la que un día difícil te deja ver.';
+    }
+    if(seal){
+      seal.innerHTML=all.length ? 'Todavía estás escribiendo esta historia.' : 'La línea empieza con un gesto pequeño.';
+    }
+    if(!path) return;
+    if(!items.length){
+      path.innerHTML='<div class="lifeLineEmptyV115"><strong>No hay hitos para mostrar en este filtro.</strong><br><br>Podés actualizar la línea, guardar un hito manual o volver a módulos anteriores para dejar nuevas señales.</div>';
+      return;
+    }
+    path.innerHTML=items.slice(0,34).map(function(item,index){
+      var delay=(index*0.04).toFixed(2);
+      return '<div class="lifeLineEventV115" style="animation-delay:'+delay+'s">'+
+        '<div class="lifeLineDotV115">'+escapeHtmlV115(item.icon)+'</div>'+
+        '<div class="lifeLineCardV115"><strong>'+escapeHtmlV115(item.title)+'</strong><br>'+escapeHtmlV115(shortTextV115(item.text,170))+
+        '<div class="lifeLineMetaV115">'+(item.date ? escapeHtmlV115(item.date)+' · ' : '')+'<span class="lifeLineTagV115">'+escapeHtmlV115(item.tag)+'</span></div></div>'+
+      '</div>';
+    }).join('')+(items.length>34 ? '<div class="lifeLineEmptyV115">Hay '+(items.length-34)+' hitos más guardados. La línea muestra los primeros para que no se vuelva pesada.</div>' : '');
+  };
+  window.saveLifeLineMilestoneV115=function(){
+    var input=byId('lifeLineInputV115');
+    var text=input ? input.value.trim() : '';
+    if(!text){
+      var quote=byId('lifeLineQuoteV115');
+      if(quote) quote.innerHTML='Puede ser algo mínimo. No necesitás escribir algo perfecto.';
+      return;
+    }
+    var list=[];
+    try{ list=JSON.parse(localStorage.getItem('lifeLineMilestonesV115') || '[]'); }catch(e){ list=[]; }
+    list.push({text:text,date:todayV115(),createdAt:new Date().toISOString()});
+    localStorage.setItem('lifeLineMilestonesV115',JSON.stringify(list));
+    if(input) input.value='';
+    renderLifeLineV115('all');
+    var seal=byId('lifeLineSealV115');
+    if(seal) seal.innerHTML='🧵 Hito guardado. Tu historia sumó otro punto.';
   };
 })();
 </script>
