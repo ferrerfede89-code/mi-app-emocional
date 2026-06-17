@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
-<title>App Emocional V115</title>
+<title>App Emocional V116</title>
 
 <style>
 body {
@@ -2803,6 +2803,165 @@ input, textarea, select {
   border-radius:24px;padding:18px;margin:18px 0;font-size:18px;font-weight:650;line-height:1.45;
 }
 
+
+/* V116 - Carta que nunca enviaste */
+.unsent116Wrap{
+  min-height:100%;
+  background:
+    radial-gradient(circle at 28% 10%,rgba(255,255,255,.72),transparent 18%),
+    linear-gradient(180deg,#fce7f3,#e0f2fe 58%,#f8fafc);
+  color:#1f2937;
+}
+.unsent116Header{
+  text-align:center;
+  max-width:420px;
+  margin:0 auto;
+}
+.unsent116Orb{
+  width:156px;
+  height:156px;
+  border-radius:50%;
+  margin:22px auto 18px;
+  background:radial-gradient(circle,#ffffff,#f9a8d4 46%,#93c5fd);
+  box-shadow:0 24px 70px rgba(236,72,153,.22),0 0 42px rgba(147,197,253,.22);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:58px;
+  animation:unsent116Pulse 8s infinite ease-in-out;
+}
+@keyframes unsent116Pulse{
+  0%{transform:scale(1) rotate(-1deg);opacity:.88;}
+  50%{transform:scale(1.1) rotate(2deg);opacity:1;}
+  100%{transform:scale(1) rotate(-1deg);opacity:.88;}
+}
+.unsent116Phrase{
+  font-size:21px;
+  font-weight:650;
+  line-height:1.45;
+  text-align:center;
+  padding:18px;
+  border-radius:24px;
+  background:rgba(255,255,255,.82);
+  margin:16px auto;
+  max-width:420px;
+  box-shadow:0 12px 30px rgba(0,0,0,.06);
+}
+.unsent116Card{
+  background:rgba(255,255,255,.90);
+  border-radius:26px;
+  padding:18px;
+  margin:14px auto;
+  line-height:1.55;
+  text-align:left;
+  box-shadow:0 12px 30px rgba(0,0,0,.08);
+  max-width:420px;
+}
+.unsent116Small{
+  font-size:15px;
+  color:#64748b;
+  line-height:1.45;
+}
+.unsent116ChoiceGrid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+  margin-top:12px;
+}
+.unsent116Choice{
+  border:none;
+  border-radius:18px;
+  padding:13px 12px;
+  font-size:15px;
+  background:rgba(255,255,255,.95);
+  text-align:left;
+  color:#1f2937;
+  box-shadow:0 8px 20px rgba(0,0,0,.05);
+}
+.unsent116Choice.selected116{
+  background:linear-gradient(135deg,#fbcfe8,#bfdbfe);
+  font-weight:700;
+}
+.unsent116Prompt{
+  background:linear-gradient(135deg,rgba(252,231,243,.96),rgba(219,234,254,.86));
+  border-radius:22px;
+  padding:16px;
+  margin:12px 0;
+  font-size:18px;
+  font-weight:620;
+  line-height:1.45;
+}
+.unsent116Text{
+  width:100%;
+  min-height:190px;
+  box-sizing:border-box;
+  border:none;
+  outline:none;
+  border-radius:22px;
+  padding:16px;
+  font-size:17px;
+  line-height:1.55;
+  background:rgba(255,255,255,.96);
+  color:#1f2937;
+  box-shadow:inset 0 0 0 1px rgba(148,163,184,.16);
+  resize:vertical;
+}
+.unsent116Actions{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+  margin-top:12px;
+}
+.unsent116Button{
+  border:none;
+  border-radius:18px;
+  padding:13px 14px;
+  font-size:15px;
+  background:rgba(255,255,255,.95);
+  color:#1f2937;
+  box-shadow:0 8px 20px rgba(0,0,0,.05);
+}
+.unsent116Button.primary{
+  background:linear-gradient(135deg,#f9a8d4,#93c5fd);
+  font-weight:700;
+}
+.unsent116Seal{
+  background:linear-gradient(135deg,rgba(255,255,255,.96),rgba(252,231,243,.78));
+  border-radius:22px;
+  padding:16px;
+  margin:14px 0;
+  font-size:18px;
+  font-weight:650;
+  line-height:1.45;
+}
+.unsent116HistoryItem{
+  background:linear-gradient(135deg,rgba(255,255,255,.94),rgba(219,234,254,.70));
+  border-radius:20px;
+  padding:14px;
+  margin:10px 0;
+  line-height:1.45;
+}
+.unsent116Date{
+  display:block;
+  margin-top:8px;
+  color:#64748b;
+  font-size:13px;
+}
+.unsent116Breath{
+  width:112px;
+  height:112px;
+  border-radius:50%;
+  margin:20px auto;
+  background:radial-gradient(circle,#ffffff,#fbcfe8);
+  box-shadow:0 18px 48px rgba(236,72,153,.18);
+  animation:unsent116Breath 7s infinite ease-in-out;
+}
+@keyframes unsent116Breath{
+  0%{transform:scale(1);opacity:.82;}
+  50%{transform:scale(1.18);opacity:1;}
+  100%{transform:scale(1);opacity:.82;}
+}
+
 </style>
 
 <style id="v48premium">
@@ -3272,6 +3431,10 @@ text-align:center;
 
 <button class="action" onclick="openLifeLineV115()" style="grid-column:1/3;background:#e0f2fe;font-weight:bold;">
       <span>🧵</span>Tu línea de vida emocional
+    </button>
+
+<button class="action" onclick="openUnsentLetterV116()" style="grid-column:1/3;background:#fce7f3;font-weight:bold;">
+      <span>💌</span>Carta que nunca enviaste
     </button>
 
 
@@ -11594,6 +11757,191 @@ function saveSeedTextV77(){
     var seal=byId('lifeLineSealV115');
     if(seal) seal.innerHTML='🧵 Hito guardado. Tu historia sumó otro punto.';
   };
+})();
+</script>
+
+
+<!-- V116 - Carta que nunca enviaste -->
+<div id="unsentLetterScreenV116" class="fullscreen unsent116Wrap">
+  <div class="unsent116Header">
+    <button class="softButton" onclick="closeUnsentLetterV116()">← Volver</button>
+    <div class="unsent116Orb">💌</div>
+    <h2>Carta que nunca enviaste</h2>
+    <div class="unsent116Phrase">
+      Hay cosas que no necesitan ser enviadas para poder salir de adentro.
+    </div>
+  </div>
+
+  <div class="unsent116Card">
+    <strong>Elegí hacia dónde va esta carta</strong>
+    <p class="unsent116Small">No hace falta escribir perfecto. Puede ser una frase, un enojo, una despedida o algo que necesitabas decir.</p>
+    <div class="unsent116ChoiceGrid" id="unsent116Choices"></div>
+  </div>
+
+  <div class="unsent116Card">
+    <div class="unsent116Prompt" id="unsent116Prompt">
+      Escribí lo que quedó guardado en vos.
+    </div>
+    <textarea id="unsent116Text" class="unsent116Text" placeholder="Hoy necesito decir..."></textarea>
+    <div class="unsent116Actions">
+      <button class="unsent116Button" onclick="clearUnsentLetterV116()">Vaciar</button>
+      <button class="unsent116Button primary" onclick="saveUnsentLetterV116()">Guardar carta</button>
+    </div>
+    <div id="unsent116Seal" class="unsent116Seal" style="display:none;"></div>
+  </div>
+
+  <div class="unsent116Card">
+    <strong>Después de escribir</strong>
+    <div class="unsent116Breath"></div>
+    <p class="unsent116Small">
+      Respirá una vez. La carta no obliga a actuar. Solo te permite escuchar algo que estaba haciendo peso.
+    </p>
+  </div>
+
+  <div class="unsent116Card">
+    <strong>Cartas guardadas</strong>
+    <div id="unsent116History"></div>
+  </div>
+</div>
+
+
+<script>
+/* V116 - Carta que nunca enviaste */
+(function(){
+  var selectedV116='alguien';
+
+  var choicesV116=[
+    {id:'alguien',emoji:'🫂',label:'A alguien',prompt:'Escribí lo que necesitabas decirle a esa persona, aunque no lo envíes.'},
+    {id:'yo',emoji:'🪞',label:'A mí',prompt:'Escribite con honestidad. No para juzgarte, sino para escucharte.'},
+    {id:'pasado',emoji:'🌫️',label:'Al pasado',prompt:'Decile algo a una etapa que dolió, cansó o todavía pesa.'},
+    {id:'vida',emoji:'🌊',label:'A la vida',prompt:'Soltá una pregunta, una queja, un deseo o una verdad que venías cargando.'}
+  ];
+
+  function q116(id){ return document.getElementById(id); }
+
+  function escapeV116(text){
+    return String(text||'').replace(/[&<>"']/g,function(c){
+      return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c];
+    });
+  }
+
+  function shortV116(text,max){
+    text=String(text||'').trim();
+    return text.length>max ? text.slice(0,max-1)+'…' : text;
+  }
+
+  function getLettersV116(){
+    try{ return JSON.parse(localStorage.getItem('unsentLettersV116')||'[]'); }
+    catch(e){ return []; }
+  }
+
+  function setLettersV116(items){
+    localStorage.setItem('unsentLettersV116',JSON.stringify(items||[]));
+  }
+
+  function currentChoiceV116(){
+    return choicesV116.filter(function(c){return c.id===selectedV116;})[0] || choicesV116[0];
+  }
+
+  window.openUnsentLetterV116=function(){
+    var screen=q116('unsentLetterScreenV116');
+    if(screen) screen.style.display='block';
+    renderChoicesV116();
+    renderPromptV116();
+    renderHistoryV116();
+    var seal=q116('unsent116Seal');
+    if(seal) seal.style.display='none';
+  };
+
+  window.closeUnsentLetterV116=function(){
+    var screen=q116('unsentLetterScreenV116');
+    if(screen) screen.style.display='none';
+  };
+
+  window.selectUnsentLetterTypeV116=function(id){
+    selectedV116=id;
+    renderChoicesV116();
+    renderPromptV116();
+  };
+
+  function renderChoicesV116(){
+    var box=q116('unsent116Choices');
+    if(!box) return;
+    box.innerHTML=choicesV116.map(function(c){
+      return '<button class="unsent116Choice '+(c.id===selectedV116?'selected116':'')+'" onclick="selectUnsentLetterTypeV116(\''+c.id+'\')">'+
+        '<div style="font-size:26px;margin-bottom:4px;">'+c.emoji+'</div>'+escapeV116(c.label)+
+      '</button>';
+    }).join('');
+  }
+
+  function renderPromptV116(){
+    var prompt=q116('unsent116Prompt');
+    var choice=currentChoiceV116();
+    if(prompt) prompt.innerHTML=choice.emoji+' '+escapeV116(choice.prompt);
+  }
+
+  window.clearUnsentLetterV116=function(){
+    var text=q116('unsent116Text');
+    var seal=q116('unsent116Seal');
+    if(text) text.value='';
+    if(seal) seal.style.display='none';
+  };
+
+  window.saveUnsentLetterV116=function(){
+    var area=q116('unsent116Text');
+    var seal=q116('unsent116Seal');
+    var value=area ? area.value.trim() : '';
+    if(!value){
+      if(seal){
+        seal.style.display='block';
+        seal.innerHTML='🕯️ Podés guardar incluso una sola frase. No hace falta escribir todo hoy.';
+      }
+      return;
+    }
+
+    var choice=currentChoiceV116();
+    var letters=getLettersV116();
+    letters.unshift({
+      text:value,
+      type:choice.id,
+      label:choice.label,
+      emoji:choice.emoji,
+      date:new Date().toLocaleDateString('es-ES',{day:'2-digit',month:'2-digit',year:'numeric'})
+    });
+    setLettersV116(letters.slice(0,40));
+
+    if(area) area.value='';
+    if(seal){
+      seal.style.display='block';
+      seal.innerHTML='💌 Carta guardada. No tuviste que enviarla para que algo de eso dejara de estar tan encerrado.';
+    }
+    renderHistoryV116();
+  };
+
+  window.deleteUnsentLetterV116=function(index){
+    var letters=getLettersV116();
+    letters.splice(index,1);
+    setLettersV116(letters);
+    renderHistoryV116();
+  };
+
+  function renderHistoryV116(){
+    var box=q116('unsent116History');
+    if(!box) return;
+    var letters=getLettersV116();
+    if(!letters.length){
+      box.innerHTML='<p class="unsent116Small">Todavía no hay cartas guardadas. Cuando escribas una, quedará acá como una forma de descarga.</p>';
+      return;
+    }
+    box.innerHTML=letters.slice(0,12).map(function(item,index){
+      return '<div class="unsent116HistoryItem">'+
+        '<strong>'+escapeV116((item.emoji||'💌')+' '+(item.label||'Carta'))+'</strong>'+
+        '<p>'+escapeV116(shortV116(item.text,220))+'</p>'+
+        '<span class="unsent116Date">'+escapeV116(item.date||'')+'</span>'+
+        '<button class="unsent116Button" style="margin-top:10px;" onclick="deleteUnsentLetterV116('+index+')">Borrar</button>'+
+      '</div>';
+    }).join('');
+  }
 })();
 </script>
 
