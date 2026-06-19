@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
-<title>App Emocional V121</title>
+<title>App Emocional V122</title>
 
 <style>
 body {
@@ -12936,6 +12936,32 @@ document.addEventListener('DOMContentLoaded',function(){
 })();
 </script>
 
+
+<script>
+(function(){
+if(window.openEmergencyBoxV122)return;
+window.openEmergencyBoxV122=function(){
+ let items=JSON.parse(localStorage.getItem('v122_box')||'[]');
+ let txt=prompt('📦 Caja de Emergencia Emocional\n\nEscribe un recuerdo, frase o motivo para seguir adelante.\n\nDeja vacío para solo ver la caja.');
+ if(txt && txt.trim()){
+   items.unshift(txt.trim());
+   localStorage.setItem('v122_box',JSON.stringify(items.slice(0,30)));
+ }
+ items=JSON.parse(localStorage.getItem('v122_box')||'[]');
+ alert('📦 Tu Caja de Emergencia\n\n'+(items.length?items.map((x,i)=>'• '+x).join('\n\n'):'Aún está vacía. Guarda tu primer recuerdo importante.'));
+};
+document.addEventListener('DOMContentLoaded',function(){
+ var a=document.querySelector('.actions');
+ if(a){
+  var b=document.createElement('button');
+  b.className='action';
+  b.innerHTML='<span>📦</span>Caja de emergencia';
+  b.onclick=openEmergencyBoxV122;
+  a.appendChild(b);
+ }
+});
+})();
+</script>
 </body>
 
 <script id="v57_2_final_diary_fix">
@@ -14697,5 +14723,31 @@ document.addEventListener('DOMContentLoaded',function(){
 })();
 </script>
 
+
+<script>
+(function(){
+if(window.openEmergencyBoxV122)return;
+window.openEmergencyBoxV122=function(){
+ let items=JSON.parse(localStorage.getItem('v122_box')||'[]');
+ let txt=prompt('📦 Caja de Emergencia Emocional\n\nEscribe un recuerdo, frase o motivo para seguir adelante.\n\nDeja vacío para solo ver la caja.');
+ if(txt && txt.trim()){
+   items.unshift(txt.trim());
+   localStorage.setItem('v122_box',JSON.stringify(items.slice(0,30)));
+ }
+ items=JSON.parse(localStorage.getItem('v122_box')||'[]');
+ alert('📦 Tu Caja de Emergencia\n\n'+(items.length?items.map((x,i)=>'• '+x).join('\n\n'):'Aún está vacía. Guarda tu primer recuerdo importante.'));
+};
+document.addEventListener('DOMContentLoaded',function(){
+ var a=document.querySelector('.actions');
+ if(a){
+  var b=document.createElement('button');
+  b.className='action';
+  b.innerHTML='<span>📦</span>Caja de emergencia';
+  b.onclick=openEmergencyBoxV122;
+  a.appendChild(b);
+ }
+});
+})();
+</script>
 </body>
 </html>
