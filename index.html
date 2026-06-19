@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
-<title>App Emocional V123</title>
+<title>App Emocional V125</title>
 
 <style>
 body {
@@ -13171,6 +13171,235 @@ document.addEventListener("DOMContentLoaded",function(){
 })();
 </script>
 
+
+<!-- V125 - Plan de 10 minutos -->
+<style>
+.planV125Overlay{
+  display:none;
+  position:fixed;
+  inset:0;
+  z-index:10002;
+  background:linear-gradient(180deg,#e0f2fe,#f8fafc);
+  padding:24px;
+  box-sizing:border-box;
+  overflow:auto;
+}
+.planV125Box{
+  max-width:420px;
+  margin:0 auto;
+  background:rgba(255,255,255,.93);
+  border-radius:30px;
+  padding:22px;
+  box-shadow:0 20px 42px rgba(0,0,0,.12);
+  color:#1f2937;
+}
+.planV125Orb{
+  width:146px;
+  height:146px;
+  border-radius:50%;
+  margin:18px auto;
+  background:radial-gradient(circle,#ffffff,#7dd3fc);
+  box-shadow:0 22px 60px rgba(14,165,233,.25);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:54px;
+  animation:planPulseV125 7s infinite ease-in-out;
+}
+@keyframes planPulseV125{
+  0%{transform:scale(1);opacity:.86;}
+  50%{transform:scale(1.1);opacity:1;}
+  100%{transform:scale(1);opacity:.86;}
+}
+.planV125Intro{
+  text-align:center;
+  line-height:1.45;
+  color:#475569;
+  margin-bottom:16px;
+}
+.planV125Step{
+  background:rgba(248,250,252,.96);
+  border-radius:20px;
+  padding:14px;
+  margin:10px 0;
+  line-height:1.45;
+  box-shadow:0 8px 18px rgba(0,0,0,.04);
+}
+.planV125Step strong{
+  display:block;
+  margin-bottom:4px;
+}
+.planV125Active{
+  background:linear-gradient(135deg,rgba(224,242,254,.98),rgba(220,252,231,.92));
+  border:1px solid rgba(14,165,233,.18);
+}
+.planV125Timer{
+  font-size:52px;
+  font-weight:750;
+  text-align:center;
+  margin:18px 0 8px;
+  color:#0284c7;
+}
+.planV125Phrase{
+  text-align:center;
+  font-size:20px;
+  font-weight:650;
+  line-height:1.4;
+  background:rgba(224,242,254,.72);
+  border-radius:20px;
+  padding:14px;
+  margin:14px 0;
+}
+.planV125Buttons{
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:center;
+  gap:8px;
+  margin-top:14px;
+}
+.planV125Btn{
+  border:none;
+  border-radius:17px;
+  padding:12px 14px;
+  background:white;
+  font-size:15px;
+  box-shadow:0 7px 18px rgba(0,0,0,.05);
+}
+.planV125Btn.primary{
+  background:#0ea5e9;
+  color:white;
+}
+</style>
+
+<div id="planV125Overlay" class="planV125Overlay">
+  <div class="planV125Box">
+    <div class="planV125Orb">⏱️</div>
+    <h2 style="text-align:center;margin:8px 0 6px;">Plan de 10 minutos</h2>
+    <div class="planV125Intro">
+      Para cuando no sabés por dónde empezar. No exige resolver todo: sólo atravesar los próximos minutos.
+    </div>
+
+    <div id="planV125Timer" class="planV125Timer">10:00</div>
+    <div id="planV125Phrase" class="planV125Phrase">Empezá suave. No tenés que poder con todo ahora.</div>
+
+    <div id="planV125Step0" class="planV125Step planV125Active">
+      <strong>Minuto 1-2 · Bajar intensidad</strong>
+      Apoyá los pies. Soltá la mandíbula. Respiración lenta.
+    </div>
+    <div id="planV125Step1" class="planV125Step">
+      <strong>Minuto 3-4 · Cuerpo presente</strong>
+      Tomá agua o lavate la cara. Una acción simple y física.
+    </div>
+    <div id="planV125Step2" class="planV125Step">
+      <strong>Minuto 5-6 · Orden mínimo</strong>
+      Mirá alrededor y nombrá 3 cosas que ves.
+    </div>
+    <div id="planV125Step3" class="planV125Step">
+      <strong>Minuto 7-8 · Contacto</strong>
+      Pensá en una persona segura. Podés escribirle sólo: “¿estás?”.
+    </div>
+    <div id="planV125Step4" class="planV125Step">
+      <strong>Minuto 9-10 · Próximo paso</strong>
+      Elegí una sola cosa pequeña para después de cerrar esta pantalla.
+    </div>
+
+    <div class="planV125Buttons">
+      <button class="planV125Btn primary" onclick="startPlanV125()">Iniciar</button>
+      <button class="planV125Btn" onclick="pausePlanV125()">Pausar</button>
+      <button class="planV125Btn" onclick="resetPlanV125()">Reiniciar</button>
+      <button class="planV125Btn" onclick="closePlanV125()">Cerrar</button>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  if(window.openPlanV125)return;
+
+  var totalV125 = 600;
+  var leftV125 = 600;
+  var timerV125 = null;
+
+  var phrasesV125 = [
+    "Empezá suave. No tenés que poder con todo ahora.",
+    "Tu cuerpo está acá. Volvé a lo simple.",
+    "No estás buscando perfección. Sólo un poco de aire.",
+    "Una señal mínima también cuenta.",
+    "Cuando esto termine, elegí sólo el próximo paso."
+  ];
+
+  function renderPlanV125(){
+    var m = Math.floor(leftV125/60);
+    var s = leftV125%60;
+    var t = document.getElementById("planV125Timer");
+    if(t){ t.textContent = String(m).padStart(2,"0") + ":" + String(s).padStart(2,"0"); }
+
+    var elapsed = totalV125 - leftV125;
+    var step = Math.min(4, Math.floor(elapsed / 120));
+    for(var i=0;i<5;i++){
+      var el = document.getElementById("planV125Step"+i);
+      if(el){ el.classList.toggle("planV125Active", i===step); }
+    }
+    var phrase = document.getElementById("planV125Phrase");
+    if(phrase){ phrase.textContent = phrasesV125[step] || phrasesV125[0]; }
+  }
+
+  window.openPlanV125=function(){
+    var overlay = document.getElementById("planV125Overlay");
+    if(overlay){ overlay.style.display="block"; }
+    renderPlanV125();
+  };
+
+  window.closePlanV125=function(){
+    pausePlanV125();
+    var overlay = document.getElementById("planV125Overlay");
+    if(overlay){ overlay.style.display="none"; }
+  };
+
+  window.startPlanV125=function(){
+    if(timerV125)return;
+    timerV125 = setInterval(function(){
+      leftV125 = Math.max(0,leftV125-1);
+      renderPlanV125();
+      if(leftV125<=0){
+        pausePlanV125();
+        var phrase = document.getElementById("planV125Phrase");
+        if(phrase){ phrase.textContent="Terminaste el tramo. No fue todo el camino, pero fue un paso."; }
+        try{
+          localStorage.setItem("planV125LastCompleted", new Date().toISOString());
+        }catch(e){}
+      }
+    },1000);
+  };
+
+  window.pausePlanV125=function(){
+    if(timerV125){
+      clearInterval(timerV125);
+      timerV125=null;
+    }
+  };
+
+  window.resetPlanV125=function(){
+    pausePlanV125();
+    leftV125=600;
+    renderPlanV125();
+  };
+
+  document.addEventListener("DOMContentLoaded",function(){
+    var actions=document.querySelector(".actions");
+    if(actions && !document.getElementById("btnPlanV125")){
+      var b=document.createElement("button");
+      b.id="btnPlanV125";
+      b.className="action";
+      b.innerHTML="<span>⏱️</span>Plan 10 minutos";
+      b.onclick=openPlanV125;
+      actions.appendChild(b);
+    }
+    renderPlanV125();
+  });
+})();
+</script>
+
 </body>
 
 <script id="v57_2_final_diary_fix">
@@ -15164,6 +15393,235 @@ document.addEventListener("DOMContentLoaded",function(){
       actions.appendChild(b);
    }
  });
+})();
+</script>
+
+
+<!-- V125 - Plan de 10 minutos -->
+<style>
+.planV125Overlay{
+  display:none;
+  position:fixed;
+  inset:0;
+  z-index:10002;
+  background:linear-gradient(180deg,#e0f2fe,#f8fafc);
+  padding:24px;
+  box-sizing:border-box;
+  overflow:auto;
+}
+.planV125Box{
+  max-width:420px;
+  margin:0 auto;
+  background:rgba(255,255,255,.93);
+  border-radius:30px;
+  padding:22px;
+  box-shadow:0 20px 42px rgba(0,0,0,.12);
+  color:#1f2937;
+}
+.planV125Orb{
+  width:146px;
+  height:146px;
+  border-radius:50%;
+  margin:18px auto;
+  background:radial-gradient(circle,#ffffff,#7dd3fc);
+  box-shadow:0 22px 60px rgba(14,165,233,.25);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:54px;
+  animation:planPulseV125 7s infinite ease-in-out;
+}
+@keyframes planPulseV125{
+  0%{transform:scale(1);opacity:.86;}
+  50%{transform:scale(1.1);opacity:1;}
+  100%{transform:scale(1);opacity:.86;}
+}
+.planV125Intro{
+  text-align:center;
+  line-height:1.45;
+  color:#475569;
+  margin-bottom:16px;
+}
+.planV125Step{
+  background:rgba(248,250,252,.96);
+  border-radius:20px;
+  padding:14px;
+  margin:10px 0;
+  line-height:1.45;
+  box-shadow:0 8px 18px rgba(0,0,0,.04);
+}
+.planV125Step strong{
+  display:block;
+  margin-bottom:4px;
+}
+.planV125Active{
+  background:linear-gradient(135deg,rgba(224,242,254,.98),rgba(220,252,231,.92));
+  border:1px solid rgba(14,165,233,.18);
+}
+.planV125Timer{
+  font-size:52px;
+  font-weight:750;
+  text-align:center;
+  margin:18px 0 8px;
+  color:#0284c7;
+}
+.planV125Phrase{
+  text-align:center;
+  font-size:20px;
+  font-weight:650;
+  line-height:1.4;
+  background:rgba(224,242,254,.72);
+  border-radius:20px;
+  padding:14px;
+  margin:14px 0;
+}
+.planV125Buttons{
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:center;
+  gap:8px;
+  margin-top:14px;
+}
+.planV125Btn{
+  border:none;
+  border-radius:17px;
+  padding:12px 14px;
+  background:white;
+  font-size:15px;
+  box-shadow:0 7px 18px rgba(0,0,0,.05);
+}
+.planV125Btn.primary{
+  background:#0ea5e9;
+  color:white;
+}
+</style>
+
+<div id="planV125Overlay" class="planV125Overlay">
+  <div class="planV125Box">
+    <div class="planV125Orb">⏱️</div>
+    <h2 style="text-align:center;margin:8px 0 6px;">Plan de 10 minutos</h2>
+    <div class="planV125Intro">
+      Para cuando no sabés por dónde empezar. No exige resolver todo: sólo atravesar los próximos minutos.
+    </div>
+
+    <div id="planV125Timer" class="planV125Timer">10:00</div>
+    <div id="planV125Phrase" class="planV125Phrase">Empezá suave. No tenés que poder con todo ahora.</div>
+
+    <div id="planV125Step0" class="planV125Step planV125Active">
+      <strong>Minuto 1-2 · Bajar intensidad</strong>
+      Apoyá los pies. Soltá la mandíbula. Respiración lenta.
+    </div>
+    <div id="planV125Step1" class="planV125Step">
+      <strong>Minuto 3-4 · Cuerpo presente</strong>
+      Tomá agua o lavate la cara. Una acción simple y física.
+    </div>
+    <div id="planV125Step2" class="planV125Step">
+      <strong>Minuto 5-6 · Orden mínimo</strong>
+      Mirá alrededor y nombrá 3 cosas que ves.
+    </div>
+    <div id="planV125Step3" class="planV125Step">
+      <strong>Minuto 7-8 · Contacto</strong>
+      Pensá en una persona segura. Podés escribirle sólo: “¿estás?”.
+    </div>
+    <div id="planV125Step4" class="planV125Step">
+      <strong>Minuto 9-10 · Próximo paso</strong>
+      Elegí una sola cosa pequeña para después de cerrar esta pantalla.
+    </div>
+
+    <div class="planV125Buttons">
+      <button class="planV125Btn primary" onclick="startPlanV125()">Iniciar</button>
+      <button class="planV125Btn" onclick="pausePlanV125()">Pausar</button>
+      <button class="planV125Btn" onclick="resetPlanV125()">Reiniciar</button>
+      <button class="planV125Btn" onclick="closePlanV125()">Cerrar</button>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  if(window.openPlanV125)return;
+
+  var totalV125 = 600;
+  var leftV125 = 600;
+  var timerV125 = null;
+
+  var phrasesV125 = [
+    "Empezá suave. No tenés que poder con todo ahora.",
+    "Tu cuerpo está acá. Volvé a lo simple.",
+    "No estás buscando perfección. Sólo un poco de aire.",
+    "Una señal mínima también cuenta.",
+    "Cuando esto termine, elegí sólo el próximo paso."
+  ];
+
+  function renderPlanV125(){
+    var m = Math.floor(leftV125/60);
+    var s = leftV125%60;
+    var t = document.getElementById("planV125Timer");
+    if(t){ t.textContent = String(m).padStart(2,"0") + ":" + String(s).padStart(2,"0"); }
+
+    var elapsed = totalV125 - leftV125;
+    var step = Math.min(4, Math.floor(elapsed / 120));
+    for(var i=0;i<5;i++){
+      var el = document.getElementById("planV125Step"+i);
+      if(el){ el.classList.toggle("planV125Active", i===step); }
+    }
+    var phrase = document.getElementById("planV125Phrase");
+    if(phrase){ phrase.textContent = phrasesV125[step] || phrasesV125[0]; }
+  }
+
+  window.openPlanV125=function(){
+    var overlay = document.getElementById("planV125Overlay");
+    if(overlay){ overlay.style.display="block"; }
+    renderPlanV125();
+  };
+
+  window.closePlanV125=function(){
+    pausePlanV125();
+    var overlay = document.getElementById("planV125Overlay");
+    if(overlay){ overlay.style.display="none"; }
+  };
+
+  window.startPlanV125=function(){
+    if(timerV125)return;
+    timerV125 = setInterval(function(){
+      leftV125 = Math.max(0,leftV125-1);
+      renderPlanV125();
+      if(leftV125<=0){
+        pausePlanV125();
+        var phrase = document.getElementById("planV125Phrase");
+        if(phrase){ phrase.textContent="Terminaste el tramo. No fue todo el camino, pero fue un paso."; }
+        try{
+          localStorage.setItem("planV125LastCompleted", new Date().toISOString());
+        }catch(e){}
+      }
+    },1000);
+  };
+
+  window.pausePlanV125=function(){
+    if(timerV125){
+      clearInterval(timerV125);
+      timerV125=null;
+    }
+  };
+
+  window.resetPlanV125=function(){
+    pausePlanV125();
+    leftV125=600;
+    renderPlanV125();
+  };
+
+  document.addEventListener("DOMContentLoaded",function(){
+    var actions=document.querySelector(".actions");
+    if(actions && !document.getElementById("btnPlanV125")){
+      var b=document.createElement("button");
+      b.id="btnPlanV125";
+      b.className="action";
+      b.innerHTML="<span>⏱️</span>Plan 10 minutos";
+      b.onclick=openPlanV125;
+      actions.appendChild(b);
+    }
+    renderPlanV125();
+  });
 })();
 </script>
 
