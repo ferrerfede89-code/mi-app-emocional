@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
-<title>App Emocional V122</title>
+<title>App Emocional V123</title>
 
 <style>
 body {
@@ -12962,6 +12962,168 @@ document.addEventListener('DOMContentLoaded',function(){
 });
 })();
 </script>
+
+<!-- V123 - Faro de 3 minutos -->
+<style>
+.lighthouseV123Overlay{
+  display:none;
+  position:fixed;
+  inset:0;
+  z-index:10000;
+  padding:26px;
+  box-sizing:border-box;
+  overflow:auto;
+  background:linear-gradient(180deg,rgba(219,234,254,.98),rgba(240,253,244,.98));
+}
+.lighthouseV123Box{
+  max-width:390px;
+  margin:0 auto;
+  background:rgba(255,255,255,.86);
+  border-radius:30px;
+  padding:24px;
+  box-shadow:0 20px 45px rgba(0,0,0,.12);
+  text-align:center;
+  color:#1f2937;
+}
+.lighthouseV123Orb{
+  width:155px;
+  height:155px;
+  border-radius:50%;
+  margin:22px auto;
+  background:radial-gradient(circle,#ffffff,#93c5fd 45%,#facc15);
+  box-shadow:0 24px 70px rgba(59,130,246,.26),0 0 45px rgba(250,204,21,.22);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:58px;
+  animation:lighthousePulseV123 6s infinite ease-in-out;
+}
+@keyframes lighthousePulseV123{
+  0%{transform:scale(1);opacity:.86;filter:brightness(1);}
+  50%{transform:scale(1.12);opacity:1;filter:brightness(1.1);}
+  100%{transform:scale(1);opacity:.86;filter:brightness(1);}
+}
+.lighthouseV123Step{
+  background:rgba(255,255,255,.82);
+  border-radius:22px;
+  padding:16px;
+  margin:14px 0;
+  line-height:1.5;
+  text-align:left;
+  box-shadow:0 10px 25px rgba(0,0,0,.06);
+}
+.lighthouseV123Phrase{
+  font-size:21px;
+  font-weight:650;
+  line-height:1.45;
+  padding:18px;
+  border-radius:22px;
+  background:linear-gradient(135deg,rgba(224,242,254,.95),rgba(254,249,195,.86));
+  margin:16px 0;
+}
+.lighthouseV123Buttons{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+  margin-top:14px;
+}
+.lighthouseV123Btn{
+  border:none;
+  border-radius:18px;
+  padding:14px 12px;
+  font-size:15px;
+  background:rgba(255,255,255,.95);
+  box-shadow:0 8px 20px rgba(0,0,0,.06);
+}
+.lighthouseV123Small{
+  font-size:15px;
+  color:#64748b;
+  line-height:1.45;
+}
+</style>
+
+<div id="lighthouseV123Overlay" class="lighthouseV123Overlay">
+  <div class="lighthouseV123Box">
+    <div style="font-size:15px;color:#64748b;margin-bottom:8px;">V123 · Faro de 3 minutos</div>
+    <h2 style="margin:6px 0 10px;">Un faro cuando todo se siente mucho</h2>
+    <div class="lighthouseV123Orb">🕯️</div>
+    <div id="lighthouseV123Text" class="lighthouseV123Phrase">
+      No tenés que resolver toda tu vida ahora. Solo quedarte acá tres minutos.
+    </div>
+    <div class="lighthouseV123Step" id="lighthouseV123Step">
+      <strong>Paso 1</strong><br>
+      Apoyá los pies. Sentí el peso del cuerpo. Mirá un punto fijo.
+    </div>
+    <div class="lighthouseV123Buttons">
+      <button class="lighthouseV123Btn" onclick="nextLighthouseV123()">Siguiente luz</button>
+      <button class="lighthouseV123Btn" onclick="closeLighthouseV123()">Volver</button>
+    </div>
+    <p class="lighthouseV123Small">Esto no reemplaza ayuda profesional. Es una pausa de acompañamiento inmediato.</p>
+  </div>
+</div>
+
+<script>
+(function(){
+if(window.openLighthouseV123)return;
+
+var lighthouseStepV123=0;
+var lighthouseDataV123=[
+  {
+    phrase:"No tenés que resolver toda tu vida ahora. Solo quedarte acá tres minutos.",
+    step:"<strong>Paso 1</strong><br>Apoyá los pies. Sentí el peso del cuerpo. Mirá un punto fijo."
+  },
+  {
+    phrase:"Tu respiración puede ser una cuerda suave para volver.",
+    step:"<strong>Paso 2</strong><br>Inhalá lento contando 4. Exhalá contando 6. Repetilo tres veces."
+  },
+  {
+    phrase:"Lo que sentís es intenso, pero no tiene que decidir por vos.",
+    step:"<strong>Paso 3</strong><br>Nombrá en voz baja: una cosa que ves, una que escuchás y una que tocás."
+  },
+  {
+    phrase:"No estás obligado a poder con todo. Solo a dar el próximo paso pequeño.",
+    step:"<strong>Paso 4</strong><br>Elegí una acción mínima: tomar agua, sentarte, escribir a alguien o cerrar los ojos un minuto."
+  }
+];
+
+window.openLighthouseV123=function(){
+  lighthouseStepV123=0;
+  renderLighthouseV123();
+  var el=document.getElementById("lighthouseV123Overlay");
+  if(el)el.style.display="block";
+};
+
+window.closeLighthouseV123=function(){
+  var el=document.getElementById("lighthouseV123Overlay");
+  if(el)el.style.display="none";
+};
+
+window.nextLighthouseV123=function(){
+  lighthouseStepV123=(lighthouseStepV123+1)%lighthouseDataV123.length;
+  renderLighthouseV123();
+};
+
+function renderLighthouseV123(){
+  var p=document.getElementById("lighthouseV123Text");
+  var s=document.getElementById("lighthouseV123Step");
+  if(p)p.innerHTML=lighthouseDataV123[lighthouseStepV123].phrase;
+  if(s)s.innerHTML=lighthouseDataV123[lighthouseStepV123].step;
+}
+
+document.addEventListener("DOMContentLoaded",function(){
+  var actions=document.querySelector(".actions");
+  if(actions && !document.getElementById("btnLighthouseV123")){
+    var b=document.createElement("button");
+    b.id="btnLighthouseV123";
+    b.className="action";
+    b.innerHTML="<span>🕯️</span>Faro de 3 minutos";
+    b.onclick=openLighthouseV123;
+    actions.appendChild(b);
+  }
+});
+})();
+</script>
+
 </body>
 
 <script id="v57_2_final_diary_fix">
@@ -14749,5 +14911,167 @@ document.addEventListener('DOMContentLoaded',function(){
 });
 })();
 </script>
+
+<!-- V123 - Faro de 3 minutos -->
+<style>
+.lighthouseV123Overlay{
+  display:none;
+  position:fixed;
+  inset:0;
+  z-index:10000;
+  padding:26px;
+  box-sizing:border-box;
+  overflow:auto;
+  background:linear-gradient(180deg,rgba(219,234,254,.98),rgba(240,253,244,.98));
+}
+.lighthouseV123Box{
+  max-width:390px;
+  margin:0 auto;
+  background:rgba(255,255,255,.86);
+  border-radius:30px;
+  padding:24px;
+  box-shadow:0 20px 45px rgba(0,0,0,.12);
+  text-align:center;
+  color:#1f2937;
+}
+.lighthouseV123Orb{
+  width:155px;
+  height:155px;
+  border-radius:50%;
+  margin:22px auto;
+  background:radial-gradient(circle,#ffffff,#93c5fd 45%,#facc15);
+  box-shadow:0 24px 70px rgba(59,130,246,.26),0 0 45px rgba(250,204,21,.22);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:58px;
+  animation:lighthousePulseV123 6s infinite ease-in-out;
+}
+@keyframes lighthousePulseV123{
+  0%{transform:scale(1);opacity:.86;filter:brightness(1);}
+  50%{transform:scale(1.12);opacity:1;filter:brightness(1.1);}
+  100%{transform:scale(1);opacity:.86;filter:brightness(1);}
+}
+.lighthouseV123Step{
+  background:rgba(255,255,255,.82);
+  border-radius:22px;
+  padding:16px;
+  margin:14px 0;
+  line-height:1.5;
+  text-align:left;
+  box-shadow:0 10px 25px rgba(0,0,0,.06);
+}
+.lighthouseV123Phrase{
+  font-size:21px;
+  font-weight:650;
+  line-height:1.45;
+  padding:18px;
+  border-radius:22px;
+  background:linear-gradient(135deg,rgba(224,242,254,.95),rgba(254,249,195,.86));
+  margin:16px 0;
+}
+.lighthouseV123Buttons{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+  margin-top:14px;
+}
+.lighthouseV123Btn{
+  border:none;
+  border-radius:18px;
+  padding:14px 12px;
+  font-size:15px;
+  background:rgba(255,255,255,.95);
+  box-shadow:0 8px 20px rgba(0,0,0,.06);
+}
+.lighthouseV123Small{
+  font-size:15px;
+  color:#64748b;
+  line-height:1.45;
+}
+</style>
+
+<div id="lighthouseV123Overlay" class="lighthouseV123Overlay">
+  <div class="lighthouseV123Box">
+    <div style="font-size:15px;color:#64748b;margin-bottom:8px;">V123 · Faro de 3 minutos</div>
+    <h2 style="margin:6px 0 10px;">Un faro cuando todo se siente mucho</h2>
+    <div class="lighthouseV123Orb">🕯️</div>
+    <div id="lighthouseV123Text" class="lighthouseV123Phrase">
+      No tenés que resolver toda tu vida ahora. Solo quedarte acá tres minutos.
+    </div>
+    <div class="lighthouseV123Step" id="lighthouseV123Step">
+      <strong>Paso 1</strong><br>
+      Apoyá los pies. Sentí el peso del cuerpo. Mirá un punto fijo.
+    </div>
+    <div class="lighthouseV123Buttons">
+      <button class="lighthouseV123Btn" onclick="nextLighthouseV123()">Siguiente luz</button>
+      <button class="lighthouseV123Btn" onclick="closeLighthouseV123()">Volver</button>
+    </div>
+    <p class="lighthouseV123Small">Esto no reemplaza ayuda profesional. Es una pausa de acompañamiento inmediato.</p>
+  </div>
+</div>
+
+<script>
+(function(){
+if(window.openLighthouseV123)return;
+
+var lighthouseStepV123=0;
+var lighthouseDataV123=[
+  {
+    phrase:"No tenés que resolver toda tu vida ahora. Solo quedarte acá tres minutos.",
+    step:"<strong>Paso 1</strong><br>Apoyá los pies. Sentí el peso del cuerpo. Mirá un punto fijo."
+  },
+  {
+    phrase:"Tu respiración puede ser una cuerda suave para volver.",
+    step:"<strong>Paso 2</strong><br>Inhalá lento contando 4. Exhalá contando 6. Repetilo tres veces."
+  },
+  {
+    phrase:"Lo que sentís es intenso, pero no tiene que decidir por vos.",
+    step:"<strong>Paso 3</strong><br>Nombrá en voz baja: una cosa que ves, una que escuchás y una que tocás."
+  },
+  {
+    phrase:"No estás obligado a poder con todo. Solo a dar el próximo paso pequeño.",
+    step:"<strong>Paso 4</strong><br>Elegí una acción mínima: tomar agua, sentarte, escribir a alguien o cerrar los ojos un minuto."
+  }
+];
+
+window.openLighthouseV123=function(){
+  lighthouseStepV123=0;
+  renderLighthouseV123();
+  var el=document.getElementById("lighthouseV123Overlay");
+  if(el)el.style.display="block";
+};
+
+window.closeLighthouseV123=function(){
+  var el=document.getElementById("lighthouseV123Overlay");
+  if(el)el.style.display="none";
+};
+
+window.nextLighthouseV123=function(){
+  lighthouseStepV123=(lighthouseStepV123+1)%lighthouseDataV123.length;
+  renderLighthouseV123();
+};
+
+function renderLighthouseV123(){
+  var p=document.getElementById("lighthouseV123Text");
+  var s=document.getElementById("lighthouseV123Step");
+  if(p)p.innerHTML=lighthouseDataV123[lighthouseStepV123].phrase;
+  if(s)s.innerHTML=lighthouseDataV123[lighthouseStepV123].step;
+}
+
+document.addEventListener("DOMContentLoaded",function(){
+  var actions=document.querySelector(".actions");
+  if(actions && !document.getElementById("btnLighthouseV123")){
+    var b=document.createElement("button");
+    b.id="btnLighthouseV123";
+    b.className="action";
+    b.innerHTML="<span>🕯️</span>Faro de 3 minutos";
+    b.onclick=openLighthouseV123;
+    actions.appendChild(b);
+  }
+});
+})();
+</script>
+
 </body>
 </html>
