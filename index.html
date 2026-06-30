@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
-<title>App Emocional V126</title>
+<title>App Emocional V127</title>
 
 <style>
 body {
@@ -13486,13 +13486,6 @@ function refreshClimateV126(){ renderClimateV126(climateDataV126[Math.floor(Math
 function closeClimateV126(){ document.getElementById('climateV126Overlay').style.display='none'; }
 </script>
 
-
-<!-- V127 - Faro de continuidad -->
-<div id="v127_marker" style="display:none">V127 - Faro de continuidad emocional incorporado</div>
-<script>
-window.appVersion="V127";
-</script>
-
 </body>
 
 <script id="v57_2_final_diary_fix">
@@ -15714,6 +15707,196 @@ document.addEventListener("DOMContentLoaded",function(){
       actions.appendChild(b);
     }
     renderPlanV125();
+  });
+})();
+</script>
+
+
+
+<!-- V127 - Faro de continuidad -->
+<style id="v127-faro-continuidad-style">
+.continuityV127Overlay{
+  display:none;
+  position:fixed;
+  inset:0;
+  z-index:10050;
+  padding:28px;
+  box-sizing:border-box;
+  overflow:auto;
+  background:linear-gradient(180deg,rgba(15,23,42,.88),rgba(14,165,233,.42));
+}
+.continuityV127Box{
+  max-width:420px;
+  margin:0 auto;
+  background:rgba(255,255,255,.94);
+  border-radius:30px;
+  padding:22px;
+  box-shadow:0 22px 54px rgba(15,23,42,.24);
+  color:#1f2937;
+}
+.continuityV127Orb{
+  width:154px;
+  height:154px;
+  border-radius:50%;
+  margin:18px auto;
+  background:radial-gradient(circle,#ffffff,#bae6fd 45%,#0ea5e9);
+  box-shadow:0 22px 70px rgba(14,165,233,.32),0 0 36px rgba(255,255,255,.35);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:58px;
+  animation:continuityPulseV127 7s infinite ease-in-out;
+}
+@keyframes continuityPulseV127{
+  0%{transform:scale(1);opacity:.86;filter:brightness(1);}
+  50%{transform:scale(1.12);opacity:1;filter:brightness(1.08);}
+  100%{transform:scale(1);opacity:.86;filter:brightness(1);}
+}
+.continuityV127Intro{
+  text-align:center;
+  line-height:1.48;
+  color:#475569;
+  margin:8px 0 16px;
+}
+.continuityV127Signal{
+  background:linear-gradient(135deg,rgba(224,242,254,.98),rgba(240,253,244,.92));
+  border-radius:22px;
+  padding:16px;
+  margin:14px 0;
+  font-size:19px;
+  font-weight:650;
+  line-height:1.45;
+  text-align:center;
+}
+.continuityV127Card{
+  background:rgba(248,250,252,.96);
+  border-radius:20px;
+  padding:14px;
+  margin:10px 0;
+  line-height:1.45;
+  box-shadow:0 8px 18px rgba(0,0,0,.04);
+}
+.continuityV127Card strong{display:block;margin-bottom:5px;}
+.continuityV127Grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+  margin:14px 0;
+}
+.continuityV127Btn{
+  border:none;
+  border-radius:18px;
+  padding:13px 14px;
+  background:white;
+  font-size:15px;
+  box-shadow:0 8px 20px rgba(0,0,0,.06);
+}
+.continuityV127Btn.primary{
+  background:#0ea5e9;
+  color:white;
+}
+.continuityV127Small{
+  font-size:15px;
+  color:#64748b;
+  line-height:1.45;
+  text-align:center;
+}
+</style>
+
+<div id="continuityV127Overlay" class="continuityV127Overlay">
+  <div class="continuityV127Box">
+    <div style="font-size:15px;color:#64748b;margin-bottom:8px;text-align:center;">V127 · Faro de continuidad</div>
+    <div class="continuityV127Orb">🕯️</div>
+    <h2 style="text-align:center;margin:8px 0 6px;">Faro de continuidad</h2>
+    <div class="continuityV127Intro">
+      Una pantalla para recordar que tu proceso no empieza de cero cada vez que abrís la app. Hay señales, pasos y pequeños registros que ya vienen acompañándote.
+    </div>
+    <div id="continuityV127Signal" class="continuityV127Signal">Cargando una señal suave...</div>
+    <div id="continuityV127Cards"></div>
+    <div class="continuityV127Grid">
+      <button class="continuityV127Btn primary" onclick="refreshContinuityV127()">Nueva señal</button>
+      <button class="continuityV127Btn" onclick="saveContinuityV127()">Guardar faro</button>
+      <button class="continuityV127Btn" onclick="openPlanV125 && openPlanV125()">Plan 10 minutos</button>
+      <button class="continuityV127Btn" onclick="closeContinuityV127()">Volver</button>
+    </div>
+    <div class="continuityV127Small">No mide rendimiento. Sólo reúne pequeñas pruebas de continuidad emocional.</div>
+  </div>
+</div>
+
+<script id="v127-faro-continuidad-script">
+(function(){
+  if(window.openContinuityV127)return;
+
+  var signalsV127 = [
+    "No estás empezando desde cero. Algo de vos ya sabe volver.",
+    "Aunque hoy sea poco, la continuidad también puede ser suave.",
+    "Tu avance no desaparece cuando aparece un día difícil.",
+    "Hay partes de vos que aprendieron a pedir aire antes de romperse.",
+    "Un paso pequeño sostenido vale más que una exigencia imposible.",
+    "Volver a abrir esta app ya es una forma de cuidarte."
+  ];
+
+  function getCountV127(key){
+    try{
+      var value = localStorage.getItem(key);
+      if(!value)return 0;
+      var parsed = JSON.parse(value);
+      if(Array.isArray(parsed))return parsed.length;
+      if(typeof parsed==='object')return Object.keys(parsed).length;
+      return 1;
+    }catch(e){ return localStorage.getItem(key) ? 1 : 0; }
+  }
+
+  function buildCardsV127(){
+    var diary = getCountV127('diaryEntries');
+    var treasures = getCountV127('treasuresV81');
+    var ceremonies = getCountV127('ceremonyHistoryV93');
+    var planDone = localStorage.getItem('planV125LastCompleted') ? 'Sí' : 'Aún no';
+    return [
+      {icon:'📓',title:'Registros guardados',text: diary ? diary + ' momentos escritos en tu diario emocional.' : 'Todavía podés escribir un primer registro cuando lo necesites.'},
+      {icon:'💎',title:'Tesoros recuperados',text: treasures ? treasures + ' tesoros aparecen como recordatorio interno.' : 'Tu próximo tesoro puede ser algo simple que antes te sostuvo.'},
+      {icon:'🕯️',title:'Ceremonias realizadas',text: ceremonies ? ceremonies + ' rituales personales quedaron guardados.' : 'Un pequeño cierre también puede ordenar el día.'},
+      {icon:'⏱️',title:'Plan de emergencia suave',text: planDone==='Sí' ? 'Ya completaste alguna vez el plan de 10 minutos.' : 'Disponible para cuando necesites atravesar sólo los próximos minutos.'}
+    ];
+  }
+
+  function renderContinuityV127(){
+    var signal = document.getElementById('continuityV127Signal');
+    if(signal){ signal.textContent = signalsV127[Math.floor(Math.random()*signalsV127.length)]; }
+    var cards = document.getElementById('continuityV127Cards');
+    if(cards){
+      cards.innerHTML = buildCardsV127().map(function(c){
+        return '<div class="continuityV127Card"><strong>'+c.icon+' '+c.title+'</strong>'+c.text+'</div>';
+      }).join('');
+    }
+  }
+
+  window.openContinuityV127=function(){
+    renderContinuityV127();
+    var overlay=document.getElementById('continuityV127Overlay');
+    if(overlay){overlay.style.display='block';}
+  };
+  window.closeContinuityV127=function(){
+    var overlay=document.getElementById('continuityV127Overlay');
+    if(overlay){overlay.style.display='none';}
+  };
+  window.refreshContinuityV127=function(){renderContinuityV127();};
+  window.saveContinuityV127=function(){
+    try{localStorage.setItem('continuityV127LastSaved', new Date().toISOString());}catch(e){}
+    var signal=document.getElementById('continuityV127Signal');
+    if(signal){signal.textContent='Faro guardado. Hoy no tuviste que resolver todo para seguir.';}
+  };
+
+  document.addEventListener('DOMContentLoaded',function(){
+    var actions=document.querySelector('.actions');
+    if(actions && !document.getElementById('btnContinuityV127')){
+      var b=document.createElement('button');
+      b.id='btnContinuityV127';
+      b.className='action';
+      b.innerHTML='<span>🕯️</span>Faro de continuidad';
+      b.onclick=window.openContinuityV127;
+      actions.appendChild(b);
+    }
   });
 })();
 </script>
