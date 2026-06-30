@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
-<title>App Emocional V128</title>
+<title>App Emocional V129</title>
 
 <style>
 body {
@@ -16030,6 +16030,302 @@ document.addEventListener("DOMContentLoaded",function(){
       b.className='action';
       b.innerHTML='<span>🕯️</span>Faro de continuidad';
       b.onclick=window.openContinuityV127;
+      actions.appendChild(b);
+    }
+  });
+})();
+</script>
+
+
+
+<!-- V129 - Plan de emergencia emocional -->
+<style id="v129-plan-emergencia-style">
+.emergencyV129Overlay{
+  display:none;
+  position:fixed;
+  inset:0;
+  z-index:99999;
+  background:linear-gradient(180deg,#fee2e2,#fff7ed 55%,#f8fafc);
+  color:#1f2937;
+  overflow:auto;
+  padding:24px;
+  box-sizing:border-box;
+}
+.emergencyV129Box{
+  max-width:390px;
+  margin:0 auto;
+  text-align:center;
+}
+.emergencyV129Orb{
+  width:145px;
+  height:145px;
+  border-radius:50%;
+  margin:18px auto;
+  background:radial-gradient(circle,#ffffff,#fb7185);
+  box-shadow:0 22px 60px rgba(244,63,94,.24);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:56px;
+  animation:emergencyV129Pulse 7s infinite ease-in-out;
+}
+@keyframes emergencyV129Pulse{
+  0%{transform:scale(1);opacity:.86;}
+  50%{transform:scale(1.10);opacity:1;}
+  100%{transform:scale(1);opacity:.86;}
+}
+.emergencyV129Card{
+  background:rgba(255,255,255,.90);
+  border-radius:24px;
+  padding:17px;
+  margin:13px 0;
+  line-height:1.5;
+  text-align:left;
+  box-shadow:0 12px 30px rgba(0,0,0,.07);
+}
+.emergencyV129Card.center{text-align:center;}
+.emergencyV129Input,
+.emergencyV129Area{
+  width:100%;
+  box-sizing:border-box;
+  border:none;
+  border-radius:18px;
+  padding:13px 14px;
+  margin:7px 0;
+  font-size:15px;
+  background:rgba(255,255,255,.96);
+  color:#1f2937;
+  box-shadow:inset 0 0 0 1px rgba(148,163,184,.18);
+}
+.emergencyV129Area{min-height:78px;resize:vertical;}
+.emergencyV129Grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+  margin:12px 0;
+}
+.emergencyV129Btn{
+  border:none;
+  border-radius:18px;
+  padding:13px 12px;
+  font-size:15px;
+  background:white;
+  color:#1f2937;
+  box-shadow:0 8px 20px rgba(0,0,0,.06);
+}
+.emergencyV129Btn.primary{
+  background:#fb7185;
+  color:white;
+  font-weight:700;
+}
+.emergencyV129Btn.dark{
+  background:#1f2937;
+  color:white;
+}
+.emergencyV129Step{
+  background:linear-gradient(135deg,rgba(255,241,242,.96),rgba(255,247,237,.90));
+  border-radius:20px;
+  padding:14px;
+  margin:10px 0;
+  line-height:1.45;
+}
+.emergencyV129Step strong{display:block;margin-bottom:4px;}
+.emergencyV129Small{
+  font-size:14px;
+  color:#64748b;
+  line-height:1.45;
+}
+.emergencyV129Saved{
+  min-height:20px;
+  color:#be123c;
+  font-weight:650;
+  font-size:15px;
+  margin-top:8px;
+}
+</style>
+
+<div id="emergencyV129Overlay" class="emergencyV129Overlay">
+  <div class="emergencyV129Box">
+    <button class="emergencyV129Btn" onclick="closeEmergencyV129()">← Volver</button>
+    <div style="font-size:15px;color:#64748b;margin-top:12px;">V129 · Plan de emergencia emocional</div>
+    <div class="emergencyV129Orb">🛟</div>
+    <h2 style="margin:8px 0 6px;">Plan de emergencia emocional</h2>
+    <p class="emergencyV129Small">Para momentos difíciles: una guía preparada de antemano, simple y rápida.</p>
+
+    <div id="emergencyV129Setup">
+      <div class="emergencyV129Card">
+        <strong>1. Persona de confianza</strong>
+        <input id="emergencyV129Person" class="emergencyV129Input" placeholder="Nombre o vínculo: mamá, amigo, pareja...">
+        <input id="emergencyV129Contact" class="emergencyV129Input" placeholder="Teléfono, WhatsApp o forma de contacto">
+      </div>
+      <div class="emergencyV129Card">
+        <strong>2. Mensaje listo para enviar</strong>
+        <textarea id="emergencyV129Message" class="emergencyV129Area" placeholder="Ej: Estoy teniendo un momento difícil. ¿Podés quedarte cerca o hablar conmigo un rato?"></textarea>
+      </div>
+      <div class="emergencyV129Card">
+        <strong>3. Cosas que suelen ayudarme</strong>
+        <textarea id="emergencyV129Helps" class="emergencyV129Area" placeholder="Ej: tomar agua, ducharme, respirar, caminar 5 minutos, acostarme sin celular..."></textarea>
+      </div>
+      <div class="emergencyV129Card">
+        <strong>4. Recordatorio personal</strong>
+        <textarea id="emergencyV129Reminder" class="emergencyV129Area" placeholder="Ej: Esto ya pasó otras veces. No tengo que decidir nada definitivo ahora."></textarea>
+      </div>
+      <div class="emergencyV129Grid">
+        <button class="emergencyV129Btn primary" onclick="saveEmergencyV129()">Guardar plan</button>
+        <button class="emergencyV129Btn dark" onclick="activateEmergencyV129()">Activar ahora</button>
+      </div>
+      <div id="emergencyV129Saved" class="emergencyV129Saved"></div>
+    </div>
+
+    <div id="emergencyV129Active" style="display:none;">
+      <div class="emergencyV129Card center">
+        <strong>Ahora no tenés que resolver tu vida.</strong><br>
+        Sólo vamos a atravesar los próximos minutos.
+      </div>
+      <div id="emergencyV129Steps"></div>
+      <div class="emergencyV129Grid">
+        <button class="emergencyV129Btn primary" onclick="copyEmergencyMessageV129()">Copiar mensaje</button>
+        <button class="emergencyV129Btn" onclick="openRestV128 && openRestV128()">Descanso rápido</button>
+        <button class="emergencyV129Btn" onclick="openPlanV125 && openPlanV125()">Plan 10 minutos</button>
+        <button class="emergencyV129Btn" onclick="showEmergencySetupV129()">Editar plan</button>
+      </div>
+      <p id="emergencyV129Copy" class="emergencyV129Small"></p>
+      <div class="emergencyV129Card">
+        <strong>Nota importante</strong><br>
+        Si sentís que hay peligro inmediato para vos o para otra persona, buscá ayuda urgente con emergencias locales o una persona cercana. Esta app acompaña, pero no reemplaza ayuda humana/profesional.
+      </div>
+    </div>
+  </div>
+</div>
+
+<script id="v129-plan-emergencia-script">
+(function(){
+  if(window.openEmergencyV129)return;
+
+  var keyV129='emergencyPlanV129';
+
+  function elV129(id){return document.getElementById(id);}
+
+  function defaultPlanV129(){
+    return {
+      person:'',
+      contact:'',
+      message:'Estoy teniendo un momento difícil. ¿Podés hablar conmigo o quedarte cerca un rato?',
+      helps:'Tomar agua. Respirar lento. Sentarme con los pies en el piso. Bajar la luz. No tomar decisiones definitivas ahora.',
+      reminder:'Esto es un momento, no toda mi vida. No tengo que poder con todo ahora.'
+    };
+  }
+
+  function loadPlanV129(){
+    try{
+      var raw=localStorage.getItem(keyV129);
+      if(raw){return Object.assign(defaultPlanV129(),JSON.parse(raw));}
+    }catch(e){}
+    return defaultPlanV129();
+  }
+
+  function fillSetupV129(){
+    var p=loadPlanV129();
+    if(elV129('emergencyV129Person'))elV129('emergencyV129Person').value=p.person||'';
+    if(elV129('emergencyV129Contact'))elV129('emergencyV129Contact').value=p.contact||'';
+    if(elV129('emergencyV129Message'))elV129('emergencyV129Message').value=p.message||'';
+    if(elV129('emergencyV129Helps'))elV129('emergencyV129Helps').value=p.helps||'';
+    if(elV129('emergencyV129Reminder'))elV129('emergencyV129Reminder').value=p.reminder||'';
+  }
+
+  function currentPlanV129(){
+    return {
+      person:(elV129('emergencyV129Person')||{}).value||'',
+      contact:(elV129('emergencyV129Contact')||{}).value||'',
+      message:(elV129('emergencyV129Message')||{}).value||defaultPlanV129().message,
+      helps:(elV129('emergencyV129Helps')||{}).value||defaultPlanV129().helps,
+      reminder:(elV129('emergencyV129Reminder')||{}).value||defaultPlanV129().reminder
+    };
+  }
+
+  function savePlanObjectV129(p){
+    try{localStorage.setItem(keyV129,JSON.stringify(p));}catch(e){}
+  }
+
+  function splitHelpV129(txt){
+    return String(txt||'').split(/[\.\n;]/).map(function(x){return x.trim();}).filter(Boolean).slice(0,5);
+  }
+
+  function renderActiveV129(){
+    var p=loadPlanV129();
+    var contactLine=p.person ? p.person : 'una persona de confianza';
+    if(p.contact){contactLine += ' · ' + p.contact;}
+    var helps=splitHelpV129(p.helps);
+    if(!helps.length){helps=splitHelpV129(defaultPlanV129().helps);}
+    var helpHtml=helps.map(function(h,i){return '<div class="emergencyV129Step"><strong>'+(i+1)+'. '+h+'</strong>Hacelo simple. No hace falta hacerlo perfecto.</div>';}).join('');
+    var html=''
+      +'<div class="emergencyV129Step"><strong>Primero: bajá la velocidad</strong>Apoyá los pies. Aflojá la mandíbula. Exhalá lento tres veces.</div>'
+      +'<div class="emergencyV129Step"><strong>Después: contacto</strong>Tu persona elegida: '+contactLine+'.</div>'
+      +'<div class="emergencyV129Step"><strong>Mensaje preparado</strong>'+escapeHtmlV129(p.message||defaultPlanV129().message)+'</div>'
+      +helpHtml
+      +'<div class="emergencyV129Step"><strong>Recordatorio</strong>'+escapeHtmlV129(p.reminder||defaultPlanV129().reminder)+'</div>';
+    if(elV129('emergencyV129Steps'))elV129('emergencyV129Steps').innerHTML=html;
+  }
+
+  function escapeHtmlV129(str){
+    return String(str).replace(/[&<>"']/g,function(m){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m];});
+  }
+
+  window.openEmergencyV129=function(){
+    fillSetupV129();
+    var overlay=elV129('emergencyV129Overlay');
+    if(overlay)overlay.style.display='block';
+    window.showEmergencySetupV129();
+  };
+
+  window.closeEmergencyV129=function(){
+    var overlay=elV129('emergencyV129Overlay');
+    if(overlay)overlay.style.display='none';
+  };
+
+  window.saveEmergencyV129=function(){
+    savePlanObjectV129(currentPlanV129());
+    var msg=elV129('emergencyV129Saved');
+    if(msg)msg.textContent='Plan guardado. Va a estar disponible cuando lo necesites.';
+  };
+
+  window.activateEmergencyV129=function(){
+    savePlanObjectV129(currentPlanV129());
+    renderActiveV129();
+    if(elV129('emergencyV129Setup'))elV129('emergencyV129Setup').style.display='none';
+    if(elV129('emergencyV129Active'))elV129('emergencyV129Active').style.display='block';
+    try{localStorage.setItem('emergencyV129LastActivated',new Date().toISOString());}catch(e){}
+  };
+
+  window.showEmergencySetupV129=function(){
+    fillSetupV129();
+    if(elV129('emergencyV129Active'))elV129('emergencyV129Active').style.display='none';
+    if(elV129('emergencyV129Setup'))elV129('emergencyV129Setup').style.display='block';
+    if(elV129('emergencyV129Saved'))elV129('emergencyV129Saved').textContent='';
+  };
+
+  window.copyEmergencyMessageV129=function(){
+    var p=loadPlanV129();
+    var text=p.message||defaultPlanV129().message;
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(text).then(function(){
+        if(elV129('emergencyV129Copy'))elV129('emergencyV129Copy').textContent='Mensaje copiado. Podés pegarlo en WhatsApp o donde necesites.';
+      }).catch(function(){
+        if(elV129('emergencyV129Copy'))elV129('emergencyV129Copy').textContent='Mensaje: '+text;
+      });
+    }else{
+      if(elV129('emergencyV129Copy'))elV129('emergencyV129Copy').textContent='Mensaje: '+text;
+    }
+  };
+
+  document.addEventListener('DOMContentLoaded',function(){
+    var actions=document.querySelector('.actions');
+    if(actions && !document.getElementById('btnEmergencyV129')){
+      var b=document.createElement('button');
+      b.id='btnEmergencyV129';
+      b.className='action';
+      b.innerHTML='<span>🛟</span>Plan emergencia';
+      b.onclick=window.openEmergencyV129;
       actions.appendChild(b);
     }
   });
