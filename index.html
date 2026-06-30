@@ -13400,6 +13400,44 @@ document.addEventListener("DOMContentLoaded",function(){
 })();
 </script>
 
+
+
+<!-- ========================= -->
+<!-- V126 - Clima Interior -->
+<!-- ========================= -->
+<style>
+.climateCardV126{
+  background:rgba(255,255,255,.92);
+  border-radius:24px;
+  padding:18px;
+  margin:14px 0;
+  line-height:1.55;
+  box-shadow:0 12px 30px rgba(0,0,0,.08);
+}
+.climateOrbV126{
+  width:150px;height:150px;border-radius:50%;
+  margin:24px auto;
+  display:flex;align-items:center;justify-content:center;
+  font-size:64px;
+  background:radial-gradient(circle,#ffffff,#bae6fd);
+}
+</style>
+
+<script>
+const climatesV126=[
+ {emoji:"☀️",title:"Cielo despejado",text:"Hoy parece haber algo más de claridad disponible."},
+ {emoji:"🌤️",title:"Nubes suaves",text:"Hay movimiento emocional, pero también espacio para respirar."},
+ {emoji:"🌧️",title:"Lluvia tranquila",text:"Tal vez vienen siendo días exigentes. Sigue siendo un clima transitorio."},
+ {emoji:"🌩️",title:"Tormenta",text:"Puede estar siendo mucho. No tenés que atravesarlo todo solo."},
+ {emoji:"🌅",title:"Amanecer",text:"Algo empieza a cambiar aunque todavía sea pequeño."},
+ {emoji:"🌌",title:"Noche serena",text:"Quizás el cuerpo y la mente están pidiendo descanso."}
+];
+function openClimateV126(){
+ const c=climatesV126[Math.floor(Math.random()*climatesV126.length)];
+ alert(c.emoji+" "+c.title+"\n\n"+c.text);
+}
+</script>
+
 </body>
 
 <script id="v57_2_final_diary_fix">
