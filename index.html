@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
-<title>App Emocional V127</title>
+<title>App Emocional V128</title>
 
 <style>
 body {
@@ -3402,6 +3402,59 @@ input, textarea, select {
 }
 .achievementsV120Button.primary{background:#fde68a;}
 .achievementsV120Small{font-size:13px;color:rgba(255,255,255,.72);line-height:1.45;}
+
+
+
+/* V128 - Modo descanso rápido - liviano */
+.restV128Orb{
+  width:150px;
+  height:150px;
+  border-radius:50%;
+  margin:24px auto;
+  background:radial-gradient(circle,#ffffff,#bfdbfe);
+  box-shadow:0 22px 56px rgba(59,130,246,.22);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:56px;
+  animation:restV128Pulse 9s infinite ease-in-out;
+}
+@keyframes restV128Pulse{
+  0%{transform:scale(1);opacity:.86;}
+  50%{transform:scale(1.12);opacity:1;}
+  100%{transform:scale(1);opacity:.86;}
+}
+.restV128Card{
+  background:rgba(255,255,255,.92);
+  border-radius:24px;
+  padding:18px;
+  margin:14px 0;
+  line-height:1.55;
+  text-align:left;
+  box-shadow:0 12px 28px rgba(0,0,0,.07);
+}
+.restV128Phrase{
+  font-size:22px;
+  font-weight:650;
+  line-height:1.45;
+  text-align:center;
+  padding:18px;
+  border-radius:22px;
+  background:rgba(239,246,255,.96);
+  margin:16px 0;
+}
+.restV128Step{
+  background:rgba(255,255,255,.86);
+  border-radius:18px;
+  padding:13px 14px;
+  margin:10px 0;
+  line-height:1.45;
+}
+.restV128Small{
+  font-size:15px;
+  color:#64748b;
+  line-height:1.45;
+}
 
 </style>
 
@@ -13486,6 +13539,62 @@ function refreshClimateV126(){ renderClimateV126(climateDataV126[Math.floor(Math
 function closeClimateV126(){ document.getElementById('climateV126Overlay').style.display='none'; }
 </script>
 
+
+
+<script id="v128-modo-descanso-rapido-script">
+(function(){
+  if(window.openRestV128)return;
+
+  var phrasesV128=[
+    "No tenés que resolver todo ahora.",
+    "Por unos segundos, sólo importan tu aire y tu cuerpo.",
+    "Podés descansar sin justificarte.",
+    "Hoy también cuenta bajar un poco la exigencia.",
+    "No estás fallando: estás necesitando pausa.",
+    "Un descanso pequeño también puede sostenerte."
+  ];
+
+  function pickRestPhraseV128(){
+    var phrase=document.getElementById('restV128Phrase');
+    if(phrase){phrase.textContent=phrasesV128[Math.floor(Math.random()*phrasesV128.length)];}
+  }
+
+  window.openRestV128=function(){
+    pickRestPhraseV128();
+    var saved=document.getElementById('restV128Saved');
+    if(saved){saved.textContent='';}
+    var overlay=document.getElementById('restV128Overlay');
+    if(overlay){overlay.style.display='block';}
+  };
+  window.closeRestV128=function(){
+    var overlay=document.getElementById('restV128Overlay');
+    if(overlay){overlay.style.display='none';}
+  };
+  window.refreshRestV128=function(){pickRestPhraseV128();};
+  window.saveRestV128=function(){
+    try{
+      var list=JSON.parse(localStorage.getItem('restV128History')||'[]');
+      list.push({date:new Date().toISOString(),phrase:(document.getElementById('restV128Phrase')||{}).textContent||''});
+      localStorage.setItem('restV128History',JSON.stringify(list));
+    }catch(e){}
+    var saved=document.getElementById('restV128Saved');
+    if(saved){saved.textContent='Descanso guardado. No hizo falta hacer más que esto.';}
+  };
+
+  document.addEventListener('DOMContentLoaded',function(){
+    var actions=document.querySelector('.actions');
+    if(actions && !document.getElementById('btnRestV128')){
+      var b=document.createElement('button');
+      b.id='btnRestV128';
+      b.className='action';
+      b.innerHTML='<span>🌙</span>Descanso rápido';
+      b.onclick=window.openRestV128;
+      actions.appendChild(b);
+    }
+  });
+})();
+</script>
+
 </body>
 
 <script id="v57_2_final_diary_fix">
@@ -15821,6 +15930,32 @@ document.addEventListener("DOMContentLoaded",function(){
     </div>
     <div class="continuityV127Small">No mide rendimiento. Sólo reúne pequeñas pruebas de continuidad emocional.</div>
   </div>
+</div>
+
+
+
+<!-- V128 - Modo descanso rápido -->
+<div id="restV128Overlay" class="fullscreen" style="background:linear-gradient(180deg,#dbeafe,#f8fafc);color:#1f2937;text-align:center;">
+  <button class="softButton" onclick="closeRestV128()">← Volver</button>
+  <h2>Modo descanso rápido</h2>
+  <p class="small">Para cuando no querés hacer mucho, pero necesitás bajar un cambio.</p>
+
+  <div class="restV128Orb">🌙</div>
+
+  <div id="restV128Phrase" class="restV128Phrase">No tenés que resolver todo ahora.</div>
+
+  <div class="restV128Card">
+    <strong>Hagamos sólo esto:</strong>
+    <div class="restV128Step">1. Aflojá la mandíbula.</div>
+    <div class="restV128Step">2. Bajá un poco los hombros.</div>
+    <div class="restV128Step">3. Inhalá suave.</div>
+    <div class="restV128Step">4. Exhalá más lento de lo que inhalaste.</div>
+  </div>
+
+  <button class="softButton" onclick="refreshRestV128()">Dame otra frase</button>
+  <button class="softButton" onclick="saveRestV128()">Guardar este descanso</button>
+
+  <p id="restV128Saved" class="restV128Small"></p>
 </div>
 
 <script id="v127-faro-continuidad-script">
