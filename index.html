@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
-<title>App Emocional V125</title>
+<title>App Emocional V126</title>
 
 <style>
 body {
@@ -3613,6 +3613,33 @@ input, textarea, select {
 .lifeLineFilterV115{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin:12px 0;}
 .lifeLineFilterV115 button{border:none;border-radius:999px;padding:9px 12px;background:rgba(255,255,255,.9);font-size:14px;}
 </style>
+
+<style id="v126-clima-interior">
+.climateV126Overlay{
+  display:none;position:fixed;inset:0;z-index:9999;
+  padding:28px;box-sizing:border-box;overflow:auto;
+  background:linear-gradient(180deg,#e0f2fe,#f8fafc);
+  color:#1f2937;text-align:center;
+}
+.climateV126Box{
+  max-width:390px;margin:0 auto;background:rgba(255,255,255,.88);
+  border-radius:32px;padding:24px;box-shadow:0 20px 45px rgba(0,0,0,.12);
+}
+.climateV126Orb{
+  width:156px;height:156px;border-radius:50%;margin:24px auto;
+  display:flex;align-items:center;justify-content:center;font-size:64px;
+  background:radial-gradient(circle,#ffffff,#bae6fd);
+  box-shadow:0 22px 64px rgba(59,130,246,.22);
+  animation:climatePulseV126 7s infinite ease-in-out;
+}
+@keyframes climatePulseV126{0%{transform:scale(1);opacity:.86;}50%{transform:scale(1.1);opacity:1;}100%{transform:scale(1);opacity:.86;}}
+.climateV126Title{font-size:24px;font-weight:750;margin:8px 0 12px;}
+.climateV126Text{font-size:18px;line-height:1.5;background:rgba(255,255,255,.76);border-radius:22px;padding:18px;margin:16px 0;}
+.climateV126Small{font-size:15px;color:#64748b;line-height:1.45;}
+.climateV126Btn{border:none;border-radius:18px;padding:13px 16px;font-size:16px;background:white;margin:6px;box-shadow:0 8px 20px rgba(0,0,0,.06);}
+.climateV126Grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px;}
+.climateV126Mini{background:rgba(255,255,255,.74);border-radius:18px;padding:12px;font-size:14px;line-height:1.35;text-align:left;}
+</style>
 </head>
 
 <body>
@@ -3654,7 +3681,7 @@ text-align:center;
 <div class="app" id="appCard">
   <div class="premiumTopV105">
     <div class="premiumBrandV105">App Emocional</div>
-    <div class="premiumBadgeV105">V120 · candidata premium</div>
+    <div class="premiumBadgeV105">V126 · clima interior</div>
   </div>
 
   <div class="premiumHeroV105">
@@ -3676,7 +3703,7 @@ text-align:center;
 
   <div class="premiumQuickV105">
     <button class="premiumChipV105" onclick="openBreathing()"><span>🫁</span>Respirar</button>
-    <button class="premiumChipV105" onclick="openCareCompassV102()"><span>🧭</span>Cuidarme</button>
+    <button class="premiumChipV105" onclick="openClimateV126()"><span>🌦️</span>Clima interior</button>
     <button class="premiumChipV105" onclick="openEnergyLighthouseV104()"><span>🔆</span>Energía</button>
   </div>
 
@@ -3734,6 +3761,9 @@ text-align:center;
     </button>
     <button class="action" onclick="openAtmosphere()">
       <span>🎵</span>Ambiente
+    </button>
+    <button class="action" onclick="openClimateV126()">
+      <span>🌦️</span>Clima interior
     </button>
     <div class="categoryDividerV106">💬 Expresar y registrar <small>para sacar, ordenar o poner en palabras</small></div>
     <button class="action" onclick="openTalk()">
@@ -13402,40 +13432,58 @@ document.addEventListener("DOMContentLoaded",function(){
 
 
 
-<!-- ========================= -->
-<!-- V126 - Clima Interior -->
-<!-- ========================= -->
-<style>
-.climateCardV126{
-  background:rgba(255,255,255,.92);
-  border-radius:24px;
-  padding:18px;
-  margin:14px 0;
-  line-height:1.55;
-  box-shadow:0 12px 30px rgba(0,0,0,.08);
-}
-.climateOrbV126{
-  width:150px;height:150px;border-radius:50%;
-  margin:24px auto;
-  display:flex;align-items:center;justify-content:center;
-  font-size:64px;
-  background:radial-gradient(circle,#ffffff,#bae6fd);
-}
-</style>
+<!-- V126 - Clima interior -->
+<div id="climateV126Overlay" class="climateV126Overlay">
+  <div class="climateV126Box">
+    <div style="font-size:15px;color:#64748b;margin-bottom:8px;">V126 · Clima interior</div>
+    <div class="climateV126Orb" id="climateV126Emoji">🌦️</div>
+    <div class="climateV126Title" id="climateV126Title">Tu clima interior</div>
+    <div class="climateV126Text" id="climateV126Text">No hace falta diagnosticar lo que sentís. Podemos mirarlo como un clima que cambia.</div>
+    <div class="climateV126Small">Una lectura suave del momento emocional. No etiqueta, no juzga: acompaña.</div>
+    <div class="climateV126Grid" id="climateV126Grid"></div>
+    <div style="margin-top:18px;">
+      <button class="climateV126Btn" onclick="refreshClimateV126()">Ver otro clima</button>
+      <button class="climateV126Btn" onclick="closeClimateV126()">Volver</button>
+    </div>
+  </div>
+</div>
 
-<script>
-const climatesV126=[
- {emoji:"☀️",title:"Cielo despejado",text:"Hoy parece haber algo más de claridad disponible."},
- {emoji:"🌤️",title:"Nubes suaves",text:"Hay movimiento emocional, pero también espacio para respirar."},
- {emoji:"🌧️",title:"Lluvia tranquila",text:"Tal vez vienen siendo días exigentes. Sigue siendo un clima transitorio."},
- {emoji:"🌩️",title:"Tormenta",text:"Puede estar siendo mucho. No tenés que atravesarlo todo solo."},
- {emoji:"🌅",title:"Amanecer",text:"Algo empieza a cambiar aunque todavía sea pequeño."},
- {emoji:"🌌",title:"Noche serena",text:"Quizás el cuerpo y la mente están pidiendo descanso."}
+<script id="v126-clima-interior-script">
+const climateDataV126 = [
+  {emoji:'☀️', title:'Cielo despejado', text:'Hoy parece haber algo más de claridad disponible. Aprovechá este momento sin exigirte de más.'},
+  {emoji:'🌤️', title:'Nubes suaves', text:'Hay movimiento emocional, pero también hay espacio para respirar. No todo tiene que estar perfecto.'},
+  {emoji:'🌧️', title:'Lluvia tranquila', text:'Tal vez vienen siendo días exigentes. Sigue siendo un clima transitorio, no una definición de quién sos.'},
+  {emoji:'🌩️', title:'Tormenta', text:'Puede estar siendo mucho. Bajemos la intensidad: una respiración, un vaso de agua, un mensaje a alguien seguro.'},
+  {emoji:'🌅', title:'Amanecer', text:'Algo empieza a cambiar aunque todavía sea pequeño. Lo pequeño también cuenta como avance.'},
+  {emoji:'🌌', title:'Noche serena', text:'Quizás el cuerpo y la mente están pidiendo descanso. No todo se resuelve empujando.'}
 ];
-function openClimateV126(){
- const c=climatesV126[Math.floor(Math.random()*climatesV126.length)];
- alert(c.emoji+" "+c.title+"\n\n"+c.text);
+function pickClimateV126(){
+  try{
+    const moods = JSON.parse(localStorage.getItem('moods') || '{}');
+    const total = (moods.good||0)+(moods.ok||0)+(moods.bad||0)+(moods.bien||0)+(moods.normal||0)+(moods.mal||0);
+    const good = (moods.good||0)+(moods.bien||0);
+    const bad = (moods.bad||0)+(moods.mal||0);
+    if(total>0){
+      if(bad>=Math.max(3, good+2)) return climateDataV126[3];
+      if(bad>good) return climateDataV126[2];
+      if(good>=bad+2) return climateDataV126[0];
+      return climateDataV126[1];
+    }
+  }catch(e){}
+  return climateDataV126[Math.floor(Math.random()*climateDataV126.length)];
 }
+function renderClimateV126(c){
+  document.getElementById('climateV126Emoji').textContent = c.emoji;
+  document.getElementById('climateV126Title').textContent = c.title;
+  document.getElementById('climateV126Text').textContent = c.text;
+  document.getElementById('climateV126Grid').innerHTML = climateDataV126.map(x => `<div class="climateV126Mini"><strong>${x.emoji} ${x.title}</strong><br><span>${x.text.split('.')[0]}.</span></div>`).join('');
+}
+function openClimateV126(){
+  renderClimateV126(pickClimateV126());
+  document.getElementById('climateV126Overlay').style.display='block';
+}
+function refreshClimateV126(){ renderClimateV126(climateDataV126[Math.floor(Math.random()*climateDataV126.length)]); }
+function closeClimateV126(){ document.getElementById('climateV126Overlay').style.display='none'; }
 </script>
 
 </body>
