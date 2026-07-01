@@ -16333,5 +16333,167 @@ document.addEventListener("DOMContentLoaded",function(){
 })();
 </script>
 
+
+<!-- ========================= -->
+<!-- V130 - Favoritos emocionales visibles -->
+<!-- ========================= -->
+<style>
+.favV130Orb{
+  width:155px;height:155px;border-radius:50%;margin:24px auto;
+  background:radial-gradient(circle,#ffffff,#fde68a 42%,#f9a8d4);
+  box-shadow:0 22px 64px rgba(249,168,212,.28);
+  display:flex;align-items:center;justify-content:center;font-size:58px;
+  animation:favV130Pulse 7s infinite ease-in-out;
+}
+@keyframes favV130Pulse{
+  0%{transform:scale(1);opacity:.86;}
+  50%{transform:scale(1.1);opacity:1;}
+  100%{transform:scale(1);opacity:.86;}
+}
+.favV130Card{
+  background:rgba(255,255,255,.92);
+  border-radius:24px;
+  padding:18px;
+  margin:14px 0;
+  line-height:1.55;
+  text-align:left;
+  box-shadow:0 12px 30px rgba(0,0,0,.08);
+}
+.favV130Phrase{
+  font-size:21px;
+  font-weight:650;
+  line-height:1.45;
+  text-align:center;
+  padding:18px;
+  border-radius:22px;
+  background:rgba(255,247,237,.96);
+  margin:16px 0;
+}
+.favV130Item{
+  background:linear-gradient(135deg,rgba(255,255,255,.94),rgba(254,249,195,.78));
+  border-radius:20px;
+  padding:14px;
+  margin:10px 0;
+  line-height:1.45;
+}
+.favV130Small{font-size:15px;color:#64748b;line-height:1.45;}
+.favV130Grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px;}
+.favV130Btn{
+  border:none;border-radius:18px;padding:13px 14px;font-size:15px;
+  background:rgba(255,255,255,.92);text-align:left;
+}
+</style>
+
+<div id="emotionalFavoritesScreenV130" class="fullscreen" style="
+background:linear-gradient(180deg,#fff7ed,#fbcfe8);
+display:none;text-align:center;color:#1f2937;
+">
+  <button class="softButton" onclick="closeEmotionalFavoritesV130()">← Volver</button>
+  <h2>Favoritos emocionales</h2>
+  <div class="favV130Orb">⭐</div>
+  <div id="favV130Phrase" class="favV130Phrase">Un lugar para volver a lo que te hizo bien.</div>
+  <div id="favV130Content" class="favV130Card"></div>
+  <div class="favV130Grid">
+    <button class="favV130Btn" onclick="saveQuickFavoriteV130('frase')">⭐ Guardar frase de hoy</button>
+    <button class="favV130Btn" onclick="saveQuickFavoriteV130('calma')">🫁 Guardar calma</button>
+    <button class="favV130Btn" onclick="saveQuickFavoriteV130('luz')">✨ Guardar luz</button>
+    <button class="favV130Btn" onclick="showFavoriteHistoryV130()">📜 Ver historial</button>
+  </div>
+  <textarea id="favV130Text" class="textBox" style="margin-top:16px;" placeholder="Escribí algo que quieras guardar como favorito emocional..."></textarea>
+  <button class="softButton" onclick="saveCustomFavoriteV130()">Guardar favorito</button>
+  <div id="favV130Result" class="favV130Small"></div>
+</div>
+
+<script>
+(function(){
+  function qV130(id){return document.getElementById(id);}
+  function escapeV130(str){
+    return String(str||'').replace(/[&<>"']/g,function(m){
+      return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m];
+    });
+  }
+  function listV130(){
+    try{return JSON.parse(localStorage.getItem('emotionalFavoritesV130')||'[]');}
+    catch(e){return [];}
+  }
+  function saveListV130(list){
+    try{localStorage.setItem('emotionalFavoritesV130',JSON.stringify(list));}catch(e){}
+  }
+  function nowV130(){
+    return new Date().toLocaleDateString()+' '+new Date().toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
+  }
+  function renderV130(){
+    var content=qV130('favV130Content');
+    var phrase=qV130('favV130Phrase');
+    if(!content)return;
+    var list=listV130();
+    if(phrase){
+      phrase.textContent=list.length ? 'Ya hay favoritos guardados para volver cuando lo necesites.' : 'Un lugar para volver a lo que te hizo bien.';
+    }
+    if(!list.length){
+      content.innerHTML='<strong>⭐ Todavía no hay favoritos emocionales.</strong><br><br>Podés guardar una frase, una calma, una luz o cualquier recuerdo pequeño que quieras tener cerca.';
+      return;
+    }
+    var last=list[list.length-1];
+    content.innerHTML='<strong>Último favorito guardado</strong><div class="favV130Item">“'+escapeV130(last.text)+'”<br><span class="favV130Small">'+escapeV130(last.date||'')+'</span></div><div class="favV130Small">Total guardados: '+list.length+'</div>';
+  }
+  window.openEmotionalFavoritesV130=function(){
+    var s=qV130('emotionalFavoritesScreenV130');
+    if(s)s.style.display='block';
+    renderV130();
+    if(navigator.vibrate)navigator.vibrate(35);
+  };
+  window.closeEmotionalFavoritesV130=function(){
+    var s=qV130('emotionalFavoritesScreenV130');
+    if(s)s.style.display='none';
+  };
+  window.saveQuickFavoriteV130=function(kind){
+    var map={
+      frase:'Hoy hubo una frase que merece volver conmigo.',
+      calma:'Pude buscar un poco de calma. Eso también cuenta.',
+      luz:'Hubo una pequeña luz, aunque haya sido mínima.'
+    };
+    var list=listV130();
+    list.push({type:kind,text:map[kind]||map.frase,date:nowV130()});
+    saveListV130(list);
+    var r=qV130('favV130Result');
+    if(r)r.textContent='Favorito guardado.';
+    renderV130();
+  };
+  window.saveCustomFavoriteV130=function(){
+    var input=qV130('favV130Text');
+    var text=input && input.value ? input.value.trim() : '';
+    var r=qV130('favV130Result');
+    if(!text){if(r)r.textContent='Escribí una frase mínima para guardar.';return;}
+    var list=listV130();
+    list.push({type:'propio',text:text,date:nowV130()});
+    saveListV130(list);
+    if(input)input.value='';
+    if(r)r.textContent='Favorito emocional guardado.';
+    renderV130();
+  };
+  window.showFavoriteHistoryV130=function(){
+    var content=qV130('favV130Content');
+    if(!content)return;
+    var list=listV130();
+    if(!list.length){renderV130();return;}
+    content.innerHTML='<strong>📜 Historial de favoritos</strong>'+list.slice().reverse().map(function(x){
+      return '<div class="favV130Item">“'+escapeV130(x.text)+'”<br><span class="favV130Small">'+escapeV130(x.date||'')+'</span></div>';
+    }).join('');
+  };
+  document.addEventListener('DOMContentLoaded',function(){
+    var actions=document.querySelector('.actions');
+    if(actions && !document.getElementById('btnEmotionalFavoritesV130')){
+      var b=document.createElement('button');
+      b.id='btnEmotionalFavoritesV130';
+      b.className='action';
+      b.innerHTML='<span>⭐</span>Favoritos emocionales';
+      b.onclick=window.openEmotionalFavoritesV130;
+      actions.appendChild(b);
+    }
+  });
+})();
+</script>
+
 </body>
 </html>
