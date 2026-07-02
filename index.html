@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
-<title>App Emocional V130</title>
+<title>App Emocional V131</title>
 
 <style>
 body {
@@ -3454,6 +3454,78 @@ input, textarea, select {
   font-size:15px;
   color:#64748b;
   line-height:1.45;
+}
+
+
+/* V131 - Refugio de Crisis Guiado */
+.crisisV131Card{
+  background:rgba(255,255,255,.92);
+  border-radius:24px;
+  padding:18px;
+  margin:14px 0;
+  line-height:1.55;
+  text-align:left;
+  box-shadow:0 12px 30px rgba(0,0,0,.08);
+}
+.crisisV131Orb{
+  width:155px;
+  height:155px;
+  border-radius:50%;
+  margin:24px auto;
+  background:radial-gradient(circle,#ffffff,#93c5fd 48%,#818cf8);
+  box-shadow:0 22px 70px rgba(99,102,241,.28),0 0 42px rgba(147,197,253,.25);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:58px;
+  animation:crisisV131Pulse 7s infinite ease-in-out;
+}
+@keyframes crisisV131Pulse{
+  0%{transform:scale(1);opacity:.86;}
+  50%{transform:scale(1.12);opacity:1;}
+  100%{transform:scale(1);opacity:.86;}
+}
+.crisisV131Phrase{
+  font-size:21px;
+  font-weight:650;
+  line-height:1.45;
+  text-align:center;
+  padding:18px;
+  border-radius:22px;
+  background:rgba(239,246,255,.96);
+  margin:16px 0;
+}
+.crisisV131Step{
+  border:none;
+  border-radius:18px;
+  padding:14px 16px;
+  font-size:16px;
+  background:rgba(255,255,255,.92);
+  margin:7px 0;
+  width:100%;
+  text-align:left;
+}
+.crisisV131Step.done{
+  background:linear-gradient(135deg,rgba(219,234,254,.96),rgba(220,252,231,.88));
+  font-weight:700;
+}
+.crisisV131Small{
+  font-size:15px;
+  color:#64748b;
+  line-height:1.45;
+}
+.crisisV131Result{
+  background:linear-gradient(135deg,rgba(239,246,255,.98),rgba(240,253,244,.90));
+  border-radius:22px;
+  padding:16px;
+  margin:14px 0;
+  line-height:1.5;
+}
+.crisisV131Breath{
+  font-size:42px;
+  font-weight:700;
+  color:#4f46e5;
+  margin:12px 0;
 }
 
 </style>
@@ -13600,23 +13672,144 @@ function closeClimateV126(){ document.getElementById('climateV126Overlay').style
 <!-- ========================= -->
 <!-- V131 - Refugio de Crisis Guiado -->
 <!-- ========================= -->
-<div id="crisisRefugeV131" class="fullscreen" style="background:linear-gradient(180deg,#dbeafe,#eff6ff);text-align:center;">
-<h2>🫂 Refugio de Crisis Guiado</h2>
-<p>No hace falta resolver todo ahora.<br>Tu única tarea durante este momento es permanecer acá.</p>
-<div style="font-size:72px;margin:20px;">🌊</div>
-<p>5 cosas que ves<br>4 cosas que sentís<br>3 sonidos<br>2 olores<br>1 cosa que querés conservar de este momento.</p>
-<button class="softButton" onclick="alert('Respirar también cuenta como avanzar.')">Sí, bajó un poco</button>
-<button class="softButton" onclick="alert('Podemos quedarnos un poco más.')">Sigue igual</button>
-<button class="softButton" onclick="alert('Abrí tu plan de emergencia o la sección conectar.')">Necesito más ayuda</button>
-<br><br>
-<button class="softButton" onclick="document.getElementById('crisisRefugeV131').style.display='none'">Cerrar</button>
+<div id="crisisRefugeScreenV131" class="fullscreen" style="background:linear-gradient(180deg,#dbeafe,#eef2ff);text-align:center;color:#1f2937;">
+  <h2>🫂 Refugio de Crisis Guiado</h2>
+  <p>No hace falta resolver todo ahora.<br>Tu única tarea durante este momento es permanecer acá.</p>
+
+  <div class="crisisV131Orb">🌊</div>
+
+  <div class="crisisV131Phrase" id="crisisV131MainPhrase">
+    Ahora no tenés que poder con todo. Solo vamos a bajar un poco la intensidad.
+  </div>
+
+  <div class="crisisV131Card">
+    <strong>Primer anclaje</strong><br><br>
+    Tocá cada paso despacio. No es un examen. Es una forma de volver al presente.
+  </div>
+
+  <button class="crisisV131Step" onclick="markCrisisStepV131(this,'5 cosas que ves. Mirá alrededor y nombrá cinco elementos simples.')">👀 5 cosas que ves</button>
+  <button class="crisisV131Step" onclick="markCrisisStepV131(this,'4 cosas que sentís físicamente. Pies, manos, ropa, aire, temperatura.')">🤲 4 cosas que sentís</button>
+  <button class="crisisV131Step" onclick="markCrisisStepV131(this,'3 sonidos. Aunque sean pequeños, sirven para volver al ahora.')">👂 3 sonidos</button>
+  <button class="crisisV131Step" onclick="markCrisisStepV131(this,'2 olores. Si no encontrás olores, podés respirar y notar el aire.')">🌿 2 olores</button>
+  <button class="crisisV131Step" onclick="markCrisisStepV131(this,'1 cosa que querés conservar: una palabra, una persona, una razón mínima, una imagen.')">✨ 1 cosa que querés conservar</button>
+
+  <div id="crisisV131Result" class="crisisV131Result">
+    Estoy acá. Esto es un momento, no toda tu vida.
+  </div>
+
+  <div class="crisisV131Card" style="text-align:center;">
+    <strong>Respiración corta</strong>
+    <div id="crisisV131Breath" class="crisisV131Breath">60</div>
+    <button class="softButton" onclick="startCrisisBreathV131()">Iniciar 60 segundos</button>
+  </div>
+
+  <div class="crisisV131Card">
+    <strong>¿La intensidad bajó un poco?</strong><br><br>
+    <button class="softButton" onclick="crisisAnswerV131('bajo')">Sí, un poco</button>
+    <button class="softButton" onclick="crisisAnswerV131('igual')">Sigue igual</button>
+    <button class="softButton" onclick="crisisAnswerV131('ayuda')">Necesito más ayuda</button>
+  </div>
+
+  <div class="crisisV131Card">
+    <strong>Puentes disponibles</strong><br><br>
+    <button class="softButton" onclick="closeCrisisRefugeV131(); if(typeof breathe==='function') breathe();">Respirar</button>
+    <button class="softButton" onclick="closeCrisisRefugeV131(); if(typeof connect==='function') connect();">Conectar</button>
+    <button class="softButton" onclick="closeCrisisRefugeV131(); if(typeof openEmergencyPlanV130==='function') openEmergencyPlanV130();">Plan de emergencia</button>
+  </div>
+
+  <p class="crisisV131Small">Si sentís que estás en peligro inmediato, buscá ayuda real ahora: una persona cercana, emergencias locales o un servicio de crisis.</p>
+
+  <button class="softButton" onclick="closeCrisisRefugeV131()">Cerrar</button>
 </div>
 
+
 <script>
-function openCrisisRefugeV131(){
- document.getElementById('crisisRefugeV131').style.display='block';
- if(navigator.vibrate){navigator.vibrate([80,40,80]);}
-}
+(function(){
+  var crisisTimerV131=null;
+
+  window.openCrisisRefugeV131=function(){
+    var screen=document.getElementById('crisisRefugeScreenV131');
+    if(screen) screen.style.display='block';
+
+    var result=document.getElementById('crisisV131Result');
+    if(result) result.innerHTML='Estoy acá. Esto es un momento, no toda tu vida.';
+
+    var breath=document.getElementById('crisisV131Breath');
+    if(breath) breath.textContent='60';
+
+    document.querySelectorAll('.crisisV131Step.done').forEach(function(btn){
+      btn.classList.remove('done');
+    });
+
+    if(navigator.vibrate) navigator.vibrate([70,35,70]);
+  };
+
+  window.closeCrisisRefugeV131=function(){
+    var screen=document.getElementById('crisisRefugeScreenV131');
+    if(screen) screen.style.display='none';
+    if(crisisTimerV131) clearInterval(crisisTimerV131);
+    crisisTimerV131=null;
+  };
+
+  window.markCrisisStepV131=function(btn,text){
+    if(btn) btn.classList.add('done');
+    var result=document.getElementById('crisisV131Result');
+    if(result) result.innerHTML=text + '<br><br><strong>Bien. No tenés que hacerlo perfecto. Solo seguir un paso más.</strong>';
+    if(navigator.vibrate) navigator.vibrate(35);
+  };
+
+  window.startCrisisBreathV131=function(){
+    var el=document.getElementById('crisisV131Breath');
+    if(!el) return;
+    if(crisisTimerV131) clearInterval(crisisTimerV131);
+
+    var n=60;
+    el.textContent=n;
+    var result=document.getElementById('crisisV131Result');
+    if(result) result.innerHTML='Durante un minuto, no resolvemos. Solo respiramos y esperamos que el cuerpo baje un poco.';
+
+    crisisTimerV131=setInterval(function(){
+      n--;
+      el.textContent=n;
+      if(n<=0){
+        clearInterval(crisisTimerV131);
+        crisisTimerV131=null;
+        el.textContent='✓';
+        if(result) result.innerHTML='Terminaste el minuto. Aunque no haya desaparecido todo, ya atravesaste una parte.';
+        if(navigator.vibrate) navigator.vibrate([80,40,80]);
+      }
+    },1000);
+  };
+
+  window.crisisAnswerV131=function(kind){
+    var result=document.getElementById('crisisV131Result');
+    if(!result) return;
+
+    if(kind==='bajo'){
+      result.innerHTML='Bien. No hace falta que estés perfecto. Que haya bajado un poco ya es una señal de regreso.';
+    }
+    if(kind==='igual'){
+      result.innerHTML='Está bien. Si sigue igual, no estás fallando. Podés repetir el anclaje o iniciar otros 60 segundos.';
+    }
+    if(kind==='ayuda'){
+      result.innerHTML='No tenés que atravesarlo solo. Usá Conectar, el Plan de emergencia o buscá una persona real ahora.';
+    }
+
+    if(navigator.vibrate) navigator.vibrate(45);
+  };
+
+  document.addEventListener('DOMContentLoaded',function(){
+    var actions=document.querySelector('.actions');
+    if(actions && !document.getElementById('btnCrisisRefugeV131')){
+      var b=document.createElement('button');
+      b.id='btnCrisisRefugeV131';
+      b.className='action';
+      b.innerHTML='<span>🫂</span>Refugio de crisis';
+      b.onclick=window.openCrisisRefugeV131;
+      actions.appendChild(b);
+    }
+  });
+})();
 </script>
 
 </body>
