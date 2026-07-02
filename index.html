@@ -3807,7 +3807,7 @@ text-align:center;
 <div class="app" id="appCard">
   <div class="premiumTopV105">
     <div class="premiumBrandV105">App Emocional</div>
-    <div class="premiumBadgeV105">V126 · clima interior</div>
+    <div class="premiumBadgeV105">V132 · después de la tormenta</div>
   </div>
 
   <div class="premiumHeroV105">
@@ -9278,7 +9278,7 @@ function openLibrary(){
  ];
 
  catsBox.innerHTML=cats.map(c=>
-   "<button class=\"softButton\" onclick=\"showLibraryCategory(\'"+c[0]+"\')\">"+c[1]+"</button>"
+   '<button class="softButton" onclick="showLibraryCategory(\\''+c[0]+'\\')">'+c[1]+'</button>'
  ).join(' ');
 
  renderLibraryStatsV592();
@@ -11793,7 +11793,7 @@ function saveSeedTextV77(){
     if(container){
       container.innerHTML=rooms.map(function(r){
         var preview=r.items.length ? shortText(r.items[0],82) : 'Esta sala todavía espera su primera memoria.';
-        return '<button class="museumRoomV111" onclick="openMuseumRoomV111(\\\''+r.id+'\\\')">'+
+        return "<button class="museumRoomV111" onclick="openMuseumRoomV111(\'"+r.id+"\')">"+
           '<span class="museumCountV111">'+r.items.length+'</span>'+
           '<strong>'+r.icon+' '+escapeHtml(r.title)+'</strong><br>'+
           '<span class="museumSmallV111">'+escapeHtml(r.subtitle)+'</span>'+
@@ -16711,21 +16711,28 @@ display:none;text-align:center;color:#1f2937;
 })();
 </script>
 
-<!-- V132 - Kit de primeros 3 minutos emocional -->
-<style id="styleV132">
-.firstAidOrbV132{
-  width:155px;height:155px;border-radius:50%;margin:24px auto;
-  background:radial-gradient(circle,#ffffff,#fca5a5 42%,#60a5fa);
-  box-shadow:0 22px 70px rgba(96,165,250,.24),0 0 42px rgba(252,165,165,.22);
-  display:flex;align-items:center;justify-content:center;font-size:58px;
-  animation:firstAidPulseV132 8s infinite ease-in-out;
+
+<!-- V132 - Después de la tormenta -->
+<style id="styleAfterStormV132">
+.afterStormOrbV132{
+  width:155px;
+  height:155px;
+  border-radius:50%;
+  margin:24px auto;
+  background:radial-gradient(circle,#ffffff,#bae6fd 42%,#fef3c7);
+  box-shadow:0 22px 70px rgba(14,165,233,.24),0 0 42px rgba(254,243,199,.28);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:58px;
+  animation:afterStormPulseV132 8s infinite ease-in-out;
 }
-@keyframes firstAidPulseV132{
+@keyframes afterStormPulseV132{
   0%{transform:scale(1);opacity:.86;}
   50%{transform:scale(1.1);opacity:1;}
   100%{transform:scale(1);opacity:.86;}
 }
-.firstAidCardV132{
+.afterStormCardV132{
   background:rgba(255,255,255,.92);
   border-radius:24px;
   padding:18px;
@@ -16734,17 +16741,17 @@ display:none;text-align:center;color:#1f2937;
   text-align:left;
   box-shadow:0 12px 30px rgba(0,0,0,.08);
 }
-.firstAidPhraseV132{
+.afterStormPhraseV132{
   font-size:21px;
   font-weight:650;
   line-height:1.45;
   text-align:center;
   padding:18px;
   border-radius:22px;
-  background:linear-gradient(135deg,rgba(255,241,242,.96),rgba(219,234,254,.88));
+  background:linear-gradient(135deg,rgba(224,242,254,.96),rgba(254,243,199,.88));
   margin:16px 0;
 }
-.firstAidStepV132{
+.afterStormChoiceV132{
   border:none;
   border-radius:18px;
   padding:14px 16px;
@@ -16755,203 +16762,242 @@ display:none;text-align:center;color:#1f2937;
   text-align:left;
   line-height:1.35;
 }
-.firstAidStepV132.doneV132{
-  background:linear-gradient(135deg,rgba(220,252,231,.98),rgba(219,234,254,.86));
+.afterStormChoiceV132.doneV132{
+  background:linear-gradient(135deg,rgba(220,252,231,.98),rgba(219,234,254,.88));
   font-weight:700;
 }
-.firstAidBreathV132{
-  width:128px;height:128px;border-radius:50%;margin:22px auto;
-  background:radial-gradient(circle,#ffffff,#93c5fd);
-  box-shadow:0 22px 60px rgba(59,130,246,.25);
-  display:flex;align-items:center;justify-content:center;
-  font-size:18px;font-weight:700;color:#1e3a8a;
-  animation:firstAidBreathV132 6s infinite ease-in-out;
+.afterStormResultV132{
+  background:linear-gradient(135deg,rgba(240,253,244,.98),rgba(239,246,255,.92));
+  border-radius:22px;
+  padding:16px;
+  margin:14px 0;
+  line-height:1.5;
 }
-@keyframes firstAidBreathV132{
-  0%{transform:scale(1);}
-  50%{transform:scale(1.2);}
-  100%{transform:scale(1);}
-}
-.firstAidCounterV132{
-  font-size:48px;
-  font-weight:800;
-  color:#2563eb;
-  text-align:center;
-  margin:12px 0;
-}
-.firstAidSmallV132{
+.afterStormSmallV132{
   font-size:15px;
   color:#64748b;
   line-height:1.45;
 }
-.firstAidHistoryV132{
-  background:linear-gradient(135deg,rgba(255,255,255,.92),rgba(219,234,254,.74));
+.afterStormInputV132{
+  width:100%;
+  box-sizing:border-box;
+  border:none;
+  border-radius:18px;
+  padding:14px 16px;
+  font-size:16px;
+  margin-top:10px;
+  background:rgba(255,255,255,.95);
+  min-height:95px;
+}
+.afterStormHistoryItemV132{
+  background:linear-gradient(135deg,rgba(255,255,255,.92),rgba(224,242,254,.78));
   border-radius:20px;
   padding:14px;
   margin:10px 0;
   line-height:1.45;
 }
+.afterStormMeterV132{
+  height:10px;
+  border-radius:999px;
+  background:rgba(148,163,184,.22);
+  overflow:hidden;
+  margin:12px 0;
+}
+.afterStormFillV132{
+  height:100%;
+  width:0%;
+  border-radius:999px;
+  background:linear-gradient(90deg,#93c5fd,#facc15,#86efac);
+  transition:width .6s ease;
+}
 </style>
 
-<div id="firstAidScreenV132" class="fullscreen" style="background:linear-gradient(180deg,#fee2e2,#bfdbfe);color:#1f2937;">
-  <button class="softButton" onclick="closeFirstAidV132()">← Volver</button>
-  <h2>🧰 Kit de primeros 3 minutos</h2>
-  <p class="small">Una secuencia simple para cuando todo se siente demasiado. No tenés que resolver tu vida ahora: solo atravesar este minuto.</p>
+<div id="afterStormScreenV132" class="fullscreen" style="
+background:linear-gradient(180deg,#f0f9ff,#fef3c7);
+display:none;
+text-align:center;
+">
+  <button class="softButton" onclick="closeAfterStormV132()">← Volver</button>
+  <div class="afterStormOrbV132">🌤️</div>
+  <h2>Después de la tormenta</h2>
+  <p class="afterStormSmallV132">
+    La crisis puede haber bajado, pero el cuerpo todavía necesita cuidado.
+    No hay que volver de golpe. Primero, una señal pequeña de regreso.
+  </p>
 
-  <div class="firstAidOrbV132">🧰</div>
+  <div class="afterStormPhraseV132" id="afterStormPhraseV132">
+    Ya pasó una parte. Ahora no exigimos fuerza: buscamos suavidad.
+  </div>
 
-  <div id="firstAidMainV132">
-    <div class="firstAidPhraseV132" id="firstAidPhraseV132">Estoy acá. Esto es un momento, no toda mi historia.</div>
+  <div class="afterStormCardV132">
+    <strong>¿Cómo quedó la intensidad ahora?</strong>
+    <button class="afterStormChoiceV132" onclick="afterStormIntensityV132(this,'bajo')">🌱 Bajó un poco</button>
+    <button class="afterStormChoiceV132" onclick="afterStormIntensityV132(this,'igual')">🌧️ Sigue parecida</button>
+    <button class="afterStormChoiceV132" onclick="afterStormIntensityV132(this,'cuerpo')">🫶 El cuerpo quedó cansado</button>
+    <button class="afterStormChoiceV132" onclick="afterStormIntensityV132(this,'ayuda')">🫂 Necesito apoyo real</button>
+  </div>
 
-    <div class="firstAidCardV132">
-      <strong>Elegí un paso y hacelo muy pequeño:</strong>
-      <button class="firstAidStepV132" onclick="firstAidDoStepV132(0)">1. Apoyá ambos pies en el piso</button>
-      <button class="firstAidStepV132" onclick="firstAidDoStepV132(1)">2. Aflojá mandíbula, hombros y manos</button>
-      <button class="firstAidStepV132" onclick="firstAidDoStepV132(2)">3. Mirá 3 cosas reales alrededor tuyo</button>
-      <button class="firstAidStepV132" onclick="firstAidDoStepV132(3)">4. Respirá conmigo 3 veces</button>
-      <button class="firstAidStepV132" onclick="firstAidDoStepV132(4)">5. Escribí una sola frase de descarga</button>
-    </div>
+  <div class="afterStormCardV132">
+    <strong>Primeros cuidados posteriores</strong>
+    <button class="afterStormChoiceV132" onclick="afterStormCareV132(this,'agua')">💧 Tomar agua o mojarme la cara</button>
+    <button class="afterStormChoiceV132" onclick="afterStormCareV132(this,'descanso')">🛏️ Bajar estímulos y descansar</button>
+    <button class="afterStormChoiceV132" onclick="afterStormCareV132(this,'movimiento')">🚶 Moverme lento un minuto</button>
+    <button class="afterStormChoiceV132" onclick="afterStormCareV132(this,'mensaje')">📩 Avisarle a alguien que estoy volviendo</button>
+  </div>
 
-    <div class="firstAidCardV132" id="firstAidActionBoxV132">
-      <div class="firstAidSmallV132">Tocá un paso para empezar.</div>
-    </div>
+  <div class="afterStormCardV132">
+    <strong>Guardar qué ayudó esta vez</strong>
+    <textarea id="afterStormNoteV132" class="afterStormInputV132" placeholder="Ejemplo: respirar, cerrar los ojos, escribir, hablar con alguien, caminar, quedarme quieto..."></textarea>
+    <button class="softButton" onclick="saveAfterStormV132()">Guardar este regreso</button>
+  </div>
 
-    <button class="softButton" onclick="firstAidSaveMomentV132()">Guardar que atravesé este momento</button>
-    <button class="softButton" onclick="firstAidShowHistoryV132()">Ver momentos atravesados</button>
+  <div id="afterStormResultV132" class="afterStormResultV132">
+    Elegí una opción. No hace falta completar todo.
+  </div>
+
+  <div class="afterStormCardV132">
+    <strong>Historial de regresos</strong>
+    <div class="afterStormMeterV132"><div id="afterStormFillV132" class="afterStormFillV132"></div></div>
+    <div id="afterStormHistoryV132" class="afterStormSmallV132"></div>
   </div>
 </div>
 
-<script id="scriptV132">
+<script id="scriptAfterStormV132">
 (function(){
-  var phrasesV132=[
-    "Estoy acá. Esto es un momento, no toda mi historia.",
-    "No tengo que poder con todo. Solo con este minuto.",
-    "Mi cuerpo está alarmado, pero yo puedo darle una señal de seguridad.",
-    "Puedo bajar un poco la intensidad sin exigirme estar bien.",
-    "Ahora vuelvo a lo simple: pies, aire, mirada, presente."
-  ];
+  var KEY='afterStormRecordsV132';
 
-  function byIdV132(id){ return document.getElementById(id); }
-  function safeDateV132(){
-    try{ return new Date().toLocaleString('es-ES',{dateStyle:'short',timeStyle:'short'}); }
-    catch(e){ return new Date().toLocaleString(); }
-  }
-  function getHistoryV132(){
-    try{
-      var data=JSON.parse(localStorage.getItem('firstAidMomentsV132')||'[]');
-      return Array.isArray(data)?data:[];
-    }catch(e){ return []; }
-  }
-  function setHistoryV132(data){
-    try{ localStorage.setItem('firstAidMomentsV132',JSON.stringify(data)); }catch(e){}
-  }
-  function vibrateV132(ms){
-    try{ if(navigator.vibrate) navigator.vibrate(ms||35); }catch(e){}
-  }
-  function escapeV132(t){
-    return String(t||'').replace(/[&<>"']/g,function(ch){
-      return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch];
+  function q(id){return document.getElementById(id);}
+  function safe(v){
+    if(v===undefined || v===null) return '';
+    return String(v).replace(/[&<>"']/g,function(m){
+      return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m];
     });
   }
+  function now(){
+    try{return new Date().toLocaleString();}
+    catch(e){return '';}
+  }
+  function list(){
+    try{
+      var raw=localStorage.getItem(KEY);
+      var parsed=JSON.parse(raw || '[]');
+      return Array.isArray(parsed) ? parsed : [];
+    }catch(e){
+      return [];
+    }
+  }
+  function save(listData){
+    try{localStorage.setItem(KEY,JSON.stringify(listData));}catch(e){}
+  }
+  function setResult(html){
+    var r=q('afterStormResultV132');
+    if(r) r.innerHTML=html;
+  }
+  function render(){
+    var history=q('afterStormHistoryV132');
+    var fill=q('afterStormFillV132');
+    if(!history) return;
+    var records=list();
+    var pct=Math.min(100,records.length*12);
+    if(fill) fill.style.width=pct+'%';
 
-  window.openFirstAidV132=function(){
-    var screen=byIdV132('firstAidScreenV132');
-    var phrase=byIdV132('firstAidPhraseV132');
-    if(phrase) phrase.textContent=phrasesV132[Math.floor(Math.random()*phrasesV132.length)];
+    if(!records.length){
+      history.innerHTML='Todavía no hay regresos guardados. El primero puede ser muy simple.';
+      return;
+    }
+
+    history.innerHTML=records.slice().reverse().slice(0,6).map(function(x){
+      return '<div class="afterStormHistoryItemV132">'+
+        '<strong>🌤️ '+safe(x.date)+'</strong><br>'+
+        (x.intensity ? 'Intensidad: '+safe(x.intensity)+'<br>' : '')+
+        (x.care ? 'Cuidado: '+safe(x.care)+'<br>' : '')+
+        (x.note ? 'Ayudó: '+safe(x.note) : 'Regreso guardado.')+
+      '</div>';
+    }).join('');
+  }
+
+  window.openAfterStormV132=function(){
+    var screen=q('afterStormScreenV132');
     if(screen) screen.style.display='block';
-    firstAidResetStepsV132();
-    vibrateV132(25);
+    render();
+    if(navigator.vibrate) navigator.vibrate(45);
   };
 
-  window.closeFirstAidV132=function(){
-    var screen=byIdV132('firstAidScreenV132');
+  window.closeAfterStormV132=function(){
+    var screen=q('afterStormScreenV132');
     if(screen) screen.style.display='none';
   };
 
-  window.firstAidResetStepsV132=function(){
-    document.querySelectorAll('.firstAidStepV132').forEach(function(btn){
-      btn.classList.remove('doneV132');
+  window.afterStormIntensityV132=function(btn,kind){
+    var labels={
+      bajo:'Bajó un poco',
+      igual:'Sigue parecida',
+      cuerpo:'El cuerpo quedó cansado',
+      ayuda:'Necesito apoyo real'
+    };
+    var messages={
+      bajo:'Bien. Que haya bajado un poco ya es una señal de salida. Ahora no corras: sostené lo mínimo.',
+      igual:'Está bien. Si sigue parecida, no fallaste. Volvé al Refugio de crisis o repetí un paso simple.',
+      cuerpo:'Tiene sentido. Después de una tormenta emocional el cuerpo queda agotado. Bajá estímulos y cuidá lo básico.',
+      ayuda:'Hiciste bien en reconocerlo. No lo atravieses solo: usá Conectar o escribile a una persona real ahora.'
+    };
+    if(btn) btn.classList.add('doneV132');
+    window.__afterStormIntensityV132=labels[kind] || '';
+    setResult(messages[kind] || 'Registrado.');
+    if(navigator.vibrate) navigator.vibrate(35);
+  };
+
+  window.afterStormCareV132=function(btn,kind){
+    var labels={
+      agua:'Tomar agua o mojarme la cara',
+      descanso:'Bajar estímulos y descansar',
+      movimiento:'Moverme lento un minuto',
+      mensaje:'Avisarle a alguien que estoy volviendo'
+    };
+    var messages={
+      agua:'Buen cuidado. El cuerpo entiende señales simples antes que explicaciones largas.',
+      descanso:'Buen cuidado. No hace falta volver al ritmo normal inmediatamente.',
+      movimiento:'Buen cuidado. Movimiento suave, sin exigencia, solo para volver al presente.',
+      mensaje:'Buen cuidado. A veces avisar “estoy volviendo” ya baja la carga de estar solo.'
+    };
+    if(btn) btn.classList.add('doneV132');
+    window.__afterStormCareV132=labels[kind] || '';
+    setResult(messages[kind] || 'Cuidado registrado.');
+    if(navigator.vibrate) navigator.vibrate(35);
+  };
+
+  window.saveAfterStormV132=function(){
+    var input=q('afterStormNoteV132');
+    var note=input && input.value ? input.value.trim() : '';
+    var records=list();
+
+    records.push({
+      date:now(),
+      intensity:window.__afterStormIntensityV132 || '',
+      care:window.__afterStormCareV132 || '',
+      note:note
     });
-    var box=byIdV132('firstAidActionBoxV132');
-    if(box) box.innerHTML='<div class="firstAidSmallV132">Tocá un paso para empezar.</div>';
-  };
 
-  window.firstAidDoStepV132=function(step){
-    var buttons=document.querySelectorAll('.firstAidStepV132');
-    if(buttons[step]) buttons[step].classList.add('doneV132');
-    var box=byIdV132('firstAidActionBoxV132');
-    vibrateV132(35);
-
-    if(!box) return;
-
-    if(step===0){
-      box.innerHTML='<strong>Bien. Ahora bajá un poco el peso del cuerpo.</strong><p>Sentí el contacto de los pies. No busques calma perfecta. Solo contacto.</p>';
-    }else if(step===1){
-      box.innerHTML='<strong>Soltá un 5%, no un 100%.</strong><p>Mandíbula, hombros, manos. Apenas un poco más blandos.</p>';
-    }else if(step===2){
-      box.innerHTML='<strong>Nombrá tres cosas reales.</strong><p>Ejemplo: pared, luz, mesa. Tu mente vuelve al presente a través de lo concreto.</p>';
-    }else if(step===3){
-      box.innerHTML='<div class="firstAidBreathV132">Respirá</div><div class="firstAidCounterV132" id="firstAidCountV132">3</div><p class="firstAidSmallV132">Inhalá suave cuando crece. Exhalá cuando vuelve.</p>';
-      var n=3;
-      var counter=byIdV132('firstAidCountV132');
-      var timer=setInterval(function(){
-        n--;
-        if(counter) counter.textContent=String(Math.max(n,0));
-        if(n<=0){
-          clearInterval(timer);
-          if(counter) counter.textContent='✓';
-          vibrateV132([30,60,30]);
-        }
-      },3000);
-    }else{
-      box.innerHTML='<strong>Descargá una sola frase:</strong><textarea id="firstAidNoteV132" class="textBox" placeholder="En este momento siento..."></textarea><button class="softButton" onclick="firstAidSaveMomentV132()">Guardar frase</button>';
-    }
-  };
-
-  window.firstAidSaveMomentV132=function(){
-    var noteBox=byIdV132('firstAidNoteV132');
-    var note=noteBox ? noteBox.value.trim() : '';
-    var data=getHistoryV132();
-    data.unshift({
-      date:safeDateV132(),
-      note:note || 'Atravesé un momento difícil usando el kit de primeros 3 minutos.'
-    });
-    data=data.slice(0,20);
-    setHistoryV132(data);
-    var box=byIdV132('firstAidActionBoxV132');
-    if(box){
-      box.innerHTML='<div class="firstAidPhraseV132">Quedó guardado: hubo un momento difícil y lo atravesaste.</div>';
-    }
-    vibrateV132([35,60,35]);
-  };
-
-  window.firstAidShowHistoryV132=function(){
-    var data=getHistoryV132();
-    var box=byIdV132('firstAidActionBoxV132');
-    if(!box) return;
-    if(!data.length){
-      box.innerHTML='<div class="firstAidSmallV132">Todavía no hay momentos guardados. El primero puede ser este.</div>';
-      return;
-    }
-    box.innerHTML='<strong>Momentos atravesados</strong>'+data.map(function(item){
-      return '<div class="firstAidHistoryV132"><strong>'+escapeV132(item.date)+'</strong><br>'+escapeV132(item.note)+'</div>';
-    }).join('');
+    save(records);
+    if(input) input.value='';
+    setResult('🌤️ Guardado. La próxima vez no empezás desde cero: queda una señal de qué te ayudó a volver.');
+    render();
+    if(navigator.vibrate) navigator.vibrate([60,30,60]);
   };
 
   document.addEventListener('DOMContentLoaded',function(){
     var actions=document.querySelector('.actions');
-    if(actions && !document.getElementById('btnFirstAidV132')){
+    if(actions && !document.getElementById('btnAfterStormV132')){
       var b=document.createElement('button');
-      b.id='btnFirstAidV132';
+      b.id='btnAfterStormV132';
       b.className='action';
-      b.innerHTML='<span>🧰</span>Primeros 3 minutos';
-      b.onclick=window.openFirstAidV132;
+      b.innerHTML='<span>🌤️</span>Después de la tormenta';
+      b.onclick=window.openAfterStormV132;
       actions.appendChild(b);
     }
   });
 })();
 </script>
-
 
 </body>
 </html>
