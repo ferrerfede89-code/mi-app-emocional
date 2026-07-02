@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
-<title>App Emocional V133</title>
+<title>App Emocional V134</title>
 
 <style>
 body {
@@ -4062,6 +4062,11 @@ text-align:center;
 <button class="action" onclick="openCapsuleV46()" style="grid-column:1/3;background:#fde68a;font-weight:bold;">
       <span>📬</span>Cápsula del tiempo
     </button>
+
+<button class="action" onclick="openMasksV134()" style="grid-column:1/3;background:linear-gradient(135deg,#fce7f3,#ddd6fe);font-weight:bold;">
+  <span>🎭</span>Máscaras del día
+</button>
+
 <button class="action" onclick="openSupport()" style="grid-column:1/3;">
       <span>🚨</span>Apoyo rápido
     </button>
@@ -13869,34 +13874,178 @@ function changeAmanecerPhraseV133(){
 </script>
 
 
-<div id="masksV134" class="fullscreen" style="background:linear-gradient(180deg,#fdf2f8,#ede9fe);text-align:center;">
-  <div style="font-size:72px;margin-top:40px;">🎭</div>
+
+<!-- V134 - Máscaras del día -->
+<div id="masksV134" class="fullscreen" style="background:linear-gradient(180deg,#fdf2f8,#ede9fe);text-align:center;color:#1f2937;">
+  <div class="masksOrbV134">🎭</div>
   <h2>Máscaras del día</h2>
+  <p style="font-size:17px;line-height:1.45;max-width:330px;margin:0 auto 18px;">
+    A veces mostramos una cosa y sentimos otra. Acá podés separar esas capas sin juzgarte.
+  </p>
 
-  <div class="supportCard">
-    <strong>🙂 Lo que muestro</strong><br><br>
-    Estoy bien.
+  <div class="masksCardV134">
+    <div class="masksLabelV134">🙂 Lo que muestro</div>
+    <div id="maskShowV134" class="masksTextV134">Todavía no elegiste.</div>
   </div>
 
-  <div class="supportCard">
-    <strong>😔 Lo que siento</strong><br><br>
-    Estoy cansado, triste o preocupado.
+  <div class="masksGridV134">
+    <button onclick="setMaskShowV134('Estoy bien.')">🙂 Estoy bien</button>
+    <button onclick="setMaskShowV134('No pasa nada.')">😶 No pasa nada</button>
+    <button onclick="setMaskShowV134('Puedo con todo.')">💪 Puedo con todo</button>
+    <button onclick="setMaskShowV134('Prefiero no hablar.')">🤐 No quiero hablar</button>
   </div>
 
-  <div class="supportCard">
-    <strong>🤝 Lo que necesito</strong><br><br>
-    Que alguien me escuche o me acompañe.
+  <div class="masksCardV134">
+    <div class="masksLabelV134">😔 Lo que siento</div>
+    <div id="maskFeelV134" class="masksTextV134">Todavía no elegiste.</div>
   </div>
 
+  <div class="masksGridV134">
+    <button onclick="setMaskFeelV134('Estoy cansado.')">💤 Cansancio</button>
+    <button onclick="setMaskFeelV134('Estoy triste.')">🌧️ Tristeza</button>
+    <button onclick="setMaskFeelV134('Estoy preocupado.')">⚡ Preocupación</button>
+    <button onclick="setMaskFeelV134('Estoy saturado.')">🌫️ Saturación</button>
+  </div>
+
+  <div class="masksCardV134">
+    <div class="masksLabelV134">🤝 Lo que necesito</div>
+    <div id="maskNeedV134" class="masksTextV134">Todavía no elegiste.</div>
+  </div>
+
+  <div class="masksGridV134">
+    <button onclick="setMaskNeedV134('Necesito que alguien me escuche.')">👂 Que me escuchen</button>
+    <button onclick="setMaskNeedV134('Necesito descansar sin culpa.')">🛏️ Descansar</button>
+    <button onclick="setMaskNeedV134('Necesito bajar la exigencia.')">🪶 Menos exigencia</button>
+    <button onclick="setMaskNeedV134('Necesito pedir ayuda.')">🫂 Pedir ayuda</button>
+  </div>
+
+  <div id="maskResultV134" class="masksResultV134">
+    Muchas veces la máscara no miente: protege algo que todavía necesita cuidado.
+  </div>
+
+  <button class="softButton" onclick="saveMaskV134()">Guardar máscara de hoy</button>
+  <button class="softButton" onclick="resetMaskV134()">Limpiar</button>
   <button class="softButton" onclick="closeMasksV134()">Volver</button>
 </div>
 
-<script>
-function openMasksV134(){
- document.getElementById('masksV134').style.display='block';
+<style>
+.masksOrbV134{
+  width:155px;
+  height:155px;
+  border-radius:50%;
+  margin:28px auto 18px;
+  background:radial-gradient(circle,#ffffff,#f0abfc);
+  box-shadow:0 22px 64px rgba(168,85,247,.25);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:62px;
+  animation:masksPulseV134 7s infinite ease-in-out;
 }
+@keyframes masksPulseV134{
+  0%{transform:scale(1);opacity:.86;}
+  50%{transform:scale(1.1);opacity:1;}
+  100%{transform:scale(1);opacity:.86;}
+}
+.masksCardV134{
+  background:rgba(255,255,255,.9);
+  border-radius:24px;
+  padding:16px;
+  margin:14px 0;
+  line-height:1.5;
+  text-align:left;
+  box-shadow:0 12px 30px rgba(0,0,0,.08);
+}
+.masksLabelV134{
+  font-weight:700;
+  margin-bottom:8px;
+}
+.masksTextV134{
+  font-size:18px;
+  line-height:1.45;
+}
+.masksGridV134{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+  margin:10px 0 18px;
+}
+.masksGridV134 button{
+  border:none;
+  border-radius:18px;
+  padding:13px 12px;
+  font-size:15px;
+  background:rgba(255,255,255,.92);
+  text-align:left;
+  box-shadow:0 8px 20px rgba(0,0,0,.06);
+}
+.masksResultV134{
+  background:linear-gradient(135deg,rgba(252,231,243,.96),rgba(237,233,254,.92));
+  border-radius:24px;
+  padding:18px;
+  margin:18px 0;
+  font-size:18px;
+  font-weight:620;
+  line-height:1.45;
+}
+</style>
+
+<script>
+let maskShowValueV134 = localStorage.getItem('maskShowV134') || 'Todavía no elegiste.';
+let maskFeelValueV134 = localStorage.getItem('maskFeelV134') || 'Todavía no elegiste.';
+let maskNeedValueV134 = localStorage.getItem('maskNeedV134') || 'Todavía no elegiste.';
+
+function openMasksV134(){
+  document.getElementById('masksV134').style.display='block';
+  renderMaskV134();
+}
+
 function closeMasksV134(){
- document.getElementById('masksV134').style.display='none';
+  document.getElementById('masksV134').style.display='none';
+}
+
+function renderMaskV134(){
+  document.getElementById('maskShowV134').innerText = maskShowValueV134;
+  document.getElementById('maskFeelV134').innerText = maskFeelValueV134;
+  document.getElementById('maskNeedV134').innerText = maskNeedValueV134;
+  document.getElementById('maskResultV134').innerText =
+    'Lo que mostrás: ' + maskShowValueV134 + '\n' +
+    'Lo que sentís: ' + maskFeelValueV134 + '\n' +
+    'Lo que necesitás: ' + maskNeedValueV134;
+}
+
+function setMaskShowV134(value){
+  maskShowValueV134 = value;
+  renderMaskV134();
+}
+
+function setMaskFeelV134(value){
+  maskFeelValueV134 = value;
+  renderMaskV134();
+}
+
+function setMaskNeedV134(value){
+  maskNeedValueV134 = value;
+  renderMaskV134();
+}
+
+function saveMaskV134(){
+  localStorage.setItem('maskShowV134', maskShowValueV134);
+  localStorage.setItem('maskFeelV134', maskFeelValueV134);
+  localStorage.setItem('maskNeedV134', maskNeedValueV134);
+  if (navigator.vibrate) navigator.vibrate(40);
+  document.getElementById('maskResultV134').innerText =
+    'Guardado. Hoy no tenés que sostener una máscara perfecta. Podés ser humano.';
+}
+
+function resetMaskV134(){
+  maskShowValueV134 = 'Todavía no elegiste.';
+  maskFeelValueV134 = 'Todavía no elegiste.';
+  maskNeedValueV134 = 'Todavía no elegiste.';
+  localStorage.removeItem('maskShowV134');
+  localStorage.removeItem('maskFeelV134');
+  localStorage.removeItem('maskNeedV134');
+  renderMaskV134();
 }
 </script>
 
@@ -17134,37 +17283,6 @@ function changeAmanecerPhraseV133(){
 }
 </script>
 
-
-<div id="masksV134" class="fullscreen" style="background:linear-gradient(180deg,#fdf2f8,#ede9fe);text-align:center;">
-  <div style="font-size:72px;margin-top:40px;">🎭</div>
-  <h2>Máscaras del día</h2>
-
-  <div class="supportCard">
-    <strong>🙂 Lo que muestro</strong><br><br>
-    Estoy bien.
-  </div>
-
-  <div class="supportCard">
-    <strong>😔 Lo que siento</strong><br><br>
-    Estoy cansado, triste o preocupado.
-  </div>
-
-  <div class="supportCard">
-    <strong>🤝 Lo que necesito</strong><br><br>
-    Que alguien me escuche o me acompañe.
-  </div>
-
-  <button class="softButton" onclick="closeMasksV134()">Volver</button>
-</div>
-
-<script>
-function openMasksV134(){
- document.getElementById('masksV134').style.display='block';
-}
-function closeMasksV134(){
- document.getElementById('masksV134').style.display='none';
-}
-</script>
 
 </body>
 </html>
