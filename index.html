@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
-<title>App Emocional V134</title>
+<title>App Emocional V136</title>
 
 <style>
 body {
@@ -3528,6 +3528,86 @@ input, textarea, select {
   margin:12px 0;
 }
 
+
+/* V136 - Puertas emocionales */
+.centerCardV136{
+  background:linear-gradient(135deg,#dbeafe,#ede9fe);
+  border-radius:28px;
+  padding:24px;
+  margin:18px 0;
+  text-align:center;
+  font-weight:700;
+  font-size:28px;
+  border:none;
+  width:100%;
+  color:#0f3b75;
+  box-shadow:0 16px 34px rgba(59,130,246,.16);
+}
+.centerCardV136 small{
+  display:block;
+  font-size:16px;
+  font-weight:400;
+  margin-top:8px;
+  color:#475569;
+  line-height:1.35;
+}
+.doorGridV136{
+  display:grid;
+  grid-template-columns:1fr;
+  gap:12px;
+  margin-top:18px;
+}
+.doorV136{
+  border:none;
+  border-radius:24px;
+  padding:18px;
+  background:rgba(255,255,255,.9);
+  box-shadow:0 10px 25px rgba(0,0,0,.08);
+  text-align:left;
+  font-size:18px;
+  font-weight:700;
+  color:#1f2937;
+}
+.doorV136 span{
+  display:block;
+  font-size:14px;
+  font-weight:400;
+  color:#64748b;
+  margin-top:6px;
+  line-height:1.35;
+}
+.doorPanelV136{
+  display:none;
+  background:rgba(255,255,255,.86);
+  border-radius:24px;
+  padding:16px;
+  margin-top:14px;
+}
+.doorPanelV136.active{
+  display:block;
+}
+.doorMiniGridV136{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+  margin-top:12px;
+}
+.doorMiniV136{
+  border:none;
+  border-radius:20px;
+  padding:16px 10px;
+  background:rgba(255,255,255,.95);
+  box-shadow:0 8px 20px rgba(0,0,0,.06);
+  font-size:15px;
+  line-height:1.25;
+  color:#0284c7;
+}
+.doorMiniV136 b{
+  display:block;
+  font-size:24px;
+  margin-bottom:6px;
+}
+
 </style>
 
 <style id="v48premium">
@@ -3867,12 +3947,10 @@ text-align:center;
 </div>
 
 <div class="section-title">
-<div style="background:linear-gradient(135deg,#dbeafe,#ede9fe);border-radius:28px;padding:24px;margin:18px 0;text-align:center;font-weight:700;font-size:28px;">
+<button class="centerCardV136" onclick="openEmotionalCenterV136()">
 🧭<br>Centro emocional
-<div style="font-size:16px;font-weight:400;margin-top:8px;">
-Urgencia · Calma · Memoria · Recorrido · Crisis
-</div>
-</div>
+<small>Urgencia · Calma · Memoria · Recorrido · Crisis</small>
+</button>
 ¿Qué necesitás ahora?</div>
 
   <div class="actions">
@@ -14053,6 +14131,105 @@ function resetMaskV134(){
   localStorage.removeItem('maskFeelV134');
   localStorage.removeItem('maskNeedV134');
   renderMaskV134();
+}
+</script>
+
+
+<div id="centerModalV136" class="fullscreen" style="background:linear-gradient(180deg,#eff6ff,#dbeafe);color:#1f2937;">
+  <div style="max-width:430px;margin:0 auto;">
+    <button class="softButton" onclick="closeEmotionalCenterV136()">← Volver</button>
+    <h1 style="font-size:34px;line-height:1.1;margin:20px 0 8px;">🧭 Puertas emocionales</h1>
+    <p style="font-size:18px;color:#64748b;line-height:1.45;margin-bottom:18px;">Elegí por dónde entrar. No tenés que recorrer todo: una puerta alcanza.</p>
+
+    <div class="doorGridV136">
+      <button class="doorV136" onclick="toggleDoorV136('urgenciaV136')">🚨 Urgencia <span>para cuando necesitás sostén rápido.</span></button>
+      <div id="urgenciaV136" class="doorPanelV136">
+        <div class="doorMiniGridV136">
+          <button class="doorMiniV136" onclick="goDoorV136('botiquín emocional')"><b>🧰</b>Botiquín emocional</button>
+          <button class="doorMiniV136" onclick="goDoorV136('refugio de crisis')"><b>🫂</b>Refugio de crisis</button>
+          <button class="doorMiniV136" onclick="goDoorV136('plan emergencia')"><b>🛟</b>Plan emergencia</button>
+          <button class="doorMiniV136" onclick="goDoorV136('caja de emergencia')"><b>📦</b>Caja de emergencia</button>
+        </div>
+      </div>
+
+      <button class="doorV136" onclick="toggleDoorV136('calmaV136')">🌿 Calma <span>para bajar intensidad y volver al cuerpo.</span></button>
+      <div id="calmaV136" class="doorPanelV136">
+        <div class="doorMiniGridV136">
+          <button class="doorMiniV136" onclick="goDoorV136('respirar')"><b>🫁</b>Respirar</button>
+          <button class="doorMiniV136" onclick="goDoorV136('faro de 3 minutos')"><b>🕯️</b>Faro de 3 minutos</button>
+          <button class="doorMiniV136" onclick="goDoorV136('descanso rápido')"><b>🌙</b>Descanso rápido</button>
+          <button class="doorMiniV136" onclick="goDoorV136('biblioteca de calma')"><b>📚</b>Biblioteca de calma</button>
+        </div>
+      </div>
+
+      <button class="doorV136" onclick="toggleDoorV136('memoriaV136')">📖 Memoria <span>para guardar, recordar y reconocer avances.</span></button>
+      <div id="memoriaV136" class="doorPanelV136">
+        <div class="doorMiniGridV136">
+          <button class="doorMiniV136" onclick="goDoorV136('diario')"><b>📖</b>Diario</button>
+          <button class="doorMiniV136" onclick="goDoorV136('recordar')"><b>🧠</b>Recordar</button>
+          <button class="doorMiniV136" onclick="goDoorV136('tesoros olvidados')"><b>💎</b>Tesoros olvidados</button>
+          <button class="doorMiniV136" onclick="goDoorV136('museo de tus avances')"><b>🏛️</b>Museo de tus avances</button>
+        </div>
+      </div>
+
+      <button class="doorV136" onclick="toggleDoorV136('recorridoV136')">🗺️ Recorrido <span>para mirar tu proceso con perspectiva.</span></button>
+      <div id="recorridoV136" class="doorPanelV136">
+        <div class="doorMiniGridV136">
+          <button class="doorMiniV136" onclick="goDoorV136('mapa emocional de la vida')"><b>🗺️</b>Mapa emocional</button>
+          <button class="doorMiniV136" onclick="goDoorV136('tu línea de vida emocional')"><b>🧵</b>Línea de vida</button>
+          <button class="doorMiniV136" onclick="goDoorV136('árbol de posibilidades')"><b>🌳</b>Árbol de posibilidades</button>
+          <button class="doorMiniV136" onclick="goDoorV136('transformaciones')"><b>🦋</b>Transformaciones</button>
+        </div>
+      </div>
+
+      <button class="doorV136" onclick="toggleDoorV136('crisisV136')">🫂 Crisis <span>para no quedarte solo con lo que pesa.</span></button>
+      <div id="crisisV136" class="doorPanelV136">
+        <div class="doorMiniGridV136">
+          <button class="doorMiniV136" onclick="goDoorV136('conectar')"><b>🫂</b>Conectar</button>
+          <button class="doorMiniV136" onclick="goDoorV136('faro de continuidad')"><b>🕯️</b>Faro continuidad</button>
+          <button class="doorMiniV136" onclick="goDoorV136('después de la tormenta')"><b>🌤️</b>Después tormenta</button>
+          <button class="doorMiniV136" onclick="goDoorV136('personas que tocaste')"><b>🫂</b>Personas que tocaste</button>
+        </div>
+      </div>
+    </div>
+
+    <p style="font-size:15px;color:#64748b;line-height:1.45;margin-top:20px;text-align:center;">V136 · Centro emocional convertido en puertas de navegación.</p>
+  </div>
+</div>
+
+
+<script>
+function openEmotionalCenterV136(){
+  var m=document.getElementById('centerModalV136');
+  if(m){m.style.display='block';}
+}
+function closeEmotionalCenterV136(){
+  var m=document.getElementById('centerModalV136');
+  if(m){m.style.display='none';}
+}
+function toggleDoorV136(id){
+  ['urgenciaV136','calmaV136','memoriaV136','recorridoV136','crisisV136'].forEach(function(x){
+    var el=document.getElementById(x);
+    if(el && x!==id){el.classList.remove('active');}
+  });
+  var panel=document.getElementById(id);
+  if(panel){panel.classList.toggle('active');}
+}
+function goDoorV136(label){
+  closeEmotionalCenterV136();
+  var wanted=(label||'').toLowerCase().trim();
+  var buttons=Array.from(document.querySelectorAll('button'));
+  var found=buttons.find(function(b){
+    return (b.innerText||'').toLowerCase().replace(/\s+/g,' ').includes(wanted);
+  });
+  if(found && !found.classList.contains('doorMiniV136') && !found.classList.contains('doorV136')){
+    found.scrollIntoView({behavior:'smooth',block:'center'});
+    setTimeout(function(){
+      try{found.click();}catch(e){}
+    },450);
+  } else {
+    alert('Buscá la puerta: '+label);
+  }
 }
 </script>
 
