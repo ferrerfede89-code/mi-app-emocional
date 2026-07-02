@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
-<title>App Emocional V136</title>
+<title>App Emocional V137</title>
 
 <style>
 body {
@@ -3609,48 +3609,80 @@ input, textarea, select {
 }
 
 
-/* V137 - Noche Segura */
-.nightSafeButtonV137{
-background:linear-gradient(135deg,#1e293b,#0f172a);
-color:white;
-border:none;
-border-radius:22px;
-padding:18px;
-font-size:16px;
-box-shadow:0 12px 30px rgba(15,23,42,.25);
+
+/* V137 - Noche segura CORREGIDA */
+.nightSafeV137Btn{
+  border:none;
+  border-radius:22px;
+  background:linear-gradient(135deg,#1e293b,#020617);
+  color:white;
+  padding:16px 10px;
+  font-size:14px;
+  box-shadow:0 8px 24px rgba(15,23,42,.25);
 }
-.nightScreenV137{
-display:none;
-position:fixed;
-top:0;left:0;
-width:100%;height:100%;
-z-index:10000;
-overflow:auto;
-padding:30px;
-box-sizing:border-box;
-background:linear-gradient(180deg,#020617,#0f172a,#1e293b);
-color:white;
+.nightSafeV137Btn span{
+  display:block;
+  font-size:24px;
+  margin-bottom:5px;
+}
+#nightSafeV137{
+  display:none;
+  position:fixed;
+  inset:0;
+  z-index:99999;
+  padding:30px;
+  box-sizing:border-box;
+  overflow:auto;
+  background:linear-gradient(180deg,#020617,#0f172a,#1e293b);
+  color:white;
+}
+.nightWrapV137{
+  max-width:430px;
+  margin:0 auto;
 }
 .nightOrbV137{
-width:170px;height:170px;border-radius:50%;
-margin:30px auto;
-display:flex;align-items:center;justify-content:center;
-font-size:70px;
-background:radial-gradient(circle,#334155,#0f172a);
-animation:nightPulseV137 8s infinite ease-in-out;
+  width:170px;
+  height:170px;
+  border-radius:50%;
+  margin:30px auto 18px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:70px;
+  background:radial-gradient(circle,#475569,#0f172a);
+  box-shadow:0 22px 70px rgba(15,23,42,.45);
+  animation:nightPulseV137 8s infinite ease-in-out;
 }
 @keyframes nightPulseV137{
-0%{transform:scale(1);}
-50%{transform:scale(1.12);}
-100%{transform:scale(1);}
+  0%{transform:scale(1);opacity:.84;}
+  50%{transform:scale(1.12);opacity:1;}
+  100%{transform:scale(1);opacity:.84;}
 }
 .nightCardV137{
-background:rgba(255,255,255,.08);
-border-radius:22px;
-padding:18px;
-margin:12px 0;
-line-height:1.5;
+  background:rgba(255,255,255,.09);
+  border-radius:22px;
+  padding:18px;
+  margin:12px 0;
+  line-height:1.5;
+  color:#e5e7eb;
 }
+.nightMainV137{
+  font-size:22px;
+  font-weight:700;
+  text-align:center;
+  line-height:1.35;
+  margin:18px 0;
+}
+.nightBtnV137{
+  border:none;
+  border-radius:18px;
+  padding:13px 16px;
+  font-size:16px;
+  background:rgba(255,255,255,.92);
+  color:#0f172a;
+  margin:6px;
+}
+
 </style>
 
 <style id="v48premium">
@@ -3997,6 +4029,7 @@ text-align:center;
 ¿Qué necesitás ahora?</div>
 
   <div class="actions">
+<button class="nightSafeV137Btn" onclick="openNightSafeV137()"><span>🌙</span>Noche segura</button>
 <!-- V133 -->
 <button class="action" onclick="openAmanecerInteriorV133()"><span>🌅</span>Amanecer Interior</button>
 
@@ -14277,24 +14310,32 @@ function goDoorV136(label){
 </script>
 
 
-<div id="nightSafeV137" class="nightScreenV137">
-<button class="softButton" onclick="closeNightSafeV137()">← Volver</button>
-<div class="nightOrbV137">🌙</div>
-<h1 style="text-align:center;">Noche segura</h1>
-<div class="nightCardV137">🫁 Inhalá lento durante 4 segundos y exhalá durante 6.</div>
-<div class="nightCardV137">⏳ No hace falta resolver toda tu vida esta noche. Solo atravesar los próximos 10 minutos.</div>
-<div class="nightCardV137">🫂 Si lo necesitás, buscá la opción Conectar o Faro de continuidad.</div>
-<div class="nightCardV137">🌅 El objetivo no es ganar la noche. Es llegar al amanecer.</div>
+
+<div id="nightSafeV137">
+  <div class="nightWrapV137">
+    <button class="nightBtnV137" onclick="closeNightSafeV137()">← Volver</button>
+    <div class="nightOrbV137">🌙</div>
+    <h1 style="text-align:center;font-size:34px;margin:10px 0;">Noche segura</h1>
+    <div class="nightMainV137">No tenés que resolver la vida esta noche. Solo atravesar los próximos 10 minutos.</div>
+    <div class="nightCardV137">🫁 Respirá lento: inhalá 4 segundos, exhalá 6 segundos. Repetilo tres veces.</div>
+    <div class="nightCardV137">🕯️ Bajá la exigencia. En la noche, pensar de más no siempre ayuda. Ahora alcanza con estar a salvo.</div>
+    <div class="nightCardV137">🫂 Si sentís que no podés solo, buscá Conectar o Faro de continuidad.</div>
+    <div class="nightCardV137">🌅 El objetivo no es ganar la noche. Es llegar al amanecer.</div>
+    <button class="nightBtnV137" onclick="closeNightSafeV137()">Cerrar noche segura</button>
+  </div>
 </div>
 
 <script>
 function openNightSafeV137(){
-document.getElementById('nightSafeV137').style.display='block';
+  var n=document.getElementById('nightSafeV137');
+  if(n){ n.style.display='block'; }
 }
 function closeNightSafeV137(){
-document.getElementById('nightSafeV137').style.display='none';
+  var n=document.getElementById('nightSafeV137');
+  if(n){ n.style.display='none'; }
 }
 </script>
+
 </body>
 
 <script id="v57_2_final_diary_fix">
