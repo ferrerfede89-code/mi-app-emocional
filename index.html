@@ -3608,6 +3608,49 @@ input, textarea, select {
   margin-bottom:6px;
 }
 
+
+/* V137 - Noche Segura */
+.nightSafeButtonV137{
+background:linear-gradient(135deg,#1e293b,#0f172a);
+color:white;
+border:none;
+border-radius:22px;
+padding:18px;
+font-size:16px;
+box-shadow:0 12px 30px rgba(15,23,42,.25);
+}
+.nightScreenV137{
+display:none;
+position:fixed;
+top:0;left:0;
+width:100%;height:100%;
+z-index:10000;
+overflow:auto;
+padding:30px;
+box-sizing:border-box;
+background:linear-gradient(180deg,#020617,#0f172a,#1e293b);
+color:white;
+}
+.nightOrbV137{
+width:170px;height:170px;border-radius:50%;
+margin:30px auto;
+display:flex;align-items:center;justify-content:center;
+font-size:70px;
+background:radial-gradient(circle,#334155,#0f172a);
+animation:nightPulseV137 8s infinite ease-in-out;
+}
+@keyframes nightPulseV137{
+0%{transform:scale(1);}
+50%{transform:scale(1.12);}
+100%{transform:scale(1);}
+}
+.nightCardV137{
+background:rgba(255,255,255,.08);
+border-radius:22px;
+padding:18px;
+margin:12px 0;
+line-height:1.5;
+}
 </style>
 
 <style id="v48premium">
@@ -14233,6 +14276,25 @@ function goDoorV136(label){
 }
 </script>
 
+
+<div id="nightSafeV137" class="nightScreenV137">
+<button class="softButton" onclick="closeNightSafeV137()">← Volver</button>
+<div class="nightOrbV137">🌙</div>
+<h1 style="text-align:center;">Noche segura</h1>
+<div class="nightCardV137">🫁 Inhalá lento durante 4 segundos y exhalá durante 6.</div>
+<div class="nightCardV137">⏳ No hace falta resolver toda tu vida esta noche. Solo atravesar los próximos 10 minutos.</div>
+<div class="nightCardV137">🫂 Si lo necesitás, buscá la opción Conectar o Faro de continuidad.</div>
+<div class="nightCardV137">🌅 El objetivo no es ganar la noche. Es llegar al amanecer.</div>
+</div>
+
+<script>
+function openNightSafeV137(){
+document.getElementById('nightSafeV137').style.display='block';
+}
+function closeNightSafeV137(){
+document.getElementById('nightSafeV137').style.display='none';
+}
+</script>
 </body>
 
 <script id="v57_2_final_diary_fix">
