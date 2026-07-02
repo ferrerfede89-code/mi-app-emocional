@@ -13596,6 +13596,29 @@ function closeClimateV126(){ document.getElementById('climateV126Overlay').style
 })();
 </script>
 
+
+<!-- ========================= -->
+<!-- V131 - Refugio de Crisis Guiado -->
+<!-- ========================= -->
+<div id="crisisRefugeV131" class="fullscreen" style="background:linear-gradient(180deg,#dbeafe,#eff6ff);text-align:center;">
+<h2>🫂 Refugio de Crisis Guiado</h2>
+<p>No hace falta resolver todo ahora.<br>Tu única tarea durante este momento es permanecer acá.</p>
+<div style="font-size:72px;margin:20px;">🌊</div>
+<p>5 cosas que ves<br>4 cosas que sentís<br>3 sonidos<br>2 olores<br>1 cosa que querés conservar de este momento.</p>
+<button class="softButton" onclick="alert('Respirar también cuenta como avanzar.')">Sí, bajó un poco</button>
+<button class="softButton" onclick="alert('Podemos quedarnos un poco más.')">Sigue igual</button>
+<button class="softButton" onclick="alert('Abrí tu plan de emergencia o la sección conectar.')">Necesito más ayuda</button>
+<br><br>
+<button class="softButton" onclick="document.getElementById('crisisRefugeV131').style.display='none'">Cerrar</button>
+</div>
+
+<script>
+function openCrisisRefugeV131(){
+ document.getElementById('crisisRefugeV131').style.display='block';
+ if(navigator.vibrate){navigator.vibrate([80,40,80]);}
+}
+</script>
+
 </body>
 
 <script id="v57_2_final_diary_fix">
