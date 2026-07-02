@@ -3870,7 +3870,7 @@ text-align:center;
 
   <div class="actions">
 <!-- V133 -->
-<button class="action" onclick="openAmanecerInterior()"><span>🌅</span>Amanecer Interior</button>
+<button class="action" onclick="openAmanecerInteriorV133()"><span>🌅</span>Amanecer Interior</button>
 
     <div class="categoryDividerV106">🌬️ Primeros gestos <small>para bajar intensidad y volver al cuerpo</small></div>
     <button class="action" onclick="openBreathing()">
@@ -13822,11 +13822,52 @@ function closeClimateV126(){ document.getElementById('climateV126Overlay').style
 </script>
 
 
+<div id="amanecerInteriorScreenV133" class="fullscreen" style="background:linear-gradient(180deg,#fef3c7,#fde68a);text-align:center;">
+  <div style="max-width:420px;margin:auto;">
+    <h1 style="font-size:64px;">🌅</h1>
+    <h2>Amanecer Interior</h2>
+
+    <div class="rememberCard">
+      No hace falta empezar el día perfecto.<br><br>
+      A veces el amanecer es solamente abrir un poco los ojos y seguir acá.
+    </div>
+
+    <div class="rememberCard">
+      ☀️ Un vaso de agua.<br>
+      🌬️ Una respiración lenta.<br>
+      🚶 Un movimiento pequeño.<br>
+      🌱 Un paso alcanza.
+    </div>
+
+    <div class="rememberQuote" id="amanecerPhraseV133">
+      Hoy no buscamos velocidad. Buscamos empezar.
+    </div>
+
+    <button class="softButton" onclick="changeAmanecerPhraseV133()">Otra frase</button>
+    <button class="softButton" onclick="closeAmanecerInteriorV133()">Volver despacio</button>
+  </div>
+</div>
+
 <script>
-function openAmanecerInterior(){
-  alert("Amanecer Interior está funcionando correctamente.");
+function openAmanecerInteriorV133(){
+  document.getElementById("amanecerInteriorScreenV133").style.display="block";
+}
+function closeAmanecerInteriorV133(){
+  document.getElementById("amanecerInteriorScreenV133").style.display="none";
+}
+function changeAmanecerPhraseV133(){
+  const phrases=[
+    "No hace falta correr para empezar.",
+    "Un comienzo pequeño sigue siendo un comienzo.",
+    "Hoy alcanza con estar presente.",
+    "El cuerpo también despierta de a poco.",
+    "No tenés que demostrar nada esta mañana."
+  ];
+  document.getElementById("amanecerPhraseV133").innerText=
+    phrases[Math.floor(Math.random()*phrases.length)];
 }
 </script>
+
 </body>
 
 <script id="v57_2_final_diary_fix">
@@ -17012,6 +17053,53 @@ text-align:center;
     }
   });
 })();
+</script>
+
+
+<div id="amanecerInteriorScreenV133" class="fullscreen" style="background:linear-gradient(180deg,#fef3c7,#fde68a);text-align:center;">
+  <div style="max-width:420px;margin:auto;">
+    <h1 style="font-size:64px;">🌅</h1>
+    <h2>Amanecer Interior</h2>
+
+    <div class="rememberCard">
+      No hace falta empezar el día perfecto.<br><br>
+      A veces el amanecer es solamente abrir un poco los ojos y seguir acá.
+    </div>
+
+    <div class="rememberCard">
+      ☀️ Un vaso de agua.<br>
+      🌬️ Una respiración lenta.<br>
+      🚶 Un movimiento pequeño.<br>
+      🌱 Un paso alcanza.
+    </div>
+
+    <div class="rememberQuote" id="amanecerPhraseV133">
+      Hoy no buscamos velocidad. Buscamos empezar.
+    </div>
+
+    <button class="softButton" onclick="changeAmanecerPhraseV133()">Otra frase</button>
+    <button class="softButton" onclick="closeAmanecerInteriorV133()">Volver despacio</button>
+  </div>
+</div>
+
+<script>
+function openAmanecerInteriorV133(){
+  document.getElementById("amanecerInteriorScreenV133").style.display="block";
+}
+function closeAmanecerInteriorV133(){
+  document.getElementById("amanecerInteriorScreenV133").style.display="none";
+}
+function changeAmanecerPhraseV133(){
+  const phrases=[
+    "No hace falta correr para empezar.",
+    "Un comienzo pequeño sigue siendo un comienzo.",
+    "Hoy alcanza con estar presente.",
+    "El cuerpo también despierta de a poco.",
+    "No tenés que demostrar nada esta mañana."
+  ];
+  document.getElementById("amanecerPhraseV133").innerText=
+    phrases[Math.floor(Math.random()*phrases.length)];
+}
 </script>
 
 </body>
