@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
-<title>App Emocional V131</title>
+<title>App Emocional V132</title>
 
 <style>
 body {
@@ -3528,6 +3528,86 @@ input, textarea, select {
   margin:12px 0;
 }
 
+
+
+/* V132 - Botiquín de Estabilidad Emocional */
+.stabilityV132Card{
+  background:rgba(255,255,255,.92);
+  border-radius:24px;
+  padding:18px;
+  margin:14px 0;
+  line-height:1.55;
+  text-align:left;
+  box-shadow:0 12px 30px rgba(0,0,0,.08);
+}
+.stabilityV132Orb{
+  width:155px;
+  height:155px;
+  border-radius:50%;
+  margin:24px auto;
+  background:radial-gradient(circle,#ffffff,#bfdbfe 45%,#34d399);
+  box-shadow:0 22px 70px rgba(52,211,153,.25),0 0 42px rgba(191,219,254,.24);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:58px;
+  animation:stabilityPulseV132 7s infinite ease-in-out;
+}
+@keyframes stabilityPulseV132{
+  0%{transform:scale(1);opacity:.86;}
+  50%{transform:scale(1.12);opacity:1;}
+  100%{transform:scale(1);opacity:.86;}
+}
+.stabilityV132Phrase{
+  font-size:21px;
+  font-weight:650;
+  line-height:1.45;
+  text-align:center;
+  padding:18px;
+  border-radius:22px;
+  background:rgba(236,253,245,.96);
+  margin:16px 0;
+}
+.stabilityV132Step{
+  border:none;
+  border-radius:18px;
+  padding:14px 16px;
+  font-size:16px;
+  background:rgba(255,255,255,.92);
+  margin:7px 0;
+  width:100%;
+  text-align:left;
+}
+.stabilityV132Step.active{
+  background:linear-gradient(135deg,rgba(220,252,231,.98),rgba(219,234,254,.88));
+  font-weight:700;
+}
+.stabilityV132Result{
+  background:linear-gradient(135deg,rgba(236,253,245,.98),rgba(239,246,255,.92));
+  border-radius:22px;
+  padding:16px;
+  margin:14px 0;
+  line-height:1.5;
+}
+.stabilityV132Small{
+  font-size:15px;
+  color:#64748b;
+  line-height:1.45;
+}
+.stabilityV132Meter{
+  height:10px;
+  border-radius:999px;
+  background:rgba(148,163,184,.22);
+  overflow:hidden;
+  margin:12px 0;
+}
+.stabilityV132Fill{
+  height:100%;
+  width:0%;
+  border-radius:999px;
+  background:linear-gradient(90deg,#93c5fd,#34d399);
+  transition:width .6s ease;
+}
 </style>
 
 <style id="v48premium">
@@ -3807,7 +3887,7 @@ text-align:center;
 <div class="app" id="appCard">
   <div class="premiumTopV105">
     <div class="premiumBrandV105">App Emocional</div>
-    <div class="premiumBadgeV105">V126 · clima interior</div>
+    <div class="premiumBadgeV105">V132 · estabilidad emocional</div>
   </div>
 
   <div class="premiumHeroV105">
@@ -5369,6 +5449,41 @@ No es un mapa exacto. Es una forma suave de ver qué lugares internos apareciero
   <div id="futureLetterLibraryV98" class="futureLetterCardV98"></div>
 
   <button onclick="closeFutureLetterV98()" class="softButton">Volver</button>
+</div>
+
+
+
+<div id="stabilityScreenV132" class="fullscreen" style="background:linear-gradient(180deg,#f0fdf4,#dbeafe);display:none;text-align:center;color:#1f2937;">
+  <h2>Botiquín de estabilidad emocional</h2>
+  <p class="stabilityV132Small" style="max-width:340px;margin:0 auto 10px;">
+    Un recorrido corto para volver al cuerpo, bajar intensidad y elegir el próximo gesto posible.
+  </p>
+
+  <div class="stabilityV132Orb">🧰</div>
+
+  <div class="stabilityV132Phrase" id="stabilityV132Phrase">
+    No hace falta resolver tu vida ahora. Primero estabilizá este minuto.
+  </div>
+
+  <div class="stabilityV132Card">
+    <strong>Elegí un paso</strong><br><br>
+    <button class="stabilityV132Step" id="stabilityV132Step1" onclick="selectStabilityV132(1)">🌬️ Respirar: inhalá 4, soltá 6.</button>
+    <button class="stabilityV132Step" id="stabilityV132Step2" onclick="selectStabilityV132(2)">🦶 Anclar: sentí los pies o una superficie cercana.</button>
+    <button class="stabilityV132Step" id="stabilityV132Step3" onclick="selectStabilityV132(3)">👀 Ubicar: nombrá 3 cosas que ves.</button>
+    <button class="stabilityV132Step" id="stabilityV132Step4" onclick="selectStabilityV132(4)">💧 Cuidar: tomá agua o relajá mandíbula y hombros.</button>
+    <button class="stabilityV132Step" id="stabilityV132Step5" onclick="selectStabilityV132(5)">🤝 Conectar: pensá en una persona o lugar seguro.</button>
+
+    <div class="stabilityV132Meter"><div class="stabilityV132Fill" id="stabilityV132Fill"></div></div>
+    <div class="stabilityV132Small" id="stabilityV132Progress">0 de 5 pasos tocados.</div>
+  </div>
+
+  <div id="stabilityV132Result" class="stabilityV132Result">
+    Tocá cualquier paso. No tenés que hacerlo perfecto: sólo empezar.
+  </div>
+
+  <button onclick="resetStabilityV132()" class="softButton">Reiniciar recorrido</button>
+  <button onclick="saveStabilityV132()" class="softButton">Guardar estabilización</button>
+  <button onclick="closeStabilityV132()" class="softButton">Volver</button>
 </div>
 
 <script>
@@ -13812,11 +13927,6 @@ function closeClimateV126(){ document.getElementById('climateV126Overlay').style
 })();
 </script>
 
-<!-- V132 - Después de la crisis -->
-<script>
-console.log("V132 instalada correctamente");
-</script>
-
 </body>
 
 <script id="v57_2_final_diary_fix">
@@ -16710,6 +16820,91 @@ display:none;text-align:center;color:#1f2937;
       b.className='action';
       b.innerHTML='<span>⭐</span>Favoritos emocionales';
       b.onclick=window.openEmotionalFavoritesV130;
+      actions.appendChild(b);
+    }
+  });
+})();
+</script>
+
+
+
+<script>
+(function(){
+  var key='stabilityV132Records';
+  var touched={};
+  var phrases={
+    1:'Primero aire. No para cambiarlo todo: para darle espacio al cuerpo.',
+    2:'El cuerpo necesita una prueba simple de presente. Los pies ayudan.',
+    3:'Mirar alrededor le recuerda al sistema que no está solo con la mente.',
+    4:'Un gesto físico pequeño puede bajar un poco la carga interna.',
+    5:'La conexión no exige hablar ahora. También puede empezar recordando una presencia segura.'
+  };
+  var results={
+    1:'Respirá una vez más, lento. Si podés, soltá el aire un poco más largo que la inhalación.',
+    2:'Apoyá los pies. Sentí peso, temperatura o contacto. Este momento tiene suelo.',
+    3:'Nombrá mentalmente tres cosas: una forma, un color, una luz. Volvé al lugar donde estás.',
+    4:'Aflojá mandíbula, manos y hombros. Un vaso de agua también puede ser un mensaje de cuidado.',
+    5:'Pensá en alguien que te haría bien, aunque no le escribas todavía. No tenés que atravesar todo en soledad.'
+  };
+  function q(id){return document.getElementById(id);}
+  function list(){try{return JSON.parse(localStorage.getItem(key)||'[]');}catch(e){return [];}}
+  function saveList(arr){try{localStorage.setItem(key,JSON.stringify(arr));}catch(e){}}
+  function now(){try{return new Date().toLocaleString('es-AR');}catch(e){return '';}}
+  function count(){return Object.keys(touched).length;}
+  function render(){
+    var c=count();
+    var fill=q('stabilityV132Fill');
+    var progress=q('stabilityV132Progress');
+    if(fill)fill.style.width=(c*20)+'%';
+    if(progress)progress.textContent=c+' de 5 pasos tocados.';
+    for(var i=1;i<=5;i++){
+      var b=q('stabilityV132Step'+i);
+      if(b)b.className='stabilityV132Step'+(touched[i]?' active':'');
+    }
+  }
+  window.openStabilityV132=function(){
+    var s=q('stabilityScreenV132');
+    if(s)s.style.display='block';
+    render();
+    if(navigator.vibrate)navigator.vibrate(35);
+  };
+  window.closeStabilityV132=function(){
+    var s=q('stabilityScreenV132');
+    if(s)s.style.display='none';
+  };
+  window.selectStabilityV132=function(n){
+    touched[n]=true;
+    var phrase=q('stabilityV132Phrase');
+    var result=q('stabilityV132Result');
+    if(phrase)phrase.textContent=phrases[n]||phrases[1];
+    if(result)result.textContent=results[n]||results[1];
+    render();
+    if(navigator.vibrate)navigator.vibrate(25);
+  };
+  window.resetStabilityV132=function(){
+    touched={};
+    var phrase=q('stabilityV132Phrase');
+    var result=q('stabilityV132Result');
+    if(phrase)phrase.textContent='No hace falta resolver tu vida ahora. Primero estabilizá este minuto.';
+    if(result)result.textContent='Tocá cualquier paso. No tenés que hacerlo perfecto: sólo empezar.';
+    render();
+  };
+  window.saveStabilityV132=function(){
+    var arr=list();
+    arr.push({date:now(),steps:count()});
+    saveList(arr);
+    var result=q('stabilityV132Result');
+    if(result)result.textContent='Estabilización guardada. Hoy hiciste '+count()+' de 5 pasos. Eso cuenta.';
+    if(navigator.vibrate)navigator.vibrate([25,30,25]);
+  };
+  document.addEventListener('DOMContentLoaded',function(){
+    var actions=document.querySelector('.actions');
+    if(actions && !document.getElementById('btnStabilityV132')){
+      var b=document.createElement('button');
+      b.id='btnStabilityV132';
+      b.className='action';
+      b.innerHTML='<span>🧰</span>Botiquín emocional';
+      b.onclick=window.openStabilityV132;
       actions.appendChild(b);
     }
   });
