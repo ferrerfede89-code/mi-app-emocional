@@ -9280,9 +9280,12 @@ function openLibrary(){
    ['descanso','🌙 Descanso']
  ];
 
- catsBox.innerHTML=cats.map(c=>
-   '<button class="softButton" onclick="showLibraryCategory(\\''+c[0]+'\\')">'+c[1]+'</button>'
- ).join(' ');
+ catsBox.innerHTML=cats.map(function(c){
+   return '<button class="softButton" data-cat="'+c[0]+'">'+c[1]+'</button>';
+ }).join(' ');
+ Array.prototype.forEach.call(catsBox.querySelectorAll('button[data-cat]'), function(btn){
+   btn.onclick=function(){ showLibraryCategory(this.getAttribute('data-cat')); };
+ });
 
  renderLibraryStatsV592();
  resultsBox.innerHTML='Elegí una categoría.';
@@ -11133,6 +11136,9 @@ function saveSeedTextV77(){
       statsEl.innerHTML=data.map(function(x){
         return '<div class="profileStatV101"><div>'+x[0]+'</div><div class="profileStatNumberV101">'+x[1]+'</div><div class="profileStatLabelV101">'+x[2]+'</div></div>';
       }).join('');
+      Array.prototype.forEach.call(container.querySelectorAll('button[data-room]'), function(btn){
+        btn.onclick=function(){ openMuseumRoomV111(this.getAttribute('data-room')); };
+      });
     }
 
     var signal=el('profileSignalV101');
@@ -11796,7 +11802,7 @@ function saveSeedTextV77(){
     if(container){
       container.innerHTML=rooms.map(function(r){
         var preview=r.items.length ? shortText(r.items[0],82) : 'Esta sala todavía espera su primera memoria.';
-        return "<button class="museumRoomV111" onclick="openMuseumRoomV111(\'"+r.id+"\')">"+
+        return '<button class="museumRoomV111" data-room="'+r.id+'">'+
           '<span class="museumCountV111">'+r.items.length+'</span>'+
           '<strong>'+r.icon+' '+escapeHtml(r.title)+'</strong><br>'+
           '<span class="museumSmallV111">'+escapeHtml(r.subtitle)+'</span>'+
