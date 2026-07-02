@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
-<title>App Emocional V137</title>
+<title>App Emocional V138</title>
 
 <style>
 body {
@@ -3683,6 +3683,37 @@ input, textarea, select {
   margin:6px;
 }
 
+
+/* V138 - Marea baja */
+.lowTideBtnV138{
+border:none;border-radius:22px;
+background:linear-gradient(135deg,#67e8f9,#2563eb);
+color:white;padding:16px 10px;font-size:14px;
+box-shadow:0 8px 24px rgba(37,99,235,.25);
+}
+.lowTideBtnV138 span{display:block;font-size:24px;margin-bottom:5px;}
+#lowTideV138{
+display:none;position:fixed;inset:0;z-index:99999;
+padding:30px;overflow:auto;box-sizing:border-box;
+background:linear-gradient(180deg,#dbeafe,#bfdbfe,#93c5fd);
+}
+.lowTideCardV138{
+background:rgba(255,255,255,.88);
+border-radius:24px;padding:18px;margin:14px 0;
+line-height:1.55;box-shadow:0 10px 24px rgba(0,0,0,.08);
+}
+.lowTideOrbV138{
+width:170px;height:170px;border-radius:50%;
+margin:20px auto;display:flex;align-items:center;justify-content:center;
+font-size:72px;background:radial-gradient(circle,#fff,#7dd3fc);
+animation:lowTidePulse 7s infinite ease-in-out;
+}
+@keyframes lowTidePulse{
+0%{transform:scale(1);opacity:.85;}
+50%{transform:scale(1.12);opacity:1;}
+100%{transform:scale(1);opacity:.85;}
+}
+
 </style>
 
 <style id="v48premium">
@@ -4029,6 +4060,8 @@ text-align:center;
 ¿Qué necesitás ahora?</div>
 
   <div class="actions">
+
+<button class="lowTideBtnV138" onclick="openLowTideV138()"><span>🌊</span>Marea baja</button>
 <button class="nightSafeV137Btn" onclick="openNightSafeV137()"><span>🌙</span>Noche segura</button>
 <!-- V133 -->
 <button class="action" onclick="openAmanecerInteriorV133()"><span>🌅</span>Amanecer Interior</button>
@@ -14334,6 +14367,21 @@ function closeNightSafeV137(){
   var n=document.getElementById('nightSafeV137');
   if(n){ n.style.display='none'; }
 }
+</script>
+
+
+<div id="lowTideV138">
+<button class="softButton" onclick="closeLowTideV138()">← Volver</button>
+<div class="lowTideOrbV138">🌊</div>
+<h1 style="text-align:center;">Marea baja</h1>
+<div class="lowTideCardV138">Hay días en los que la energía desaparece y todo pesa más.</div>
+<div class="lowTideCardV138">No es necesario avanzar rápido. Hoy también cuenta mantenerse a flote.</div>
+<div class="lowTideCardV138">✔️ Tomar agua.<br>✔️ Abrir una ventana.<br>✔️ Comer algo.<br>✔️ Respirar profundo tres veces.</div>
+<div class="lowTideCardV138">Las mareas no piden permiso para bajar. Tampoco se quedan abajo para siempre.</div>
+</div>
+<script>
+function openLowTideV138(){document.getElementById('lowTideV138').style.display='block';}
+function closeLowTideV138(){document.getElementById('lowTideV138').style.display='none';}
 </script>
 
 </body>
