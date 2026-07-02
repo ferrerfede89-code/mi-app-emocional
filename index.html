@@ -13869,10 +13869,34 @@ function changeAmanecerPhraseV133(){
 </script>
 
 
-<!-- V134 - Faro en la niebla -->
+<div id="masksV134" class="fullscreen" style="background:linear-gradient(180deg,#fdf2f8,#ede9fe);text-align:center;">
+  <div style="font-size:72px;margin-top:40px;">🎭</div>
+  <h2>Máscaras del día</h2>
+
+  <div class="supportCard">
+    <strong>🙂 Lo que muestro</strong><br><br>
+    Estoy bien.
+  </div>
+
+  <div class="supportCard">
+    <strong>😔 Lo que siento</strong><br><br>
+    Estoy cansado, triste o preocupado.
+  </div>
+
+  <div class="supportCard">
+    <strong>🤝 Lo que necesito</strong><br><br>
+    Que alguien me escuche o me acompañe.
+  </div>
+
+  <button class="softButton" onclick="closeMasksV134()">Volver</button>
+</div>
+
 <script>
-function openFaroV134(){
- alert("V134 Faro en la niebla cargado correctamente.");
+function openMasksV134(){
+ document.getElementById('masksV134').style.display='block';
+}
+function closeMasksV134(){
+ document.getElementById('masksV134').style.display='none';
 }
 </script>
 
@@ -17107,6 +17131,38 @@ function changeAmanecerPhraseV133(){
   ];
   document.getElementById("amanecerPhraseV133").innerText=
     phrases[Math.floor(Math.random()*phrases.length)];
+}
+</script>
+
+
+<div id="masksV134" class="fullscreen" style="background:linear-gradient(180deg,#fdf2f8,#ede9fe);text-align:center;">
+  <div style="font-size:72px;margin-top:40px;">🎭</div>
+  <h2>Máscaras del día</h2>
+
+  <div class="supportCard">
+    <strong>🙂 Lo que muestro</strong><br><br>
+    Estoy bien.
+  </div>
+
+  <div class="supportCard">
+    <strong>😔 Lo que siento</strong><br><br>
+    Estoy cansado, triste o preocupado.
+  </div>
+
+  <div class="supportCard">
+    <strong>🤝 Lo que necesito</strong><br><br>
+    Que alguien me escuche o me acompañe.
+  </div>
+
+  <button class="softButton" onclick="closeMasksV134()">Volver</button>
+</div>
+
+<script>
+function openMasksV134(){
+ document.getElementById('masksV134').style.display='block';
+}
+function closeMasksV134(){
+ document.getElementById('masksV134').style.display='none';
 }
 </script>
 
