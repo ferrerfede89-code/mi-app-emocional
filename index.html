@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
-<title>App Emocional V140</title>
+<title>App Emocional V141</title>
 
 <style>
 body {
@@ -4060,6 +4060,11 @@ text-align:center;
 ¿Qué necesitás ahora?</div>
 
   <div class="actions">
+
+
+<button id="btnResumenV141" class="action" onclick="document.getElementById('resumenV141').style.display='block'">
+<span>📊</span>Resumen emocional
+</button>
 
 <button id="btnRefugioV140" class="action" onclick="document.getElementById('contactosRefugioV140').style.display='block'">
 <span>❤️</span>Contactos refugio
@@ -14466,6 +14471,41 @@ if(document.getElementById('ref1')){
 ref1.value=localStorage.getItem('ref1v140')||'';
 ref2.value=localStorage.getItem('ref2v140')||'';
 ref3.value=localStorage.getItem('ref3v140')||'';
+}
+});
+</script>
+
+
+<div id="resumenV141" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:#eef7ff;z-index:999999;padding:24px;box-sizing:border-box;overflow:auto;">
+<button onclick="document.getElementById('resumenV141').style.display='none'" style="border:none;border-radius:18px;padding:12px 18px;">← Volver</button>
+
+<h1 style="text-align:center;">📊 Resumen emocional inteligente</h1>
+
+<div style="background:white;border-radius:22px;padding:18px;margin-top:18px;line-height:1.6;">
+<div>😊 Días buenos registrados: <b id="good141">0</b></div>
+<div>😐 Días neutros registrados: <b id="neutral141">0</b></div>
+<div>😔 Días difíciles registrados: <b id="bad141">0</b></div>
+</div>
+
+<div id="mensaje141" style="background:white;border-radius:22px;padding:18px;margin-top:18px;line-height:1.6;font-size:18px;"></div>
+</div>
+
+<script>
+window.addEventListener("load",function(){
+let good=parseInt(localStorage.getItem("goodCount")||0);
+let neutral=parseInt(localStorage.getItem("normalCount")||0);
+let bad=parseInt(localStorage.getItem("badCount")||0);
+
+if(document.getElementById("good141")){
+good141.innerText=good;
+neutral141.innerText=neutral;
+bad141.innerText=bad;
+
+let msg="Cada registro cuenta. Seguir apareciendo también es avanzar.";
+if(good>bad) msg="Tu registro muestra más días luminosos que difíciles últimamente.";
+else if(bad>good) msg="Hubo varios días pesados. Haber llegado hasta aquí también habla de fortaleza.";
+else if(good+neutral+bad===0) msg="Todavía no hay registros suficientes para construir el resumen.";
+mensaje141.innerText=msg;
 }
 });
 </script>
