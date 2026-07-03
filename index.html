@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
-<title>App Emocional V145</title>
+<title>App Emocional V146</title>
 
 <style>
 body {
@@ -4134,6 +4134,11 @@ text-align:center;
 ¿Qué necesitás ahora?</div>
 
   <div class="actions">
+
+<button id="btnV146Comercial" class="action" onclick="document.getElementById('pantallaV146Comercial').style.display='block'">
+  <span>🚀</span>Preparación comercial
+</button>
+
 
 <button id="btnV145Premium" class="action" onclick="document.getElementById('pantallaV145Premium').style.display='block'">
   <span>🏁</span>Versión premium
@@ -14676,10 +14681,33 @@ V142 marca el inicio del pulido final: menos fricción, más claridad y una sens
 </div>
 
 
-<!-- V146 - Preparación comercial -->
-<script>
-console.log("V146 Preparación comercial integrada");
-</script>
+<div id="pantallaV146Comercial" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;z-index:999999;background:#f0f9ff;overflow:auto;padding:26px;box-sizing:border-box;color:#1f2937;">
+  <div style="max-width:430px;margin:0 auto;">
+    <button onclick="document.getElementById('pantallaV146Comercial').style.display='none'" style="border:none;border-radius:18px;padding:13px 18px;font-size:16px;background:white;">← Volver</button>
+
+    <h1 style="font-size:34px;text-align:center;margin:24px 0;">🚀 Preparación comercial</h1>
+
+    <div style="background:white;border-radius:24px;padding:18px;margin:14px 0;font-size:18px;line-height:1.55;">
+      Esta etapa prepara la app para dejar de ser solo un prototipo y empezar a pensarse como producto.
+    </div>
+
+    <div style="background:white;border-radius:24px;padding:18px;margin:14px 0;font-size:18px;line-height:1.55;">
+      ✅ Nombre comercial<br>
+      ✅ Público objetivo<br>
+      ✅ Propuesta de valor<br>
+      ✅ Modelo de monetización<br>
+      ✅ Preparación para publicación
+    </div>
+
+    <button onclick="document.getElementById('estadoComercialV146').innerHTML='✔️ Estado comercial: app lista para avanzar hacia onboarding, privacidad, demo y publicación.'" style="width:100%;border:none;border-radius:22px;padding:16px;background:#bae6fd;font-size:18px;margin-top:14px;">
+      Ver estado comercial
+    </button>
+
+    <div id="estadoComercialV146" style="background:white;border-radius:24px;padding:18px;margin:18px 0;font-size:18px;line-height:1.55;">
+      Tocá el botón para ver el estado comercial de la app.
+    </div>
+  </div>
+</div>
 
 </body>
 
