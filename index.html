@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
-<title>App Emocional V142</title>
+<title>App Emocional V143</title>
 
 <style>
 body {
@@ -3966,6 +3966,23 @@ animation:lowTidePulse 7s infinite ease-in-out;
 }
 .app{
   backdrop-filter: blur(14px);
+}
+</style>
+
+
+<!-- V143 Optimización interna -->
+<style id="v143_optim">
+html{
+  scroll-behavior:smooth;
+}
+.action{
+  transition:transform .15s ease, box-shadow .15s ease;
+}
+.action:active{
+  transform:scale(.97);
+}
+.fullscreen{
+  -webkit-overflow-scrolling:touch;
 }
 </style>
 
