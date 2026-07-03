@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
-<title>App Emocional V146</title>
+<title>App Emocional V147</title>
 
 <style>
 body {
@@ -4134,6 +4134,11 @@ text-align:center;
 ¿Qué necesitás ahora?</div>
 
   <div class="actions">
+
+<button id="btnV147Onboarding" class="action" onclick="document.getElementById('pantallaV147Onboarding').style.display='block'">
+  <span>👋</span>Onboarding inicial
+</button>
+
 
 <button id="btnV146Comercial" class="action" onclick="document.getElementById('pantallaV146Comercial').style.display='block'">
   <span>🚀</span>Preparación comercial
@@ -14708,6 +14713,43 @@ V142 marca el inicio del pulido final: menos fricción, más claridad y una sens
     </div>
   </div>
 </div>
+
+
+<div id="pantallaV147Onboarding" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;z-index:999999;background:#f5f3ff;overflow:auto;padding:26px;box-sizing:border-box;color:#1f2937;">
+  <div style="max-width:430px;margin:0 auto;">
+    <button onclick="document.getElementById('pantallaV147Onboarding').style.display='none'" style="border:none;border-radius:18px;padding:13px 18px;font-size:16px;background:white;">← Volver</button>
+
+    <h1 style="font-size:34px;text-align:center;margin:24px 0;">👋 Onboarding inicial</h1>
+
+    <div style="background:white;border-radius:24px;padding:18px;margin:14px 0;font-size:18px;line-height:1.55;">
+      Bienvenido. Esta app no intenta exigirte ni medirte. Está pensada para acompañarte cuando necesitás volver de a poco.
+    </div>
+
+    <div style="background:white;border-radius:24px;padding:18px;margin:14px 0;font-size:18px;line-height:1.55;">
+      Podés usarla para:<br><br>
+      🫁 Respirar<br>
+      📝 Escribir<br>
+      🫂 Conectar<br>
+      🌙 Atravesar una noche difícil<br>
+      🧭 Encontrar una puerta emocional
+    </div>
+
+    <button onclick="guardarOnboardingV147()" style="width:100%;border:none;border-radius:22px;padding:16px;background:#ddd6fe;font-size:18px;margin-top:14px;">
+      Entendido, empezar suave
+    </button>
+
+    <div id="estadoOnboardingV147" style="background:white;border-radius:24px;padding:18px;margin:18px 0;font-size:18px;line-height:1.55;">
+      Tocá el botón para marcar el inicio.
+    </div>
+  </div>
+</div>
+
+<script>
+function guardarOnboardingV147(){
+  localStorage.setItem('onboardingV147','completado');
+  document.getElementById('estadoOnboardingV147').innerHTML='✔️ Onboarding completado. La app ya puede empezar desde un lugar más humano y claro.';
+}
+</script>
 
 </body>
 
