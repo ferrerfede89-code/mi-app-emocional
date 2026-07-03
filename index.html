@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
-<title>App Emocional V147</title>
+<title>App Emocional V148</title>
 
 <style>
 body {
@@ -4134,6 +4134,11 @@ text-align:center;
 ¿Qué necesitás ahora?</div>
 
   <div class="actions">
+
+<button id="btnV148Privacidad" class="action" onclick="document.getElementById('pantallaV148Privacidad').style.display='block'">
+  <span>🔒</span>Privacidad y seguridad
+</button>
+
 
 <button id="btnV147Onboarding" class="action" onclick="document.getElementById('pantallaV147Onboarding').style.display='block'">
   <span>👋</span>Onboarding inicial
@@ -14750,6 +14755,34 @@ function guardarOnboardingV147(){
   document.getElementById('estadoOnboardingV147').innerHTML='✔️ Onboarding completado. La app ya puede empezar desde un lugar más humano y claro.';
 }
 </script>
+
+
+<div id="pantallaV148Privacidad" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;z-index:999999;background:#f8fafc;overflow:auto;padding:26px;box-sizing:border-box;color:#1f2937;">
+  <div style="max-width:430px;margin:0 auto;">
+    <button onclick="document.getElementById('pantallaV148Privacidad').style.display='none'" style="border:none;border-radius:18px;padding:13px 18px;font-size:16px;background:white;">← Volver</button>
+
+    <h1 style="font-size:34px;text-align:center;margin:24px 0;">🔒 Privacidad y seguridad</h1>
+
+    <div style="background:white;border-radius:24px;padding:18px;margin:14px 0;font-size:18px;line-height:1.55;">
+      Tus registros emocionales se guardan en este dispositivo mediante almacenamiento local.
+    </div>
+
+    <div style="background:white;border-radius:24px;padding:18px;margin:14px 0;font-size:18px;line-height:1.55;">
+      ✅ No necesitás crear cuenta<br>
+      ✅ No se muestra información pública<br>
+      ✅ Tus datos quedan en el navegador/dispositivo<br>
+      ✅ Podés borrar datos si reiniciás el almacenamiento del navegador
+    </div>
+
+    <button onclick="document.getElementById('estadoPrivacidadV148').innerHTML='✔️ Privacidad confirmada: esta versión comunica de forma clara cómo se guardan los datos.'" style="width:100%;border:none;border-radius:22px;padding:16px;background:#dbeafe;font-size:18px;margin-top:14px;">
+      Confirmar privacidad
+    </button>
+
+    <div id="estadoPrivacidadV148" style="background:white;border-radius:24px;padding:18px;margin:18px 0;font-size:18px;line-height:1.55;">
+      Tocá el botón para confirmar que esta sección está lista.
+    </div>
+  </div>
+</div>
 
 </body>
 
