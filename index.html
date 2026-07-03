@@ -3715,23 +3715,8 @@ animation:lowTidePulse 7s infinite ease-in-out;
 }
 
 
-
-/* V139 - Primer paso del día CORREGIDA */
-.firstStepBtnV139{
-  border:none;
-  border-radius:22px;
-  background:linear-gradient(135deg,#86efac,#22c55e);
-  color:white;
-  padding:16px 10px;
-  font-size:14px;
-  box-shadow:0 8px 24px rgba(34,197,94,.25);
-}
-.firstStepBtnV139 span{
-  display:block;
-  font-size:24px;
-  margin-bottom:5px;
-}
-#firstStepV139{
+/* V139 - Primer paso del día FINAL */
+.firstStepScreenV139{
   display:none;
   position:fixed;
   inset:0;
@@ -3741,10 +3726,6 @@ animation:lowTidePulse 7s infinite ease-in-out;
   box-sizing:border-box;
   background:linear-gradient(180deg,#f0fdf4,#dcfce7,#bbf7d0);
   color:#1f2937;
-}
-.firstStepWrapV139{
-  max-width:430px;
-  margin:0 auto;
 }
 .firstStepOrbV139{
   width:160px;
@@ -3783,7 +3764,7 @@ animation:lowTidePulse 7s infinite ease-in-out;
   text-align:left;
   box-shadow:0 8px 20px rgba(0,0,0,.06);
 }
-.firstStepDoneV139{
+.firstStepChoiceV139.done{
   background:linear-gradient(135deg,#dcfce7,#bbf7d0);
   font-weight:700;
 }
@@ -4135,7 +4116,6 @@ text-align:center;
 
   <div class="actions">
 
-<button class="firstStepBtnV139" onclick="openFirstStepV139()"><span>🚶</span>Primer paso del día</button>
 <button class="lowTideBtnV138" onclick="openLowTideV138()"><span>🌊</span>Marea baja</button>
 <button class="nightSafeV137Btn" onclick="openNightSafeV137()"><span>🌙</span>Noche segura</button>
 <!-- V133 -->
@@ -14460,9 +14440,8 @@ function closeLowTideV138(){document.getElementById('lowTideV138').style.display
 </script>
 
 
-
-<div id="firstStepV139">
-  <div class="firstStepWrapV139">
+<div id="firstStepScreenV139" class="firstStepScreenV139">
+  <div style="max-width:430px;margin:0 auto;">
     <button class="softButton" onclick="closeFirstStepV139()">← Volver</button>
     <div class="firstStepOrbV139">🚶</div>
     <h1 style="text-align:center;font-size:32px;margin:10px 0;">Primer paso del día</h1>
@@ -14479,20 +14458,31 @@ function closeLowTideV138(){document.getElementById('lowTideV138').style.display
 
 <script>
 function openFirstStepV139(){
-  var x=document.getElementById('firstStepV139');
-  if(x){x.style.display='block';}
+  var s=document.getElementById('firstStepScreenV139');
+  if(s){s.style.display='block';}
 }
 function closeFirstStepV139(){
-  var x=document.getElementById('firstStepV139');
-  if(x){x.style.display='none';}
+  var s=document.getElementById('firstStepScreenV139');
+  if(s){s.style.display='none';}
 }
 function markFirstStepV139(btn){
   var all=document.querySelectorAll('.firstStepChoiceV139');
-  all.forEach(function(b){b.classList.remove('firstStepDoneV139');});
-  btn.classList.add('firstStepDoneV139');
+  all.forEach(function(b){b.classList.remove('done');});
+  btn.classList.add('done');
   var r=document.getElementById('firstStepResultV139');
-  if(r){r.innerHTML='✔️ Listo. Ya hay un primer paso elegido. No necesitás más para empezar.';}
+  if(r){r.innerHTML='✔️ Listo. Ya elegiste un primer paso. Con eso alcanza para empezar.';}
 }
+document.addEventListener('DOMContentLoaded',function(){
+  var actions=document.querySelector('.actions');
+  if(actions && !document.getElementById('btnFirstStepV139')){
+    var b=document.createElement('button');
+    b.id='btnFirstStepV139';
+    b.className='action';
+    b.innerHTML='<span>🚶</span>Primer paso del día';
+    b.onclick=openFirstStepV139;
+    actions.insertBefore(b, actions.firstChild);
+  }
+});
 </script>
 
 </body>
