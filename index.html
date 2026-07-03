@@ -3714,61 +3714,6 @@ animation:lowTidePulse 7s infinite ease-in-out;
 100%{transform:scale(1);opacity:.85;}
 }
 
-
-/* V139 - Primer paso del día FINAL */
-.firstStepScreenV139{
-  display:none;
-  position:fixed;
-  inset:0;
-  z-index:99999;
-  overflow:auto;
-  padding:30px;
-  box-sizing:border-box;
-  background:linear-gradient(180deg,#f0fdf4,#dcfce7,#bbf7d0);
-  color:#1f2937;
-}
-.firstStepOrbV139{
-  width:160px;
-  height:160px;
-  border-radius:50%;
-  margin:24px auto;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:70px;
-  background:radial-gradient(circle,#ffffff,#86efac);
-  box-shadow:0 22px 60px rgba(34,197,94,.25);
-  animation:firstStepPulseV139 7s infinite ease-in-out;
-}
-@keyframes firstStepPulseV139{
-  0%{transform:scale(1);opacity:.86;}
-  50%{transform:scale(1.1);opacity:1;}
-  100%{transform:scale(1);opacity:.86;}
-}
-.firstStepCardV139{
-  background:rgba(255,255,255,.92);
-  border-radius:24px;
-  padding:18px;
-  margin:14px 0;
-  line-height:1.55;
-  box-shadow:0 10px 24px rgba(0,0,0,.08);
-}
-.firstStepChoiceV139{
-  border:none;
-  border-radius:18px;
-  padding:14px 16px;
-  width:100%;
-  margin:8px 0;
-  background:white;
-  font-size:16px;
-  text-align:left;
-  box-shadow:0 8px 20px rgba(0,0,0,.06);
-}
-.firstStepChoiceV139.done{
-  background:linear-gradient(135deg,#dcfce7,#bbf7d0);
-  font-weight:700;
-}
-
 </style>
 
 <style id="v48premium">
@@ -4115,8 +4060,9 @@ text-align:center;
 ¿Qué necesitás ahora?</div>
 
   <div class="actions">
-<button id="btnFirstStepFixedV139" class="action" onclick="document.getElementById('firstStepScreenFixedV139').style.display='block'">
-<span>🚶</span>Primer paso del día
+
+<button id="btnPrimerPasoV139" class="action" onclick="document.getElementById('primerPasoV139').style.display='block'">
+  <span>🚶</span>Primer paso del día
 </button>
 
 
@@ -14444,76 +14390,30 @@ function closeLowTideV138(){document.getElementById('lowTideV138').style.display
 </script>
 
 
-<div id="firstStepScreenV139" class="firstStepScreenV139">
+<div id="primerPasoV139" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;z-index:999999;background:#ecfdf5;overflow:auto;padding:26px;box-sizing:border-box;color:#1f2937;">
   <div style="max-width:430px;margin:0 auto;">
-    <button class="softButton" onclick="closeFirstStepV139()">← Volver</button>
-    <div class="firstStepOrbV139">🚶</div>
-    <h1 style="text-align:center;font-size:32px;margin:10px 0;">Primer paso del día</h1>
-    <div class="firstStepCardV139">No hace falta resolver el día entero. Solo elegir el próximo paso.</div>
-    <button class="firstStepChoiceV139" onclick="markFirstStepV139(this)">💧 Tomar un vaso de agua</button>
-    <button class="firstStepChoiceV139" onclick="markFirstStepV139(this)">🪟 Abrir una ventana</button>
-    <button class="firstStepChoiceV139" onclick="markFirstStepV139(this)">🚿 Darme una ducha</button>
-    <button class="firstStepChoiceV139" onclick="markFirstStepV139(this)">🥣 Preparar algo para comer</button>
-    <button class="firstStepChoiceV139" onclick="markFirstStepV139(this)">🚶 Caminar 5 minutos</button>
-    <div id="firstStepResultV139" class="firstStepCardV139">Elegí uno. Uno solo alcanza.</div>
-    <div class="firstStepCardV139">El día no empieza cuando hacés todo. Empieza cuando hacés algo.</div>
+    <button onclick="document.getElementById('primerPasoV139').style.display='none'" style="border:none;border-radius:18px;padding:13px 18px;font-size:16px;background:#e5e7eb;margin-bottom:24px;">← Volver</button>
+
+    <h1 style="font-size:34px;line-height:1.15;margin:10px 0 22px;text-align:center;">🚶 Primer paso del día</h1>
+
+    <div style="background:white;border-radius:24px;padding:18px;margin:14px 0;font-size:18px;line-height:1.45;">
+      No hace falta resolver el día completo. Solo el próximo paso.
+    </div>
+
+    <button onclick="pasoDiaV139()" style="width:100%;border:none;border-radius:22px;padding:17px;margin:9px 0;background:white;font-size:17px;text-align:left;">💧 Tomar agua</button>
+    <button onclick="pasoDiaV139()" style="width:100%;border:none;border-radius:22px;padding:17px;margin:9px 0;background:white;font-size:17px;text-align:left;">🪟 Abrir una ventana</button>
+    <button onclick="pasoDiaV139()" style="width:100%;border:none;border-radius:22px;padding:17px;margin:9px 0;background:white;font-size:17px;text-align:left;">🚿 Darme una ducha</button>
+    <button onclick="pasoDiaV139()" style="width:100%;border:none;border-radius:22px;padding:17px;margin:9px 0;background:white;font-size:17px;text-align:left;">🚶 Caminar 5 minutos</button>
+
+    <div id="resultadoPasoDiaV139" style="background:white;border-radius:24px;padding:18px;margin:20px 0;font-size:18px;line-height:1.45;">
+      Elegí uno y seguí desde ahí.
+    </div>
   </div>
 </div>
 
 <script>
-function openFirstStepV139(){
-  var s=document.getElementById('firstStepScreenV139');
-  if(s){s.style.display='block';}
-}
-function closeFirstStepV139(){
-  var s=document.getElementById('firstStepScreenV139');
-  if(s){s.style.display='none';}
-}
-function markFirstStepV139(btn){
-  var all=document.querySelectorAll('.firstStepChoiceV139');
-  all.forEach(function(b){b.classList.remove('done');});
-  btn.classList.add('done');
-  var r=document.getElementById('firstStepResultV139');
-  if(r){r.innerHTML='✔️ Listo. Ya elegiste un primer paso. Con eso alcanza para empezar.';}
-}
-document.addEventListener('DOMContentLoaded',function(){
-  var actions=document.querySelector('.actions');
-  if(actions && !document.getElementById('btnFirstStepV139')){
-    var b=document.createElement('button');
-    b.id='btnFirstStepV139';
-    b.className='action';
-    b.innerHTML='<span>🚶</span>Primer paso del día';
-    b.onclick=openFirstStepV139;
-    actions.insertBefore(b, actions.firstChild);
-  }
-});
-</script>
-
-
-<div id="firstStepScreenFixedV139" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:#ecfdf5;z-index:999999;overflow:auto;padding:25px;box-sizing:border-box;">
-<div style="max-width:420px;margin:auto;">
-<button onclick="document.getElementById('firstStepScreenFixedV139').style.display='none'" style="border:none;padding:12px 16px;border-radius:14px;">← Volver</button>
-
-<h1 style="text-align:center;">🚶 Primer paso del día</h1>
-
-<div style="background:white;padding:18px;border-radius:20px;margin:15px 0;">
-No hace falta resolver el día completo. Solo el próximo paso.
-</div>
-
-<button onclick="stepDoneV139(this)" style="width:100%;padding:14px;margin:8px 0;border:none;border-radius:16px;">💧 Tomar agua</button>
-<button onclick="stepDoneV139(this)" style="width:100%;padding:14px;margin:8px 0;border:none;border-radius:16px;">🪟 Abrir una ventana</button>
-<button onclick="stepDoneV139(this)" style="width:100%;padding:14px;margin:8px 0;border:none;border-radius:16px;">🚿 Darme una ducha</button>
-<button onclick="stepDoneV139(this)" style="width:100%;padding:14px;margin:8px 0;border:none;border-radius:16px;">🚶 Caminar 5 minutos</button>
-
-<div id="stepResultV139" style="background:white;padding:18px;border-radius:20px;margin-top:15px;">
-Elegí uno y seguí desde ahí.
-</div>
-</div>
-</div>
-
-<script>
-function stepDoneV139(btn){
- document.getElementById('stepResultV139').innerHTML="✔️ Perfecto. Ya diste el primer paso del día.";
+function pasoDiaV139(){
+  document.getElementById('resultadoPasoDiaV139').innerHTML='✔️ Perfecto. Ya diste el primer paso del día.';
 }
 </script>
 
@@ -17751,34 +17651,6 @@ function changeAmanecerPhraseV133(){
 }
 </script>
 
-
-
-<div id="firstStepScreenFixedV139" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:#ecfdf5;z-index:999999;overflow:auto;padding:25px;box-sizing:border-box;">
-<div style="max-width:420px;margin:auto;">
-<button onclick="document.getElementById('firstStepScreenFixedV139').style.display='none'" style="border:none;padding:12px 16px;border-radius:14px;">← Volver</button>
-
-<h1 style="text-align:center;">🚶 Primer paso del día</h1>
-
-<div style="background:white;padding:18px;border-radius:20px;margin:15px 0;">
-No hace falta resolver el día completo. Solo el próximo paso.
-</div>
-
-<button onclick="stepDoneV139(this)" style="width:100%;padding:14px;margin:8px 0;border:none;border-radius:16px;">💧 Tomar agua</button>
-<button onclick="stepDoneV139(this)" style="width:100%;padding:14px;margin:8px 0;border:none;border-radius:16px;">🪟 Abrir una ventana</button>
-<button onclick="stepDoneV139(this)" style="width:100%;padding:14px;margin:8px 0;border:none;border-radius:16px;">🚿 Darme una ducha</button>
-<button onclick="stepDoneV139(this)" style="width:100%;padding:14px;margin:8px 0;border:none;border-radius:16px;">🚶 Caminar 5 minutos</button>
-
-<div id="stepResultV139" style="background:white;padding:18px;border-radius:20px;margin-top:15px;">
-Elegí uno y seguí desde ahí.
-</div>
-</div>
-</div>
-
-<script>
-function stepDoneV139(btn){
- document.getElementById('stepResultV139').innerHTML="✔️ Perfecto. Ya diste el primer paso del día.";
-}
-</script>
 
 </body>
 </html>
