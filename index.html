@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
-<title>App Emocional V150</title>
+<title>ANICCA 1.0</title>
 
 <style>
 body {
@@ -4026,9 +4026,91 @@ html{
 }
 </style>
 
+
+<style id="anicca10Style">
+#splashAnicca10{
+  position:fixed;
+  inset:0;
+  z-index:1000000;
+  background:
+    radial-gradient(circle at 50% 28%, rgba(251,191,36,.26), transparent 12%),
+    radial-gradient(circle at 50% 74%, rgba(59,130,246,.22), transparent 34%),
+    linear-gradient(180deg,#020617 0%,#0f172a 48%,#1e1b4b 100%);
+  color:#f8fafc;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:28px;
+  box-sizing:border-box;
+  text-align:center;
+}
+.aniccaSplashBox10{width:100%;max-width:430px;}
+.aniccaStar10{font-size:58px;margin-bottom:22px;animation:aniccaPulse10 5s infinite ease-in-out;}
+@keyframes aniccaPulse10{
+  0%{transform:scale(1);opacity:.78;}
+  50%{transform:scale(1.12);opacity:1;}
+  100%{transform:scale(1);opacity:.78;}
+}
+.aniccaName10{font-size:48px;letter-spacing:5px;font-weight:750;margin:8px 0;}
+.aniccaLine10{width:180px;height:2px;border-radius:99px;margin:20px auto;background:linear-gradient(90deg,transparent,#facc15,transparent);}
+.aniccaTag10{font-size:22px;line-height:1.4;color:#fde68a;margin:14px 0 22px;}
+.aniccaText10{
+  background:rgba(255,255,255,.08);
+  border:1px solid rgba(255,255,255,.12);
+  border-radius:26px;
+  padding:18px;
+  line-height:1.55;
+  font-size:17px;
+  color:#e5e7eb;
+  margin:18px 0;
+}
+.aniccaStart10{
+  width:100%;
+  border:none;
+  border-radius:24px;
+  padding:17px;
+  font-size:18px;
+  background:linear-gradient(135deg,#fde68a,#fbbf24);
+  color:#111827;
+  font-weight:700;
+  margin-top:16px;
+}
+</style>
+
 </head>
 
 <body>
+
+<div id="splashAnicca10">
+  <div class="aniccaSplashBox10">
+    <div class="aniccaStar10">✦</div>
+    <div class="aniccaName10">ANICCA</div>
+    <div class="aniccaLine10"></div>
+    <div class="aniccaTag10">Esto también cambiará.</div>
+    <div class="aniccaText10">
+      Un espacio de acompañamiento emocional para los días difíciles.
+      No para exigirte. Para acompañarte.
+    </div>
+    <button class="aniccaStart10" onclick="entrarAnicca10()">Entrar suave</button>
+  </div>
+</div>
+
+<script>
+function entrarAnicca10(){
+  var s=document.getElementById('splashAnicca10');
+  if(s){s.style.display='none';}
+  try{localStorage.setItem('aniccaSplashSeen10','yes');}catch(e){}
+}
+window.addEventListener('load',function(){
+  try{
+    if(localStorage.getItem('aniccaSplashSeen10')==='yes'){
+      var s=document.getElementById('splashAnicca10');
+      if(s){s.style.display='none';}
+    }
+  }catch(e){}
+});
+</script>
+
 <audio id="ambientAudio" loop></audio>
 
 <div id="companionScreen" class="fullscreen" style="
