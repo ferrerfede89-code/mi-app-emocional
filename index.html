@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
-<title>ANICCA 1.0</title>
+<title>App Emocional V151</title>
 
 <style>
 body {
@@ -3714,6 +3714,152 @@ animation:lowTidePulse 7s infinite ease-in-out;
 100%{transform:scale(1);opacity:.85;}
 }
 
+
+/* =========================================================
+   V151 - NAVEGACIÓN POR CATEGORÍAS
+   Reduce la sobrecarga visual sin eliminar herramientas.
+   ========================================================= */
+.v151Navigation {
+  margin: 20px 0 24px;
+}
+
+.v151NavigationHeader {
+  text-align: center;
+  margin-bottom: 15px;
+}
+
+.v151NavigationTitle {
+  font-size: 21px;
+  font-weight: 750;
+  line-height: 1.3;
+  margin-bottom: 6px;
+}
+
+.v151NavigationSubtitle {
+  font-size: 14px;
+  line-height: 1.45;
+  color: #64748b;
+}
+
+.v151CategoryGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 11px;
+}
+
+.v151CategoryButton {
+  width: 100%;
+  border: 1px solid rgba(148,163,184,.18);
+  border-radius: 22px;
+  padding: 15px 16px;
+  background: rgba(255,255,255,.88);
+  box-shadow: 0 9px 24px rgba(15,23,42,.06);
+  text-align: left;
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  cursor: pointer;
+  color: inherit;
+}
+
+.v151CategoryButton:active {
+  transform: scale(.985);
+}
+
+.v151CategoryEmoji {
+  width: 44px;
+  height: 44px;
+  flex: 0 0 44px;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 25px;
+  background: rgba(241,245,249,.9);
+}
+
+.v151CategoryText strong {
+  display: block;
+  font-size: 16px;
+  margin-bottom: 3px;
+}
+
+.v151CategoryText small {
+  display: block;
+  font-size: 13px;
+  line-height: 1.35;
+  color: #64748b;
+}
+
+.v151ToolsHeader {
+  display: none;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin: 18px 0 12px;
+}
+
+.v151ToolsHeader.visible {
+  display: flex;
+}
+
+.v151ToolsTitle {
+  font-size: 18px;
+  font-weight: 750;
+}
+
+.v151BackButton {
+  border: none;
+  border-radius: 999px;
+  padding: 9px 13px;
+  background: rgba(255,255,255,.92);
+  box-shadow: 0 7px 18px rgba(15,23,42,.07);
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.v151Empty {
+  grid-column: 1 / 3;
+  display: none;
+  padding: 18px;
+  border-radius: 20px;
+  background: rgba(255,255,255,.82);
+  text-align: center;
+  color: #64748b;
+  line-height: 1.45;
+}
+
+body.v151CategoryOpen .v151Navigation {
+  display: none;
+}
+
+body:not(.v151CategoryOpen) #legacyNeedsTitleV151,
+body:not(.v151CategoryOpen) .actions {
+  display: none;
+}
+
+body.v151CategoryOpen #legacyNeedsTitleV151 {
+  display: none;
+}
+
+body.v151CategoryOpen .actions {
+  display: grid;
+}
+
+/* Oculta separadores antiguos cuando se usa el filtro V151. */
+body.v151CategoryOpen .actions > .categoryDividerV106 {
+  display: none !important;
+}
+
+@media (min-width: 370px) {
+  .v151CategoryGrid {
+    grid-template-columns: 1fr 1fr;
+  }
+  .v151CategoryButton:last-child {
+    grid-column: 1 / 3;
+  }
+}
+
 </style>
 
 <style id="v48premium">
@@ -4026,58 +4172,6 @@ html{
 }
 </style>
 
-
-<style id="anicca10Style">
-body{
-  background:linear-gradient(180deg,#020617,#0f172a,#1e1b4b) !important;
-}
-.app{
-  background:rgba(15,23,42,.88) !important;
-  color:#f8fafc !important;
-  border:1px solid rgba(255,255,255,.12);
-}
-.action,.stats,.moods button{
-  background:rgba(255,255,255,.10) !important;
-  color:#f8fafc !important;
-}
-.presence,.small{
-  color:#cbd5e1 !important;
-}
-#circle{
-  background:radial-gradient(circle,#fde68a,#1e3a8a) !important;
-  box-shadow:0 18px 45px rgba(251,191,36,.25) !important;
-}
-#aniccaHeader10{
-  text-align:center;
-  margin-bottom:24px;
-  padding:22px 14px;
-  border-radius:28px;
-  background:linear-gradient(180deg,rgba(255,255,255,.10),rgba(255,255,255,.04));
-  border:1px solid rgba(255,255,255,.10);
-}
-#aniccaHeader10 .star{
-  font-size:46px;
-  color:#fde68a;
-  animation:aniccaPulse10 5s infinite ease-in-out;
-}
-#aniccaHeader10 .name{
-  font-size:42px;
-  letter-spacing:5px;
-  font-weight:800;
-  margin-top:8px;
-}
-#aniccaHeader10 .tag{
-  color:#fde68a;
-  font-size:19px;
-  margin-top:8px;
-}
-@keyframes aniccaPulse10{
-  0%{transform:scale(1);opacity:.75;}
-  50%{transform:scale(1.12);opacity:1;}
-  100%{transform:scale(1);opacity:.75;}
-}
-</style>
-
 </head>
 
 <body>
@@ -4119,7 +4213,7 @@ text-align:center;
 <div class="app" id="appCard">
   <div class="premiumTopV105">
     <div class="premiumBrandV105">App Emocional</div>
-    <div class="premiumBadgeV105">V132 · después de la tormenta</div>
+    <div class="premiumBadgeV105">V151 · navegación más simple</div>
   </div>
 
   <div class="premiumHeroV105">
@@ -4178,7 +4272,63 @@ text-align:center;
   </div>
 </div>
 
-<div class="section-title">
+
+<!-- V151 - Navegación principal simplificada -->
+<section class="v151Navigation" id="v151Navigation" aria-label="Navegación principal">
+  <div class="v151NavigationHeader">
+    <div class="v151NavigationTitle">¿Qué necesitás en este momento?</div>
+    <div class="v151NavigationSubtitle">Elegí una puerta. Adentro vas a encontrar las herramientas relacionadas.</div>
+  </div>
+
+  <div class="v151CategoryGrid">
+    <button class="v151CategoryButton" type="button" onclick="openCategoryV151('ahora')">
+      <span class="v151CategoryEmoji">🌱</span>
+      <span class="v151CategoryText">
+        <strong>Empezar ahora</strong>
+        <small>Calmar, respirar y atravesar este momento.</small>
+      </span>
+    </button>
+
+    <button class="v151CategoryButton" type="button" onclick="openCategoryV151('expresar')">
+      <span class="v151CategoryEmoji">💬</span>
+      <span class="v151CategoryText">
+        <strong>Expresar lo que siento</strong>
+        <small>Hablar, escribir, liberar y registrar.</small>
+      </span>
+    </button>
+
+    <button class="v151CategoryButton" type="button" onclick="openCategoryV151('comprender')">
+      <span class="v151CategoryEmoji">🧭</span>
+      <span class="v151CategoryText">
+        <strong>Conocerme mejor</strong>
+        <small>Observar emociones, energía y patrones.</small>
+      </span>
+    </button>
+
+    <button class="v151CategoryButton" type="button" onclick="openCategoryV151('recorrido')">
+      <span class="v151CategoryEmoji">🗺️</span>
+      <span class="v151CategoryText">
+        <strong>Mi recorrido</strong>
+        <small>Memoria, crecimiento, sentido y futuro.</small>
+      </span>
+    </button>
+
+    <button class="v151CategoryButton" type="button" onclick="openCategoryV151('apoyo')">
+      <span class="v151CategoryEmoji">🤝</span>
+      <span class="v151CategoryText">
+        <strong>Apoyo y seguridad</strong>
+        <small>Contactos, conexión y ayuda en momentos difíciles.</small>
+      </span>
+    </button>
+  </div>
+</section>
+
+<div class="v151ToolsHeader" id="v151ToolsHeader">
+  <button class="v151BackButton" type="button" onclick="closeCategoryV151()">← Volver</button>
+  <div class="v151ToolsTitle" id="v151ToolsTitle">Herramientas</div>
+</div>
+
+<div class="section-title" id="legacyNeedsTitleV151">
 <button class="centerCardV136" onclick="openEmotionalCenterV136()">
 🧭<br>Centro emocional
 <small>Urgencia · Calma · Memoria · Recorrido · Crisis</small>
@@ -14907,6 +15057,137 @@ Tocá el botón para ver el estado final del proyecto.
 </div>
 </div>
 </div>
+
+
+<script>
+/* =========================================================
+   V151 - Filtro de herramientas por categorías
+   Conserva los onclick originales de cada herramienta.
+   ========================================================= */
+(function () {
+  const categoryTitlesV151 = {
+    ahora: "🌱 Empezar ahora",
+    expresar: "💬 Expresar lo que siento",
+    comprender: "🧭 Conocerme mejor",
+    recorrido: "🗺️ Mi recorrido",
+    apoyo: "🤝 Apoyo y seguridad"
+  };
+
+  const rulesV151 = {
+    apoyo: [
+      "conectar", "contactos refugio", "contacto", "whatsapp", "llamar",
+      "crisis", "emergencia", "plan de emergencia", "red de apoyo",
+      "personas que tocaste", "quedarme"
+    ],
+    expresar: [
+      "liberar", "hablar", "diario", "dormir", "clima interior",
+      "reflejo del día", "calendario", "recordar", "carta",
+      "mensaje", "ritual de cierre", "ceremonias personales"
+    ],
+    comprender: [
+      "energía", "resumen emocional", "resumen rápido", "centro emocional",
+      "fortalezas", "perfil emocional", "estado", "transformaciones",
+      "mapa emocional", "brújula", "marea baja", "noche segura",
+      "qué te sostuvo", "señal para mañana"
+    ],
+    ahora: [
+      "respirar", "amanecer interior", "anclaje", "botiquín",
+      "primer paso", "modo semilla", "chispa", "ambiente",
+      "banda sonora", "refugio interno", "puente de regreso",
+      "bolsillo de calma", "faro", "empezar", "noche segura"
+    ]
+  };
+
+  function normalizeV151(value) {
+    return (value || "")
+      .toLowerCase()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .replace(/\s+/g, " ")
+      .trim();
+  }
+
+  function categoryForButtonV151(button) {
+    const text = normalizeV151(button.innerText || button.textContent);
+    const onclick = normalizeV151(button.getAttribute("onclick"));
+    const searchable = text + " " + onclick;
+
+    const order = ["apoyo", "expresar", "comprender", "ahora"];
+    for (const category of order) {
+      if (rulesV151[category].some(term => searchable.includes(normalizeV151(term)))) {
+        return category;
+      }
+    }
+    return "recorrido";
+  }
+
+  window.openCategoryV151 = function (category) {
+    const actions = document.querySelector(".actions");
+    if (!actions) return;
+
+    document.body.classList.add("v151CategoryOpen");
+
+    const title = document.getElementById("v151ToolsTitle");
+    const header = document.getElementById("v151ToolsHeader");
+    if (title) title.textContent = categoryTitlesV151[category] || "Herramientas";
+    if (header) header.classList.add("visible");
+
+    let visibleCount = 0;
+    const children = Array.from(actions.children);
+
+    children.forEach(child => {
+      if (child.matches("button")) {
+        const belongs = categoryForButtonV151(child) === category;
+        child.style.display = belongs ? "" : "none";
+        if (belongs) visibleCount++;
+      } else {
+        child.style.display = "none";
+      }
+    });
+
+    let empty = document.getElementById("v151Empty");
+    if (!empty) {
+      empty = document.createElement("div");
+      empty.id = "v151Empty";
+      empty.className = "v151Empty";
+      empty.textContent = "Todavía no hay herramientas visibles en esta categoría.";
+      actions.appendChild(empty);
+    }
+    empty.style.display = visibleCount ? "none" : "block";
+
+    setTimeout(() => {
+      const headerTop = header ? header.getBoundingClientRect().top + window.scrollY - 12 : 0;
+      window.scrollTo({ top: Math.max(0, headerTop), behavior: "smooth" });
+    }, 30);
+  };
+
+  window.closeCategoryV151 = function () {
+    document.body.classList.remove("v151CategoryOpen");
+
+    const header = document.getElementById("v151ToolsHeader");
+    if (header) header.classList.remove("visible");
+
+    const actions = document.querySelector(".actions");
+    if (actions) {
+      Array.from(actions.children).forEach(child => {
+        child.style.display = "";
+      });
+    }
+
+    const navigation = document.getElementById("v151Navigation");
+    if (navigation) {
+      setTimeout(() => {
+        const top = navigation.getBoundingClientRect().top + window.scrollY - 12;
+        window.scrollTo({ top: Math.max(0, top), behavior: "smooth" });
+      }, 30);
+    }
+  };
+
+  document.addEventListener("DOMContentLoaded", function () {
+    document.body.classList.remove("v151CategoryOpen");
+  });
+})();
+</script>
 
 </body>
 
