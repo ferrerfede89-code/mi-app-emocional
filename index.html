@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
-<title>App Emocional V152</title>
+<title>App Emocional V153</title>
 
 <style>
 body {
@@ -4252,6 +4252,65 @@ html{
 @media (prefers-reduced-motion: reduce) {
   .calmEntryV152, .fullscreen.v152-content-entering > * { animation:none !important; }
 }
+
+/* V153 - Carrusel de compañeros: una opción por vez */
+.companionCarouselV153{
+  width:min(100%,360px);
+  margin-top:22px;
+  touch-action:pan-y;
+  user-select:none;
+}
+.companionSlideV153{
+  background:rgba(255,255,255,.9);
+  border:1px solid rgba(255,255,255,.72);
+  border-radius:30px;
+  padding:25px 20px 22px;
+  box-shadow:0 18px 42px rgba(30,64,175,.12);
+  min-height:305px;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  box-sizing:border-box;
+  transition:opacity .22s ease,transform .22s ease;
+}
+.companionSlideV153.is-changing-left{opacity:0;transform:translateX(-18px) scale(.98);}
+.companionSlideV153.is-changing-right{opacity:0;transform:translateX(18px) scale(.98);}
+.companionEmojiV153{
+  width:108px;height:108px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:58px;margin-bottom:13px;
+  background:radial-gradient(circle,#fff,#dbeafe);
+  box-shadow:0 16px 36px rgba(59,130,246,.16);
+}
+.companionSlideV153 h3{font-size:26px;margin:2px 0 8px;color:#1f2937;}
+.companionDescriptionV153{
+  margin:0 auto 20px;max-width:285px;min-height:68px;
+  font-size:16px;line-height:1.5;color:#526176;
+}
+.companionChooseV153{
+  border:none;border-radius:18px;padding:14px 22px;
+  background:#2563eb;color:#fff;font-size:16px;font-weight:650;
+  width:100%;max-width:260px;box-shadow:0 10px 24px rgba(37,99,235,.22);
+}
+.companionNavigationV153{
+  display:grid;grid-template-columns:58px 1fr 58px;
+  align-items:center;gap:12px;margin-top:16px;
+}
+.companionArrowV153{
+  width:54px;height:54px;border:none;border-radius:50%;
+  background:rgba(255,255,255,.92);font-size:25px;color:#334155;
+  box-shadow:0 9px 22px rgba(15,23,42,.09);
+}
+.companionArrowV153:active,.companionChooseV153:active{transform:scale(.96);}
+.companionCounterV153{font-size:14px;font-weight:650;color:#64748b;}
+.companionSwipeHintV153{font-size:13px;color:#718096;margin:12px 0 0;}
+@media(max-height:700px){
+  .companionSlideV153{min-height:265px;padding:18px;}
+  .companionEmojiV153{width:88px;height:88px;font-size:48px;}
+  #companionScreen>p{margin-top:4px;margin-bottom:5px;}
+  #companionScreen>h2{margin-top:5px;margin-bottom:5px;}
+}
 </style>
 
 </head>
@@ -4273,29 +4332,31 @@ text-align:center;
     Elegí quién querés que esté con vos.
   </p>
 
-  <div class="companionGrid">
-    <button class="companionCard" onclick="chooseCompanion('brote')">
-      <span class="companionEmoji">🌱</span>Brote<br><span class="small">crecimiento lento</span>
-    </button>
-    <button class="companionCard" onclick="chooseCompanion('luna')">
-      <span class="companionEmoji">🌙</span>Luna<br><span class="small">calma y silencio</span>
-    </button>
-    <button class="companionCard" onclick="chooseCompanion('zorro')">
-      <span class="companionEmoji">🦊</span>Zorro<br><span class="small">curiosidad suave</span>
-    </button>
-    <button class="companionCard" onclick="chooseCompanion('ballena')">
-      <span class="companionEmoji">🐳</span>Ballena<br><span class="small">presencia profunda</span>
-    </button>
-    <button class="companionCard" onclick="chooseCompanion('nube')" style="grid-column:1/3;">
-      <span class="companionEmoji">☁️</span>Nube<br><span class="small">alivio y descanso</span>
-    </button>
+  <div class="companionCarouselV153" aria-label="Elegir compañero">
+    <div class="companionSlideV153" id="companionSlideV153">
+      <div class="companionEmojiV153" id="companionEmojiV153">🌱</div>
+      <h3 id="companionNameV153">Brote</h3>
+      <p class="companionDescriptionV153" id="companionDescriptionV153">
+        Una presencia tranquila para acompañar tus pequeños avances, incluso cuando hoy solo podés descansar.
+      </p>
+      <button class="companionChooseV153" id="companionChooseV153" onclick="chooseVisibleCompanionV153()">
+        Elegir a Brote
+      </button>
+    </div>
+
+    <div class="companionNavigationV153">
+      <button class="companionArrowV153" type="button" onclick="previousCompanionV153()" aria-label="Compañero anterior">←</button>
+      <span class="companionCounterV153" id="companionCounterV153">1 de 5</span>
+      <button class="companionArrowV153" type="button" onclick="nextCompanionV153()" aria-label="Compañero siguiente">→</button>
+    </div>
+    <p class="companionSwipeHintV153">También podés deslizar hacia los costados.</p>
   </div>
 </div>
 
 <div class="app" id="appCard">
   <div class="premiumTopV105">
     <div class="premiumBrandV105">App Emocional</div>
-    <div class="premiumBadgeV105">V151 · navegación más simple</div>
+    <div class="premiumBadgeV105">V153 · una opción por vez</div>
   </div>
 
   <div class="premiumHeroV105">
@@ -18621,5 +18682,70 @@ function changeAmanecerPhraseV133(){
 </script>
 
 
+
+<script>
+/* V153 - Navegación lateral de compañeros */
+(function(){
+  const optionsV153=[
+    {key:'brote',emoji:'🌱',name:'Brote',description:'Una presencia tranquila para acompañar tus pequeños avances, incluso cuando hoy solo podés descansar.',tone:'#bbf7d0'},
+    {key:'luna',emoji:'🌙',name:'Luna',description:'Una compañía serena para los momentos de silencio, cansancio o pensamientos que necesitan bajar el volumen.',tone:'#c7d2fe'},
+    {key:'zorro',emoji:'🦊',name:'Zorro',description:'Una presencia curiosa y amable para mirar lo que sentís desde otro lugar, sin exigirte respuestas perfectas.',tone:'#fed7aa'},
+    {key:'ballena',emoji:'🐳',name:'Ballena',description:'Una compañía profunda y estable para cuando necesitás sentir sostén, espacio y una respiración más lenta.',tone:'#bae6fd'},
+    {key:'nube',emoji:'☁️',name:'Nube',description:'Una presencia liviana para soltar un poco el peso, descansar y no tener que sostenerlo todo por un momento.',tone:'#e2e8f0'}
+  ];
+  let indexV153=0;
+  let touchStartXV153=null;
+
+  function renderCompanionV153(direction){
+    const slide=document.getElementById('companionSlideV153');
+    if(!slide) return;
+    if(direction){
+      slide.classList.add(direction==='next'?'is-changing-left':'is-changing-right');
+    }
+    setTimeout(function(){
+      const item=optionsV153[indexV153];
+      const emoji=document.getElementById('companionEmojiV153');
+      document.getElementById('companionNameV153').textContent=item.name;
+      document.getElementById('companionDescriptionV153').textContent=item.description;
+      document.getElementById('companionChooseV153').textContent='Elegir a '+item.name;
+      document.getElementById('companionCounterV153').textContent=(indexV153+1)+' de '+optionsV153.length;
+      emoji.textContent=item.emoji;
+      emoji.style.background='radial-gradient(circle,#ffffff,'+item.tone+')';
+      slide.classList.remove('is-changing-left','is-changing-right');
+    },direction?190:0);
+  }
+
+  window.nextCompanionV153=function(){
+    indexV153=(indexV153+1)%optionsV153.length;
+    renderCompanionV153('next');
+    if(navigator.vibrate) navigator.vibrate(18);
+  };
+  window.previousCompanionV153=function(){
+    indexV153=(indexV153-1+optionsV153.length)%optionsV153.length;
+    renderCompanionV153('previous');
+    if(navigator.vibrate) navigator.vibrate(18);
+  };
+  window.chooseVisibleCompanionV153=function(){
+    chooseCompanion(optionsV153[indexV153].key);
+  };
+
+  document.addEventListener('DOMContentLoaded',function(){
+    const saved=localStorage.getItem('companion');
+    const savedIndex=optionsV153.findIndex(function(item){return item.key===saved;});
+    if(savedIndex>=0) indexV153=savedIndex;
+    renderCompanionV153();
+    const carousel=document.querySelector('.companionCarouselV153');
+    if(!carousel) return;
+    carousel.addEventListener('touchstart',function(e){touchStartXV153=e.changedTouches[0].clientX;},{passive:true});
+    carousel.addEventListener('touchend',function(e){
+      if(touchStartXV153===null) return;
+      const delta=e.changedTouches[0].clientX-touchStartXV153;
+      touchStartXV153=null;
+      if(Math.abs(delta)<45) return;
+      if(delta<0) window.nextCompanionV153(); else window.previousCompanionV153();
+    },{passive:true});
+  });
+})();
+</script>
 </body>
 </html>
