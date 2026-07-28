@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
-<title>App Emocional V151</title>
+<title>App Emocional V152</title>
 
 <style>
 body {
@@ -4169,6 +4169,88 @@ html{
  border-radius:22px;
  background:rgba(224,242,254,.95);
  margin:16px 0;
+}
+</style>
+
+
+<style id="v152-progressive-disclosure-styles">
+/* V152 — entrada serena y progresiva a cada herramienta */
+.calmEntryV152 {
+  position: fixed;
+  inset: 0;
+  z-index: 10050;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: max(24px, env(safe-area-inset-top)) 22px max(24px, env(safe-area-inset-bottom));
+  box-sizing: border-box;
+  background:
+    radial-gradient(circle at 50% 22%, rgba(255,255,255,.96), rgba(255,255,255,.76) 42%, rgba(224,242,254,.92)),
+    linear-gradient(180deg,#effaff,#dbeafe);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  animation: calmEntryFadeV152 .28s ease both;
+}
+.calmEntryCardV152 {
+  width: min(100%, 380px);
+  padding: 30px 24px 24px;
+  border-radius: 30px;
+  text-align: center;
+  background: rgba(255,255,255,.86);
+  border: 1px solid rgba(255,255,255,.9);
+  box-shadow: 0 24px 70px rgba(37,99,235,.14);
+}
+.calmEntryMarkV152 {
+  width: 68px;
+  height: 68px;
+  margin: 0 auto 18px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  font-size: 31px;
+  background: linear-gradient(145deg,rgba(219,234,254,.95),rgba(255,255,255,.98));
+  box-shadow: inset 0 0 0 1px rgba(96,165,250,.16), 0 12px 30px rgba(59,130,246,.13);
+}
+.calmEntryCardV152 h2 {
+  margin: 0 0 10px;
+  font-size: 25px;
+  line-height: 1.2;
+  color: #1e3a5f;
+}
+.calmEntryCardV152 p {
+  margin: 0 auto 24px;
+  max-width: 300px;
+  color: #64748b;
+  font-size: 16px;
+  line-height: 1.55;
+}
+.calmEntryPrimaryV152,
+.calmEntrySecondaryV152 {
+  width: 100%;
+  border: 0;
+  border-radius: 18px;
+  padding: 14px 18px;
+  font-size: 16px;
+  cursor: pointer;
+}
+.calmEntryPrimaryV152 {
+  color: white;
+  font-weight: 650;
+  background: linear-gradient(135deg,#60a5fa,#4f8edc);
+  box-shadow: 0 12px 28px rgba(59,130,246,.24);
+}
+.calmEntrySecondaryV152 {
+  margin-top: 9px;
+  color: #64748b;
+  background: transparent;
+}
+.fullscreen.v152-content-entering > *:not(.calmEntryV152) {
+  animation: calmContentInV152 .34s ease both;
+}
+@keyframes calmEntryFadeV152 { from { opacity:0; } to { opacity:1; } }
+@keyframes calmContentInV152 { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:none; } }
+@media (prefers-reduced-motion: reduce) {
+  .calmEntryV152, .fullscreen.v152-content-entering > * { animation:none !important; }
 }
 </style>
 
@@ -15185,6 +15267,119 @@ Tocá el botón para ver el estado final del proyecto.
 
   document.addEventListener("DOMContentLoaded", function () {
     document.body.classList.remove("v151CategoryOpen");
+  });
+})();
+</script>
+
+
+<script id="v152-progressive-disclosure-script">
+(function(){
+  'use strict';
+
+  function isVisibleV152(screen){
+    if(!screen) return false;
+    var style = window.getComputedStyle(screen);
+    return style.display !== 'none' && style.visibility !== 'hidden';
+  }
+
+  function cleanTitleV152(value){
+    return (value || 'Este espacio').replace(/\s+/g,' ').trim();
+  }
+
+  function getTitleV152(screen){
+    var title = screen.querySelector('h2, h1, .screen-title, .section-title');
+    return cleanTitleV152(title ? title.textContent : 'Este espacio');
+  }
+
+  function closeScreenV152(screen){
+    var candidates = Array.from(screen.querySelectorAll('button'));
+    var closeButton = candidates.find(function(btn){
+      if(btn.closest('.calmEntryV152')) return false;
+      var action = (btn.getAttribute('onclick') || '').toLowerCase();
+      var label = (btn.textContent || '').toLowerCase();
+      return action.indexOf('close') !== -1 || action.indexOf('cerrar') !== -1 ||
+             label.indexOf('volver') !== -1 || label.indexOf('cerrar') !== -1;
+    });
+    if(closeButton){ closeButton.click(); }
+    else { screen.style.display = 'none'; }
+    var entry = screen.querySelector('.calmEntryV152');
+    if(entry) entry.remove();
+  }
+
+  function revealContentV152(screen, entry){
+    entry.style.opacity = '0';
+    entry.style.transition = 'opacity .2s ease';
+    window.setTimeout(function(){
+      entry.remove();
+      screen.classList.add('v152-content-entering');
+      window.setTimeout(function(){ screen.classList.remove('v152-content-entering'); }, 420);
+      var firstField = screen.querySelector('textarea, input:not([type="hidden"]), select');
+      if(firstField && window.innerWidth > 700){
+        try { firstField.focus({preventScroll:true}); } catch(e) {}
+      }
+    },200);
+  }
+
+  function addCalmEntryV152(screen){
+    if(!screen || screen.querySelector(':scope > .calmEntryV152')) return;
+    if(screen.dataset.v152SkipIntro === 'true') return;
+
+    var entry = document.createElement('div');
+    entry.className = 'calmEntryV152';
+    entry.setAttribute('role','dialog');
+    entry.setAttribute('aria-modal','true');
+    entry.setAttribute('aria-label','Introducción a ' + getTitleV152(screen));
+
+    var card = document.createElement('div');
+    card.className = 'calmEntryCardV152';
+
+    var mark = document.createElement('div');
+    mark.className = 'calmEntryMarkV152';
+    mark.textContent = '✦';
+
+    var title = document.createElement('h2');
+    title.textContent = getTitleV152(screen);
+
+    var description = document.createElement('p');
+    description.textContent = 'No hace falta mirar todo ahora. Entramos de a un paso, a tu ritmo.';
+
+    var start = document.createElement('button');
+    start.type = 'button';
+    start.className = 'calmEntryPrimaryV152';
+    start.textContent = 'Empezar paso a paso';
+    start.addEventListener('click',function(){ revealContentV152(screen,entry); });
+
+    var back = document.createElement('button');
+    back.type = 'button';
+    back.className = 'calmEntrySecondaryV152';
+    back.textContent = 'Ahora no';
+    back.addEventListener('click',function(){ closeScreenV152(screen); });
+
+    card.appendChild(mark);
+    card.appendChild(title);
+    card.appendChild(description);
+    card.appendChild(start);
+    card.appendChild(back);
+    entry.appendChild(card);
+    screen.appendChild(entry);
+    window.setTimeout(function(){ try{ start.focus(); }catch(e){} },30);
+  }
+
+  function inspectV152(screen){
+    if(isVisibleV152(screen)) addCalmEntryV152(screen);
+    else {
+      var entry = screen.querySelector(':scope > .calmEntryV152');
+      if(entry) entry.remove();
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded',function(){
+    var screens = Array.from(document.querySelectorAll('.fullscreen'));
+    screens.forEach(function(screen){
+      var observer = new MutationObserver(function(){ inspectV152(screen); });
+      observer.observe(screen,{attributes:true,attributeFilter:['style','class']});
+      inspectV152(screen);
+    });
   });
 })();
 </script>
