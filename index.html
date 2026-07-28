@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
-<title>App Emocional V153</title>
+<title>App Emocional V154</title>
 
 <style>
 body {
@@ -3860,6 +3860,49 @@ body.v151CategoryOpen .actions > .categoryDividerV106 {
   }
 }
 
+
+
+/* =========================================================
+   V154 - NAVEGACIÓN PRINCIPAL: UNA CATEGORÍA POR VEZ
+   ========================================================= */
+.v154MainNavigation{margin:22px 0 28px;}
+.mainCarouselV154{width:100%;text-align:center;touch-action:pan-y;}
+.mainSlideV154{
+  min-height:285px;border-radius:30px;padding:24px 20px;
+  background:linear-gradient(155deg,rgba(255,255,255,.96),rgba(239,246,255,.90));
+  border:1px solid rgba(255,255,255,.75);
+  box-shadow:0 18px 42px rgba(15,23,42,.10);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  transition:opacity .22s ease,transform .22s ease;
+}
+.mainSlideV154.is-changing-left{opacity:0;transform:translateX(-20px) scale(.985);}
+.mainSlideV154.is-changing-right{opacity:0;transform:translateX(20px) scale(.985);}
+.mainEmojiV154{
+  width:100px;height:100px;border-radius:32px;margin-bottom:18px;
+  display:flex;align-items:center;justify-content:center;font-size:53px;
+  background:rgba(255,255,255,.88);box-shadow:0 14px 32px rgba(15,23,42,.09);
+}
+.mainSlideV154 h3{font-size:27px;line-height:1.2;margin:0 0 10px;color:#1f2937;}
+.mainDescriptionV154{max-width:290px;min-height:48px;margin:0 0 20px;color:#64748b;font-size:16px;line-height:1.5;}
+.mainEnterV154{
+  min-width:170px;border:none;border-radius:999px;padding:14px 24px;
+  background:#1f2937;color:white;font-size:16px;font-weight:700;
+  box-shadow:0 10px 24px rgba(31,41,55,.20);cursor:pointer;
+}
+.mainNavigationV154{display:flex;align-items:center;justify-content:center;gap:20px;margin-top:16px;}
+.mainArrowV154{
+  width:48px;height:48px;border:none;border-radius:50%;background:rgba(255,255,255,.94);
+  box-shadow:0 9px 22px rgba(15,23,42,.09);font-size:22px;cursor:pointer;color:#334155;
+}
+.mainArrowV154:active,.mainEnterV154:active{transform:scale(.96);}
+.mainCounterV154{min-width:58px;font-size:14px;font-weight:700;color:#64748b;}
+.mainSwipeHintV154{font-size:13px;color:#718096;margin:11px 0 0;}
+@media(max-width:370px){
+  .mainSlideV154{min-height:260px;padding:20px 16px;}
+  .mainEmojiV154{width:88px;height:88px;font-size:47px;}
+  .mainSlideV154 h3{font-size:24px;}
+}
+
 </style>
 
 <style id="v48premium">
@@ -4416,53 +4459,27 @@ text-align:center;
 </div>
 
 
-<!-- V151 - Navegación principal simplificada -->
-<section class="v151Navigation" id="v151Navigation" aria-label="Navegación principal">
+<!-- V154 - Navegación principal: una categoría por vez -->
+<section class="v151Navigation v154MainNavigation" id="v151Navigation" aria-label="Navegación principal">
   <div class="v151NavigationHeader">
     <div class="v151NavigationTitle">¿Qué necesitás en este momento?</div>
-    <div class="v151NavigationSubtitle">Elegí una puerta. Adentro vas a encontrar las herramientas relacionadas.</div>
+    <div class="v151NavigationSubtitle">Una opción por vez. Podés avanzar con las flechas o deslizar.</div>
   </div>
 
-  <div class="v151CategoryGrid">
-    <button class="v151CategoryButton" type="button" onclick="openCategoryV151('ahora')">
-      <span class="v151CategoryEmoji">🌱</span>
-      <span class="v151CategoryText">
-        <strong>Empezar ahora</strong>
-        <small>Calmar, respirar y atravesar este momento.</small>
-      </span>
-    </button>
+  <div class="mainCarouselV154" id="mainCarouselV154">
+    <div class="mainSlideV154" id="mainSlideV154">
+      <div class="mainEmojiV154" id="mainEmojiV154">🌱</div>
+      <h3 id="mainTitleV154">Empezar ahora</h3>
+      <p class="mainDescriptionV154" id="mainDescriptionV154">Herramientas para respirar, calmarte y atravesar este momento.</p>
+      <button class="mainEnterV154" id="mainEnterV154" type="button" onclick="openVisibleCategoryV154()">Entrar</button>
+    </div>
 
-    <button class="v151CategoryButton" type="button" onclick="openCategoryV151('expresar')">
-      <span class="v151CategoryEmoji">💬</span>
-      <span class="v151CategoryText">
-        <strong>Expresar lo que siento</strong>
-        <small>Hablar, escribir, liberar y registrar.</small>
-      </span>
-    </button>
-
-    <button class="v151CategoryButton" type="button" onclick="openCategoryV151('comprender')">
-      <span class="v151CategoryEmoji">🧭</span>
-      <span class="v151CategoryText">
-        <strong>Conocerme mejor</strong>
-        <small>Observar emociones, energía y patrones.</small>
-      </span>
-    </button>
-
-    <button class="v151CategoryButton" type="button" onclick="openCategoryV151('recorrido')">
-      <span class="v151CategoryEmoji">🗺️</span>
-      <span class="v151CategoryText">
-        <strong>Mi recorrido</strong>
-        <small>Memoria, crecimiento, sentido y futuro.</small>
-      </span>
-    </button>
-
-    <button class="v151CategoryButton" type="button" onclick="openCategoryV151('apoyo')">
-      <span class="v151CategoryEmoji">🤝</span>
-      <span class="v151CategoryText">
-        <strong>Apoyo y seguridad</strong>
-        <small>Contactos, conexión y ayuda en momentos difíciles.</small>
-      </span>
-    </button>
+    <div class="mainNavigationV154">
+      <button class="mainArrowV154" type="button" onclick="previousMainCategoryV154()" aria-label="Categoría anterior">←</button>
+      <span class="mainCounterV154" id="mainCounterV154">1 de 5</span>
+      <button class="mainArrowV154" type="button" onclick="nextMainCategoryV154()" aria-label="Categoría siguiente">→</button>
+    </div>
+    <p class="mainSwipeHintV154">También podés deslizar hacia los costados.</p>
   </div>
 </section>
 
@@ -15443,6 +15460,70 @@ Tocá el botón para ver el estado final del proyecto.
       observer.observe(screen,{attributes:true,attributeFilter:['style','class']});
       inspectV152(screen);
     });
+  });
+})();
+</script>
+
+
+<script>
+/* V154 - Carrusel de categorías principales */
+(function(){
+  const categoriesV154 = [
+    {key:'ahora',emoji:'🌱',title:'Empezar ahora',description:'Herramientas para respirar, calmarte y atravesar este momento.'},
+    {key:'expresar',emoji:'💬',title:'Expresar lo que siento',description:'Un espacio para hablar, escribir, liberar y registrar lo que te pasa.'},
+    {key:'comprender',emoji:'🧭',title:'Conocerme mejor',description:'Recursos para observar tus emociones, tu energía y tus patrones.'},
+    {key:'recorrido',emoji:'🗺️',title:'Mi recorrido',description:'Memoria, crecimiento, aprendizajes, sentido y posibilidades futuras.'},
+    {key:'apoyo',emoji:'🤝',title:'Apoyo y seguridad',description:'Contactos, conexión y ayuda para los momentos que se sienten difíciles.'}
+  ];
+  let currentV154 = 0;
+  let touchStartV154 = null;
+
+  function renderV154(direction){
+    const slide=document.getElementById('mainSlideV154');
+    if(!slide) return;
+    if(direction){
+      slide.classList.add(direction==='left'?'is-changing-left':'is-changing-right');
+    }
+    setTimeout(function(){
+      const item=categoriesV154[currentV154];
+      const emoji=document.getElementById('mainEmojiV154');
+      const title=document.getElementById('mainTitleV154');
+      const description=document.getElementById('mainDescriptionV154');
+      const counter=document.getElementById('mainCounterV154');
+      if(emoji) emoji.textContent=item.emoji;
+      if(title) title.textContent=item.title;
+      if(description) description.textContent=item.description;
+      if(counter) counter.textContent=(currentV154+1)+' de '+categoriesV154.length;
+      slide.classList.remove('is-changing-left','is-changing-right');
+    }, direction?180:0);
+  }
+
+  window.nextMainCategoryV154=function(){
+    currentV154=(currentV154+1)%categoriesV154.length;
+    renderV154('left');
+  };
+  window.previousMainCategoryV154=function(){
+    currentV154=(currentV154-1+categoriesV154.length)%categoriesV154.length;
+    renderV154('right');
+  };
+  window.openVisibleCategoryV154=function(){
+    const item=categoriesV154[currentV154];
+    if(typeof window.openCategoryV151==='function') window.openCategoryV151(item.key);
+  };
+
+  document.addEventListener('DOMContentLoaded',function(){
+    renderV154();
+    const carousel=document.getElementById('mainCarouselV154');
+    if(!carousel) return;
+    carousel.addEventListener('touchstart',function(e){touchStartV154=e.changedTouches[0].clientX;},{passive:true});
+    carousel.addEventListener('touchend',function(e){
+      if(touchStartV154===null) return;
+      const diff=e.changedTouches[0].clientX-touchStartV154;
+      touchStartV154=null;
+      if(Math.abs(diff)<45) return;
+      if(diff<0) window.nextMainCategoryV154();
+      else window.previousMainCategoryV154();
+    },{passive:true});
   });
 })();
 </script>
