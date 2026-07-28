@@ -15307,6 +15307,7 @@ Tocá el botón para ver el estado final del proyecto.
   }
 
   function revealContentV152(screen, entry){
+    screen.dataset.v152Entered = 'true';
     entry.style.opacity = '0';
     entry.style.transition = 'opacity .2s ease';
     window.setTimeout(function(){
@@ -15322,7 +15323,7 @@ Tocá el botón para ver el estado final del proyecto.
 
   function addCalmEntryV152(screen){
     if(!screen || screen.querySelector(':scope > .calmEntryV152')) return;
-    if(screen.dataset.v152SkipIntro === 'true') return;
+    if(screen.dataset.v152SkipIntro === 'true' || screen.dataset.v152Entered === 'true') return;
 
     var entry = document.createElement('div');
     entry.className = 'calmEntryV152';
@@ -15370,6 +15371,7 @@ Tocá el botón para ver el estado final del proyecto.
     else {
       var entry = screen.querySelector(':scope > .calmEntryV152');
       if(entry) entry.remove();
+      delete screen.dataset.v152Entered;
     }
   }
 
