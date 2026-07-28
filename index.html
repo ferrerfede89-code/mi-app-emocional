@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
-<title>App Emocional V154</title>
+<title>App Emocional V155</title>
 
 <style>
 body {
@@ -4356,6 +4356,85 @@ html{
 }
 </style>
 
+
+<style id="v155-clean-design-css">
+/* V155 · Diseño limpio inspirado en el nuevo recorrido */
+#dashboardCard, .finalSealV110 { display:none !important; }
+#legacyNeedsTitleV151 { display:none !important; }
+body.v151CategoryOpen #v151Navigation { display:none !important; }
+body.v151CategoryOpen .premiumHeroV105,
+body.v151CategoryOpen .message,
+body.v151CategoryOpen #presenceMessageV107,
+body.v151CategoryOpen .emotionalSignatureV107,
+body.v151CategoryOpen .premiumQuickV105,
+body.v151CategoryOpen #pastMessageCard,
+body.v151CategoryOpen #anniversaryCard { display:none !important; }
+
+.v155CategoryCarousel{
+  display:none;
+  width:100%;
+  margin:18px 0 30px;
+  text-align:center;
+  touch-action:pan-y;
+}
+body.v151CategoryOpen .v155CategoryCarousel{display:block;}
+.v155ToolCard{
+  position:relative;
+  min-height:420px;
+  padding:30px 22px 24px;
+  border-radius:32px;
+  background:linear-gradient(160deg,rgba(255,255,255,.96),rgba(240,253,244,.92));
+  border:1px solid rgba(255,255,255,.82);
+  box-shadow:0 22px 52px rgba(15,23,42,.10);
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  overflow:hidden;
+  transition:opacity .18s ease,transform .18s ease;
+}
+.v155ToolCard.is-changing-left{opacity:0;transform:translateX(-18px);}
+.v155ToolCard.is-changing-right{opacity:0;transform:translateX(18px);}
+.v155ToolEmoji{
+  width:126px;height:126px;border-radius:36px;
+  display:flex;align-items:center;justify-content:center;
+  margin:0 auto 22px;font-size:60px;
+  background:rgba(255,255,255,.86);
+  box-shadow:0 18px 40px rgba(15,23,42,.08);
+}
+.v155ToolCard h3{font-size:27px;line-height:1.15;margin:0 0 14px;color:#1e293b;}
+.v155ToolDescription{max-width:290px;margin:0 auto 25px;color:#64748b;font-size:17px;line-height:1.5;}
+.v155OpenTool{
+  width:min(290px,90%);border:0;border-radius:999px;padding:15px 22px;
+  font-size:17px;font-weight:700;color:white;
+  background:linear-gradient(135deg,#6fb8a5,#74b996);
+  box-shadow:0 12px 28px rgba(74,153,122,.24);
+}
+.v155ToolNav{display:flex;align-items:center;justify-content:center;gap:24px;margin-top:18px;}
+.v155ToolArrow{
+  width:52px;height:52px;border:0;border-radius:50%;background:rgba(255,255,255,.92);
+  box-shadow:0 10px 26px rgba(15,23,42,.09);font-size:25px;color:#334155;
+}
+.v155ToolCounter{min-width:80px;padding:8px 13px;border-radius:999px;background:rgba(220,252,231,.88);font-weight:700;color:#39735f;}
+.v155Dots{display:flex;justify-content:center;gap:8px;margin-top:15px;min-height:10px;}
+.v155Dot{width:8px;height:8px;border-radius:50%;background:#d7dce1;}
+.v155Dot.active{background:#67a892;transform:scale(1.15);}
+.v155Hint{font-size:14px;color:#82909f;margin:13px 0 0;}
+body.v151CategoryOpen .actions{display:none !important;}
+.v151ToolsHeader.visible{
+  display:grid!important;grid-template-columns:auto 1fr auto;align-items:center;gap:10px;
+  margin:8px 0 12px;padding:4px 0;background:transparent;box-shadow:none;
+}
+.v151BackButton{border-radius:999px!important;background:rgba(255,255,255,.9)!important;box-shadow:0 8px 20px rgba(15,23,42,.08)!important;}
+.v151ToolsTitle{text-align:center;font-size:21px!important;}
+.v155HeaderCounter{font-size:13px;color:#39735f;background:#dcfce7;padding:7px 10px;border-radius:999px;font-weight:700;}
+@media(max-width:430px){
+  .app{width:94%;padding:20px 16px;border-radius:28px;}
+  .v155ToolCard{min-height:390px;padding:26px 18px 22px;}
+  .v155ToolEmoji{width:112px;height:112px;font-size:54px;}
+}
+</style>
+
 </head>
 
 <body>
@@ -4399,7 +4478,7 @@ text-align:center;
 <div class="app" id="appCard">
   <div class="premiumTopV105">
     <div class="premiumBrandV105">App Emocional</div>
-    <div class="premiumBadgeV105">V153 · una opción por vez</div>
+    <div class="premiumBadgeV105">V155 · un paso a la vez</div>
   </div>
 
   <div class="premiumHeroV105">
@@ -4487,6 +4566,22 @@ text-align:center;
   <button class="v151BackButton" type="button" onclick="closeCategoryV151()">← Volver</button>
   <div class="v151ToolsTitle" id="v151ToolsTitle">Herramientas</div>
 </div>
+
+<section class="v155CategoryCarousel" id="v155CategoryCarousel" aria-label="Herramientas de la categoría">
+  <div class="v155ToolCard" id="v155ToolCard">
+    <div class="v155ToolEmoji" id="v155ToolEmoji">🌱</div>
+    <h3 id="v155ToolTitle">Herramienta</h3>
+    <p class="v155ToolDescription" id="v155ToolDescription">Un paso simple para acompañarte en este momento.</p>
+    <button class="v155OpenTool" id="v155OpenTool" type="button" onclick="openCurrentToolV155()">Abrir</button>
+  </div>
+  <div class="v155ToolNav">
+    <button class="v155ToolArrow" type="button" onclick="previousToolV155()" aria-label="Herramienta anterior">←</button>
+    <span class="v155ToolCounter" id="v155ToolCounter">1 de 1</span>
+    <button class="v155ToolArrow" type="button" onclick="nextToolV155()" aria-label="Herramienta siguiente">→</button>
+  </div>
+  <div class="v155Dots" id="v155Dots"></div>
+  <p class="v155Hint">Deslizá hacia los costados o usá las flechas.</p>
+</section>
 
 <div class="section-title" id="legacyNeedsTitleV151">
 <button class="centerCardV136" onclick="openEmotionalCenterV136()">
@@ -15524,6 +15619,139 @@ Tocá el botón para ver el estado final del proyecto.
       if(diff<0) window.nextMainCategoryV154();
       else window.previousMainCategoryV154();
     },{passive:true});
+  });
+})();
+</script>
+
+
+<script id="v155-category-carousel-script">
+(function(){
+  'use strict';
+  let toolsV155=[];
+  let currentToolV155=0;
+  let touchStartV155=null;
+  let activeCategoryV155='';
+
+  const descriptionsV155={
+    'contactos refugio':'Personas en las que confiás y que pueden acompañarte en momentos difíciles.',
+    'conectar':'Un espacio para acercarte a alguien y no atravesar todo en soledad.',
+    'quedarme':'Una pausa acompañada para respirar y permanecer en el presente.',
+    'personas que tocaste':'Un recordatorio del impacto que también dejás en otras personas.',
+    'caja de emergencia':'Recursos rápidos para esos momentos en los que necesitás apoyo inmediato.',
+    'refugio de crisis':'Un recorrido cuidado para atravesar un momento de mucha intensidad.',
+    'plan emergencia':'Prepará con calma qué hacer y a quién acudir cuando lo necesites.',
+    'respirar':'Una guía breve para bajar el ritmo y volver al cuerpo.',
+    'liberar':'Un lugar para soltar lo que pesa sin tener que explicarlo todo.',
+    'hablar':'Poné en palabras lo que estás sintiendo, a tu propio ritmo.',
+    'diario ⭐':'Escribí y guardá lo que hoy necesitás sacar o recordar.',
+    'clima interior':'Observá cómo se siente tu mundo interno en este momento.',
+    'mi recorrido':'Volvé a tus registros, aprendizajes y pequeños avances.',
+    'modo semilla':'Elegí un gesto mínimo para empezar, incluso en un día difícil.',
+    'anclaje rápido':'Una práctica corta para volver al presente cuando todo se acelera.',
+    'ambiente':'Elegí un sonido suave para acompañar este momento.',
+    'dormir':'Un espacio tranquilo para preparar el descanso.',
+    'recordar ⭐':'Recuperá algo valioso que tu mente quizá dejó lejos por un rato.'
+  };
+
+  function normalizeV155(value){return (value||'').replace(/\s+/g,' ').trim().toLowerCase();}
+  function getButtonDataV155(btn){
+    const span=btn.querySelector('span');
+    const emoji=span?span.textContent.trim():'✦';
+    let title=(btn.textContent||'Herramienta').replace(emoji,'').replace(/\s+/g,' ').trim();
+    const key=normalizeV155(title);
+    let description=descriptionsV155[key];
+    if(!description){
+      const categoryDescriptions={
+        ahora:'Una herramienta simple para ayudarte a atravesar este momento.',
+        expresar:'Un espacio para expresar, ordenar o registrar lo que sentís.',
+        comprender:'Una invitación a observarte con más claridad y menos juicio.',
+        recorrido:'Una parte de tu historia emocional para explorar con calma.',
+        apoyo:'Un recurso pensado para acompañarte y darte más seguridad.'
+      };
+      description=categoryDescriptions[activeCategoryV155]||'Un paso simple para acompañarte en este momento.';
+    }
+    return {button:btn,emoji:emoji||'✦',title:title,description:description};
+  }
+
+  function renderDotsV155(){
+    const dots=document.getElementById('v155Dots');
+    if(!dots)return;
+    dots.innerHTML='';
+    const max=Math.min(toolsV155.length,10);
+    for(let i=0;i<max;i++){
+      const d=document.createElement('span');
+      d.className='v155Dot'+(Math.round(i*(toolsV155.length-1)/Math.max(1,max-1))===currentToolV155?' active':'');
+      dots.appendChild(d);
+    }
+  }
+
+  function renderToolV155(direction){
+    const card=document.getElementById('v155ToolCard');
+    if(!card||!toolsV155.length)return;
+    if(direction)card.classList.add(direction==='left'?'is-changing-left':'is-changing-right');
+    setTimeout(function(){
+      const item=toolsV155[currentToolV155];
+      document.getElementById('v155ToolEmoji').textContent=item.emoji;
+      document.getElementById('v155ToolTitle').textContent=item.title;
+      document.getElementById('v155ToolDescription').textContent=item.description;
+      document.getElementById('v155ToolCounter').textContent=(currentToolV155+1)+' de '+toolsV155.length;
+      card.classList.remove('is-changing-left','is-changing-right');
+      renderDotsV155();
+    },direction?180:0);
+  }
+
+  function buildToolsV155(category){
+    activeCategoryV155=category;
+    const actions=document.querySelector('.actions');
+    if(!actions)return;
+    const buttons=Array.from(actions.children).filter(function(child){
+      return child.matches&&child.matches('button')&&child.style.display!=='none';
+    });
+    toolsV155=buttons.map(getButtonDataV155);
+    currentToolV155=0;
+    renderToolV155();
+  }
+
+  window.nextToolV155=function(){
+    if(!toolsV155.length)return;
+    currentToolV155=(currentToolV155+1)%toolsV155.length;
+    renderToolV155('left');
+  };
+  window.previousToolV155=function(){
+    if(!toolsV155.length)return;
+    currentToolV155=(currentToolV155-1+toolsV155.length)%toolsV155.length;
+    renderToolV155('right');
+  };
+  window.openCurrentToolV155=function(){
+    const item=toolsV155[currentToolV155];
+    if(item&&item.button)item.button.click();
+  };
+
+  document.addEventListener('DOMContentLoaded',function(){
+    const originalOpen=window.openCategoryV151;
+    const originalClose=window.closeCategoryV151;
+    if(typeof originalOpen==='function'){
+      window.openCategoryV151=function(category){
+        originalOpen(category);
+        setTimeout(function(){buildToolsV155(category);window.scrollTo({top:0,behavior:'smooth'});},40);
+      };
+    }
+    if(typeof originalClose==='function'){
+      window.closeCategoryV151=function(){
+        originalClose();
+        toolsV155=[];currentToolV155=0;activeCategoryV155='';
+      };
+    }
+    const carousel=document.getElementById('v155CategoryCarousel');
+    if(carousel){
+      carousel.addEventListener('touchstart',function(e){touchStartV155=e.changedTouches[0].clientX;},{passive:true});
+      carousel.addEventListener('touchend',function(e){
+        if(touchStartV155===null)return;
+        const diff=e.changedTouches[0].clientX-touchStartV155;touchStartV155=null;
+        if(Math.abs(diff)<45)return;
+        diff<0?window.nextToolV155():window.previousToolV155();
+      },{passive:true});
+    }
   });
 })();
 </script>
