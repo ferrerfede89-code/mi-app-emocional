@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
-<title>App Emocional V156</title>
+<title>App Emocional V158</title>
 
 <style>
 body {
@@ -4437,7 +4437,7 @@ body.v151CategoryOpen .actions{display:none !important;}
 
 
 <style id="v156-home-clean-css">
-/* V156 · Home limpia: una decisión por vez */
+/* V158 · Home clara: una decisión por vez */
 body:not(.v151CategoryOpen) .premiumHeroV105,
 body:not(.v151CategoryOpen) #message,
 body:not(.v151CategoryOpen) #presenceMessageV107,
@@ -4489,6 +4489,117 @@ body:not(.v151CategoryOpen) .mainSwipeHintV154{display:none!important;}
 @media(max-width:390px){.v156HomeIntro h1{font-size:27px}.v156MoodBox{padding:15px 13px}.mainSlideV154{min-height:375px!important}.v156HomeAvatar{width:44px;height:44px}}
 </style>
 
+
+<style id="v158-hierarchy-css">
+/* V158 · Jerarquía visual: categoría protagonista y herramientas internas */
+body:not(.v151CategoryOpen) .mainSlideV154{
+  border:2px solid rgba(71,163,91,.72)!important;
+  box-shadow:0 22px 55px rgba(36,110,65,.12)!important;
+}
+body:not(.v151CategoryOpen) .mainEnterV154{
+  background:linear-gradient(135deg,#55b96a,#3fa95b)!important;
+}
+body.v151CategoryOpen .app{
+  background:rgba(250,253,251,.97)!important;
+}
+body.v151CategoryOpen .v151ToolsHeader.visible{
+  grid-template-columns:auto 1fr auto!important;
+  margin:2px 0 8px!important;
+  align-items:center!important;
+}
+body.v151CategoryOpen .v151ToolsTitle{
+  font-size:25px!important;
+  line-height:1.15!important;
+  color:#1f2d3d!important;
+  font-weight:800!important;
+}
+.v158CategoryContext{
+  display:none;
+  margin:4px 0 18px;
+  text-align:center;
+}
+body.v151CategoryOpen .v158CategoryContext{display:block;}
+.v158ToolsAvailable{
+  color:#69778a;
+  font-size:14px;
+  margin:4px 0 12px;
+}
+.v158Breadcrumb{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:7px;
+  padding:10px 12px;
+  border-radius:18px;
+  background:rgba(237,248,240,.86);
+  border:1px solid rgba(114,184,138,.24);
+  color:#52665a;
+  font-size:13px;
+  font-weight:650;
+}
+.v158Breadcrumb strong{color:#2f7048;}
+.v158CategoryLine{
+  width:58px;
+  height:4px;
+  border-radius:999px;
+  margin:15px auto 0;
+  background:linear-gradient(90deg,#7bc98e,#45a962);
+}
+body.v151CategoryOpen .v155CategoryCarousel{margin-top:8px!important;}
+body.v151CategoryOpen .v155ToolCard{
+  min-height:390px!important;
+  padding:48px 22px 26px!important;
+  background:linear-gradient(160deg,rgba(255,255,255,.99),rgba(247,252,248,.98))!important;
+  border:2px solid rgba(67,165,85,.78)!important;
+  box-shadow:0 20px 46px rgba(34,95,55,.10)!important;
+}
+.v158ToolNumber{
+  position:absolute;
+  top:18px;
+  left:18px;
+  width:34px;
+  height:34px;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:linear-gradient(135deg,#59bd70,#3ca75a);
+  color:#fff;
+  font-weight:800;
+  font-size:15px;
+  box-shadow:0 8px 18px rgba(54,151,80,.22);
+}
+body.v151CategoryOpen .v155ToolEmoji{
+  width:116px!important;
+  height:116px!important;
+  border-radius:50%!important;
+  background:radial-gradient(circle,#fff,#eef8f1)!important;
+}
+body.v151CategoryOpen .v155ToolCard h3{
+  font-size:26px!important;
+  color:#1f2d3d!important;
+}
+body.v151CategoryOpen .v155OpenTool{
+  background:linear-gradient(135deg,#55b96a,#3fa95b)!important;
+  max-width:245px!important;
+}
+body.v151CategoryOpen .v155ToolNav{
+  margin-top:16px!important;
+}
+body.v151CategoryOpen .v155Hint{
+  margin-top:11px!important;
+  color:#7a8792!important;
+}
+@media(max-width:430px){
+  body.v151CategoryOpen .v155ToolCard{
+    min-height:365px!important;
+    padding:46px 18px 23px!important;
+  }
+  .v158Breadcrumb{font-size:12px;padding:9px 10px;}
+}
+</style>
+
 </head>
 
 <body>
@@ -4532,7 +4643,7 @@ text-align:center;
 <div class="app" id="appCard">
   <div class="premiumTopV105">
     <div class="premiumBrandV105">App Emocional</div>
-    <div class="premiumBadgeV105">V156 · inicio limpio</div>
+    <div class="premiumBadgeV105">V158 · recorrido claro</div>
   </div>
 
   <div class="premiumHeroV105">
@@ -4638,16 +4749,26 @@ text-align:center;
 </section>
 
 <div class="v151ToolsHeader" id="v151ToolsHeader">
-  <button class="v151BackButton" type="button" onclick="closeCategoryV151()">← Volver</button>
+  <button class="v151BackButton" type="button" onclick="closeCategoryV151()" aria-label="Volver a las categorías">←</button>
   <div class="v151ToolsTitle" id="v151ToolsTitle">Herramientas</div>
+  <span class="v155HeaderCounter" id="v158HeaderCounter">1 de 1</span>
+</div>
+
+<div class="v158CategoryContext" id="v158CategoryContext">
+  <div class="v158ToolsAvailable" id="v158ToolsAvailable">Herramientas disponibles</div>
+  <div class="v158Breadcrumb" aria-label="Ruta de navegación">
+    <span>🌱 Hoy</span><span>›</span><strong id="v158BreadcrumbCategory">Categoría</strong><span>›</span><span>Herramientas</span>
+  </div>
+  <div class="v158CategoryLine" aria-hidden="true"></div>
 </div>
 
 <section class="v155CategoryCarousel" id="v155CategoryCarousel" aria-label="Herramientas de la categoría">
   <div class="v155ToolCard" id="v155ToolCard">
+    <div class="v158ToolNumber" id="v158ToolNumber">1</div>
     <div class="v155ToolEmoji" id="v155ToolEmoji">🌱</div>
     <h3 id="v155ToolTitle">Herramienta</h3>
     <p class="v155ToolDescription" id="v155ToolDescription">Un paso simple para acompañarte en este momento.</p>
-    <button class="v155OpenTool" id="v155OpenTool" type="button" onclick="openCurrentToolV155()">Abrir</button>
+    <button class="v155OpenTool" id="v155OpenTool" type="button" onclick="openCurrentToolV155()">Comenzar</button>
   </div>
   <div class="v155ToolNav">
     <button class="v155ToolArrow" type="button" onclick="previousToolV155()" aria-label="Herramienta anterior">←</button>
@@ -15755,6 +15876,10 @@ Tocá el botón para ver el estado final del proyecto.
       document.getElementById('v155ToolTitle').textContent=item.title;
       document.getElementById('v155ToolDescription').textContent=item.description;
       document.getElementById('v155ToolCounter').textContent=(currentToolV155+1)+' de '+toolsV155.length;
+      const v158Number=document.getElementById('v158ToolNumber');
+      const v158HeaderCounter=document.getElementById('v158HeaderCounter');
+      if(v158Number)v158Number.textContent=currentToolV155+1;
+      if(v158HeaderCounter)v158HeaderCounter.textContent=(currentToolV155+1)+' de '+toolsV155.length;
       card.classList.remove('is-changing-left','is-changing-right');
       renderDotsV155();
     },direction?180:0);
@@ -15769,6 +15894,17 @@ Tocá el botón para ver el estado final del proyecto.
     });
     toolsV155=buttons.map(getButtonDataV155);
     currentToolV155=0;
+    const labelsV158={
+      ahora:'Empezar ahora',
+      expresar:'Expresar lo que siento',
+      comprender:'Conocerme mejor',
+      recorrido:'Mi recorrido',
+      apoyo:'Apoyo y seguridad'
+    };
+    const crumb=document.getElementById('v158BreadcrumbCategory');
+    const available=document.getElementById('v158ToolsAvailable');
+    if(crumb)crumb.textContent=labelsV158[category]||'Categoría';
+    if(available)available.textContent=toolsV155.length+' herramientas disponibles';
     renderToolV155();
   }
 
@@ -15837,6 +15973,14 @@ Tocá el botón para ver el estado final del proyecto.
     new MutationObserver(syncV156Home).observe(document.body,{attributes:true,attributeFilter:['class']});
   });
 })();
+</script>
+
+
+<script id="v158-version-label-script">
+document.addEventListener('DOMContentLoaded',function(){
+  var badge=document.querySelector('.premiumBadgeV105');
+  if(badge) badge.textContent='V158 · recorrido claro';
+});
 </script>
 
 </body>
