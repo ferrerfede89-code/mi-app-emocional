@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
-<title>App Emocional V160</title>
+<title>App Emocional V161</title>
 
 <style>
 body {
@@ -4730,6 +4730,150 @@ body.v159-cat-apoyo{--v159-accent:#c65b6b;--v159-accent-dark:#963d4d;--v159-soft
 }
 </style>
 
+
+<style id="v161-premium-navigation-css">
+/* V161 · Navegación premium completa */
+.v161CategoryRail{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  gap:8px;
+  margin:17px auto 4px;
+  padding:7px;
+  max-width:330px;
+  border-radius:999px;
+  background:rgba(255,255,255,.68);
+  border:1px solid rgba(148,163,184,.18);
+  box-shadow:0 10px 28px rgba(15,23,42,.07);
+  backdrop-filter:blur(10px);
+}
+.v161CategoryDot{
+  position:relative;
+  width:39px;
+  height:39px;
+  border:0;
+  border-radius:50%;
+  padding:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:19px;
+  cursor:pointer;
+  color:#475569;
+  background:rgba(255,255,255,.78);
+  opacity:.68;
+  transform:scale(.92);
+  box-shadow:0 4px 11px rgba(15,23,42,.06);
+  transition:transform .28s cubic-bezier(.2,.8,.2,1),opacity .25s ease,
+             background .25s ease,box-shadow .25s ease;
+}
+.v161CategoryDot::after{
+  content:"";
+  position:absolute;
+  left:50%;
+  bottom:-6px;
+  width:5px;
+  height:5px;
+  border-radius:50%;
+  background:transparent;
+  transform:translateX(-50%) scale(.5);
+  transition:all .25s ease;
+}
+.v161CategoryDot.is-active{
+  opacity:1;
+  transform:scale(1.12);
+  background:var(--v159-soft);
+  box-shadow:0 8px 20px var(--v159-shadow);
+}
+.v161CategoryDot.is-active::after{
+  background:var(--v159-accent);
+  transform:translateX(-50%) scale(1);
+}
+.v161CategoryDot:active{transform:scale(.92);}
+.v161ActiveLabel{
+  margin:11px auto 0;
+  text-align:center;
+  font-size:13px;
+  font-weight:750;
+  color:var(--v159-accent-dark);
+  min-height:18px;
+  transition:color .25s ease,opacity .2s ease;
+}
+body:not(.v151CategoryOpen) .mainSlideV154{
+  position:relative;
+  overflow:hidden;
+  transform:translateZ(0);
+}
+body:not(.v151CategoryOpen) .mainSlideV154::before{
+  content:"";
+  position:absolute;
+  width:180px;
+  height:180px;
+  border-radius:50%;
+  right:-80px;
+  top:-95px;
+  background:radial-gradient(circle,var(--v159-soft),transparent 68%);
+  opacity:.95;
+  pointer-events:none;
+}
+body:not(.v151CategoryOpen) .mainSlideV154::after{
+  content:"✓ Seleccionada";
+  position:absolute;
+  top:14px;
+  right:15px;
+  padding:6px 10px;
+  border-radius:999px;
+  color:var(--v159-accent-dark);
+  background:rgba(255,255,255,.72);
+  border:1px solid color-mix(in srgb,var(--v159-accent) 30%,transparent);
+  font-size:11px;
+  font-weight:800;
+  letter-spacing:.02em;
+}
+body:not(.v151CategoryOpen) .mainSlideV154.v161-enter{
+  animation:v161CategoryEnter .38s cubic-bezier(.2,.8,.2,1);
+}
+@keyframes v161CategoryEnter{
+  0%{opacity:.45;transform:translateY(9px) scale(.975);}
+  100%{opacity:1;transform:translateY(0) scale(1);}
+}
+body:not(.v151CategoryOpen) .mainEmojiV154{
+  transition:transform .3s cubic-bezier(.2,.8,.2,1),box-shadow .3s ease;
+}
+body:not(.v151CategoryOpen) .mainSlideV154:hover .mainEmojiV154{
+  transform:translateY(-3px) scale(1.025);
+}
+.mainEnterV154,.mainArrowV154,.v155OpenTool,.v155ToolArrow,.v151BackButton{
+  transition:transform .18s ease,box-shadow .22s ease,filter .22s ease!important;
+  -webkit-tap-highlight-color:transparent;
+}
+.mainEnterV154:active,.mainArrowV154:active,.v155OpenTool:active,
+.v155ToolArrow:active,.v151BackButton:active{
+  transform:scale(.94)!important;
+  filter:saturate(1.12);
+}
+body.v151CategoryOpen .v155ToolCard.v161-tool-enter{
+  animation:v161ToolEnter .34s cubic-bezier(.2,.8,.2,1);
+}
+@keyframes v161ToolEnter{
+  0%{opacity:.35;transform:translateX(12px) scale(.985);}
+  100%{opacity:1;transform:translateX(0) scale(1);}
+}
+body.v151CategoryOpen .v158ToolsAvailable::before{
+  content:"✦ ";
+  color:var(--v159-accent);
+}
+@media(max-width:360px){
+  .v161CategoryRail{gap:5px;padding:6px;}
+  .v161CategoryDot{width:36px;height:36px;font-size:17px;}
+}
+@media(prefers-reduced-motion:reduce){
+  .v161CategoryDot,.mainEnterV154,.mainArrowV154,.v155OpenTool,
+  .v155ToolArrow,.v151BackButton{transition:none!important;}
+  .v161-enter,.v161-tool-enter{animation:none!important;}
+}
+</style>
+
 </head>
 
 <body>
@@ -4773,7 +4917,7 @@ text-align:center;
 <div class="app" id="appCard">
   <div class="premiumTopV105">
     <div class="premiumBrandV105">App Emocional</div>
-    <div class="premiumBadgeV105">V159 · categorías diferenciadas</div>
+    <div class="premiumBadgeV105">V161 · navegación premium</div>
   </div>
 
   <div class="premiumHeroV105">
@@ -16114,8 +16258,147 @@ Tocá el botón para ver el estado final del proyecto.
 <script id="v158-version-label-script">
 document.addEventListener('DOMContentLoaded',function(){
   var badge=document.querySelector('.premiumBadgeV105');
-  if(badge) badge.textContent='V159 · categorías diferenciadas';
+  if(badge) badge.textContent='V161 · navegación premium';
 });
+</script>
+
+
+<script id="v161-premium-navigation-script">
+(function(){
+  'use strict';
+
+  const categoriesV161=[
+    {key:'ahora',emoji:'▶️',label:'Empezar ahora'},
+    {key:'expresar',emoji:'💚',label:'Expresar lo que siento'},
+    {key:'comprender',emoji:'🪞',label:'Conocerme mejor'},
+    {key:'recorrido',emoji:'🛤️',label:'Mi recorrido'},
+    {key:'apoyo',emoji:'🛟',label:'Apoyo y seguridad'}
+  ];
+
+  function currentKeyV161(){
+    const slide=document.getElementById('mainSlideV154');
+    return slide&&slide.dataset.category?slide.dataset.category:'ahora';
+  }
+
+  function indexForKeyV161(key){
+    const index=categoriesV161.findIndex(function(item){return item.key===key;});
+    return index<0?0:index;
+  }
+
+  function setMainIndexV161(targetIndex){
+    const currentIndex=indexForKeyV161(currentKeyV161());
+    let guard=0;
+    while(currentIndex!==targetIndex && guard<categoriesV161.length){
+      if(((targetIndex-currentIndex+categoriesV161.length)%categoriesV161.length)<=categoriesV161.length/2){
+        window.nextMainCategoryV154();
+      }else{
+        window.previousMainCategoryV154();
+      }
+      guard++;
+      break;
+    }
+    window.setTimeout(syncV161,230);
+  }
+
+  function buildRailV161(){
+    const carousel=document.getElementById('mainCarouselV154');
+    if(!carousel||document.getElementById('v161CategoryRail'))return;
+
+    const rail=document.createElement('div');
+    rail.id='v161CategoryRail';
+    rail.className='v161CategoryRail';
+    rail.setAttribute('role','tablist');
+    rail.setAttribute('aria-label','Categorías principales');
+
+    categoriesV161.forEach(function(item,index){
+      const button=document.createElement('button');
+      button.type='button';
+      button.className='v161CategoryDot';
+      button.dataset.category=item.key;
+      button.setAttribute('role','tab');
+      button.setAttribute('aria-label',item.label);
+      button.setAttribute('title',item.label);
+      button.textContent=item.emoji;
+      button.addEventListener('click',function(){setMainIndexV161(index);});
+      rail.appendChild(button);
+    });
+
+    const label=document.createElement('div');
+    label.id='v161ActiveLabel';
+    label.className='v161ActiveLabel';
+    label.setAttribute('aria-live','polite');
+
+    const nav=carousel.querySelector('.mainNavigationV154');
+    carousel.insertBefore(rail,nav);
+    carousel.insertBefore(label,nav);
+  }
+
+  function animateMainV161(){
+    const slide=document.getElementById('mainSlideV154');
+    if(!slide)return;
+    slide.classList.remove('v161-enter');
+    void slide.offsetWidth;
+    slide.classList.add('v161-enter');
+  }
+
+  function syncV161(){
+    buildRailV161();
+    const key=currentKeyV161();
+    const item=categoriesV161[indexForKeyV161(key)];
+    document.querySelectorAll('.v161CategoryDot').forEach(function(button){
+      const active=button.dataset.category===key;
+      button.classList.toggle('is-active',active);
+      button.setAttribute('aria-selected',active?'true':'false');
+      button.tabIndex=active?0:-1;
+    });
+    const label=document.getElementById('v161ActiveLabel');
+    if(label)label.textContent=item.label;
+    animateMainV161();
+  }
+
+  function animateToolV161(){
+    const card=document.getElementById('v155ToolCard');
+    if(!card)return;
+    card.classList.remove('v161-tool-enter');
+    void card.offsetWidth;
+    card.classList.add('v161-tool-enter');
+  }
+
+  document.addEventListener('DOMContentLoaded',function(){
+    buildRailV161();
+    syncV161();
+
+    const originalNext=window.nextMainCategoryV154;
+    const originalPrevious=window.previousMainCategoryV154;
+    if(typeof originalNext==='function'){
+      window.nextMainCategoryV154=function(){
+        originalNext();
+        window.setTimeout(syncV161,210);
+      };
+    }
+    if(typeof originalPrevious==='function'){
+      window.previousMainCategoryV154=function(){
+        originalPrevious();
+        window.setTimeout(syncV161,210);
+      };
+    }
+
+    const originalNextTool=window.nextToolV155;
+    const originalPreviousTool=window.previousToolV155;
+    if(typeof originalNextTool==='function'){
+      window.nextToolV155=function(){originalNextTool();window.setTimeout(animateToolV161,205);};
+    }
+    if(typeof originalPreviousTool==='function'){
+      window.previousToolV155=function(){originalPreviousTool();window.setTimeout(animateToolV161,205);};
+    }
+
+    document.addEventListener('keydown',function(event){
+      if(document.body.classList.contains('v151CategoryOpen'))return;
+      if(event.key==='ArrowRight'){event.preventDefault();window.nextMainCategoryV154();}
+      if(event.key==='ArrowLeft'){event.preventDefault();window.previousMainCategoryV154();}
+    });
+  });
+})();
 </script>
 
 </body>
