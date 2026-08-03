@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
-<title>App Emocional V162</title>
+<title>App Emocional V163</title>
 
 <style>
 body {
@@ -16258,7 +16258,7 @@ Tocá el botón para ver el estado final del proyecto.
 <script id="v158-version-label-script">
 document.addEventListener('DOMContentLoaded',function(){
   var badge=document.querySelector('.premiumBadgeV105');
-  if(badge) badge.textContent='V162 · profundidad y respuesta táctil';
+  if(badge) badge.textContent='V163 · continuidad de uso';
 });
 </script>
 
@@ -19913,5 +19913,284 @@ function changeAmanecerPhraseV133(){
   });
 })();
 </script>
+
+<style id="v163-continuity-style">
+/* V163 · Continuidad de uso y regreso amable */
+.v163ResumeCard{
+  display:none;
+  position:relative;
+  margin:0 0 18px;
+  padding:15px 16px;
+  border-radius:22px;
+  text-align:left;
+  overflow:hidden;
+  background:linear-gradient(145deg,rgba(255,255,255,.92),rgba(239,246,255,.78));
+  border:1px solid rgba(255,255,255,.88);
+  box-shadow:0 13px 32px rgba(15,23,42,.09);
+}
+.v163ResumeCard.visible{display:block;animation:v163ResumeIn .34s ease both;}
+.v163ResumeCard::before{
+  content:"";
+  position:absolute;
+  width:95px;height:95px;border-radius:50%;
+  right:-30px;top:-45px;
+  background:var(--v162-accent-soft);
+  pointer-events:none;
+}
+.v163ResumeEyebrow{
+  margin-bottom:4px;
+  color:#64748b;
+  font-size:12px;
+  font-weight:800;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+.v163ResumeTitle{
+  color:#1e293b;
+  font-size:17px;
+  font-weight:800;
+  line-height:1.3;
+}
+.v163ResumeTool{
+  margin-top:3px;
+  color:#64748b;
+  font-size:14px;
+  line-height:1.4;
+}
+.v163ResumeActions{
+  display:flex;
+  gap:8px;
+  margin-top:12px;
+}
+.v163ResumeButton,.v163ForgetButton{
+  border:0;
+  border-radius:999px;
+  min-height:39px;
+  padding:10px 14px;
+  font-weight:750;
+  cursor:pointer;
+  -webkit-tap-highlight-color:transparent;
+}
+.v163ResumeButton{
+  flex:1;
+  color:white;
+  background:linear-gradient(135deg,var(--v162-accent),#334155);
+  box-shadow:0 9px 20px var(--v162-accent-glow);
+}
+.v163ForgetButton{
+  color:#64748b;
+  background:rgba(255,255,255,.72);
+}
+.v163ResumeButton:active,.v163ForgetButton:active{transform:scale(.97);}
+.v163ReturnNotice{
+  position:fixed;
+  left:50%;
+  bottom:max(20px,env(safe-area-inset-bottom));
+  z-index:10001;
+  transform:translate(-50%,18px);
+  max-width:calc(100% - 34px);
+  padding:11px 16px;
+  border-radius:999px;
+  color:white;
+  background:rgba(30,41,59,.92);
+  box-shadow:0 12px 34px rgba(15,23,42,.25);
+  font-size:14px;
+  font-weight:700;
+  opacity:0;
+  pointer-events:none;
+  transition:opacity .22s ease,transform .22s ease;
+}
+.v163ReturnNotice.visible{opacity:1;transform:translate(-50%,0);}
+@keyframes v163ResumeIn{
+  from{opacity:0;transform:translateY(-8px) scale(.985);}
+  to{opacity:1;transform:translateY(0) scale(1);}
+}
+@media (prefers-reduced-motion:reduce){
+  .v163ResumeCard.visible{animation:none;}
+  .v163ReturnNotice{transition:none;}
+}
+</style>
+
+<script id="v163-continuity-script">
+(function(){
+  'use strict';
+
+  const STORAGE_KEY='appEmocionalV163LastPlace';
+  const categories=[
+    {key:'ahora',label:'Empezar ahora'},
+    {key:'expresar',label:'Expresar lo que siento'},
+    {key:'comprender',label:'Conocerme mejor'},
+    {key:'recorrido',label:'Mi recorrido'},
+    {key:'apoyo',label:'Apoyo y seguridad'}
+  ];
+
+  function safeRead(){
+    try{return JSON.parse(localStorage.getItem(STORAGE_KEY)||'null');}
+    catch(e){return null;}
+  }
+  function safeWrite(value){
+    try{localStorage.setItem(STORAGE_KEY,JSON.stringify(value));}catch(e){}
+  }
+  function categoryLabel(key){
+    const item=categories.find(function(category){return category.key===key;});
+    return item?item.label:'Tu recorrido';
+  }
+  function currentCategory(){
+    const slide=document.getElementById('mainSlideV154');
+    return slide&&slide.dataset.category?slide.dataset.category:'ahora';
+  }
+  function currentToolData(){
+    const counter=document.getElementById('v155ToolCounter');
+    const title=document.getElementById('v155ToolTitle');
+    const match=counter?(counter.textContent||'').match(/(\d+)\s+de\s+(\d+)/i):null;
+    return {
+      index:match?Math.max(0,(parseInt(match[1],10)||1)-1):0,
+      total:match?(parseInt(match[2],10)||1):1,
+      title:title?(title.textContent||'').trim():''
+    };
+  }
+  function savePlace(category){
+    const tool=currentToolData();
+    safeWrite({
+      category:category||currentCategory(),
+      toolIndex:tool.index,
+      toolTitle:tool.title,
+      savedAt:Date.now()
+    });
+    renderResume();
+  }
+
+  function ensureResumeCard(){
+    if(document.getElementById('v163ResumeCard'))return;
+    const carousel=document.getElementById('mainCarouselV154');
+    if(!carousel)return;
+    const card=document.createElement('section');
+    card.id='v163ResumeCard';
+    card.className='v163ResumeCard';
+    card.setAttribute('aria-label','Continuar donde estabas');
+    card.innerHTML=
+      '<div class="v163ResumeEyebrow">Tu último lugar</div>'+
+      '<div class="v163ResumeTitle" id="v163ResumeTitle"></div>'+
+      '<div class="v163ResumeTool" id="v163ResumeTool"></div>'+
+      '<div class="v163ResumeActions">'+
+        '<button type="button" class="v163ResumeButton" id="v163ResumeButton">Continuar</button>'+
+        '<button type="button" class="v163ForgetButton" id="v163ForgetButton" aria-label="Borrar último lugar">Ahora no</button>'+
+      '</div>';
+    carousel.parentNode.insertBefore(card,carousel);
+    document.getElementById('v163ResumeButton').addEventListener('click',restorePlace);
+    document.getElementById('v163ForgetButton').addEventListener('click',function(){
+      try{localStorage.removeItem(STORAGE_KEY);}catch(e){}
+      renderResume();
+    });
+  }
+
+  function renderResume(){
+    ensureResumeCard();
+    const card=document.getElementById('v163ResumeCard');
+    if(!card)return;
+    const data=safeRead();
+    const onHome=!document.body.classList.contains('v151CategoryOpen');
+    if(!data||!data.category||!onHome){
+      card.classList.remove('visible');
+      return;
+    }
+    document.getElementById('v163ResumeTitle').textContent=categoryLabel(data.category);
+    document.getElementById('v163ResumeTool').textContent=data.toolTitle
+      ?'Seguir desde “'+data.toolTitle+'”'
+      :'Volver a esta categoría';
+    card.classList.add('visible');
+  }
+
+  function notice(message){
+    let toast=document.getElementById('v163ReturnNotice');
+    if(!toast){
+      toast=document.createElement('div');
+      toast.id='v163ReturnNotice';
+      toast.className='v163ReturnNotice';
+      toast.setAttribute('role','status');
+      document.body.appendChild(toast);
+    }
+    toast.textContent=message;
+    toast.classList.add('visible');
+    clearTimeout(window.__v163NoticeTimer);
+    window.__v163NoticeTimer=setTimeout(function(){toast.classList.remove('visible');},1900);
+  }
+
+  function moveToCategory(target,done){
+    let attempts=0;
+    function step(){
+      if(currentCategory()===target||attempts>=7){
+        if(done)done();
+        return;
+      }
+      attempts++;
+      if(typeof window.nextMainCategoryV154==='function')window.nextMainCategoryV154();
+      setTimeout(step,245);
+    }
+    step();
+  }
+
+  function moveToTool(targetIndex){
+    let steps=0;
+    function step(){
+      const current=currentToolData().index;
+      if(current===targetIndex||steps>=120)return;
+      steps++;
+      if(typeof window.nextToolV155==='function')window.nextToolV155();
+      setTimeout(step,215);
+    }
+    step();
+  }
+
+  function restorePlace(){
+    const data=safeRead();
+    if(!data||!data.category)return;
+    moveToCategory(data.category,function(){
+      if(typeof window.openCategoryV151==='function'){
+        window.openCategoryV151(data.category);
+        setTimeout(function(){
+          moveToTool(Math.max(0,data.toolIndex||0));
+          notice('Volvimos a tu último lugar');
+        },320);
+      }
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded',function(){
+    ensureResumeCard();
+    renderResume();
+
+    const originalOpen=window.openCategoryV151;
+    const originalClose=window.closeCategoryV151;
+
+    if(typeof originalOpen==='function'){
+      window.openCategoryV151=function(category){
+        originalOpen(category);
+        setTimeout(function(){savePlace(category);},280);
+      };
+    }
+    if(typeof originalClose==='function'){
+      window.closeCategoryV151=function(){
+        savePlace(currentCategory());
+        originalClose();
+        setTimeout(renderResume,80);
+      };
+    }
+
+    const counter=document.getElementById('v155ToolCounter');
+    const title=document.getElementById('v155ToolTitle');
+    const observer=new MutationObserver(function(){
+      if(document.body.classList.contains('v151CategoryOpen')){
+        setTimeout(function(){savePlace(currentCategory());},40);
+      }
+    });
+    if(counter)observer.observe(counter,{childList:true,characterData:true,subtree:true});
+    if(title)observer.observe(title,{childList:true,characterData:true,subtree:true});
+
+    new MutationObserver(renderResume).observe(document.body,{attributes:true,attributeFilter:['class']});
+  });
+})();
+</script>
+
 </body>
 </html>
