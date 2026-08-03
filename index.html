@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
-<title>App Emocional V158</title>
+<title>App Emocional V159</title>
 
 <style>
 body {
@@ -4600,6 +4600,128 @@ body.v151CategoryOpen .v155Hint{
 }
 </style>
 
+
+
+<style id="v159-category-identity-css">
+/* V159 · Identidad propia para categorías + herramientas claramente secundarias */
+:root{
+  --v159-accent:#4aa868;
+  --v159-accent-dark:#2f7d4a;
+  --v159-soft:#eaf7ee;
+  --v159-soft-2:#f6fbf7;
+  --v159-shadow:rgba(47,125,74,.18);
+}
+
+/* Categoría principal: protagonista, grande y con identidad cromática propia. */
+body:not(.v151CategoryOpen) .mainSlideV154{
+  background:linear-gradient(155deg,#ffffff 5%,var(--v159-soft) 100%)!important;
+  border:2px solid var(--v159-accent)!important;
+  box-shadow:0 24px 58px var(--v159-shadow)!important;
+}
+body:not(.v151CategoryOpen) .mainEmojiV154{
+  background:radial-gradient(circle,#ffffff 18%,var(--v159-soft) 100%)!important;
+  box-shadow:0 17px 38px var(--v159-shadow)!important;
+}
+body:not(.v151CategoryOpen) .mainEnterV154{
+  background:linear-gradient(135deg,var(--v159-accent),var(--v159-accent-dark))!important;
+  box-shadow:0 12px 27px var(--v159-shadow)!important;
+}
+body:not(.v151CategoryOpen) .mainCounterV154{color:var(--v159-accent-dark)!important;}
+
+/* Contexto de categoría: conserva el color de la sección elegida. */
+body.v151CategoryOpen .v158Breadcrumb{
+  background:var(--v159-soft)!important;
+  border-color:color-mix(in srgb,var(--v159-accent) 32%,transparent)!important;
+}
+body.v151CategoryOpen .v158Breadcrumb strong{color:var(--v159-accent-dark)!important;}
+body.v151CategoryOpen .v158CategoryLine{
+  background:linear-gradient(90deg,var(--v159-accent),var(--v159-accent-dark))!important;
+}
+body.v151CategoryOpen .v155HeaderCounter,
+body.v151CategoryOpen .v155ToolCounter{
+  background:var(--v159-soft)!important;
+  color:var(--v159-accent-dark)!important;
+}
+
+/* Herramientas: visualmente secundarias, más compactas y neutras. */
+body.v151CategoryOpen .v155CategoryCarousel{
+  width:94%;
+  margin-left:auto!important;
+  margin-right:auto!important;
+}
+body.v151CategoryOpen .v155ToolCard{
+  min-height:315px!important;
+  padding:37px 19px 21px!important;
+  border:1px solid rgba(148,163,184,.24)!important;
+  border-left:5px solid var(--v159-accent)!important;
+  border-radius:23px!important;
+  background:linear-gradient(155deg,rgba(255,255,255,.98),var(--v159-soft-2))!important;
+  box-shadow:0 12px 29px rgba(15,23,42,.075)!important;
+}
+body.v151CategoryOpen .v155ToolEmoji{
+  width:78px!important;
+  height:78px!important;
+  border-radius:20px!important;
+  font-size:39px!important;
+  margin-bottom:15px!important;
+  background:var(--v159-soft)!important;
+  box-shadow:none!important;
+}
+body.v151CategoryOpen .v155ToolCard h3{
+  font-size:22px!important;
+  line-height:1.22!important;
+  margin-bottom:9px!important;
+  font-weight:750!important;
+}
+body.v151CategoryOpen .v155ToolDescription{
+  font-size:15px!important;
+  line-height:1.48!important;
+  max-width:275px!important;
+  margin-bottom:18px!important;
+  color:#69778a!important;
+}
+body.v151CategoryOpen .v155OpenTool{
+  width:auto!important;
+  min-width:155px!important;
+  max-width:205px!important;
+  padding:12px 20px!important;
+  font-size:15px!important;
+  background:#ffffff!important;
+  color:var(--v159-accent-dark)!important;
+  border:1.5px solid var(--v159-accent)!important;
+  box-shadow:0 7px 17px rgba(15,23,42,.07)!important;
+}
+body.v151CategoryOpen .v158ToolNumber{
+  width:29px!important;
+  height:29px!important;
+  top:14px!important;
+  left:14px!important;
+  font-size:13px!important;
+  background:var(--v159-accent)!important;
+  box-shadow:none!important;
+}
+body.v151CategoryOpen .v155ToolArrow{
+  width:45px!important;
+  height:45px!important;
+  font-size:21px!important;
+}
+body.v151CategoryOpen .v155Dot.active{background:var(--v159-accent)!important;}
+body.v151CategoryOpen .v155Hint{font-size:13px!important;}
+
+/* Paletas accesibles y diferenciadas. */
+body.v159-cat-ahora{--v159-accent:#3b82c4;--v159-accent-dark:#245f96;--v159-soft:#e4f2fb;--v159-soft-2:#f5faff;--v159-shadow:rgba(59,130,196,.20);}
+body.v159-cat-expresar{--v159-accent:#3da477;--v159-accent-dark:#267356;--v159-soft:#e4f6ee;--v159-soft-2:#f5fbf8;--v159-shadow:rgba(61,164,119,.20);}
+body.v159-cat-comprender{--v159-accent:#8b6bc1;--v159-accent-dark:#65499a;--v159-soft:#f0eafd;--v159-soft-2:#faf7ff;--v159-shadow:rgba(139,107,193,.20);}
+body.v159-cat-recorrido{--v159-accent:#d8893d;--v159-accent-dark:#a65e22;--v159-soft:#fff0df;--v159-soft-2:#fffaf4;--v159-shadow:rgba(216,137,61,.21);}
+body.v159-cat-apoyo{--v159-accent:#c65b6b;--v159-accent-dark:#963d4d;--v159-soft:#fde9ed;--v159-soft-2:#fff7f8;--v159-shadow:rgba(198,91,107,.20);}
+
+@media(max-width:430px){
+  body.v151CategoryOpen .v155ToolCard{min-height:300px!important;padding:35px 17px 20px!important;}
+  body.v151CategoryOpen .v155ToolEmoji{width:72px!important;height:72px!important;font-size:36px!important;}
+  body.v151CategoryOpen .v155ToolCard h3{font-size:21px!important;}
+}
+</style>
+
 </head>
 
 <body>
@@ -4643,7 +4765,7 @@ text-align:center;
 <div class="app" id="appCard">
   <div class="premiumTopV105">
     <div class="premiumBrandV105">App Emocional</div>
-    <div class="premiumBadgeV105">V158 · recorrido claro</div>
+    <div class="premiumBadgeV105">V159 · categorías diferenciadas</div>
   </div>
 
   <div class="premiumHeroV105">
@@ -15770,6 +15892,9 @@ Tocá el botón para ver el estado final del proyecto.
       if(title) title.textContent=item.title;
       if(description) description.textContent=item.description;
       if(counter) counter.textContent=(currentV154+1)+' de '+categoriesV154.length;
+      document.body.classList.remove('v159-cat-ahora','v159-cat-expresar','v159-cat-comprender','v159-cat-recorrido','v159-cat-apoyo');
+      document.body.classList.add('v159-cat-'+item.key);
+      slide.setAttribute('data-category',item.key);
       slide.classList.remove('is-changing-left','is-changing-right');
     }, direction?180:0);
   }
@@ -15887,6 +16012,8 @@ Tocá el botón para ver el estado final del proyecto.
 
   function buildToolsV155(category){
     activeCategoryV155=category;
+    document.body.classList.remove('v159-cat-ahora','v159-cat-expresar','v159-cat-comprender','v159-cat-recorrido','v159-cat-apoyo');
+    document.body.classList.add('v159-cat-'+category);
     const actions=document.querySelector('.actions');
     if(!actions)return;
     const buttons=Array.from(actions.children).filter(function(child){
@@ -15979,7 +16106,7 @@ Tocá el botón para ver el estado final del proyecto.
 <script id="v158-version-label-script">
 document.addEventListener('DOMContentLoaded',function(){
   var badge=document.querySelector('.premiumBadgeV105');
-  if(badge) badge.textContent='V158 · recorrido claro';
+  if(badge) badge.textContent='V159 · categorías diferenciadas';
 });
 </script>
 
