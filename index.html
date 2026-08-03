@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
-<title>App Emocional V161</title>
+<title>App Emocional V162</title>
 
 <style>
 body {
@@ -16258,7 +16258,7 @@ Tocá el botón para ver el estado final del proyecto.
 <script id="v158-version-label-script">
 document.addEventListener('DOMContentLoaded',function(){
   var badge=document.querySelector('.premiumBadgeV105');
-  if(badge) badge.textContent='V161 · navegación premium';
+  if(badge) badge.textContent='V162 · profundidad y respuesta táctil';
 });
 </script>
 
@@ -16397,6 +16397,218 @@ document.addEventListener('DOMContentLoaded',function(){
       if(event.key==='ArrowRight'){event.preventDefault();window.nextMainCategoryV154();}
       if(event.key==='ArrowLeft'){event.preventDefault();window.previousMainCategoryV154();}
     });
+  });
+})();
+</script>
+
+
+
+<style id="v162-depth-touch-style">
+/* V162 · Profundidad visual, respuesta táctil y consistencia */
+:root{
+  --v162-accent:#3b82f6;
+  --v162-accent-soft:rgba(59,130,246,.16);
+  --v162-accent-glow:rgba(59,130,246,.28);
+}
+body.v159-cat-ahora{--v162-accent:#3b82f6;--v162-accent-soft:rgba(59,130,246,.16);--v162-accent-glow:rgba(59,130,246,.28);}
+body.v159-cat-expresar{--v162-accent:#22c55e;--v162-accent-soft:rgba(34,197,94,.16);--v162-accent-glow:rgba(34,197,94,.27);}
+body.v159-cat-comprender{--v162-accent:#8b5cf6;--v162-accent-soft:rgba(139,92,246,.16);--v162-accent-glow:rgba(139,92,246,.27);}
+body.v159-cat-recorrido{--v162-accent:#f59e0b;--v162-accent-soft:rgba(245,158,11,.17);--v162-accent-glow:rgba(245,158,11,.27);}
+body.v159-cat-apoyo{--v162-accent:#e11d48;--v162-accent-soft:rgba(225,29,72,.14);--v162-accent-glow:rgba(225,29,72,.25);}
+
+.app{
+  position:relative;
+  overflow:hidden;
+  isolation:isolate;
+  box-shadow:0 24px 60px rgba(15,23,42,.16),0 2px 8px rgba(15,23,42,.07);
+}
+.app::before{
+  content:"";
+  position:absolute;
+  inset:-80px -100px auto;
+  height:210px;
+  background:radial-gradient(circle at 50% 0,var(--v162-accent-soft),transparent 68%);
+  pointer-events:none;
+  z-index:-1;
+  transition:background .45s ease;
+}
+
+#mainSlideV154,
+#v155ToolCard{
+  position:relative;
+  border:1px solid rgba(255,255,255,.72);
+  box-shadow:0 18px 44px rgba(15,23,42,.10),0 1px 0 rgba(255,255,255,.9) inset;
+  transition:transform .24s ease,box-shadow .24s ease,border-color .24s ease;
+}
+#mainSlideV154::after,
+#v155ToolCard::after{
+  content:"";
+  position:absolute;
+  inset:auto 18px 0;
+  height:3px;
+  border-radius:999px;
+  background:linear-gradient(90deg,transparent,var(--v162-accent),transparent);
+  opacity:.7;
+  box-shadow:0 0 16px var(--v162-accent-glow);
+  pointer-events:none;
+}
+
+.v161CategoryDot,
+.mainNavigationV154 button,
+.v155Navigation button,
+#v155OpenTool,
+button.action,
+.softButton{
+  -webkit-tap-highlight-color:transparent;
+  touch-action:manipulation;
+}
+.v161CategoryDot,
+.mainNavigationV154 button,
+.v155Navigation button,
+#v155OpenTool{
+  transition:transform .16s ease,box-shadow .22s ease,background .22s ease,opacity .22s ease;
+}
+.v161CategoryDot:active,
+.mainNavigationV154 button:active,
+.v155Navigation button:active,
+#v155OpenTool:active,
+button.action:active,
+.softButton:active{
+  transform:scale(.95);
+}
+.v161CategoryDot.is-active{
+  box-shadow:0 8px 20px var(--v162-accent-glow),0 0 0 3px rgba(255,255,255,.72);
+}
+.v161ActiveLabel{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:7px;
+  min-height:24px;
+  padding:6px 12px;
+  border-radius:999px;
+  background:rgba(255,255,255,.64);
+  border:1px solid rgba(255,255,255,.78);
+  box-shadow:0 7px 18px rgba(15,23,42,.07);
+}
+.v161ActiveLabel::before{
+  content:"";
+  width:7px;height:7px;border-radius:50%;
+  background:var(--v162-accent);
+  box-shadow:0 0 12px var(--v162-accent-glow);
+}
+
+.v162ToolProgress{
+  height:5px;
+  margin:12px 20px 2px;
+  border-radius:999px;
+  overflow:hidden;
+  background:rgba(148,163,184,.18);
+}
+.v162ToolProgressFill{
+  height:100%;
+  width:0;
+  border-radius:inherit;
+  background:linear-gradient(90deg,var(--v162-accent),rgba(255,255,255,.95));
+  box-shadow:0 0 12px var(--v162-accent-glow);
+  transition:width .28s ease,background .35s ease;
+}
+
+button:focus-visible,[role="button"]:focus-visible{
+  outline:3px solid var(--v162-accent);
+  outline-offset:3px;
+}
+
+@media (hover:hover){
+  #mainSlideV154:hover,#v155ToolCard:hover{
+    transform:translateY(-2px);
+    box-shadow:0 23px 52px rgba(15,23,42,.13),0 1px 0 rgba(255,255,255,.92) inset;
+  }
+  .v161CategoryDot:hover,.mainNavigationV154 button:hover,.v155Navigation button:hover,#v155OpenTool:hover{
+    transform:translateY(-2px);
+  }
+}
+
+@media (max-width:430px){
+  body{align-items:flex-start;padding-top:max(10px,env(safe-area-inset-top));padding-bottom:max(10px,env(safe-area-inset-bottom));box-sizing:border-box;}
+  .app{width:calc(100% - 20px);padding:22px 18px;border-radius:28px;}
+}
+
+@media (prefers-reduced-motion:reduce){
+  .v161CategoryDot,.mainNavigationV154 button,.v155Navigation button,#v155OpenTool,
+  #mainSlideV154,#v155ToolCard,.v162ToolProgressFill{transition:none!important;}
+}
+</style>
+
+<script id="v162-depth-touch-script">
+(function(){
+  'use strict';
+
+  function vibrateV162(pattern){
+    if(navigator.vibrate && !window.matchMedia('(prefers-reduced-motion: reduce)').matches){
+      try{navigator.vibrate(pattern);}catch(e){}
+    }
+  }
+
+  function ensureProgressV162(){
+    const card=document.getElementById('v155ToolCard');
+    if(!card||document.getElementById('v162ToolProgress'))return;
+    const bar=document.createElement('div');
+    bar.id='v162ToolProgress';
+    bar.className='v162ToolProgress';
+    bar.setAttribute('aria-hidden','true');
+    const fill=document.createElement('div');
+    fill.id='v162ToolProgressFill';
+    fill.className='v162ToolProgressFill';
+    bar.appendChild(fill);
+    card.appendChild(bar);
+  }
+
+  function syncProgressV162(){
+    ensureProgressV162();
+    const counter=document.getElementById('v155ToolCounter');
+    const fill=document.getElementById('v162ToolProgressFill');
+    if(!counter||!fill)return;
+    const match=(counter.textContent||'').match(/(\d+)\s+de\s+(\d+)/i);
+    if(!match)return;
+    const current=parseInt(match[1],10)||1;
+    const total=parseInt(match[2],10)||1;
+    fill.style.width=Math.max(0,Math.min(100,(current/total)*100))+'%';
+  }
+
+  function pulseV162(element){
+    if(!element)return;
+    element.animate([
+      {transform:'scale(1)'},
+      {transform:'scale(.965)'},
+      {transform:'scale(1)'}
+    ],{duration:180,easing:'ease-out'});
+  }
+
+  document.addEventListener('DOMContentLoaded',function(){
+    ensureProgressV162();
+    syncProgressV162();
+
+    document.addEventListener('click',function(event){
+      const category=event.target.closest('.v161CategoryDot');
+      if(category){vibrateV162(12);pulseV162(category);}
+
+      const nav=event.target.closest('.mainNavigationV154 button,.v155Navigation button');
+      if(nav){vibrateV162(10);pulseV162(nav);window.setTimeout(syncProgressV162,230);}
+
+      const open=event.target.closest('#v155OpenTool');
+      if(open){vibrateV162([14,22,14]);pulseV162(open);}
+    },{passive:true});
+
+    const counter=document.getElementById('v155ToolCounter');
+    if(counter){
+      new MutationObserver(syncProgressV162).observe(counter,{childList:true,characterData:true,subtree:true});
+    }
+
+    const bodyObserver=new MutationObserver(function(){
+      window.setTimeout(syncProgressV162,50);
+    });
+    bodyObserver.observe(document.body,{attributes:true,attributeFilter:['class']});
   });
 })();
 </script>
