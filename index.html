@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
-<title>App Emocional V167</title>
+<title>App Emocional V168</title>
 
 <style>
 body {
@@ -16931,6 +16931,156 @@ button:focus-visible,[role="button"]:focus-visible{
   }else{
     hideDock();
   }
+})();
+</script>
+
+
+<style id="v168-consistency-style">
+/* V168 · Consistencia visual global */
+:root{
+  --v168-radius-card:22px;
+  --v168-radius-control:16px;
+  --v168-gap-xs:8px;
+  --v168-gap-sm:12px;
+  --v168-gap-md:16px;
+  --v168-gap-lg:22px;
+  --v168-shadow-card:0 10px 26px rgba(15,23,42,.08);
+  --v168-border:1px solid rgba(51,65,85,.13);
+  --v168-surface:rgba(255,255,255,.92);
+  --v168-text:#172033;
+  --v168-muted:#526174;
+}
+
+/* Estructura y ritmo vertical */
+.app{box-sizing:border-box;}
+.fullscreen{
+  padding-top:max(26px,env(safe-area-inset-top));
+  padding-right:max(20px,env(safe-area-inset-right));
+  padding-bottom:max(30px,env(safe-area-inset-bottom));
+  padding-left:max(20px,env(safe-area-inset-left));
+}
+.fullscreen>h1,.fullscreen>h2,.fullscreen>h3,
+.fullscreen div>h1,.fullscreen div>h2,.fullscreen div>h3{
+  color:var(--v168-text);
+  letter-spacing:-.015em;
+  line-height:1.18;
+}
+.fullscreen h1{font-size:clamp(25px,7vw,31px);margin:8px 0 10px;}
+.fullscreen h2{font-size:clamp(21px,6vw,26px);margin:8px 0 10px;}
+.fullscreen h3{font-size:18px;margin:12px 0 8px;}
+.fullscreen p{line-height:1.55;}
+
+/* Controles comunes */
+.softButton,.soundButton,.action,.companionCard,
+[class*="ChoiceV"],[class*="StepV"],[class*="ItemV"],
+.v155ToolAction,.v168-unified-control{
+  border-radius:var(--v168-radius-control)!important;
+  border:var(--v168-border)!important;
+  box-shadow:0 6px 18px rgba(15,23,42,.055)!important;
+  font-weight:600;
+  line-height:1.35;
+  transition:transform .18s ease,box-shadow .18s ease,background .18s ease,opacity .18s ease!important;
+}
+.softButton:active,.soundButton:active,.action:active,.companionCard:active,
+[class*="ChoiceV"]:active,[class*="StepV"]:active,[class*="ItemV"]:active,
+.v155ToolAction:active{transform:scale(.98);}
+
+/* Tarjetas internas, un mismo lenguaje visual */
+.supportCard,.stats,.diaryEntry,.calendarDay,.calendarSummary,.dayDetailCard,.rememberCard,.strengthCard,
+[class*="CardV"],[class*="PhraseV"],[class*="SignalV"],[class*="SceneV"],[class*="WrapV"],
+.v155ToolCard{
+  border-radius:var(--v168-radius-card)!important;
+  border:var(--v168-border)!important;
+  box-shadow:var(--v168-shadow-card)!important;
+}
+[class*="CardV"],[class*="PhraseV"],[class*="SignalV"],.supportCard,.stats{
+  box-sizing:border-box;
+}
+
+/* Navegación principal */
+.v151CategoryCard{
+  border-radius:24px!important;
+  box-shadow:0 12px 28px rgba(15,23,42,.09)!important;
+}
+.v151CategoryTitle{letter-spacing:-.012em;}
+.v151CategorySubtitle,.v155ToolDescription{line-height:1.48!important;color:var(--v168-muted)!important;}
+.v161CategoryTab{border-radius:14px!important;}
+.v155ToolCard{padding:16px!important;}
+.v155ToolTitle{letter-spacing:-.01em;}
+
+/* Botones de volver consistentes */
+button[data-v168-back="true"]{
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  gap:7px!important;
+  min-width:112px;
+  padding:12px 17px!important;
+  margin:18px auto 4px!important;
+  background:rgba(255,255,255,.94)!important;
+  color:var(--v168-text)!important;
+  border:var(--v168-border)!important;
+  border-radius:999px!important;
+  box-shadow:0 8px 22px rgba(15,23,42,.08)!important;
+  font-weight:700!important;
+}
+
+/* Campos y controles deslizantes */
+.textBox,textarea,input[type="text"],input[type="search"],input[type="email"]{
+  border-radius:16px!important;
+  padding:14px 15px!important;
+  line-height:1.5;
+}
+input[type="range"]{min-height:34px;}
+
+/* Separaciones previsibles */
+.fullscreen .small,.fullscreen [class*="Small"]{line-height:1.5;}
+.fullscreen button+button{margin-top:8px;}
+.fullscreen textarea+button,.fullscreen input+button{margin-top:12px;}
+
+@media(max-width:380px){
+  .v155ToolCard{padding:14px!important;}
+  button[data-v168-back="true"]{width:min(100%,240px);}
+}
+@media(prefers-reduced-motion:reduce){
+  .softButton,.soundButton,.action,.companionCard,[class*="ChoiceV"],[class*="StepV"],[class*="ItemV"]{transform:none!important;}
+}
+</style>
+
+<script id="v168-consistency-script">
+(function(){
+  'use strict';
+  function normalizedText(el){
+    return (el.textContent||'').replace(/\s+/g,' ').trim().toLowerCase();
+  }
+  function markBackButtons(root){
+    (root||document).querySelectorAll('button').forEach(function(btn){
+      var text=normalizedText(btn);
+      var inline=(btn.getAttribute('onclick')||'').toLowerCase();
+      if(text==='volver'||text==='← volver'||text==='‹ volver'||text.indexOf('volver')===0||inline.indexOf('close')!==-1&&text.indexOf('volver')!==-1){
+        btn.setAttribute('data-v168-back','true');
+        if(!btn.getAttribute('aria-label'))btn.setAttribute('aria-label','Volver');
+      }
+    });
+  }
+  function unifyControls(root){
+    (root||document).querySelectorAll('button').forEach(function(btn){
+      if(btn.closest('.v161CategoryTabs')||btn.classList.contains('v161CategoryTab'))return;
+      if(!btn.classList.contains('softButton')&&!btn.classList.contains('soundButton')&&!btn.classList.contains('action')&&!btn.hasAttribute('data-v168-back')){
+        btn.classList.add('v168-unified-control');
+      }
+    });
+  }
+  function apply(root){markBackButtons(root);unifyControls(root);}
+  document.addEventListener('DOMContentLoaded',function(){
+    apply(document);
+    var observer=new MutationObserver(function(mutations){
+      mutations.forEach(function(m){
+        m.addedNodes.forEach(function(node){if(node.nodeType===1)apply(node);});
+      });
+    });
+    observer.observe(document.body,{childList:true,subtree:true});
+  });
 })();
 </script>
 
