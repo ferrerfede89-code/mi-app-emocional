@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
-<title>App Emocional V166</title>
+<title>App Emocional V167</title>
 
 <style>
 body {
@@ -20509,6 +20509,144 @@ function changeAmanecerPhraseV133(){
     if(title)observer.observe(title,{childList:true,characterData:true,subtree:true});
 
     new MutationObserver(renderResume).observe(document.body,{attributes:true,attributeFilter:['class']});
+  });
+})();
+</script>
+
+
+<style id="v167-accessibility-style">
+/* V167 · Accesibilidad, contraste y legibilidad */
+:root{
+  --v167-focus:#0f5f9f;
+  --v167-text:#172033;
+  --v167-muted:#526174;
+  --v167-surface:rgba(255,255,255,.96);
+}
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%;}
+body{color:var(--v167-text);}
+.small,.presence,[class*="Small"],[class*="small"]{color:var(--v167-muted);}
+button,input,textarea,select{font:inherit;}
+button,[role="button"],input[type="button"],input[type="submit"]{
+  min-height:44px;
+  touch-action:manipulation;
+  -webkit-tap-highlight-color:rgba(15,95,159,.14);
+}
+button:focus-visible,[role="button"]:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible,a:focus-visible{
+  outline:3px solid var(--v167-focus)!important;
+  outline-offset:3px!important;
+  box-shadow:0 0 0 5px rgba(15,95,159,.16)!important;
+}
+.textBox,textarea,input[type="text"],input[type="search"],input[type="email"]{
+  color:#111827;
+  background:var(--v167-surface);
+  border:1px solid rgba(51,65,85,.20);
+}
+.textBox::placeholder,textarea::placeholder,input::placeholder{color:#667085;opacity:1;}
+.softButton,.soundButton,.supportCard,.action,.companionCard{
+  color:#172033;
+}
+.v151CategoryCard,.v155ToolCard{
+  border-color:rgba(51,65,85,.16)!important;
+}
+.v155ToolDescription,.v151CategorySubtitle{color:#526174!important;}
+.v161CategoryTab{min-width:44px;min-height:44px;}
+.v161CategoryTab[aria-current="true"]{box-shadow:0 0 0 3px rgba(15,95,159,.18);}
+.v167-sr-only{
+  position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;
+  overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important;
+}
+@media (max-width:380px){
+  .app{width:94%;padding:20px;}
+  .fullscreen{padding:22px 18px calc(26px + env(safe-area-inset-bottom));}
+  .message{font-size:17px;}
+}
+@media (prefers-contrast:more){
+  body{color:#0b1020;}
+  .app,.supportCard,.action,.softButton,.companionCard{background:#fff!important;}
+  .small,.presence,[class*="Small"],[class*="small"]{color:#374151!important;}
+  button,.action,.softButton{border:2px solid #334155!important;}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{
+    animation-duration:.01ms!important;
+    animation-iteration-count:1!important;
+    scroll-behavior:auto!important;
+    transition-duration:.01ms!important;
+  }
+}
+</style>
+
+<script id="v167-accessibility-script">
+(function(){
+  'use strict';
+  function textOf(el){return (el.innerText||el.textContent||'').replace(/\s+/g,' ').trim();}
+  function makeButtonsAccessible(root){
+    (root||document).querySelectorAll('button,[role="button"]').forEach(function(el){
+      if(!el.hasAttribute('type')&&el.tagName==='BUTTON')el.setAttribute('type','button');
+      if(!el.hasAttribute('aria-label')){
+        var label=textOf(el);
+        if(label)el.setAttribute('aria-label',label.slice(0,140));
+      }
+      if(el.tagName!=='BUTTON'&&!el.hasAttribute('tabindex'))el.setAttribute('tabindex','0');
+    });
+  }
+  function labelFields(root){
+    (root||document).querySelectorAll('textarea,input,select').forEach(function(el,index){
+      if(el.getAttribute('aria-label')||el.getAttribute('aria-labelledby'))return;
+      var label='Campo de texto';
+      if(el.placeholder)label=el.placeholder;
+      else if(el.name)label=el.name;
+      else if(el.type==='range')label='Control deslizante';
+      el.setAttribute('aria-label',label);
+    });
+  }
+  function markActiveNavigation(){
+    document.querySelectorAll('.v161CategoryTab').forEach(function(tab){
+      var active=tab.classList.contains('active')||tab.classList.contains('is-active');
+      tab.setAttribute('aria-current',active?'true':'false');
+    });
+  }
+  function installLiveRegion(){
+    if(document.getElementById('v167Live'))return;
+    var live=document.createElement('div');
+    live.id='v167Live';
+    live.className='v167-sr-only';
+    live.setAttribute('aria-live','polite');
+    live.setAttribute('aria-atomic','true');
+    document.body.appendChild(live);
+  }
+  function announceTool(){
+    var title=document.getElementById('v155ToolTitle');
+    var counter=document.getElementById('v155ToolCounter');
+    var live=document.getElementById('v167Live');
+    if(!live||!title)return;
+    live.textContent=(counter?textOf(counter)+' · ':'')+textOf(title);
+  }
+  document.addEventListener('DOMContentLoaded',function(){
+    installLiveRegion();
+    makeButtonsAccessible(document);
+    labelFields(document);
+    markActiveNavigation();
+    announceTool();
+    var observer=new MutationObserver(function(mutations){
+      mutations.forEach(function(m){
+        if(m.addedNodes){m.addedNodes.forEach(function(node){
+          if(node.nodeType===1){makeButtonsAccessible(node);labelFields(node);}
+        });}
+      });
+      markActiveNavigation();
+    });
+    observer.observe(document.body,{childList:true,subtree:true,attributes:true,attributeFilter:['class']});
+    ['v155ToolTitle','v155ToolCounter'].forEach(function(id){
+      var el=document.getElementById(id);
+      if(el)new MutationObserver(announceTool).observe(el,{childList:true,subtree:true,characterData:true});
+    });
+  });
+  document.addEventListener('keydown',function(e){
+    var target=e.target;
+    if((e.key==='Enter'||e.key===' ')&&target&&target.getAttribute&&target.getAttribute('role')==='button'){
+      e.preventDefault();target.click();
+    }
   });
 })();
 </script>
