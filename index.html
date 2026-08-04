@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
-<title>App Emocional V165</title>
+<title>App Emocional V166</title>
 
 <style>
 body {
@@ -4876,18 +4876,18 @@ body.v151CategoryOpen .v158ToolsAvailable::before{
 
 
 <style>
-/* V165 - Control ambiental unificado */
+/* V166 - Reproductor contextual */
 #v165AudioDock{
   position:fixed;
   left:50%;
-  bottom:calc(14px + env(safe-area-inset-bottom));
+  bottom:calc(10px + env(safe-area-inset-bottom));
   transform:translateX(-50%) translateY(140%);
   width:min(360px,calc(100vw - 28px));
   box-sizing:border-box;
   z-index:12000;
-  padding:11px 12px;
+  padding:8px 10px;
   border:1px solid rgba(255,255,255,.72);
-  border-radius:22px;
+  border-radius:18px;
   background:rgba(255,255,255,.94);
   box-shadow:0 18px 48px rgba(15,23,42,.20);
   backdrop-filter:blur(18px);
@@ -4915,11 +4915,12 @@ body.v151CategoryOpen .v158ToolsAvailable::before{
 #v165AudioState{font-size:11px;color:#64748b;margin-top:2px;}
 .v165AudioActions{display:flex;gap:5px;flex:0 0 auto;}
 .v165AudioBtn{
-  border:0;border-radius:12px;min-width:38px;height:38px;padding:0 10px;
-  background:#f1f5f9;font-size:16px;cursor:pointer;
+  border:0;border-radius:11px;min-width:34px;height:34px;padding:0 8px;
+  background:#f1f5f9;font-size:15px;cursor:pointer;
 }
 .v165AudioBtn:active{transform:scale(.94);}
-.v165AudioVolume{display:flex;align-items:center;gap:8px;margin-top:8px;}
+.v165AudioVolume{display:flex;align-items:center;gap:7px;margin-top:5px;}
+#atmosphereScreen,#soundtrackScreenV92{padding-bottom:calc(155px + env(safe-area-inset-bottom))!important;}
 #v165AudioVolume{width:100%;accent-color:#3b82f6;}
 @media(prefers-reduced-motion:reduce){
  #v165AudioDock,#v165AudioDock *{transition:none!important;animation:none!important;}
@@ -16310,7 +16311,7 @@ Tocá el botón para ver el estado final del proyecto.
 <script id="v158-version-label-script">
 document.addEventListener('DOMContentLoaded',function(){
   var badge=document.querySelector('.premiumBadgeV105');
-  if(badge) badge.textContent='V164 · continuidad de uso';
+  if(badge) badge.textContent='V166 · audio contextual';
 });
 </script>
 
@@ -16686,11 +16687,11 @@ button:focus-visible,[role="button"]:focus-visible{
 </div>
 
 <script>
-/* V165 - Audio y control ambiental */
+/* V166 - Audio contextual y navegación libre */
 (function(){
   'use strict';
-  const STORE_VOLUME='appEmocionalV165Volume';
-  const STORE_LABEL='appEmocionalV165AudioLabel';
+  const STORE_VOLUME='appEmocionalV166Volume';
+  const STORE_LABEL='appEmocionalV166AudioLabel';
   const dock=document.getElementById('v165AudioDock');
   const title=document.getElementById('v165AudioTitle');
   const state=document.getElementById('v165AudioState');
@@ -16702,6 +16703,28 @@ button:focus-visible,[role="button"]:focus-visible{
   if(!Number.isFinite(rememberedVolume)) rememberedVolume=.30;
   rememberedVolume=Math.max(0,Math.min(1,rememberedVolume));
   volume.value=String(rememberedVolume);
+
+  function isVisible(el){
+    if(!el) return false;
+    const style=getComputedStyle(el);
+    return style.display!=='none' && style.visibility!=='hidden';
+  }
+  function isAudioContext(){
+    return isVisible(document.getElementById('atmosphereScreen')) ||
+           isVisible(document.getElementById('soundtrackScreenV92'));
+  }
+  function hideDock(){
+    dock.classList.remove('v165-show','v165-playing');
+    dock.setAttribute('aria-hidden','true');
+  }
+  function refreshDockVisibility(){
+    if(isAudioContext() && activeAudio && activeAudio.src){
+      dock.classList.add('v165-show');
+      dock.setAttribute('aria-hidden','false');
+    }else{
+      hideDock();
+    }
+  }
 
   function soundtrack(){
     try{return (typeof soundtrackAudioV92!=='undefined') ? soundtrackAudioV92 : null;}
@@ -16718,8 +16741,13 @@ button:focus-visible,[role="button"]:focus-visible{
   function showDock(label){
     if(label) activeLabel=label;
     title.textContent=activeLabel;
-    dock.classList.add('v165-show');
     localStorage.setItem(STORE_LABEL,activeLabel);
+    if(isAudioContext()){
+      dock.classList.add('v165-show');
+      dock.setAttribute('aria-hidden','false');
+    }else{
+      hideDock();
+    }
   }
   function updateState(audio){
     const playing=audio && !audio.paused && !audio.ended;
@@ -16826,7 +16854,7 @@ button:focus-visible,[role="button"]:focus-visible{
   }
   const oldCloseSoundtrack=window.closeSoundtrackV92;
   if(typeof oldCloseSoundtrack==='function'){
-    window.closeSoundtrackV92=function(){pauseAll(false);oldCloseSoundtrack();};
+    window.closeSoundtrackV92=function(){pauseAll(false);hideDock();oldCloseSoundtrack();};
   }
 
   /* Al abrir mañana/noche, el sonido queda preparado pero pausado. */
@@ -16852,23 +16880,57 @@ button:focus-visible,[role="button"]:focus-visible{
     }
   });
 
-  /* Cerrar o volver desde cualquier pantalla detiene el audio activo. */
+  /* El reproductor existe solo dentro de las pantallas de audio. */
+  const oldCloseAtmosphere=window.closeAtmosphere;
+  if(typeof oldCloseAtmosphere==='function'){
+    window.closeAtmosphere=function(){
+      pauseAll(false);
+      hideDock();
+      return oldCloseAtmosphere.apply(this,arguments);
+    };
+  }
+  const oldOpenAtmosphere=window.openAtmosphere;
+  if(typeof oldOpenAtmosphere==='function'){
+    window.openAtmosphere=function(){
+      const result=oldOpenAtmosphere.apply(this,arguments);
+      setTimeout(refreshDockVisibility,0);
+      return result;
+    };
+  }
+
   document.addEventListener('click',function(e){
     const btn=e.target.closest('button');
     if(!btn) return;
     const txt=(btn.textContent||'').trim().toLowerCase();
-    if((txt.includes('volver')||txt.includes('cerrar')||txt.includes('salir')) && btn.closest('.fullscreen')){
+    const leaving=txt.includes('volver')||txt.includes('cerrar')||txt.includes('salir');
+    if(leaving && btn.closest('.fullscreen')){
       pauseAll(false);
+      hideDock();
+    }else{
+      setTimeout(refreshDockVisibility,0);
     }
   },true);
+
+  const screenObserver=new MutationObserver(refreshDockVisibility);
+  ['atmosphereScreen','soundtrackScreenV92'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el) screenObserver.observe(el,{attributes:true,attributeFilter:['style','class']});
+  });
 
   document.addEventListener('visibilitychange',function(){
     if(document.hidden) pauseAll(false);
   });
   window.addEventListener('pagehide',()=>pauseAll(false));
 
-  /* Si ya había una fuente elegida, mostrar control sin reproducir. */
-  if(ambient && ambient.getAttribute('src')) prepare(ambient,activeLabel);
+  /* Si ya había una fuente elegida, conservarla sin dejar el panel pegado fuera de contexto. */
+  if(ambient && ambient.getAttribute('src')){
+    activeAudio=ambient;
+    activeAudio.volume=rememberedVolume;
+    title.textContent=activeLabel;
+    refreshDockVisibility();
+  }else{
+    hideDock();
+  }
 })();
 </script>
 
