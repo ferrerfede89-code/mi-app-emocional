@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
-<title>App Emocional V164</title>
+<title>App Emocional V165</title>
 
 <style>
 body {
@@ -4871,6 +4871,58 @@ body.v151CategoryOpen .v158ToolsAvailable::before{
   .v161CategoryDot,.mainEnterV154,.mainArrowV154,.v155OpenTool,
   .v155ToolArrow,.v151BackButton{transition:none!important;}
   .v161-enter,.v161-tool-enter{animation:none!important;}
+}
+</style>
+
+
+<style>
+/* V165 - Control ambiental unificado */
+#v165AudioDock{
+  position:fixed;
+  left:50%;
+  bottom:calc(14px + env(safe-area-inset-bottom));
+  transform:translateX(-50%) translateY(140%);
+  width:min(360px,calc(100vw - 28px));
+  box-sizing:border-box;
+  z-index:12000;
+  padding:11px 12px;
+  border:1px solid rgba(255,255,255,.72);
+  border-radius:22px;
+  background:rgba(255,255,255,.94);
+  box-shadow:0 18px 48px rgba(15,23,42,.20);
+  backdrop-filter:blur(18px);
+  -webkit-backdrop-filter:blur(18px);
+  opacity:0;
+  pointer-events:none;
+  transition:transform .28s ease,opacity .28s ease;
+}
+#v165AudioDock.v165-show{
+  transform:translateX(-50%) translateY(0);
+  opacity:1;
+  pointer-events:auto;
+}
+.v165AudioTop{display:flex;align-items:center;gap:10px;min-width:0;}
+.v165AudioPulse{
+  width:34px;height:34px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  background:linear-gradient(135deg,#dbeafe,#ede9fe);
+  flex:0 0 auto;
+}
+#v165AudioDock.v165-playing .v165AudioPulse{animation:v165AudioPulse 1.8s infinite ease-in-out;}
+@keyframes v165AudioPulse{50%{transform:scale(1.09);box-shadow:0 0 0 8px rgba(96,165,250,.10);}}
+.v165AudioText{min-width:0;flex:1;}
+#v165AudioTitle{font-size:13px;font-weight:750;color:#1e293b;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+#v165AudioState{font-size:11px;color:#64748b;margin-top:2px;}
+.v165AudioActions{display:flex;gap:5px;flex:0 0 auto;}
+.v165AudioBtn{
+  border:0;border-radius:12px;min-width:38px;height:38px;padding:0 10px;
+  background:#f1f5f9;font-size:16px;cursor:pointer;
+}
+.v165AudioBtn:active{transform:scale(.94);}
+.v165AudioVolume{display:flex;align-items:center;gap:8px;margin-top:8px;}
+#v165AudioVolume{width:100%;accent-color:#3b82f6;}
+@media(prefers-reduced-motion:reduce){
+ #v165AudioDock,#v165AudioDock *{transition:none!important;animation:none!important;}
 }
 </style>
 
@@ -16610,6 +16662,213 @@ button:focus-visible,[role="button"]:focus-visible{
     });
     bodyObserver.observe(document.body,{attributes:true,attributeFilter:['class']});
   });
+})();
+</script>
+
+
+<div id="v165AudioDock" role="region" aria-label="Control de audio" aria-live="polite">
+  <div class="v165AudioTop">
+    <div class="v165AudioPulse" aria-hidden="true">🎧</div>
+    <div class="v165AudioText">
+      <div id="v165AudioTitle">Audio preparado</div>
+      <div id="v165AudioState">Pausado</div>
+    </div>
+    <div class="v165AudioActions">
+      <button class="v165AudioBtn" id="v165AudioPlay" aria-label="Reproducir audio">▶️</button>
+      <button class="v165AudioBtn" id="v165AudioPause" aria-label="Pausar audio">⏸️</button>
+      <button class="v165AudioBtn" id="v165AudioStop" aria-label="Detener audio">⏹️</button>
+    </div>
+  </div>
+  <div class="v165AudioVolume">
+    <span aria-hidden="true">🔉</span>
+    <input id="v165AudioVolume" type="range" min="0" max="1" step="0.05" value="0.30" aria-label="Volumen del audio">
+  </div>
+</div>
+
+<script>
+/* V165 - Audio y control ambiental */
+(function(){
+  'use strict';
+  const STORE_VOLUME='appEmocionalV165Volume';
+  const STORE_LABEL='appEmocionalV165AudioLabel';
+  const dock=document.getElementById('v165AudioDock');
+  const title=document.getElementById('v165AudioTitle');
+  const state=document.getElementById('v165AudioState');
+  const volume=document.getElementById('v165AudioVolume');
+  const ambient=document.getElementById('ambientAudio');
+  let activeAudio=null;
+  let activeLabel=localStorage.getItem(STORE_LABEL)||'Audio preparado';
+  let rememberedVolume=Number(localStorage.getItem(STORE_VOLUME));
+  if(!Number.isFinite(rememberedVolume)) rememberedVolume=.30;
+  rememberedVolume=Math.max(0,Math.min(1,rememberedVolume));
+  volume.value=String(rememberedVolume);
+
+  function soundtrack(){
+    try{return (typeof soundtrackAudioV92!=='undefined') ? soundtrackAudioV92 : null;}
+    catch(e){return null;}
+  }
+  function allKnown(){
+    const list=[];
+    if(ambient) list.push(ambient);
+    const s=soundtrack();
+    if(s && !list.includes(s)) list.push(s);
+    document.querySelectorAll('audio').forEach(a=>{if(!list.includes(a))list.push(a);});
+    return list;
+  }
+  function showDock(label){
+    if(label) activeLabel=label;
+    title.textContent=activeLabel;
+    dock.classList.add('v165-show');
+    localStorage.setItem(STORE_LABEL,activeLabel);
+  }
+  function updateState(audio){
+    const playing=audio && !audio.paused && !audio.ended;
+    dock.classList.toggle('v165-playing',!!playing);
+    state.textContent=playing?'Sonando · podés pausarlo cuando quieras':'Pausado';
+  }
+  function stopOthers(except){
+    allKnown().forEach(a=>{
+      if(a!==except){
+        try{a.pause();}catch(e){}
+      }
+    });
+  }
+  function prepare(audio,label){
+    if(!audio) return;
+    activeAudio=audio;
+    activeAudio.volume=rememberedVolume;
+    showDock(label||activeLabel);
+    updateState(activeAudio);
+  }
+  function playActive(){
+    if(!activeAudio){
+      if(ambient && ambient.src) prepare(ambient,currentAmbient||'Ambiente');
+      else {
+        const s=soundtrack();
+        if(s) prepare(s,'Banda sonora emocional');
+      }
+    }
+    if(!activeAudio) return;
+    stopOthers(activeAudio);
+    activeAudio.volume=rememberedVolume;
+    const result=activeAudio.play();
+    if(result && result.catch) result.catch(()=>{state.textContent='Tocá nuevamente para permitir el audio';});
+    updateState(activeAudio);
+  }
+  function pauseAll(reset){
+    allKnown().forEach(a=>{
+      try{
+        a.pause();
+        if(reset) a.currentTime=0;
+      }catch(e){}
+    });
+    updateState(activeAudio);
+    if(reset) state.textContent='Detenido';
+  }
+  document.getElementById('v165AudioPlay').addEventListener('click',playActive);
+  document.getElementById('v165AudioPause').addEventListener('click',()=>pauseAll(false));
+  document.getElementById('v165AudioStop').addEventListener('click',()=>pauseAll(true));
+  volume.addEventListener('input',function(){
+    rememberedVolume=Number(this.value);
+    localStorage.setItem(STORE_VOLUME,String(rememberedVolume));
+    allKnown().forEach(a=>{try{a.volume=rememberedVolume;}catch(e){}});
+  });
+
+  const originalPlay=HTMLMediaElement.prototype.play;
+  HTMLMediaElement.prototype.play=function(){
+    stopOthers(this);
+    activeAudio=this;
+    this.volume=rememberedVolume;
+    const label=(this===ambient ? (window.currentAmbient||'Ambiente') : 'Banda sonora emocional');
+    showDock(label);
+    const result=originalPlay.apply(this,arguments);
+    Promise.resolve(result).then(()=>updateState(this)).catch(()=>updateState(this));
+    return result;
+  };
+  ['pause','ended','play','playing'].forEach(evt=>{
+    document.addEventListener(evt,e=>{
+      if(e.target instanceof HTMLMediaElement){
+        activeAudio=e.target;
+        updateState(e.target);
+      }
+    },true);
+  });
+
+  /* Elegir ambiente ya no inicia música automáticamente. */
+  if(typeof window.chooseAtmosphere==='function'){
+    window.chooseAtmosphere=function(index){
+      const options=typeof getAtmospheres==='function'?getAtmospheres():[];
+      const sound=options[index];
+      if(!sound) return;
+      window.currentAmbient=sound.label;
+      ambient.pause();
+      ambient.src=sound.file;
+      ambient.loop=true;
+      prepare(ambient,sound.label);
+      const result=document.getElementById('soundResult');
+      if(result) result.innerText='Elegiste '+sound.label+'. Tocá ▶️ para reproducir.';
+      if(navigator.vibrate) navigator.vibrate(35);
+    };
+  }
+
+  /* La banda sonora se prepara sin superponerse con otros sonidos. */
+  const oldChoose=window.chooseSoundtrackV92;
+  if(typeof oldChoose==='function'){
+    window.chooseSoundtrackV92=function(key,autoplay){
+      pauseAll(false);
+      oldChoose(key,false);
+      const s=soundtrack();
+      const map=(typeof soundtrackMapV92!=='undefined')?soundtrackMapV92:{};
+      const data=map[key]||{};
+      prepare(s,data.title||'Banda sonora emocional');
+      if(autoplay) playActive();
+    };
+  }
+  const oldCloseSoundtrack=window.closeSoundtrackV92;
+  if(typeof oldCloseSoundtrack==='function'){
+    window.closeSoundtrackV92=function(){pauseAll(false);oldCloseSoundtrack();};
+  }
+
+  /* Al abrir mañana/noche, el sonido queda preparado pero pausado. */
+  ['openMorning','openSleep'].forEach(name=>{
+    const old=window[name];
+    if(typeof old==='function'){
+      window[name]=function(){
+        pauseAll(false);
+        old.apply(this,arguments);
+        setTimeout(()=>{
+          if(ambient){
+            ambient.pause();
+            prepare(ambient,name==='openMorning'?'Ambiente de inicio del día':'Ambiente para descansar');
+          }
+        },0);
+      };
+    }
+  });
+  ['closeMorning','closeSleep'].forEach(name=>{
+    const old=window[name];
+    if(typeof old==='function'){
+      window[name]=function(){pauseAll(false);return old.apply(this,arguments);};
+    }
+  });
+
+  /* Cerrar o volver desde cualquier pantalla detiene el audio activo. */
+  document.addEventListener('click',function(e){
+    const btn=e.target.closest('button');
+    if(!btn) return;
+    const txt=(btn.textContent||'').trim().toLowerCase();
+    if((txt.includes('volver')||txt.includes('cerrar')||txt.includes('salir')) && btn.closest('.fullscreen')){
+      pauseAll(false);
+    }
+  },true);
+
+  document.addEventListener('visibilitychange',function(){
+    if(document.hidden) pauseAll(false);
+  });
+  window.addEventListener('pagehide',()=>pauseAll(false));
+
+  /* Si ya había una fuente elegida, mostrar control sin reproducir. */
+  if(ambient && ambient.getAttribute('src')) prepare(ambient,activeLabel);
 })();
 </script>
 
