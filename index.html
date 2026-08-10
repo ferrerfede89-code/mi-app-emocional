@@ -17125,9 +17125,7 @@ html.v169-page-hidden *,html.v169-page-hidden *::before,html.v169-page-hidden *:
 </script>
 
 
-<!-- V171 · RC2 · CORRECCIÓN REAL DE ALTURA EN TARJETA PRINCIPAL -->
 <style id="v171-home-card-fix">
-/* Evita que la categoría principal quede exageradamente alta en iPhone. */
 body:not(.v151CategoryOpen) .mainSlideV154{
   min-height:300px!important;
   padding:22px 18px 20px!important;
@@ -17169,43 +17167,24 @@ body:not(.v151CategoryOpen) .mainNavigationV154{
 }
 </style>
 
-<script id="v171-rc2-script">
+<script id="v171-rc2-final">
 (function(){
-  'use strict';
-  if(window.__v171RC2Ready)return;
-  window.__v171RC2Ready=true;
-
-  function storageAvailable(){
-    try{
-      var key='__appEmocionalV171RC2Test__';
-      localStorage.setItem(key,'1');
-      localStorage.removeItem(key);
-      return true;
-    }catch(e){return false;}
-  }
-
-  function finalize(){
-    document.documentElement.setAttribute('data-app-release','V171-RC2');
+  function enforceV171(){
     if(document.body){
       document.body.setAttribute('data-app-version','V171');
       document.body.setAttribute('data-release-candidate','RC2');
     }
-
     var badge=document.getElementById('v161VersionBadge');
     if(badge) badge.textContent='V171 · RC2';
-
-    window.appEmocionalRelease={
-      version:'V171',
-      channel:'RC2',
-      storage:storageAvailable()?'ok':'limited'
-    };
   }
-
   if(document.readyState==='loading'){
-    document.addEventListener('DOMContentLoaded',finalize,{once:true});
+    document.addEventListener('DOMContentLoaded',enforceV171);
   }else{
-    finalize();
+    enforceV171();
   }
+  window.addEventListener('pageshow',enforceV171);
+  setTimeout(enforceV171,0);
+  setTimeout(enforceV171,250);
 })();
 </script>
 
@@ -20480,8 +20459,8 @@ html[data-app-release="V170-RC1"]{--v170-release-ready:1;}
 
   function finalizeRC1(){
     if(document.body){
-      document.body.setAttribute('data-app-version','V170');
-      document.body.setAttribute('data-release-candidate','RC1');
+      document.body.setAttribute('data-app-version','V171');
+      document.body.setAttribute('data-release-candidate','RC2');
     }
 
     var badge=document.getElementById('v161VersionBadge');
@@ -20490,7 +20469,7 @@ html[data-app-release="V170-RC1"]{--v170-release-ready:1;}
         if(!badge && el.children.length===0 && /V166\s*[·•]\s*audio contextual/i.test((el.textContent||'').trim())) badge=el;
       });
     }
-    if(badge) badge.textContent='V170 · RC1';
+    if(badge) badge.textContent='V171 · RC2';
   }
 
   document.addEventListener('visibilitychange',function(){
