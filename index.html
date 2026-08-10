@@ -17125,83 +17125,87 @@ html.v169-page-hidden *,html.v169-page-hidden *::before,html.v169-page-hidden *:
 </script>
 
 
-<!-- V171 · RELEASE CANDIDATE RC2 · CONTROL FINAL DE ESTABILIDAD -->
+<!-- V171 · RC2 · CORRECCIÓN REAL DE ALTURA EN TARJETA PRINCIPAL -->
+<style id="v171-home-card-fix">
+/* Evita que la categoría principal quede exageradamente alta en iPhone. */
+body:not(.v151CategoryOpen) .mainSlideV154{
+  min-height:300px!important;
+  padding:22px 18px 20px!important;
+  box-sizing:border-box!important;
+}
+body:not(.v151CategoryOpen) .mainEmojiV154{
+  width:96px!important;
+  height:96px!important;
+  font-size:48px!important;
+  margin-bottom:14px!important;
+}
+body:not(.v151CategoryOpen) .mainSlideV154 h3{
+  font-size:25px!important;
+  margin-bottom:8px!important;
+}
+body:not(.v151CategoryOpen) .mainDescriptionV154{
+  min-height:0!important;
+  max-width:290px!important;
+  margin-bottom:16px!important;
+  font-size:15px!important;
+  line-height:1.42!important;
+}
+body:not(.v151CategoryOpen) .mainEnterV154{
+  padding:12px 21px!important;
+}
+body:not(.v151CategoryOpen) .mainNavigationV154{
+  margin-top:12px!important;
+}
+@media(max-width:390px){
+  body:not(.v151CategoryOpen) .mainSlideV154{
+    min-height:285px!important;
+    padding:20px 16px 18px!important;
+  }
+  body:not(.v151CategoryOpen) .mainEmojiV154{
+    width:88px!important;
+    height:88px!important;
+    font-size:44px!important;
+  }
+}
+</style>
+
 <script id="v171-rc2-script">
 (function(){
   'use strict';
-  if (window.__v171RC2Ready) return;
-  window.__v171RC2Ready = true;
+  if(window.__v171RC2Ready)return;
+  window.__v171RC2Ready=true;
 
-  var RELEASE_VERSION = 'V171';
-  var RELEASE_CHANNEL = 'RC2';
-
-  function storageStatus(){
+  function storageAvailable(){
     try{
       var key='__appEmocionalV171RC2Test__';
       localStorage.setItem(key,'1');
       localStorage.removeItem(key);
-      return 'ok';
-    }catch(e){
-      return 'limited';
-    }
+      return true;
+    }catch(e){return false;}
   }
 
-  function pauseAllMedia(){
-    try{
-      document.querySelectorAll('audio,video').forEach(function(media){
-        try { media.pause(); } catch(e){}
-      });
-    }catch(e){}
-  }
-
-  function refreshReleaseState(){
+  function finalize(){
+    document.documentElement.setAttribute('data-app-release','V171-RC2');
     if(document.body){
-      document.body.setAttribute('data-app-version', RELEASE_VERSION);
-      document.body.setAttribute('data-release-candidate', RELEASE_CHANNEL);
+      document.body.setAttribute('data-app-version','V171');
+      document.body.setAttribute('data-release-candidate','RC2');
     }
 
-    var badge = document.getElementById('v161VersionBadge');
-    if(!badge){
-      try{
-        document.querySelectorAll('*').forEach(function(el){
-          if(
-            !badge &&
-            el.children.length === 0 &&
-            /V1(?:6[0-9]|70)\s*[·•]\s*(?:RC1|audio contextual)/i.test((el.textContent || '').trim())
-          ){
-            badge = el;
-          }
-        });
-      }catch(e){}
-    }
+    var badge=document.getElementById('v161VersionBadge');
+    if(badge) badge.textContent='V171 · RC2';
 
-    if(badge) badge.textContent = 'V171 · RC2';
-
-    window.appEmocionalRelease = {
-      version: RELEASE_VERSION,
-      channel: RELEASE_CHANNEL,
-      storage: storageStatus(),
-      stability: 'final-check'
+    window.appEmocionalRelease={
+      version:'V171',
+      channel:'RC2',
+      storage:storageAvailable()?'ok':'limited'
     };
   }
 
-  function init(){
-    refreshReleaseState();
-  }
-
-  if(document.readyState === 'loading'){
-    document.addEventListener('DOMContentLoaded', init, {once:true});
+  if(document.readyState==='loading'){
+    document.addEventListener('DOMContentLoaded',finalize,{once:true});
   }else{
-    init();
+    finalize();
   }
-
-  window.addEventListener('pageshow', refreshReleaseState, {passive:true});
-
-  document.addEventListener('visibilitychange', function(){
-    if(document.hidden) pauseAllMedia();
-  }, {passive:true});
-
-  window.addEventListener('pagehide', pauseAllMedia, {passive:true});
 })();
 </script>
 
