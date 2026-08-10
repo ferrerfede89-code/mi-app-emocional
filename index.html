@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
-<title>App Emocional V170 · RC1</title>
+<title>App Emocional V171 · RC2</title>
 
 <style>
 body {
@@ -20421,5 +20421,169 @@ html[data-app-release="V170-RC1"]{--v170-release-ready:1;}
 })();
 </script>
 
+<!-- V171 · RELEASE CANDIDATE RC2 · CONTROL FINAL DE ESTABILIDAD -->
+<style id="v171-rc2-style">
+html[data-app-release="V171-RC2"]{--v171-release-ready:1;}
+/* Capa móvil no invasiva: evita zoom accidental y mejora respuesta táctil. */
+html[data-app-release="V171-RC2"] button,
+html[data-app-release="V171-RC2"] [role="button"]{
+  touch-action:manipulation;
+}
+html[data-app-release="V171-RC2"] .fullscreen{
+  min-height:100vh;
+  min-height:100dvh;
+  -webkit-overflow-scrolling:touch;
+}
+@media (max-width:600px){
+  html[data-app-release="V171-RC2"] input,
+  html[data-app-release="V171-RC2"] textarea,
+  html[data-app-release="V171-RC2"] select{
+    font-size:16px;
+  }
+}
+</style>
+
+<script id="v171-rc2-script">
+(function(){
+  'use strict';
+  if(window.__v171RC2Ready)return;
+  window.__v171RC2Ready=true;
+
+  var RELEASE_VERSION='V171';
+  var RELEASE_CHANNEL='RC2';
+  var RELEASE_KEY='V171-RC2';
+
+  document.documentElement.setAttribute('data-app-release',RELEASE_KEY);
+
+  function storageStatus(){
+    try{
+      var key='__appEmocionalV171RC2Test__';
+      localStorage.setItem(key,'1');
+      localStorage.removeItem(key);
+      return 'ok';
+    }catch(e){
+      return 'limited';
+    }
+  }
+
+  function pauseAllMedia(){
+    if(!document.querySelectorAll)return;
+    document.querySelectorAll('audio,video').forEach(function(media){
+      try{media.pause();}catch(e){}
+    });
+  }
+
+  function makeButtonsSafe(root){
+    if(!root||!root.querySelectorAll)return;
+    root.querySelectorAll('button').forEach(function(btn){
+      if(!btn.hasAttribute('type'))btn.setAttribute('type','button');
+    });
+  }
+
+  function refreshReleaseState(){
+    if(document.body){
+      document.body.setAttribute('data-app-version',RELEASE_VERSION);
+      document.body.setAttribute('data-release-candidate',RELEASE_CHANNEL);
+    }
+
+    var badge=document.getElementById('v161VersionBadge');
+    if(!badge){
+      document.querySelectorAll('*').forEach(function(el){
+        if(
+          !badge &&
+          el.children.length===0 &&
+          /V1(?:6[0-9]|70)\s*[·•]\s*(?:RC1|audio contextual)/i.test((el.textContent||'').trim())
+        ){
+          badge=el;
+        }
+      });
+    }
+    if(badge)badge.textContent='V171 · RC2';
+
+    window.appEmocionalRelease={
+      version:RELEASE_VERSION,
+      channel:RELEASE_CHANNEL,
+      storage:storageStatus(),
+      stability:'final-check'
+    };
+  }
+
+  function normalizeViewportAfterReturn(){
+    /*
+      RC2 no fuerza el cierre de pantallas ni modifica datos.
+      Solo libera estados de scroll obsoletos si ya no queda
+      ninguna pantalla full-screen visible.
+    */
+    try{
+      var visible=false;
+      document.querySelectorAll('.fullscreen').forEach(function(panel){
+        var style=window.getComputedStyle(panel);
+        if(style.display!=='none' && style.visibility!=='hidden'){
+          visible=true;
+        }
+      });
+      if(!visible && document.body){
+        var inlineOverflow=(document.body.style.overflow||'').toLowerCase();
+        if(inlineOverflow==='hidden'){
+          document.body.style.overflow='';
+        }
+      }
+    }catch(e){}
+  }
+
+  function finalizeRC2(){
+    makeButtonsSafe(document);
+    refreshReleaseState();
+    normalizeViewportAfterReturn();
+  }
+
+  if(document.readyState==='loading'){
+    document.addEventListener('DOMContentLoaded',finalizeRC2,{once:true});
+  }else{
+    finalizeRC2();
+  }
+
+  /* BFCache / volver desde otra app o pestaña en iPhone/Safari. */
+  window.addEventListener('pageshow',function(){
+    refreshReleaseState();
+    normalizeViewportAfterReturn();
+  },{passive:true});
+
+  /* Ningún audio debe continuar si la app queda fuera de primer plano. */
+  document.addEventListener('visibilitychange',function(){
+    if(document.hidden)pauseAllMedia();
+  },{passive:true});
+  window.addEventListener('pagehide',pauseAllMedia,{passive:true});
+
+  /* Botones agregados dinámicamente también quedan protegidos. */
+  if(window.MutationObserver){
+    var observer=new MutationObserver(function(mutations){
+      mutations.forEach(function(mutation){
+        if(!mutation.addedNodes)return;
+        mutation.addedNodes.forEach(function(node){
+          if(node && node.nodeType===1){
+            if(node.matches && node.matches('button') && !node.hasAttribute('type')){
+              node.setAttribute('type','button');
+            }
+            makeButtonsSafe(node);
+          }
+        });
+      });
+    });
+
+    function startObserver(){
+      if(document.body){
+        observer.observe(document.body,{childList:true,subtree:true});
+      }
+    }
+
+    if(document.readyState==='loading'){
+      document.addEventListener('DOMContentLoaded',startObserver,{once:true});
+    }else{
+      startObserver();
+    }
+  }
+})();
+</script>
 </body>
 </html>
