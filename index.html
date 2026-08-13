@@ -20648,5 +20648,81 @@ html[data-app-release="V172-C1"]{--v172-correction-ready:1;}
 })();
 </script>
 
+
+
+<!-- V173 · CORRECCIÓN 2 · NAVEGACIÓN Y PANTALLAS AISLADAS -->
+<style id="v173-navigation-fix-style">
+html.v173-tool-open, body.v173-tool-open{overflow:hidden!important;overscroll-behavior:none!important;}
+body.v173-tool-open .app{overflow:hidden!important;}
+.fullscreen{
+  position:fixed!important;
+  inset:0!important;
+  top:0!important;right:0!important;bottom:0!important;left:0!important;
+  width:100%!important;
+  height:100vh!important;
+  height:100dvh!important;
+  max-height:100dvh!important;
+  overflow-x:hidden!important;
+  overflow-y:auto!important;
+  overscroll-behavior:contain!important;
+  -webkit-overflow-scrolling:touch!important;
+  box-sizing:border-box!important;
+}
+.fullscreen.v173-active-screen{z-index:1000000!important;}
+</style>
+<script id="v173-navigation-fix-script">
+(function(){
+  'use strict';
+  if(window.__v173NavigationFix)return;
+  window.__v173NavigationFix=true;
+
+  var lastActive=null;
+  function visible(el){
+    if(!el)return false;
+    var cs=getComputedStyle(el);
+    return cs.display!=='none' && cs.visibility!=='hidden' && cs.opacity!=='0';
+  }
+  function sync(){
+    var screens=Array.prototype.slice.call(document.querySelectorAll('.fullscreen'));
+    var active=screens.filter(visible);
+    screens.forEach(function(el){el.classList.remove('v173-active-screen');});
+    if(active.length){
+      var top=active[active.length-1];
+      top.classList.add('v173-active-screen');
+      document.documentElement.classList.add('v173-tool-open');
+      document.body.classList.add('v173-tool-open');
+      if(top!==lastActive){
+        try{top.scrollTop=0;}catch(e){}
+        lastActive=top;
+      }
+    }else{
+      document.documentElement.classList.remove('v173-tool-open');
+      document.body.classList.remove('v173-tool-open');
+      lastActive=null;
+    }
+  }
+  function start(){
+    sync();
+    var observer=new MutationObserver(sync);
+    document.querySelectorAll('.fullscreen').forEach(function(el){
+      observer.observe(el,{attributes:true,attributeFilter:['style','class','hidden']});
+    });
+    observer.observe(document.body,{childList:true,subtree:true});
+    document.addEventListener('click',function(){setTimeout(sync,0);setTimeout(sync,80);},true);
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start,{once:true});
+  else start();
+
+  function finalize(){
+    document.documentElement.setAttribute('data-app-release','V173-CORRECCION-2');
+    document.body.setAttribute('data-app-version','V173');
+    var badge=document.getElementById('v161VersionBadge')||document.querySelector('.premiumBadgeV105');
+    if(badge)badge.textContent='V173 · corrección 2';
+    document.title='App Emocional V173 · Corrección 2';
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',finalize,{once:true});
+  else finalize();
+})();
+</script>
 </body>
 </html>
