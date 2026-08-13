@@ -20485,5 +20485,168 @@ html[data-app-release="V170-RC1"]{--v170-release-ready:1;}
 })();
 </script>
 
+
+
+<!-- V172 · CORRECCIÓN 1 · FEEDBACK DE ESTADO + ACCESO A PERSONAJE -->
+<style id="v172-correccion-inicio-style">
+html[data-app-release="V172-C1"]{--v172-correction-ready:1;}
+.v156MoodChoice.v172-selected{
+  outline:3px solid rgba(76,130,102,.24);
+  box-shadow:0 8px 22px rgba(76,130,102,.14);
+  transform:translateY(-1px);
+}
+#v156MoodSaved.v172-visible{
+  display:block!important;
+  margin-top:12px;
+  padding:10px 12px;
+  border-radius:15px;
+  background:rgba(235,248,240,.92);
+  color:#35694f;
+  line-height:1.35;
+}
+.v172CompanionAccess{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  margin:0 0 16px;
+  padding:11px 13px;
+  border:1px solid rgba(148,163,184,.18);
+  border-radius:18px;
+  background:rgba(255,255,255,.72);
+  box-shadow:0 8px 22px rgba(15,23,42,.045);
+}
+.v172CompanionAccessText{flex:1;min-width:0;}
+.v172CompanionAccessTitle{font-size:13px;font-weight:750;color:#334155;}
+.v172CompanionAccessSub{font-size:12px;color:#64748b;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.v172CompanionAccessBtn{
+  border:0;
+  border-radius:14px;
+  padding:10px 12px;
+  background:#eef4ff;
+  color:#355a8a;
+  font-weight:750;
+  font-size:12px;
+  cursor:pointer;
+  min-height:40px;
+}
+@media(max-width:390px){
+  .v172CompanionAccess{padding:10px 11px;gap:8px;}
+  .v172CompanionAccessBtn{padding:9px 10px;}
+}
+</style>
+<script id="v172-correccion-inicio-script">
+(function(){
+  'use strict';
+  if(window.__v172Correction1Ready)return;
+  window.__v172Correction1Ready=true;
+
+  var RELEASE_VERSION='V172';
+  var RELEASE_CHANNEL='C1';
+  document.documentElement.setAttribute('data-app-release','V172-C1');
+
+  function getMoodLabel(mood){
+    return mood==='bien'?'Bien 🙂':mood==='normal'?'Normal 😐':mood==='mal'?'Mal 😔':'Registrado';
+  }
+
+  function persistLastMood(mood){
+    try{
+      localStorage.setItem('v172LastMood',JSON.stringify({mood:mood,at:Date.now()}));
+    }catch(e){}
+  }
+
+  function readLastMood(){
+    try{return JSON.parse(localStorage.getItem('v172LastMood')||'null');}catch(e){return null;}
+  }
+
+  function renderMoodFeedback(mood){
+    var saved=document.getElementById('v156MoodSaved');
+    var buttons=document.querySelectorAll('.v156MoodChoice');
+    buttons.forEach(function(btn){btn.classList.remove('v172-selected');});
+    var map={bien:0,normal:1,mal:2};
+    if(Object.prototype.hasOwnProperty.call(map,mood) && buttons[map[mood]]){
+      buttons[map[mood]].classList.add('v172-selected');
+    }
+    if(saved){
+      saved.textContent='Registrado: '+getMoodLabel(mood)+'. Podés cambiarlo cuando quieras.';
+      saved.classList.add('v172-visible');
+    }
+  }
+
+  function installMoodFix(){
+    var previous=window.setMoodV156;
+    window.setMoodV156=function(mood){
+      if(typeof previous==='function') previous(mood);
+      else if(typeof window.setMood==='function') window.setMood(mood);
+      persistLastMood(mood);
+      renderMoodFeedback(mood);
+      clearTimeout(window.__v156MoodTimer);
+    };
+    var last=readLastMood();
+    if(last&&last.mood) renderMoodFeedback(last.mood);
+  }
+
+  function companionName(){
+    try{
+      var c=(typeof window.getCompanion==='function')?window.getCompanion():null;
+      return c&&c.name?c.name:'tu compañero';
+    }catch(e){return 'tu compañero';}
+  }
+
+  function updateCompanionAccess(){
+    var sub=document.getElementById('v172CompanionAccessSub');
+    if(sub) sub.textContent='Ahora te acompaña '+companionName()+'.';
+    var avatar=document.querySelector('.v156HomeAvatar');
+    try{
+      var c=(typeof window.getCompanion==='function')?window.getCompanion():null;
+      if(avatar&&c&&c.emoji) avatar.textContent=c.emoji;
+    }catch(e){}
+  }
+
+  window.openCompanionFromHomeV172=function(){
+    var screen=document.getElementById('companionScreen');
+    if(screen){
+      screen.style.display='flex';
+      if(typeof window.renderCompanionV153==='function'){
+        try{window.renderCompanionV153();}catch(e){}
+      }
+    }
+  };
+
+  function installCompanionAccess(){
+    var home=document.getElementById('v156HomeIntro');
+    var moodBox=home&&home.querySelector('.v156MoodBox');
+    if(!home||!moodBox||document.getElementById('v172CompanionAccess'))return;
+    var box=document.createElement('div');
+    box.className='v172CompanionAccess';
+    box.id='v172CompanionAccess';
+    box.innerHTML='<div class="v172CompanionAccessText"><div class="v172CompanionAccessTitle">Tu compañero</div><div class="v172CompanionAccessSub" id="v172CompanionAccessSub">Podés cambiarlo cuando quieras.</div></div><button type="button" class="v172CompanionAccessBtn" onclick="openCompanionFromHomeV172()">Cambiar</button>';
+    home.insertBefore(box,moodBox.nextSibling);
+    updateCompanionAccess();
+
+    var originalChoose=window.chooseCompanion;
+    if(typeof originalChoose==='function'){
+      window.chooseCompanion=function(key){
+        originalChoose(key);
+        updateCompanionAccess();
+      };
+    }
+  }
+
+  function finalizeV172(){
+    if(document.body){
+      document.body.setAttribute('data-app-version',RELEASE_VERSION);
+      document.body.setAttribute('data-release-candidate',RELEASE_CHANNEL);
+    }
+    var badge=document.getElementById('v161VersionBadge');
+    if(badge) badge.textContent='V172 · corrección 1';
+    installMoodFix();
+    installCompanionAccess();
+  }
+
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',finalizeV172,{once:true});
+  else finalizeV172();
+})();
+</script>
+
 </body>
 </html>
