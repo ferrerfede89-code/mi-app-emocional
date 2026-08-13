@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
-<title>App Emocional V173 · Corrección navegación</title>
+<title>App Emocional V173 · Corrección estable</title>
 
 <style>
 body {
@@ -17188,159 +17188,6 @@ body:not(.v151CategoryOpen) .mainNavigationV154{
 })();
 </script>
 
-
-<!-- V173 · CORRECCIÓN 2 · NAVEGACIÓN / DESPLIEGUE PROGRESIVO -->
-<style id="v173-correccion-navegacion-style">
-html[data-app-release="V173-C2"]{--v173-correction-ready:1;}
-
-/* Mientras la pantalla de entrada de una herramienta está visible,
-   el contenido real queda completamente oculto e inmóvil. */
-.fullscreen.v173-intro-locked{
-  overflow:hidden !important;
-  overscroll-behavior:none;
-  touch-action:none;
-}
-.fullscreen.v173-intro-locked > *:not(.calmEntryV152){
-  visibility:hidden !important;
-  pointer-events:none !important;
-}
-.fullscreen.v173-intro-locked > .calmEntryV152{
-  visibility:visible !important;
-  pointer-events:auto !important;
-  touch-action:manipulation;
-}
-
-/* La navegación de herramientas sólo existe después de tocar Entrar. */
-body:not(.v151CategoryOpen) #v151ToolsHeader,
-body:not(.v151CategoryOpen) #v158CategoryContext,
-body:not(.v151CategoryOpen) #v155CategoryCarousel{
-  display:none !important;
-}
-body.v151CategoryOpen #v156HomeIntro,
-body.v151CategoryOpen #v151Navigation{
-  display:none !important;
-}
-body.v151CategoryOpen #v158CategoryContext{
-  display:block !important;
-}
-body.v151CategoryOpen #v155CategoryCarousel{
-  display:block !important;
-}
-
-/* Evita que contenido legado aparezca por debajo del carrusel. */
-body.v151CategoryOpen .actions,
-body.v151CategoryOpen #legacyNeedsTitleV151{
-  display:none !important;
-}
-
-/* iPhone/Safari: la introducción siempre ocupa el viewport completo. */
-.calmEntryV152{
-  width:100vw !important;
-  height:100dvh !important;
-  min-height:100vh !important;
-  overflow:hidden !important;
-  overscroll-behavior:none;
-}
-</style>
-<script id="v173-correccion-navegacion-script">
-(function(){
-  'use strict';
-  if(window.__v173Correction2Ready)return;
-  window.__v173Correction2Ready=true;
-
-  var RELEASE_VERSION='V173';
-  var RELEASE_CHANNEL='C2';
-  document.documentElement.setAttribute('data-app-release','V173-C2');
-
-  function syncIntroLockV173(screen){
-    if(!screen)return;
-    var entry=screen.querySelector(':scope > .calmEntryV152');
-    if(entry){
-      screen.classList.add('v173-intro-locked');
-      try{screen.scrollTop=0;}catch(e){}
-    }else{
-      screen.classList.remove('v173-intro-locked');
-    }
-  }
-
-  function installIntroLocksV173(){
-    document.querySelectorAll('.fullscreen').forEach(function(screen){
-      syncIntroLockV173(screen);
-      var observer=new MutationObserver(function(){syncIntroLockV173(screen);});
-      observer.observe(screen,{childList:true,attributes:true,attributeFilter:['style','class']});
-    });
-  }
-
-  function hardCloseCategoryArtifactsV173(){
-    if(document.body.classList.contains('v151CategoryOpen'))return;
-    var header=document.getElementById('v151ToolsHeader');
-    if(header)header.classList.remove('visible');
-    var carousel=document.getElementById('v155CategoryCarousel');
-    if(carousel)carousel.setAttribute('aria-hidden','true');
-  }
-
-  function wrapCategoryNavigationV173(){
-    var open=window.openCategoryV151;
-    if(typeof open==='function'&&!open.__v173Wrapped){
-      var wrappedOpen=function(category){
-        open(category);
-        var carousel=document.getElementById('v155CategoryCarousel');
-        if(carousel)carousel.setAttribute('aria-hidden','false');
-      };
-      wrappedOpen.__v173Wrapped=true;
-      window.openCategoryV151=wrappedOpen;
-    }
-
-    var close=window.closeCategoryV151;
-    if(typeof close==='function'&&!close.__v173Wrapped){
-      var wrappedClose=function(){
-        close();
-        window.setTimeout(hardCloseCategoryArtifactsV173,0);
-      };
-      wrappedClose.__v173Wrapped=true;
-      window.closeCategoryV151=wrappedClose;
-    }
-  }
-
-  function finalizeV173(){
-    if(document.body){
-      document.body.setAttribute('data-app-version',RELEASE_VERSION);
-      document.body.setAttribute('data-release-candidate',RELEASE_CHANNEL);
-    }
-    var badge=document.getElementById('v161VersionBadge');
-    if(badge)badge.textContent='V173 · corrección navegación';
-
-    hardCloseCategoryArtifactsV173();
-    wrapCategoryNavigationV173();
-    installIntroLocksV173();
-
-    /* Refuerzo: si V152 agrega la entrada unos milisegundos después,
-       la bloqueamos antes de que pueda desplazarse el contenido inferior. */
-    var rootObserver=new MutationObserver(function(records){
-      records.forEach(function(record){
-        if(record.target&&record.target.classList&&record.target.classList.contains('fullscreen')){
-          syncIntroLockV173(record.target);
-        }
-        Array.from(record.addedNodes||[]).forEach(function(node){
-          if(node&&node.nodeType===1){
-            if(node.classList&&node.classList.contains('calmEntryV152')){
-              syncIntroLockV173(node.parentElement);
-            }
-            if(node.querySelectorAll){
-              node.querySelectorAll('.fullscreen').forEach(syncIntroLockV173);
-            }
-          }
-        });
-      });
-    });
-    rootObserver.observe(document.body,{subtree:true,childList:true});
-  }
-
-  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',finalizeV173,{once:true});
-  else finalizeV173();
-})();
-</script>
-
 </body>
 
 <script id="v57_2_final_diary_fix">
@@ -20798,6 +20645,96 @@ html[data-app-release="V172-C1"]{--v172-correction-ready:1;}
 
   if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',finalizeV172,{once:true});
   else finalizeV172();
+})();
+</script>
+
+
+
+<!-- V173 · CORRECCIÓN ESTABLE · ENTRADA PROGRESIVA SIN BLOQUEAR LA APP -->
+<style id="v173-stable-progressive-fix-style">
+/* Mantiene la portada de cada herramienta aislada sin alterar la navegación global. */
+.calmEntryV152{
+  overscroll-behavior:contain;
+  -webkit-overflow-scrolling:auto;
+  touch-action:pan-x pan-y;
+}
+</style>
+<script id="v173-stable-progressive-fix-script">
+(function(){
+  'use strict';
+  if(window.__v173StableFixReady) return;
+  window.__v173StableFixReady=true;
+
+  var RELEASE_VERSION='V173';
+  var RELEASE_CHANNEL='C2-STABLE';
+  document.documentElement.setAttribute('data-app-release','V173-C2-STABLE');
+
+  function lockScreenForEntryV173(screen){
+    if(!screen) return;
+    var entry=null;
+    try{ entry=screen.querySelector(':scope > .calmEntryV152'); }
+    catch(e){
+      var children=screen.children||[];
+      for(var i=0;i<children.length;i++){
+        if(children[i].classList && children[i].classList.contains('calmEntryV152')){ entry=children[i]; break; }
+      }
+    }
+
+    if(entry){
+      if(!screen.dataset.v173PrevOverflow){
+        screen.dataset.v173PrevOverflow=screen.style.overflow || '__EMPTY__';
+      }
+      screen.style.overflow='hidden';
+      try{ screen.scrollTop=0; }catch(e){}
+      entry.style.pointerEvents='auto';
+      entry.style.visibility='visible';
+    }else if(screen.dataset.v173PrevOverflow){
+      screen.style.overflow=screen.dataset.v173PrevOverflow==='__EMPTY__' ? '' : screen.dataset.v173PrevOverflow;
+      delete screen.dataset.v173PrevOverflow;
+    }
+  }
+
+  function installV173(){
+    if(document.body){
+      document.body.setAttribute('data-app-version',RELEASE_VERSION);
+      document.body.setAttribute('data-release-candidate',RELEASE_CHANNEL);
+    }
+    var badge=document.getElementById('v161VersionBadge');
+    if(badge) badge.textContent='V173 · corrección estable';
+
+    var screens=Array.prototype.slice.call(document.querySelectorAll('.fullscreen'));
+    screens.forEach(function(screen){
+      lockScreenForEntryV173(screen);
+      var obs=new MutationObserver(function(records){
+        var childChanged=false;
+        for(var i=0;i<records.length;i++){
+          if(records[i].type==='childList'){ childChanged=true; break; }
+        }
+        if(childChanged) lockScreenForEntryV173(screen);
+      });
+      obs.observe(screen,{childList:true});
+    });
+
+    /* Detecta pantallas que puedan agregarse más tarde, sin tocar clases ni navegación. */
+    var rootObs=new MutationObserver(function(records){
+      records.forEach(function(record){
+        Array.prototype.forEach.call(record.addedNodes||[],function(node){
+          if(!node || node.nodeType!==1) return;
+          if(node.classList && node.classList.contains('fullscreen')) lockScreenForEntryV173(node);
+          if(node.querySelectorAll){
+            Array.prototype.forEach.call(node.querySelectorAll('.fullscreen'),lockScreenForEntryV173);
+          }
+          if(node.classList && node.classList.contains('calmEntryV152')){
+            lockScreenForEntryV173(node.parentElement);
+          }
+        });
+      });
+    });
+    rootObs.observe(document.body,{subtree:true,childList:true});
+  }
+
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',installV173,{once:true});
+  else installV173();
 })();
 </script>
 
