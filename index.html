@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
-<title>App Emocional V173 · Corrección estable</title>
+<title>App Emocional V174 · Corrección “Ahora no”</title>
 
 <style>
 body {
@@ -15974,13 +15974,27 @@ Tocá el botón para ver el estado final del proyecto.
 
   function closeScreenV152(screen){
     var candidates = Array.from(screen.querySelectorAll('button'));
+
+    /* V174: "Ahora no" debe salir de la pantalla actual, nunca activar
+       acciones como "Volver a mirar" ni botones que abren otra sección
+       antes de cerrar el hub. Priorizamos el botón de salida visible. */
     var closeButton = candidates.find(function(btn){
       if(btn.closest('.calmEntryV152')) return false;
-      var action = (btn.getAttribute('onclick') || '').toLowerCase();
-      var label = (btn.textContent || '').toLowerCase();
-      return action.indexOf('close') !== -1 || action.indexOf('cerrar') !== -1 ||
-             label.indexOf('volver') !== -1 || label.indexOf('cerrar') !== -1;
+      var action = (btn.getAttribute('onclick') || '').trim().toLowerCase();
+      var label = (btn.textContent || '').replace(/\s+/g,' ').trim().toLowerCase();
+      var exitLabel = label === 'volver' || label === 'volver despacio' || label === 'cerrar';
+      var pureCloseAction = /^(close|cerrar)[a-z0-9_$]*\s*\(/i.test(action);
+      return exitLabel && pureCloseAction;
     });
+
+    if(!closeButton){
+      closeButton = candidates.find(function(btn){
+        if(btn.closest('.calmEntryV152')) return false;
+        var action = (btn.getAttribute('onclick') || '').trim();
+        return /^(close|cerrar)[a-z0-9_$]*\s*\(/i.test(action);
+      });
+    }
+
     if(closeButton){ closeButton.click(); }
     else { screen.style.display = 'none'; }
     var entry = screen.querySelector('.calmEntryV152');
