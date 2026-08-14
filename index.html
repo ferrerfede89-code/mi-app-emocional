@@ -12953,7 +12953,8 @@ function saveSeedTextV77(){
     Aquí están las pruebas de que tu historia continuó escribiéndose.
   </div>
 
-  <button onclick="renderMuseumV111()" class="softButton">Actualizar museo</button>
+  <button onclick="updateMuseumV111()" class="softButton">Actualizar museo</button>
+  <div id="museumUpdateStatusV111" class="museumSmallV111" style="min-height:22px;margin-top:8px;text-align:center;"></div>
   <button onclick="closeMuseumV111()" class="softButton">Volver despacio</button>
 </div>
 
@@ -13109,6 +13110,22 @@ function saveSeedTextV77(){
         ? 'Aunque hubo días difíciles, hay rastros de vida, vínculos, cuidado y futuro.'
         : 'No hace falta llenar todo hoy. El museo empieza con una sola cosa que quieras recordar.';
     }
+  };
+
+  window.updateMuseumV111=function(){
+    var rooms=museumRooms();
+    var total=rooms.reduce(function(sum,r){ return sum+r.items.length; },0);
+    renderMuseumV111();
+    var status=byId('museumUpdateStatusV111');
+    if(status){
+      status.innerHTML='✓ Museo actualizado · '+total+' señal'+(total===1?'':'es')+' encontrada'+(total===1?'':'s')+'.';
+      status.style.opacity='1';
+      clearTimeout(window.__museumUpdateTimerV111);
+      window.__museumUpdateTimerV111=setTimeout(function(){
+        if(status) status.style.opacity='.72';
+      },2200);
+    }
+    if(navigator.vibrate) navigator.vibrate(25);
   };
 
   window.openMuseumRoomV111=function(id){
@@ -18409,7 +18426,8 @@ function showLifeMapZoneV94(key){
     Tu historia es más grande que un día difícil.
   </div>
 
-  <button onclick="renderAdvancesMuseumV114()" class="softButton">Actualizar museo</button>
+  <button onclick="updateAdvancesMuseumV114()" class="softButton">Actualizar museo</button>
+  <div id="museum114UpdateStatus" class="museum114Small" style="min-height:22px;margin-top:8px;text-align:center;"></div>
   <button onclick="closeAdvancesMuseumV114()" class="softButton">Volver despacio</button>
 </div>
 
@@ -18577,6 +18595,22 @@ function showLifeMapZoneV94(key){
         ? '🏆 Hay evidencia de que seguiste. Incluso en silencio, incluso despacio.'
         : '🌱 El museo empieza cuando guardás una primera señal.';
     }
+  };
+
+  window.updateAdvancesMuseumV114=function(){
+    var rooms=roomsV114();
+    var total=rooms.reduce(function(sum,r){ return sum+r.items.length; },0);
+    renderAdvancesMuseumV114();
+    var status=byId('museum114UpdateStatus');
+    if(status){
+      status.innerHTML='✓ Museo actualizado · '+total+' señal'+(total===1?'':'es')+' de avance encontrada'+(total===1?'':'s')+'.';
+      status.style.opacity='1';
+      clearTimeout(window.__museumUpdateTimerV114);
+      window.__museumUpdateTimerV114=setTimeout(function(){
+        if(status) status.style.opacity='.72';
+      },2200);
+    }
+    if(navigator.vibrate) navigator.vibrate(25);
   };
 
   window.openAdvancesMuseumRoomV114=function(id){
