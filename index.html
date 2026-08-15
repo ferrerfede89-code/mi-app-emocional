@@ -4927,6 +4927,17 @@ body.v151CategoryOpen .v158ToolsAvailable::before{
 }
 </style>
 
+
+<style id="v177-fixes">
+/* V177: legibilidad Centro de logros */
+#achievementExplanationV176, #achievementExplanationV176 * {
+  color:#fff !important; opacity:1 !important;
+}
+#achievementExplanationV176 strong, #achievementExplanationV176 b {
+  color:#fde68a !important;
+}
+</style>
+
 </head>
 
 <body>
@@ -17216,6 +17227,32 @@ body:not(.v151CategoryOpen) .mainNavigationV154{
   window.addEventListener('pageshow',enforceV171);
   setTimeout(enforceV171,0);
   setTimeout(enforceV171,250);
+})();
+</script>
+
+
+<script id="v177-fixes-js">
+(function(){
+ const internos=['pulido premium', 'versión premium', 'version premium', 'preparación comercial', 'preparacion comercial', 'onboarding inicial', 'onboarding emocional', 'modo demo', 'lista para publicar', 'privacidad y seguridad'];
+ function aplicarV177(){
+   /* Asegura contraste aunque la explicación no tenga el ID esperado */
+   document.querySelectorAll('*').forEach(function(el){
+     const tx=(el.textContent||'').trim();
+     if(tx.indexOf('Qué suma:')!==-1 && tx.indexOf('Actualizar logros')!==-1 && el.children.length<15){
+       el.querySelectorAll('p,div,span,strong,b').forEach(function(n){n.style.color='#fff';n.style.opacity='1';});
+     }
+   });
+   /* Oculta opciones internas que no pertenecen al recorrido del usuario */
+   document.querySelectorAll('button,a,[role="button"],.action,.card,.option,.menu-item').forEach(function(el){
+     const t=(el.textContent||'').trim().toLowerCase();
+     if(internos.some(function(x){return t===x || t.startsWith(x+' ') || t.startsWith(x+'\n');})){
+       el.style.display='none'; el.setAttribute('aria-hidden','true');
+     }
+   });
+ }
+ document.addEventListener('DOMContentLoaded',aplicarV177);
+ setTimeout(aplicarV177,50); setTimeout(aplicarV177,500);
+ window.addEventListener('pageshow',aplicarV177);
 })();
 </script>
 
