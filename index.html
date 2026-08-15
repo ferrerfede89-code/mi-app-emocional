@@ -18829,6 +18829,12 @@ function showLifeMapZoneV94(key){
       </div>
     </div>
 
+    <div class="achievementsV120Seal" style="margin-top:16px;">
+      <strong>¿Cómo funciona?</strong><br><br>
+      Este espacio reúne automáticamente las huellas que vas dejando en la app. No tenés que completar tareas especiales para “ganar”: tus registros cotidianos se transforman en puntos, niveles y medallas para que puedas ver tu recorrido con más claridad.<br><br>
+      <span class="achievementsV120Small"><strong>Qué suma:</strong> días en los que volvés, emociones registradas, entradas de diario, favoritos y herramientas emocionales que usás o guardás. “Actualizar logros” vuelve a leer esos registros y refresca este resumen.</span>
+    </div>
+
     <div class="achievementsV120Level">
       <div class="achievementsV120LevelTop">
         <span id="achievementsV120LevelName">Nivel emocional</span>
@@ -18936,7 +18942,7 @@ function showLifeMapZoneV94(key){
     if(s.score>=70) phrase='Ya existe una prueba concreta: incluso en días difíciles, dejaste señales de cuidado, memoria y continuidad.';
     if(s.score>=240) phrase='Tu recorrido emocional empieza a verse como una arquitectura propia: herramientas, recuerdos, refugios y decisiones suaves.';
     if(s.score>=520) phrase='Esta app ya contiene una historia emocional completa: no solo lo que sentiste, también lo que hiciste para seguir cerca de vos.';
-    elV120('achievementsV120Seal').innerHTML='<strong>Resumen de tu recorrido</strong><br><br>'+phrase+'<br><br><span class="achievementsV120Small">Versión candidata premium: este centro reúne el valor acumulado de toda la app.</span>';
+    elV120('achievementsV120Seal').innerHTML='<strong>Resumen de tu recorrido</strong><br><br>'+phrase+'<br><br><span class="achievementsV120Small">Este centro reúne automáticamente las señales de cuidado y continuidad que fuiste dejando en la app.</span>';
 
     elV120('achievementsV120Medals').innerHTML=[
       medalV120(s.moods>=1,'🙂','Primer registro emocional','Marcaste cómo estabas al menos una vez.'),
@@ -18950,7 +18956,7 @@ function showLifeMapZoneV94(key){
       medalV120(s.futureLetters>=1,'✉️','Carta del futuro','Te hablaste desde una versión futura.'),
       medalV120(s.deepTools>=10,'🏛️','Museo activo','Usaste varias herramientas profundas de la app.'),
       medalV120(s.score>=240,'🦋','Transformación visible','Tu recorrido ya muestra continuidad y crecimiento.'),
-      medalV120(s.score>=520,'👑','Candidata premium','El viaje emocional alcanzó densidad de producto premium.')
+      medalV120(s.score>=520,'👑','Historia consolidada','Tu recorrido reúne muchas señales de continuidad, cuidado y memoria emocional.')
     ].join('');
   }
   window.openAchievementsV120=function(){
