@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
-<title>App Emocional V187 · Centro de logros rehecho y funcional</title>
+<title>App Emocional V188 · Limpieza Mi recorrido</title>
 
 <style>
 body {
@@ -21178,5 +21178,100 @@ html[data-app-release="V172-C1"]{--v172-correction-ready:1;}
 })();
 </script>
 
+
+
+<!-- V188 · Limpieza final de "Mi recorrido": oculta elementos internos de desarrollo/comercial -->
+<style id="v188-recorrido-clean-css">
+#pulidoV142,
+#pantallaV145Premium,
+#pantallaV146Comercial,
+#pantallaV147Onboarding,
+#pantallaV149Demo,
+#pantallaV150Publicar{display:none!important;}
+</style>
+<script id="v188-recorrido-clean-script">
+(function(){
+  'use strict';
+  if(window.__v188RecorridoCleanReady)return;
+  window.__v188RecorridoCleanReady=true;
+
+  var forbidden=[
+    'pulido premium',
+    'version candidata premium',
+    'versión candidata premium',
+    'version premium',
+    'versión premium',
+    'preparacion comercial',
+    'preparación comercial',
+    'onboarding inicial',
+    'onboarding emocional',
+    'modo demo comercial',
+    'modo demo',
+    'lista para publicar'
+  ];
+
+  function normalize(value){
+    return (value||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/\s+/g,' ').trim();
+  }
+
+  var forbiddenNormalized=forbidden.map(normalize);
+
+  function isInternalButton(btn){
+    var text=normalize(btn.innerText||btn.textContent||'');
+    var onclick=normalize(btn.getAttribute('onclick')||'');
+    var joined=text+' '+onclick;
+    return forbiddenNormalized.some(function(term){return joined.indexOf(term)!==-1;}) ||
+      /pulidov142|pantallav145premium|pantallav146comercial|pantallav147onboarding|pantallav149demo|pantallav150publicar/.test(onclick);
+  }
+
+  function cleanInternalItems(){
+    document.querySelectorAll('.actions button').forEach(function(btn){
+      if(isInternalButton(btn)){
+        btn.setAttribute('data-v188-internal','true');
+        btn.style.setProperty('display','none','important');
+        btn.setAttribute('aria-hidden','true');
+        btn.setAttribute('tabindex','-1');
+      }
+    });
+  }
+
+  function hardHideInternalScreens(){
+    ['pulidoV142','pantallaV145Premium','pantallaV146Comercial','pantallaV147Onboarding','pantallaV149Demo','pantallaV150Publicar'].forEach(function(id){
+      var el=document.getElementById(id);
+      if(el){
+        el.style.setProperty('display','none','important');
+        el.setAttribute('aria-hidden','true');
+      }
+    });
+  }
+
+  function installCategoryGuard(){
+    var previous=window.openCategoryV151;
+    if(typeof previous!=='function'||previous.__v188Wrapped)return;
+    var wrapped=function(category){
+      previous(category);
+      if(category==='recorrido'){
+        cleanInternalItems();
+        setTimeout(cleanInternalItems,60);
+      }
+    };
+    wrapped.__v188Wrapped=true;
+    window.openCategoryV151=wrapped;
+  }
+
+  document.addEventListener('DOMContentLoaded',function(){
+    cleanInternalItems();
+    hardHideInternalScreens();
+    installCategoryGuard();
+    setTimeout(function(){cleanInternalItems();installCategoryGuard();},250);
+  });
+
+  window.addEventListener('load',function(){
+    cleanInternalItems();
+    hardHideInternalScreens();
+    installCategoryGuard();
+  });
+})();
+</script>
 </body>
 </html>
