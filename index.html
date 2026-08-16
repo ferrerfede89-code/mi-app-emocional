@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
-<title>App Emocional V186 · Centro de logros claro y funcional</title>
+<title>App Emocional V187 · Centro de logros rehecho y funcional</title>
 
 <style>
 body {
@@ -17400,6 +17400,182 @@ body:not(.v151CategoryOpen) .mainNavigationV154{
 })();
 </script>
 
+
+
+
+<!-- V187 · Centro de Logros rehecho para iPhone/Safari: interacción independiente -->
+<style id="v187-achievements-style">
+#achievementsScreenV187{
+  display:none;position:fixed;inset:0;z-index:3000000;overflow-y:auto;-webkit-overflow-scrolling:touch;
+  box-sizing:border-box;padding:max(22px,env(safe-area-inset-top)) 18px max(30px,env(safe-area-inset-bottom));
+  background:linear-gradient(180deg,#172554 0%,#3730a3 48%,#6d28d9 100%);color:#fff;
+  pointer-events:auto;touch-action:pan-y;
+}
+#achievementsScreenV187 *{box-sizing:border-box;}
+.v187AchShell{width:min(100%,430px);margin:0 auto;position:relative;z-index:1;}
+.v187AchTop{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:16px;}
+.v187AchBack,.v187AchBtn{
+  border:0;border-radius:18px;min-height:48px;padding:12px 16px;font-size:16px;font-weight:750;
+  background:#fff;color:#1e293b;box-shadow:0 9px 24px rgba(0,0,0,.16);cursor:pointer;
+  -webkit-tap-highlight-color:transparent;touch-action:manipulation;pointer-events:auto;
+}
+.v187AchBtn.primary{background:#fde68a;color:#312e81;}
+.v187AchBack:active,.v187AchBtn:active{transform:scale(.97);}
+.v187AchHero,.v187AchCard{
+  background:rgba(255,255,255,.96);color:#1f2937;border-radius:26px;padding:18px;margin:14px 0;
+  box-shadow:0 16px 38px rgba(15,23,42,.20);border:1px solid rgba(255,255,255,.85);
+}
+.v187AchHero{text-align:center;padding:22px 18px;}
+.v187AchOrb{font-size:58px;margin:2px 0 8px;}
+.v187AchHero h2{font-size:27px;line-height:1.2;margin:4px 0 8px;color:#172554;}
+.v187AchHero p,.v187AchCard p,.v187AchExplain{color:#475569;line-height:1.55;font-size:15px;}
+.v187AchExplain strong{color:#1e293b;}
+.v187AchLevelTop{display:flex;justify-content:space-between;gap:10px;font-weight:800;color:#1e293b;}
+.v187AchBar{height:12px;background:#e2e8f0;border-radius:999px;overflow:hidden;margin:12px 0 8px;}
+#v187AchFill{height:100%;width:0;background:linear-gradient(90deg,#f59e0b,#22c55e,#3b82f6);border-radius:999px;transition:width .4s ease;}
+.v187AchGrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px;}
+.v187AchStat{background:#f8fafc;border-radius:18px;padding:12px;text-align:center;border:1px solid #e2e8f0;}
+.v187AchStat b{display:block;font-size:23px;color:#312e81;margin-bottom:3px;}
+.v187AchStat span{font-size:12px;color:#64748b;line-height:1.25;}
+.v187AchMedal{display:flex;gap:11px;align-items:flex-start;background:#f8fafc;border:1px solid #e2e8f0;border-radius:18px;padding:12px;margin:9px 0;}
+.v187AchMedal.locked{opacity:.68;}
+.v187AchMedalEmoji{font-size:28px;min-width:34px;}
+.v187AchMedal strong{color:#1e293b;}
+.v187AchMedal small{display:block;color:#64748b;line-height:1.4;margin-top:3px;}
+.v187AchActions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:14px 0;}
+.v187AchField{width:100%;min-height:105px;resize:vertical;border:1px solid #cbd5e1;border-radius:18px;padding:14px;font:inherit;font-size:16px;color:#1f2937;background:#fff;outline:none;pointer-events:auto;touch-action:auto;}
+.v187AchField:focus{border-color:#6366f1;box-shadow:0 0 0 3px rgba(99,102,241,.15);}
+.v187AchSaved{min-height:22px;margin-top:10px;color:#166534;font-size:14px;font-weight:700;}
+.v187AchHistoryItem{background:#f8fafc;border:1px solid #e2e8f0;border-radius:16px;padding:11px 12px;margin:8px 0;color:#334155;line-height:1.45;}
+.v187AchHistoryItem small{display:block;color:#64748b;margin-top:5px;}
+@media(max-width:360px){.v187AchActions{grid-template-columns:1fr}.v187AchGrid{grid-template-columns:1fr 1fr}}
+</style>
+
+<div id="achievementsScreenV187" aria-hidden="true">
+  <div class="v187AchShell">
+    <div class="v187AchTop">
+      <button type="button" id="v187AchBack" class="v187AchBack">← Volver</button>
+    </div>
+
+    <div class="v187AchHero">
+      <div class="v187AchOrb">🏆</div>
+      <h2>Centro de Logros Emocionales</h2>
+      <p>Un lugar para mirar las señales que fuiste dejando en la app, sin competir ni exigirte.</p>
+    </div>
+
+    <div class="v187AchCard v187AchExplain">
+      <strong>¿Cómo funciona?</strong><br><br>
+      Lee automáticamente tus registros guardados. Los puntos sirven solamente para representar continuidad dentro de la app: <strong>no miden tu bienestar ni significan que estés “mejor” o “peor”.</strong><br><br>
+      📅 Día registrado: +6 · 🙂 Emoción: +2 · 📖 Diario: +5 · ⭐ Favorito: +3 · 🧭 Herramienta profunda: +4
+    </div>
+
+    <div class="v187AchCard">
+      <div class="v187AchLevelTop"><span id="v187AchLevel">Nivel emocional</span><span id="v187AchScore">0 puntos</span></div>
+      <div class="v187AchBar"><div id="v187AchFill"></div></div>
+      <p id="v187AchLevelText" style="margin-bottom:0;"></p>
+    </div>
+
+    <div class="v187AchCard">
+      <strong style="font-size:18px;color:#1e293b;">Tu recorrido registrado</strong>
+      <div id="v187AchStats" class="v187AchGrid"></div>
+    </div>
+
+    <div class="v187AchCard">
+      <strong style="font-size:18px;color:#1e293b;">Medallas emocionales</strong>
+      <p id="v187AchProgress" style="margin-top:7px;"></p>
+      <div id="v187AchMedals"></div>
+    </div>
+
+    <div class="v187AchCard">
+      <strong style="font-size:18px;color:#1e293b;">✍️ Mi logro de hoy</strong>
+      <p>También podés guardar algo que para vos haya contado, aunque no aparezca automáticamente en las estadísticas.</p>
+      <textarea id="v187AchNote" class="v187AchField" placeholder="Ej.: Hoy pude levantarme, pedir ayuda, salir un rato o simplemente atravesar el día."></textarea>
+      <div class="v187AchActions">
+        <button type="button" id="v187AchSaveNote" class="v187AchBtn primary">Guardar logro</button>
+        <button type="button" id="v187AchRefresh" class="v187AchBtn">Actualizar logros</button>
+      </div>
+      <button type="button" id="v187AchSaveSummary" class="v187AchBtn" style="width:100%;">Guardar resumen</button>
+      <div id="v187AchSaved" class="v187AchSaved"></div>
+    </div>
+
+    <div class="v187AchCard">
+      <strong style="font-size:18px;color:#1e293b;">Mis logros guardados</strong>
+      <div id="v187AchHistory"></div>
+    </div>
+  </div>
+</div>
+
+<script id="v187-achievements-script">
+(function(){
+  'use strict';
+  function $(id){return document.getElementById(id);}
+  function parse(key,fallback){try{var r=localStorage.getItem(key);return r?JSON.parse(r):fallback;}catch(e){return fallback;}}
+  function count(key){var v=parse(key,[]);if(Array.isArray(v))return v.length;if(v&&typeof v==='object')return Object.keys(v).length;return v?1:0;}
+  function uniqDays(items){var days={};(items||[]).forEach(function(x){var d=x&&(x.date||x.day||x.created||x.createdAt||x.time||x.savedAt);if(d){d=String(d).slice(0,10);days[d]=1;}});return Object.keys(days).length;}
+  function stats(){
+    var moods=parse('moods',{}), moodCount=0;
+    if(Array.isArray(moods)) moodCount=moods.length;
+    else if(moods&&typeof moods==='object') Object.keys(moods).forEach(function(k){moodCount+=(Number(moods[k])||0);});
+    var diary=parse('diaryEntries',[]), fav=parse('favoriteMemories',[]);
+    var deep=count('seedMomentsV77')+count('seedTextsV77')+count('manualTreasuresV81')+count('lightMomentsV83')+count('ceremoniesV93')+count('futureLettersV98')+count('planTodayHistoryV119')+count('firstAidNotesV117')+count('compassHistoryV118')+count('lifeLineMilestonesV115')+count('unsentLettersV116')+count('transformationNotesV91')+count('possibilitiesV95')+count('silentVictoriesV99')+count('emotionalLearningsV112');
+    var days=Math.max(uniqDays(diary),uniqDays(parse('planTodayHistoryV119',[])),uniqDays(parse('firstAidNotesV117',[])),uniqDays(parse('compassHistoryV118',[])),uniqDays(Array.isArray(moods)?moods:[]));
+    if(moodCount>0&&days===0)days=1;
+    return {days:days,moods:moodCount,diary:Array.isArray(diary)?diary.length:0,favorites:Array.isArray(fav)?fav.length:0,deep:deep,score:days*6+moodCount*2+(Array.isArray(diary)?diary.length:0)*5+(Array.isArray(fav)?fav.length:0)*3+deep*4};
+  }
+  function level(score){
+    if(score>=520)return ['Nivel 7 · Historia viva',100,'Tu recorrido ya tiene forma de historia: real, personal y sostenida.'];
+    if(score>=360)return ['Nivel 6 · Raíces profundas',86,'Hay memoria, recursos y continuidad en tu forma de cuidarte.'];
+    if(score>=240)return ['Nivel 5 · Camino encendido',70,'Hay señales repetidas de presencia y cuidado.'];
+    if(score>=140)return ['Nivel 4 · Jardín activo',54,'Tus registros ya empiezan a mostrar un recorrido emocional.'];
+    if(score>=70)return ['Nivel 3 · Primer mapa',38,'Ya hay huellas que muestran que no empezás de cero.'];
+    if(score>=20)return ['Nivel 2 · Brote inicial',22,'Lo pequeño también cuenta. El primer logro fue empezar.'];
+    return ['Nivel 1 · Punto de partida',8,'Todavía hay poco registrado. Este espacio puede crecer a tu ritmo.'];
+  }
+  function render(){
+    var s=stats(), l=level(s.score);
+    $('v187AchLevel').textContent=l[0]; $('v187AchScore').textContent=s.score+' puntos'; $('v187AchFill').style.width=l[1]+'%'; $('v187AchLevelText').textContent=l[2];
+    var data=[['📅',s.days,'días acompañados'],['🙂',s.moods,'emociones'],['📖',s.diary,'entradas de diario'],['⭐',s.favorites,'favoritos'],['🧭',s.deep,'herramientas profundas']];
+    $('v187AchStats').innerHTML=data.map(function(x){return '<div class="v187AchStat"><b>'+x[0]+' '+x[1]+'</b><span>'+x[2]+'</span></div>';}).join('');
+    var medals=[
+      [s.moods>=1,'🙂','Primer registro emocional','Marcaste cómo estabas al menos una vez.'],
+      [s.diary>=1,'📖','Primera palabra guardada','Guardaste al menos una entrada en el diario.'],
+      [s.days>=3,'📅','Tres días de regreso','Volviste a la app en distintos momentos.'],
+      [s.deep>=3,'🧭','Recursos propios','Usaste varias herramientas profundas.'],
+      [s.score>=70,'🗺️','Primer mapa','Tu recorrido ya empieza a mostrar continuidad.'],
+      [s.score>=240,'🦋','Transformación visible','Hay muchas señales acumuladas de cuidado.']
+    ];
+    var unlocked=0;
+    $('v187AchMedals').innerHTML=medals.map(function(m){if(m[0])unlocked++;return '<div class="v187AchMedal '+(m[0]?'':'locked')+'"><div class="v187AchMedalEmoji">'+m[1]+'</div><div><strong>'+m[2]+'</strong><small>'+m[3]+'<br>'+(m[0]?'✓ Desbloqueada':'🔒 Aún no desbloqueada')+'</small></div></div>';}).join('');
+    $('v187AchProgress').textContent='🏅 '+unlocked+' de '+medals.length+' medallas desbloqueadas.';
+    renderHistory();
+  }
+  function renderHistory(){
+    var items=parse('achievementPersonalNotesV187',[]), box=$('v187AchHistory');
+    if(!items.length){box.innerHTML='<p style="margin-bottom:0;">Todavía no guardaste un logro personal. Podés escribir algo pequeño arriba.</p>';return;}
+    box.innerHTML=items.map(function(it){return '<div class="v187AchHistoryItem">'+escapeHtml(it.text)+'<small>'+escapeHtml(it.date)+'</small></div>';}).join('');
+  }
+  function escapeHtml(v){return String(v||'').replace(/[&<>\"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;'}[c]||c;});}
+  function open(){
+    var old=$('achievementsScreenV120'); if(old) old.style.display='none';
+    var screen=$('achievementsScreenV187');screen.style.display='block';screen.setAttribute('aria-hidden','false');screen.scrollTop=0;render();
+  }
+  function close(){var screen=$('achievementsScreenV187');screen.style.display='none';screen.setAttribute('aria-hidden','true');}
+  function saveNote(){
+    var field=$('v187AchNote'), text=field.value.trim(), msg=$('v187AchSaved');
+    if(!text){msg.textContent='Escribí algo antes de guardarlo.';field.focus();return;}
+    var items=parse('achievementPersonalNotesV187',[]);items.unshift({text:text,date:new Date().toLocaleString('es-ES')});localStorage.setItem('achievementPersonalNotesV187',JSON.stringify(items.slice(0,50)));field.value='';msg.textContent='✓ Logro personal guardado.';renderHistory();
+  }
+  function saveSummary(){var s=stats(),items=parse('achievementSnapshotsV120',[]);items.unshift({date:new Date().toLocaleString('es-ES'),score:s.score,days:s.days,moods:s.moods,diary:s.diary,deepTools:s.deep});localStorage.setItem('achievementSnapshotsV120',JSON.stringify(items.slice(0,20)));$('v187AchSaved').textContent='🏆 Resumen guardado en este dispositivo.';}
+  function refresh(){render();$('v187AchSaved').textContent='✓ Logros actualizados ahora.';}
+  function install(){
+    $('v187AchBack').addEventListener('click',close);$('v187AchSaveNote').addEventListener('click',saveNote);$('v187AchRefresh').addEventListener('click',refresh);$('v187AchSaveSummary').addEventListener('click',saveSummary);
+    window.openAchievementsV120=open;window.closeAchievementsV120=close;window.refreshAchievementsV120=refresh;window.saveAchievementsSnapshotV120=saveSummary;
+    var badge=document.getElementById('v161VersionBadge');if(badge)badge.textContent='V187 · logros funcionales';
+    document.body.setAttribute('data-app-version','V187');
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',install,{once:true});else install();
+})();
+</script>
 
 </body>
 
