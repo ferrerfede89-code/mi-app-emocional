@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
-<title>App Emocional V180 · Corrección botones Refugio interno</title>
+<title>App Emocional V181 · Corrección Museo de tu Historia</title>
 
 <style>
 body {
@@ -13109,7 +13109,7 @@ function saveSeedTextV77(){
     if(container){
       container.innerHTML=rooms.map(function(r){
         var preview=r.items.length ? shortText(r.items[0],82) : 'Esta sala todavía espera su primera memoria.';
-        return '<button class="museumRoomV111" data-room="'+r.id+'">'+
+        return '<button class="museumRoomV111" data-room="'+r.id+'" onclick="openMuseumRoomV111(\''+r.id+'\')">'+
           '<span class="museumCountV111">'+r.items.length+'</span>'+
           '<strong>'+r.icon+' '+escapeHtml(r.title)+'</strong><br>'+
           '<span class="museumSmallV111">'+escapeHtml(r.subtitle)+'</span>'+
@@ -13131,8 +13131,12 @@ function saveSeedTextV77(){
     renderMuseumV111();
     var status=byId('museumUpdateStatusV111');
     if(status){
-      status.innerHTML='✓ Museo actualizado · '+total+' señal'+(total===1?'':'es')+' encontrada'+(total===1?'':'s')+'.';
+      status.innerHTML='✓ Museo actualizado ahora · '+total+' señal'+(total===1?'':'es')+' encontrada'+(total===1?'':'s')+'.';
       status.style.opacity='1';
+      status.style.fontWeight='700';
+      status.style.padding='10px 12px';
+      status.style.borderRadius='14px';
+      status.style.background='rgba(255,255,255,.78)';
       clearTimeout(window.__museumUpdateTimerV111);
       window.__museumUpdateTimerV111=setTimeout(function(){
         if(status) status.style.opacity='.72';
