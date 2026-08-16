@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
-<title>App Emocional V184 · Corrección Dormir y audio Safari</title>
+<title>App Emocional V185 · Corrección Museo de tus avances</title>
 
 <style>
 body {
@@ -18608,7 +18608,7 @@ function showLifeMapZoneV94(key){
     Tu historia es más grande que un día difícil.
   </div>
 
-  <button onclick="updateAdvancesMuseumV114()" class="softButton">Actualizar museo</button>
+  <button id="museum114UpdateButton" onclick="updateAdvancesMuseumV114()" class="softButton">Actualizar museo</button>
   <div id="museum114UpdateStatus" class="museum114Small" style="min-height:22px;margin-top:8px;text-align:center;"></div>
   <button onclick="closeAdvancesMuseumV114()" class="softButton">Volver despacio</button>
 </div>
@@ -18783,15 +18783,40 @@ function showLifeMapZoneV94(key){
     var rooms=roomsV114();
     var total=rooms.reduce(function(sum,r){ return sum+r.items.length; },0);
     renderAdvancesMuseumV114();
+
     var status=byId('museum114UpdateStatus');
+    var button=byId('museum114UpdateButton');
+    var now=new Date();
+    var hh=String(now.getHours()).padStart(2,'0');
+    var mm=String(now.getMinutes()).padStart(2,'0');
+
     if(status){
-      status.innerHTML='✓ Museo actualizado · '+total+' señal'+(total===1?'':'es')+' de avance encontrada'+(total===1?'':'s')+'.';
+      status.innerHTML='✓ Museo actualizado a las '+hh+':'+mm+' · '+total+' señal'+(total===1?'':'es')+' de avance encontrada'+(total===1?'':'s')+'.';
       status.style.opacity='1';
+      status.style.fontWeight='650';
       clearTimeout(window.__museumUpdateTimerV114);
       window.__museumUpdateTimerV114=setTimeout(function(){
-        if(status) status.style.opacity='.72';
-      },2200);
+        if(status){ status.style.opacity='.76'; status.style.fontWeight='400'; }
+      },2800);
     }
+
+    if(button){
+      var original='Actualizar museo';
+      button.textContent='✓ Actualizado';
+      button.disabled=true;
+      clearTimeout(window.__museumButtonTimerV114);
+      window.__museumButtonTimerV114=setTimeout(function(){
+        if(button){ button.textContent=original; button.disabled=false; }
+      },1000);
+    }
+
+    var stats=byId('museum114Stats');
+    if(stats){
+      stats.style.transform='scale(1.02)';
+      stats.style.transition='transform .22s ease';
+      setTimeout(function(){ if(stats) stats.style.transform='scale(1)'; },240);
+    }
+
     if(navigator.vibrate) navigator.vibrate(25);
   };
 
@@ -18807,12 +18832,11 @@ function showLifeMapZoneV94(key){
 
     detail.innerHTML='<h3>'+room.icon+' '+escapeHtmlV114(room.title)+'</h3>'+
       '<p class="museum114Small">'+escapeHtmlV114(room.subtitle)+'</p>'+
-      room.items.slice(0,18).map(function(item,index){
+      room.items.map(function(item,index){
         return '<div class="museum114Memory"><strong>'+escapeHtmlV114(shortTextV114(item.text,240))+'</strong>'+
           (item.date ? '<span class="museum114MemoryDate">'+escapeHtmlV114(item.date)+'</span>' : '')+
         '</div>';
-      }).join('')+
-      (room.items.length>18 ? '<p class="museum114Small">Y '+(room.items.length-18)+' señales más guardadas en esta sala.</p>' : '');
+      }).join('');
   };
 })();
 </script>
