@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
-<title>App Emocional V183 · Corrección historial Después de la tormenta</title>
+<title>App Emocional V184 · Corrección Dormir y audio Safari</title>
 
 <style>
 body {
@@ -5740,7 +5740,15 @@ overflow:hidden;
     Respirá despacio. No hace falta resolver nada más por hoy.
   </div>
 
-  <button onclick="closeSleep()" class="softButton" style="margin-top:40px;">
+  <div id="sleepAudioControlsV184" style="margin-top:24px;max-width:320px;width:100%;">
+    <div id="sleepAudioStatusV184" style="font-size:14px;opacity:.82;margin-bottom:10px;min-height:20px;">
+      El sonido queda listo para vos. Reproducilo cuando quieras.
+    </div>
+    <button onclick="playSleepSoundV184()" class="softButton">▶️ Reproducir sonido</button>
+    <button onclick="pauseSleepSoundV184()" class="softButton">⏸️ Pausar</button>
+  </div>
+
+  <button onclick="closeSleep()" class="softButton" style="margin-top:28px;">
     Volver
   </button>
 </div>
@@ -10042,20 +10050,48 @@ function openSleep() {
   document.getElementById("sleepSubMessage").innerText = subPhrases[key] || subPhrases.luna;
 
   const audio = document.getElementById("ambientAudio");
+  audio.pause();
   audio.src = sounds[key] || "lluvia.mp3";
   audio.volume = 0.25;
+  audio.loop = true;
+  try { audio.load(); } catch(e) {}
 
-  audio.play().catch(() => {
-    document.getElementById("sleepSubMessage").innerText =
-      (subPhrases[key] || subPhrases.luna) + " Tocá la pantalla o volvé a entrar si Safari bloquea el sonido.";
-  });
+  const status = document.getElementById("sleepAudioStatusV184");
+  if (status) status.innerText = "El sonido queda listo para vos. Tocá Reproducir cuando quieras escucharlo.";
 
   if (navigator.vibrate) {
     navigator.vibrate([80,40,80]);
   }
 }
 
+function playSleepSoundV184() {
+  const audio = document.getElementById("ambientAudio");
+  const status = document.getElementById("sleepAudioStatusV184");
+  if (!audio) return;
+  audio.volume = 0.25;
+  audio.loop = true;
+  const attempt = audio.play();
+  if (attempt && typeof attempt.then === "function") {
+    attempt.then(function(){
+      if (status) status.innerText = "🔊 Sonido reproduciéndose suavemente.";
+    }).catch(function(){
+      if (status) status.innerText = "No se pudo iniciar el sonido. Tocá Reproducir nuevamente.";
+    });
+  } else if (status) {
+    status.innerText = "🔊 Sonido reproduciéndose suavemente.";
+  }
+}
+
+function pauseSleepSoundV184() {
+  const audio = document.getElementById("ambientAudio");
+  const status = document.getElementById("sleepAudioStatusV184");
+  if (audio) audio.pause();
+  if (status) status.innerText = "⏸️ Sonido pausado. Podés volver a reproducirlo cuando quieras.";
+}
+
 function closeSleep() {
+  const audio = document.getElementById("ambientAudio");
+  if (audio) audio.pause();
   document.getElementById("sleepScreen").style.display = "none";
 }
 
