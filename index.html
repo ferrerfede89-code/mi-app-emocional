@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
-<title>App Emocional V181 · Corrección Museo de tu Historia</title>
+<title>App Emocional V183 · Corrección historial Después de la tormenta</title>
 
 <style>
 body {
@@ -20024,7 +20024,7 @@ text-align:center;
       return;
     }
 
-    history.innerHTML=records.slice().reverse().slice(0,6).map(function(x){
+    history.innerHTML=records.slice().reverse().map(function(x){
       return '<div class="afterStormHistoryItemV132">'+
         '<strong>🌤️ '+safe(x.date)+'</strong><br>'+
         (x.intensity ? 'Intensidad: '+safe(x.intensity)+'<br>' : '')+
