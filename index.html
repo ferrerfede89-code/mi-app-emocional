@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
-<title>App Emocional V185 · Corrección Museo de tus avances</title>
+<title>App Emocional V186 · Centro de logros claro y funcional</title>
 
 <style>
 body {
@@ -19037,9 +19037,17 @@ function showLifeMapZoneV94(key){
 
     <div class="achievementsV120Seal" style="margin-top:16px;">
       <strong>¿Cómo funciona?</strong><br><br>
-      Este espacio reúne automáticamente las huellas que vas dejando en la app. No tenés que completar tareas especiales para “ganar”: tus registros cotidianos se transforman en puntos, niveles y medallas para que puedas ver tu recorrido con más claridad.<br><br>
-      <span class="achievementsV120Small"><strong>Qué suma:</strong> días en los que volvés, emociones registradas, entradas de diario, favoritos y herramientas emocionales que usás o guardás. “Actualizar logros” vuelve a leer esos registros y refresca este resumen.</span>
+      No tenés que competir ni cumplir desafíos. Este centro <strong>lee automáticamente lo que ya vas haciendo en la app</strong> y lo convierte en una forma visual de mirar tu recorrido.<br><br>
+      <span class="achievementsV120Small">
+        <strong>Los puntos se suman así:</strong><br>
+        📅 cada día registrado: +6 &nbsp;·&nbsp; 🙂 cada emoción: +2<br>
+        📖 cada entrada de diario: +5 &nbsp;·&nbsp; ⭐ cada favorito: +3<br>
+        🧭 cada uso o registro de una herramienta profunda: +4<br><br>
+        Los puntos solo sirven para mostrar niveles y desbloquear medallas dentro de la app. <strong>No miden tu bienestar ni significan que estés “mejor” o “peor”.</strong>
+      </span>
     </div>
+
+    <div class="achievementsV120Seal" id="achievementsV186Progress" style="background:rgba(255,255,255,.12);"></div>
 
     <div class="achievementsV120Level">
       <div class="achievementsV120LevelTop">
@@ -19128,8 +19136,9 @@ function showLifeMapZoneV94(key){
     if(score>=20) return {name:'Nivel 2 · Brote inicial',pct:22,text:'El primer logro es haber empezado. Lo pequeño también cuenta.'};
     return {name:'Nivel 1 · Punto de partida',pct:8,text:'Todavía hay poco registrado, pero el espacio ya está preparado para acompañarte.'};
   }
-  function medalV120(ok,emoji,title,text){
-    return '<div class="achievementsV120Medal '+(ok?'':'locked')+'"><div class="achievementsV120MedalEmoji">'+emoji+'</div><div><div class="achievementsV120MedalTitle">'+title+'</div><div class="achievementsV120MedalText">'+text+'</div></div></div>';
+  function medalV120(ok,emoji,title,text,remaining){
+    var state=ok ? '✓ Desbloqueada' : ('🔒 '+(remaining||'Todavía bloqueada'));
+    return '<div class="achievementsV120Medal '+(ok?'':'locked')+'"><div class="achievementsV120MedalEmoji">'+emoji+'</div><div><div class="achievementsV120MedalTitle">'+title+'</div><div class="achievementsV120MedalText">'+text+'<br><strong>'+state+'</strong></div></div></div>';
   }
   function renderAchievementsV120(){
     var s=collectStatsV120();
@@ -19150,20 +19159,28 @@ function showLifeMapZoneV94(key){
     if(s.score>=520) phrase='Esta app ya contiene una historia emocional completa: no solo lo que sentiste, también lo que hiciste para seguir cerca de vos.';
     elV120('achievementsV120Seal').innerHTML='<strong>Resumen de tu recorrido</strong><br><br>'+phrase+'<br><br><span class="achievementsV120Small">Este centro reúne automáticamente las señales de cuidado y continuidad que fuiste dejando en la app.</span>';
 
-    elV120('achievementsV120Medals').innerHTML=[
-      medalV120(s.moods>=1,'🙂','Primer registro emocional','Marcaste cómo estabas al menos una vez.'),
-      medalV120(s.diary>=1,'📖','Primera palabra guardada','Escribiste una entrada en tu diario emocional.'),
-      medalV120(s.days>=3,'📅','Tres días de regreso','La app te acompañó en más de un momento.'),
-      medalV120(s.favorites>=1,'⭐','Luz guardada','Guardaste algo para volver a encontrarlo.'),
-      medalV120(s.seeds>=1,'🌱','Semilla plantada','Registraste un gesto pequeño de continuidad.'),
-      medalV120(s.treasures>=1,'💎','Tesoro recuperado','Recordaste algo valioso de vos.'),
-      medalV120(s.lights>=1,'🌟','Momento de luz','Guardaste una señal luminosa.'),
-      medalV120(s.ceremonies>=1,'🕯️','Ritual propio','Creaste una ceremonia personal.'),
-      medalV120(s.futureLetters>=1,'✉️','Carta del futuro','Te hablaste desde una versión futura.'),
-      medalV120(s.deepTools>=10,'🏛️','Museo activo','Usaste varias herramientas profundas de la app.'),
-      medalV120(s.score>=240,'🦋','Transformación visible','Tu recorrido ya muestra continuidad y crecimiento.'),
-      medalV120(s.score>=520,'👑','Historia consolidada','Tu recorrido reúne muchas señales de continuidad, cuidado y memoria emocional.')
-    ].join('');
+    var medalStates=[
+      [s.moods>=1,'🙂','Primer registro emocional','Marcaste cómo estabas al menos una vez.', Math.max(0,1-s.moods)+' registro emocional para desbloquearla'],
+      [s.diary>=1,'📖','Primera palabra guardada','Escribiste una entrada en tu diario emocional.', Math.max(0,1-s.diary)+' entrada de diario para desbloquearla'],
+      [s.days>=3,'📅','Tres días de regreso','La app te acompañó en más de un momento.', Math.max(0,3-s.days)+' día(s) más para desbloquearla'],
+      [s.favorites>=1,'⭐','Luz guardada','Guardaste algo para volver a encontrarlo.', Math.max(0,1-s.favorites)+' favorito para desbloquearla'],
+      [s.seeds>=1,'🌱','Semilla plantada','Registraste un gesto pequeño de continuidad.', Math.max(0,1-s.seeds)+' semilla para desbloquearla'],
+      [s.treasures>=1,'💎','Tesoro recuperado','Recordaste algo valioso de vos.', Math.max(0,1-s.treasures)+' tesoro para desbloquearla'],
+      [s.lights>=1,'🌟','Momento de luz','Guardaste una señal luminosa.', Math.max(0,1-s.lights)+' momento de luz para desbloquearla'],
+      [s.ceremonies>=1,'🕯️','Ritual propio','Creaste una ceremonia personal.', Math.max(0,1-s.ceremonies)+' ceremonia para desbloquearla'],
+      [s.futureLetters>=1,'✉️','Carta del futuro','Te hablaste desde una versión futura.', Math.max(0,1-s.futureLetters)+' carta futura para desbloquearla'],
+      [s.deepTools>=10,'🏛️','Museo activo','Usaste varias herramientas profundas de la app.', Math.max(0,10-s.deepTools)+' uso(s) de herramientas para desbloquearla'],
+      [s.score>=240,'🦋','Transformación visible','Tu recorrido ya muestra continuidad y crecimiento.', Math.max(0,240-s.score)+' puntos para desbloquearla'],
+      [s.score>=520,'👑','Historia consolidada','Tu recorrido reúne muchas señales de continuidad, cuidado y memoria emocional.', Math.max(0,520-s.score)+' puntos para desbloquearla']
+    ];
+    elV120('achievementsV120Medals').innerHTML=medalStates.map(function(m){return medalV120(m[0],m[1],m[2],m[3],m[4]);}).join('');
+
+    var unlocked=medalStates.filter(function(m){return m[0];}).length;
+    var next=medalStates.filter(function(m){return !m[0];})[0];
+    var progress=elV120('achievementsV186Progress');
+    if(progress){
+      progress.innerHTML='<strong>Tu avance ahora</strong><br><br>🏅 '+unlocked+' de '+medalStates.length+' medallas desbloqueadas.'+(next?'<br><br><span class="achievementsV120Small"><strong>Próxima medalla:</strong> '+next[1]+' '+next[2]+' · '+next[4]+'.</span>':'<br><br><span class="achievementsV120Small">Desbloqueaste todas las medallas disponibles.</span>');
+    }
   }
   window.openAchievementsV120=function(){
     var screen=elV120('achievementsScreenV120');
@@ -19174,7 +19191,14 @@ function showLifeMapZoneV94(key){
     var screen=elV120('achievementsScreenV120');
     if(screen) screen.style.display='none';
   };
-  window.refreshAchievementsV120=function(){ renderAchievementsV120(); };
+  window.refreshAchievementsV120=function(){
+    renderAchievementsV120();
+    var saved=elV120('achievementsV120Saved');
+    if(saved){
+      saved.innerHTML='✓ Logros actualizados ahora · '+new Date().toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});
+      setTimeout(function(){ if(saved && saved.innerHTML.indexOf('Logros actualizados')!==-1) saved.innerHTML=''; },3500);
+    }
+  };
   window.saveAchievementsSnapshotV120=function(){
     var s=collectStatsV120();
     var items=safeParseV120('achievementSnapshotsV120',[]);
