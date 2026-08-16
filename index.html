@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
-<title>App Emocional V174 · Corrección “Ahora no”</title>
+<title>App Emocional V178 · Corrección contraste y recorrido</title>
 
 <style>
 body {
@@ -4928,16 +4928,27 @@ body.v151CategoryOpen .v158ToolsAvailable::before{
 </style>
 
 
-<style id="v177-fixes">
-/* V177: legibilidad Centro de logros */
-#achievementExplanationV176, #achievementExplanationV176 * {
-  color:#fff !important; opacity:1 !important;
-}
-#achievementExplanationV176 strong, #achievementExplanationV176 b {
-  color:#fde68a !important;
-}
+<style id="v178-achievement-contrast">
+/* V178: contraste SOLO dentro de la explicación del Centro de logros */
+#achievementExplanationV176 { color:#f8fafc !important; opacity:1 !important; }
+#achievementExplanationV176 p,
+#achievementExplanationV176 div,
+#achievementExplanationV176 span { color:#f8fafc !important; opacity:1 !important; }
+#achievementExplanationV176 strong,
+#achievementExplanationV176 b { color:#fde68a !important; opacity:1 !important; }
 </style>
 
+
+<style id="v178-home-contrast-safeguard">
+/* V178: recupera contraste de textos principales de Inicio sin alterar otras pantallas */
+body:not(.v151CategoryOpen) .v156HomeIntro h1 { color:#1f2b3d !important; }
+body:not(.v151CategoryOpen) .v156HomeIntro p { color:#4b5563 !important; opacity:1 !important; }
+body:not(.v151CategoryOpen) .v156MoodTitle { color:#263548 !important; opacity:1 !important; }
+body:not(.v151CategoryOpen) .v156MoodChoice span { color:#475569 !important; opacity:1 !important; }
+body:not(.v151CategoryOpen) .v172CompanionAccessTitle { color:#334155 !important; opacity:1 !important; }
+body:not(.v151CategoryOpen) .v172CompanionAccessSub { color:#64748b !important; opacity:1 !important; }
+body:not(.v151CategoryOpen) .mainDescriptionV154 { color:#5f6f82 !important; opacity:1 !important; }
+</style>
 </head>
 
 <body>
@@ -5125,48 +5136,9 @@ text-align:center;
 ¿Qué necesitás ahora?</div>
 
   <div class="actions">
-
-<button id="btnV150Publicar" class="action" onclick="document.getElementById('pantallaV150Publicar').style.display='block'">
-<span>🌟</span>Lista para publicar
-</button>
-
-
-<button id="btnV149Demo" class="action" onclick="document.getElementById('pantallaV149Demo').style.display='block'">
-  <span>🎬</span>Modo Demo
-</button>
-
-
-<button id="btnV148Privacidad" class="action" onclick="document.getElementById('pantallaV148Privacidad').style.display='block'">
-  <span>🔒</span>Privacidad y seguridad
-</button>
-
-
-<button id="btnV147Onboarding" class="action" onclick="document.getElementById('pantallaV147Onboarding').style.display='block'">
-  <span>👋</span>Onboarding inicial
-</button>
-
-
-<button id="btnV146Comercial" class="action" onclick="document.getElementById('pantallaV146Comercial').style.display='block'">
-  <span>🚀</span>Preparación comercial
-</button>
-
-
-<button id="btnV145Premium" class="action" onclick="document.getElementById('pantallaV145Premium').style.display='block'">
-  <span>🏁</span>Versión premium
-</button>
-
-
 <button id="btnReflejoDiaV144" class="action" onclick="document.getElementById('pantallaReflejoDiaV144').style.display='block'">
   <span>🪞</span>Reflejo del día
 </button>
-
-
-
-
-<button id="btnPulidoV142" class="action" onclick="document.getElementById('pulidoV142').style.display='block'">
-<span>✨</span>Pulido premium
-</button>
-
 <button id="btnResumenV141" class="action" onclick="document.getElementById('resumenV141').style.display='block'">
 <span>📊</span>Resumen emocional
 </button>
@@ -17213,11 +17185,11 @@ body:not(.v151CategoryOpen) .mainNavigationV154{
 (function(){
   function enforceV171(){
     if(document.body){
-      document.body.setAttribute('data-app-version','V171');
-      document.body.setAttribute('data-release-candidate','RC2');
+      document.body.setAttribute('data-app-version','V178');
+      document.body.setAttribute('data-release-candidate','RC1');
     }
     var badge=document.getElementById('v161VersionBadge');
-    if(badge) badge.textContent='V171 · RC2';
+    if(badge) badge.textContent='V178 · RC1';
   }
   if(document.readyState==='loading'){
     document.addEventListener('DOMContentLoaded',enforceV171);
@@ -17230,31 +17202,6 @@ body:not(.v151CategoryOpen) .mainNavigationV154{
 })();
 </script>
 
-
-<script id="v177-fixes-js">
-(function(){
- const internos=['pulido premium', 'versión premium', 'version premium', 'preparación comercial', 'preparacion comercial', 'onboarding inicial', 'onboarding emocional', 'modo demo', 'lista para publicar', 'privacidad y seguridad'];
- function aplicarV177(){
-   /* Asegura contraste aunque la explicación no tenga el ID esperado */
-   document.querySelectorAll('*').forEach(function(el){
-     const tx=(el.textContent||'').trim();
-     if(tx.indexOf('Qué suma:')!==-1 && tx.indexOf('Actualizar logros')!==-1 && el.children.length<15){
-       el.querySelectorAll('p,div,span,strong,b').forEach(function(n){n.style.color='#fff';n.style.opacity='1';});
-     }
-   });
-   /* Oculta opciones internas que no pertenecen al recorrido del usuario */
-   document.querySelectorAll('button,a,[role="button"],.action,.card,.option,.menu-item').forEach(function(el){
-     const t=(el.textContent||'').trim().toLowerCase();
-     if(internos.some(function(x){return t===x || t.startsWith(x+' ') || t.startsWith(x+'\n');})){
-       el.style.display='none'; el.setAttribute('aria-hidden','true');
-     }
-   });
- }
- document.addEventListener('DOMContentLoaded',aplicarV177);
- setTimeout(aplicarV177,50); setTimeout(aplicarV177,500);
- window.addEventListener('pageshow',aplicarV177);
-})();
-</script>
 
 </body>
 
@@ -20550,8 +20497,8 @@ html[data-app-release="V170-RC1"]{--v170-release-ready:1;}
 
   function finalizeRC1(){
     if(document.body){
-      document.body.setAttribute('data-app-version','V171');
-      document.body.setAttribute('data-release-candidate','RC2');
+      document.body.setAttribute('data-app-version','V178');
+      document.body.setAttribute('data-release-candidate','RC1');
     }
 
     var badge=document.getElementById('v161VersionBadge');
@@ -20560,7 +20507,7 @@ html[data-app-release="V170-RC1"]{--v170-release-ready:1;}
         if(!badge && el.children.length===0 && /V166\s*[·•]\s*audio contextual/i.test((el.textContent||'').trim())) badge=el;
       });
     }
-    if(badge) badge.textContent='V171 · RC2';
+    if(badge) badge.textContent='V178 · RC1';
   }
 
   document.addEventListener('visibilitychange',function(){
