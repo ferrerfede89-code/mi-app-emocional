@@ -5983,7 +5983,7 @@ text-align:center;
 <button onclick="openTreasuresV81();closeJourneyHub();" class="softButton">💎 Tesoros olvidados</button>
 <button onclick="openSupportedV82();closeJourneyHub();" class="softButton">🫀 Qué te sostuvo</button>
 <button onclick="openLightsV83();closeJourneyHub();" class="softButton">🌟 Momentos de luz</button>
-<button onclick="openRefugeV84();closeJourneyHub();" class="softButton">🏡 Refugio interno</button>
+<button onclick="openRefugeFromJourneyV179(event)" class="softButton">🏡 Refugio interno</button>
 <button onclick="openBridgeV85();closeJourneyHub();" class="softButton">🌉 Puente de regreso</button>
 <button onclick="openPocketV86();closeJourneyHub();" class="softButton">🧺 Bolsillo de calma</button>
 <button onclick="openConstellationV87();closeJourneyHub();" class="softButton">🌌 Constelación emocional</button>
@@ -6188,7 +6188,7 @@ No busca felicidad obligatoria. Solo rescata instantes pequeños donde algo se s
 </div>
 
 
-<div id="refugeScreenV84" class="fullscreen" style="background:linear-gradient(180deg,#d1fae5,#dbeafe);overflow:auto;text-align:center;">
+<div id="refugeScreenV84" class="fullscreen" style="background:linear-gradient(180deg,#d1fae5,#dbeafe);overflow:auto;text-align:center;position:fixed;inset:0;width:100%;height:100dvh;min-height:100vh;z-index:1000000;box-sizing:border-box;-webkit-overflow-scrolling:touch;">
 <h1>🏡</h1>
 <h2>Refugio interno</h2>
 <p style="font-size:17px;line-height:1.45;max-width:330px;margin:0 auto;">
@@ -6202,25 +6202,25 @@ Un lugar imaginario para bajar un poco el ruido. No exige explicar nada: solo el
   <div id="refugeLineV84" class="refugeLineV84">Este espacio puede ser pequeño. Igual puede cuidarte un momento.</div>
 </div>
 <div style="max-width:340px;margin:16px auto 0;text-align:left;">
-<button class="refugeChoiceV84" onclick="chooseRefugeV84('silencio')">🌙 Silencio suave</button>
-<button class="refugeChoiceV84" onclick="chooseRefugeV84('calor')">🕯️ Calor y abrigo</button>
-<button class="refugeChoiceV84" onclick="chooseRefugeV84('aire')">🌬️ Aire y espacio</button>
-<button class="refugeChoiceV84" onclick="chooseRefugeV84('agua')">🌊 Agua tranquila</button>
-<button class="refugeChoiceV84" onclick="chooseRefugeV84('luz')">🌟 Una luz cerca</button>
+<button type="button" class="refugeChoiceV84" onclick="chooseRefugeV84(\'silencio\',event)">🌙 Silencio suave</button>
+<button type="button" class="refugeChoiceV84" onclick="chooseRefugeV84(\'calor\',event)">🕯️ Calor y abrigo</button>
+<button type="button" class="refugeChoiceV84" onclick="chooseRefugeV84(\'aire\',event)">🌬️ Aire y espacio</button>
+<button type="button" class="refugeChoiceV84" onclick="chooseRefugeV84(\'agua\',event)">🌊 Agua tranquila</button>
+<button type="button" class="refugeChoiceV84" onclick="chooseRefugeV84(\'luz\',event)">🌟 Una luz cerca</button>
 </div>
 <div id="refugeContentV84" class="rememberCard"></div>
 <div id="refugeWriteBoxV84" class="rememberCard" style="display:none;text-align:left;">
   <strong>✍️ Personalizar mi refugio</strong><br><br>
   <span class="refugeSmallV84">Podés escribir una frase, imagen o lugar que te dé calma.</span>
   <textarea id="refugeManualTextV84" class="textBox" style="margin-top:14px;" placeholder="Mi refugio se parece a... / En este lugar puedo... / Necesito recordar..."></textarea>
-  <button onclick="saveManualRefugeV84()" class="softButton">Guardar refugio</button>
+  <button type="button" onclick="saveManualRefugeV84()" class="softButton">Guardar refugio</button>
 </div>
 <br>
-<button onclick="openRefugeWriterV84()" class="softButton">✍️ Escribir mi refugio</button>
-<button onclick="showSavedRefugeV84()" class="softButton">🧺 Ver refugio guardado</button>
-<button onclick="saveCurrentRefugeV84()" class="softButton">⭐ Guardar como favorito</button>
+<button type="button" onclick="openRefugeWriterV84()" class="softButton">✍️ Escribir mi refugio</button>
+<button type="button" onclick="showSavedRefugeV84()" class="softButton">🧺 Ver refugio guardado</button>
+<button type="button" onclick="saveCurrentRefugeV84()" class="softButton">⭐ Guardar como favorito</button>
 <br>
-<button onclick="closeRefugeV84()" class="softButton">Volver</button>
+<button type="button" onclick="closeRefugeV84()" class="softButton">Volver</button>
 </div>
 
 
@@ -6892,13 +6892,37 @@ function saveCurrentLightV83(){
 // V84 - Refugio interno
 let currentRefugeV84='';
 
+let refugeOriginV179='';
+
 function openRefugeV84(){
-  document.getElementById('refugeScreenV84').style.display='block';
+  const screen=document.getElementById('refugeScreenV84');
+  if(!screen) return;
+  screen.style.display='block';
+  screen.scrollTop=0;
   renderRefugeV84();
   if(typeof addFootprintV79==='function') addFootprintV79('entro_refugio_interno');
 }
+
+function openRefugeFromJourneyV179(ev){
+  if(ev){
+    ev.preventDefault();
+    ev.stopPropagation();
+  }
+  refugeOriginV179='journey';
+  const hub=document.getElementById('journeyHubScreen');
+  if(hub) hub.style.display='none';
+  openRefugeV84();
+}
+
 function closeRefugeV84(){
-  document.getElementById('refugeScreenV84').style.display='none';
+  const screen=document.getElementById('refugeScreenV84');
+  if(screen) screen.style.display='none';
+
+  if(refugeOriginV179==='journey'){
+    const hub=document.getElementById('journeyHubScreen');
+    if(hub) hub.style.display='block';
+  }
+  refugeOriginV179='';
 }
 function escapeRefugeV84(str){
   return String(str||'').replace(/[&<>'"]/g,function(c){
@@ -6932,7 +6956,13 @@ function renderRefugeV84(){
     content.innerHTML='<div class="refugeCardV84"><strong>Entrada suave</strong><br><br>No tenés que explicar lo que pasa. Podés entrar, respirar y quedarte unos segundos en una imagen más segura.</div>';
   }
 }
-function chooseRefugeV84(type){
+function chooseRefugeV84(type,ev){
+  if(ev){
+    ev.preventDefault();
+    ev.stopPropagation();
+  }
+  const screen=document.getElementById('refugeScreenV84');
+  if(screen) screen.style.display='block';
   const data={
     silencio:{sky:'🌙 ✨',place:'🛏️',line:'Un lugar con silencio amable. Nada te apura. Nada te exige responder ahora.'},
     calor:{sky:'🕯️',place:'🧣',line:'Un lugar con abrigo. Podés aflojar un poco los hombros y dejar que el cuerpo pese.'},
