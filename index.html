@@ -14407,25 +14407,153 @@ function saveSeedTextV77(){
 </script>
 
 
-<!-- V121 - Biblioteca de Calma -->
+<!-- V182 - Biblioteca de Calma funcional -->
+<div id="libraryScreenV121" class="fullscreen" style="background:linear-gradient(180deg,#eefbf7,#dbeafe);text-align:center;">
+  <div style="max-width:430px;margin:0 auto;">
+    <h1 style="margin-bottom:4px;">📚</h1>
+    <h2 style="margin-top:0;">Biblioteca de calma</h2>
+    <div style="background:rgba(255,255,255,.88);border-radius:24px;padding:18px;margin:14px 0;line-height:1.55;text-align:left;box-shadow:0 12px 30px rgba(0,0,0,.07);">
+      No tenés que leer todo. Elegí lo que necesitás ahora y quedate con una sola frase si alcanza.
+    </div>
+
+    <div id="libraryCategoriesV121" style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:16px 0;"></div>
+
+    <div id="libraryMessageV121" style="background:rgba(255,255,255,.94);border-radius:26px;padding:22px 18px;margin:16px 0;min-height:120px;display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:650;line-height:1.5;box-shadow:0 14px 34px rgba(0,0,0,.08);">
+      Tocá una categoría para abrir un mensaje.
+    </div>
+
+    <button onclick="nextLibraryMessageV121()" class="softButton">Otra frase</button>
+    <button onclick="saveLibraryFavoriteV121()" class="softButton">♡ Guardar esta frase</button>
+    <div id="librarySavedV121" style="min-height:22px;font-size:14px;color:#64748b;margin:8px 0 14px;"></div>
+
+    <div style="background:rgba(255,255,255,.82);border-radius:22px;padding:16px;margin:16px 0;text-align:left;line-height:1.5;">
+      <strong>Mis frases guardadas</strong>
+      <div id="libraryFavoritesV121" style="margin-top:10px;color:#475569;font-size:15px;"></div>
+    </div>
+
+    <button onclick="closeLibraryV121()" class="softButton">Volver despacio</button>
+  </div>
+</div>
+
 <script>
 (function(){
-if(window.openLibraryV121)return;
+  var categoriesV121={
+    respirar:{emoji:'🌿',label:'Para bajar un poco',messages:[
+      'No hace falta resolver nada durante esta respiración.',
+      'Podés aflojar apenas. Apenas también cuenta.',
+      'Tu único trabajo por un momento puede ser quedarte acá.',
+      'Respirar también es una forma de seguir.'
+    ]},
+    dificil:{emoji:'🌧️',label:'Para un día difícil',messages:[
+      'Un día difícil no define toda tu historia.',
+      'No todo debe resolverse hoy.',
+      'Llegar hasta acá también fue hacer algo.',
+      'Podés atravesar este momento sin exigirte entenderlo todo.'
+    ]},
+    culpa:{emoji:'🤍',label:'Para tratarme suave',messages:[
+      'No necesitás castigarte para aprender.',
+      'Podés hablarte como le hablarías a alguien que querés.',
+      'Descansar no borra lo que ya hiciste.',
+      'Ser amable con vos también es una decisión válida.'
+    ]},
+    avanzar:{emoji:'🌱',label:'Para seguir de a poco',messages:[
+      'Un paso pequeño sigue siendo un paso.',
+      'No necesitás sentirte listo para hacer algo mínimo.',
+      'Volver a intentarlo también es avance.',
+      'Hoy puede alcanzar con hacer la próxima cosa posible.'
+    ]},
+    soledad:{emoji:'🫶',label:'Para sentir compañía',messages:[
+      'No tenés que poner en palabras todo para merecer compañía.',
+      'Podés acercarte a alguien con un mensaje muy pequeño.',
+      'Estar acompañado no exige estar bien.',
+      'Hay momentos en los que dejarse acompañar ya es suficiente.'
+    ]},
+    noche:{emoji:'🌙',label:'Para cerrar el día',messages:[
+      'Por hoy, puede ser suficiente.',
+      'Lo pendiente puede esperar a mañana.',
+      'No necesitás evaluar todo el día antes de descansar.',
+      'Podés cerrar esta jornada sin tener todas las respuestas.'
+    ]}
+  };
+  var currentCategoryV121='respirar';
+  var currentMessageV121='';
+  var currentIndexV121=-1;
 
-window.openLibraryV121=function(){
-  alert("📚 Biblioteca de Calma\n\nV121 incorpora una colección de mensajes de apoyo que podrás expandir visualmente en próximas versiones.\n\n• Respirar también es avanzar.\n• No todo debe resolverse hoy.\n• Ya superaste días difíciles antes.\n• Un paso pequeño sigue siendo un paso.");
-};
+  function byIdV121(id){return document.getElementById(id);}
+  function escV121(str){return String(str||'').replace(/[&<>"']/g,function(m){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m];});}
+  function readFavsV121(){try{return JSON.parse(localStorage.getItem('calmLibraryFavoritesV121')||'[]');}catch(e){return [];}}
 
-document.addEventListener('DOMContentLoaded',function(){
-  var actions=document.querySelector('.actions');
-  if(actions){
-    var b=document.createElement('button');
-    b.className='action';
-    b.innerHTML='<span>📚</span>Biblioteca de calma';
-    b.onclick=openLibraryV121;
-    actions.appendChild(b);
+  function renderCategoriesV121(){
+    var box=byIdV121('libraryCategoriesV121');
+    if(!box)return;
+    box.innerHTML=Object.keys(categoriesV121).map(function(key){
+      var c=categoriesV121[key];
+      return '<button class="softButton" style="margin:0;padding:14px 10px;line-height:1.35;" onclick="chooseLibraryCategoryV121(\''+key+'\')"><span style="display:block;font-size:28px;margin-bottom:5px;">'+c.emoji+'</span>'+escV121(c.label)+'</button>';
+    }).join('');
   }
-});
+
+  function renderFavsV121(){
+    var box=byIdV121('libraryFavoritesV121');
+    if(!box)return;
+    var favs=readFavsV121();
+    box.innerHTML=favs.length ? favs.slice(0,8).map(function(x){return '<div style="background:rgba(255,255,255,.72);border-radius:16px;padding:10px 12px;margin:8px 0;">'+escV121(x)+'</div>';}).join('') : 'Todavía no guardaste ninguna frase.';
+  }
+
+  window.chooseLibraryCategoryV121=function(key){
+    if(!categoriesV121[key])return;
+    currentCategoryV121=key;
+    currentIndexV121=-1;
+    nextLibraryMessageV121();
+  };
+
+  window.nextLibraryMessageV121=function(){
+    var c=categoriesV121[currentCategoryV121]||categoriesV121.respirar;
+    if(!c.messages.length)return;
+    currentIndexV121=(currentIndexV121+1)%c.messages.length;
+    currentMessageV121=c.messages[currentIndexV121];
+    var box=byIdV121('libraryMessageV121');
+    if(box)box.innerHTML='<div><div style="font-size:32px;margin-bottom:10px;">'+c.emoji+'</div>'+escV121(currentMessageV121)+'</div>';
+    var saved=byIdV121('librarySavedV121');
+    if(saved)saved.textContent='';
+    if(navigator.vibrate)navigator.vibrate(18);
+  };
+
+  window.saveLibraryFavoriteV121=function(){
+    if(!currentMessageV121){nextLibraryMessageV121();return;}
+    var favs=readFavsV121();
+    if(favs.indexOf(currentMessageV121)===-1)favs.unshift(currentMessageV121);
+    localStorage.setItem('calmLibraryFavoritesV121',JSON.stringify(favs.slice(0,30)));
+    var saved=byIdV121('librarySavedV121');
+    if(saved)saved.textContent='✓ Frase guardada en este dispositivo.';
+    renderFavsV121();
+  };
+
+  window.openLibraryV121=function(){
+    var screen=byIdV121('libraryScreenV121');
+    if(screen)screen.style.display='block';
+    renderCategoriesV121();
+    renderFavsV121();
+    if(!currentMessageV121)nextLibraryMessageV121();
+  };
+
+  window.closeLibraryV121=function(){
+    var screen=byIdV121('libraryScreenV121');
+    if(screen)screen.style.display='none';
+  };
+
+  document.addEventListener('DOMContentLoaded',function(){
+    var exists=Array.prototype.some.call(document.querySelectorAll('.action'),function(el){return (el.textContent||'').toLowerCase().indexOf('biblioteca de calma')!==-1;});
+    if(!exists){
+      var actions=document.querySelector('.actions');
+      if(actions){
+        var b=document.createElement('button');
+        b.className='action';
+        b.innerHTML='<span>📚</span>Biblioteca de calma';
+        b.onclick=openLibraryV121;
+        actions.appendChild(b);
+      }
+    }
+  });
 })();
 </script>
 
@@ -18999,27 +19127,7 @@ function showLifeMapZoneV94(key){
 </script>
 
 
-<!-- V121 - Biblioteca de Calma -->
-<script>
-(function(){
-if(window.openLibraryV121)return;
-
-window.openLibraryV121=function(){
-  alert("📚 Biblioteca de Calma\n\nV121 incorpora una colección de mensajes de apoyo que podrás expandir visualmente en próximas versiones.\n\n• Respirar también es avanzar.\n• No todo debe resolverse hoy.\n• Ya superaste días difíciles antes.\n• Un paso pequeño sigue siendo un paso.");
-};
-
-document.addEventListener('DOMContentLoaded',function(){
-  var actions=document.querySelector('.actions');
-  if(actions){
-    var b=document.createElement('button');
-    b.className='action';
-    b.innerHTML='<span>📚</span>Biblioteca de calma';
-    b.onclick=openLibraryV121;
-    actions.appendChild(b);
-  }
-});
-})();
-</script>
+<!-- Duplicado legado de Biblioteca de Calma desactivado en V182 -->
 
 
 <script>
