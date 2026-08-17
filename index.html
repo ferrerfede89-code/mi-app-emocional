@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
-<title>App Emocional V194 · Puente de regreso con historial</title>
+<title>App Emocional V195 · Faro de continuidad 10 minutos funcional</title>
 
 <style>
 body {
@@ -17623,6 +17623,163 @@ body:not(.v151CategoryOpen) .mainNavigationV154{
     document.body.setAttribute('data-app-version','V187');
   }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',install,{once:true});else install();
+})();
+</script>
+
+
+<script>
+// V195 - Corrección Faro de continuidad: plan de 10 minutos visible y funcional
+(function(){
+  const PLAN_KEY='continuityPlanV195';
+  let timerId=null;
+  let endAt=0;
+
+  function byId(id){ return document.getElementById(id); }
+
+  function findContinuityScreen(){
+    const candidates=[
+      'continuityScreen','continuityScreenV',
+      'continuityScreenV96','continuityScreenV97',
+      'faroContinuidadScreen','faroContinuidadScreenV',
+      'continuityScreenV113'
+    ];
+    for(const id of candidates){
+      const el=byId(id);
+      if(el) return el;
+    }
+    const all=[...document.querySelectorAll('.fullscreen,section,div')];
+    return all.find(el=>/Faro de continuidad/i.test(el.textContent||'') && getComputedStyle(el).position==='fixed') || 
+           all.find(el=>/Faro de continuidad/i.test(el.textContent||''));
+  }
+
+  function ensurePlanUI(){
+    const screen=findContinuityScreen();
+    if(!screen) return null;
+
+    let box=byId('continuityPlanBoxV195');
+    if(box) return box;
+
+    box=document.createElement('div');
+    box.id='continuityPlanBoxV195';
+    box.style.cssText='background:rgba(255,255,255,.92);border-radius:24px;padding:18px;margin:16px 0;line-height:1.5;box-shadow:0 10px 26px rgba(0,0,0,.07);';
+    box.innerHTML=`
+      <div style="font-size:20px;font-weight:700;margin-bottom:10px;">⏱️ Plan de 10 minutos</div>
+      <div style="font-size:15px;color:#64748b;margin-bottom:14px;">
+        Un plan corto para sostener los próximos diez minutos sin exigirte resolver todo.
+      </div>
+      <textarea id="continuityPlanTextV195" placeholder="¿Qué podés hacer durante estos 10 minutos?" style="width:100%;min-height:90px;border:none;border-radius:18px;padding:14px;box-sizing:border-box;font-size:16px;background:#fff;"></textarea>
+      <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:12px;">
+        <button class="softButton" id="continuityStartV195">▶️ Empezar 10 minutos</button>
+        <button class="softButton" id="continuityPauseV195">⏸️ Pausar</button>
+        <button class="softButton" id="continuityResetV195">↺ Reiniciar</button>
+        <button class="softButton" id="continuitySaveV195">💾 Guardar plan</button>
+      </div>
+      <div id="continuityTimerV195" style="font-size:34px;font-weight:700;text-align:center;margin:18px 0 8px;">10:00</div>
+      <div id="continuityStatusV195" style="font-size:14px;color:#64748b;text-align:center;">Listo para empezar.</div>
+    `;
+
+    const backBtn=[...screen.querySelectorAll('button')].find(b=>/volver despacio/i.test(b.textContent||''));
+    if(backBtn && backBtn.parentNode){
+      backBtn.parentNode.insertBefore(box, backBtn);
+    } else {
+      screen.appendChild(box);
+    }
+
+    const saved=localStorage.getItem(PLAN_KEY)||'';
+    const ta=byId('continuityPlanTextV195');
+    if(ta) ta.value=saved;
+
+    const format=ms=>{
+      const total=Math.max(0,Math.ceil(ms/1000));
+      const mm=String(Math.floor(total/60)).padStart(2,'0');
+      const ss=String(total%60).padStart(2,'0');
+      return `${mm}:${ss}`;
+    };
+
+    const tick=()=>{
+      const timer=byId('continuityTimerV195');
+      const status=byId('continuityStatusV195');
+      const left=endAt-Date.now();
+      if(timer) timer.textContent=format(left);
+      if(left<=0){
+        clearInterval(timerId); timerId=null; endAt=0;
+        if(timer) timer.textContent='00:00';
+        if(status) status.textContent='✓ Llegaste al final de estos 10 minutos.';
+      }
+    };
+
+    byId('continuityStartV195').onclick=()=>{
+      clearInterval(timerId);
+      endAt=Date.now()+10*60*1000;
+      tick();
+      timerId=setInterval(tick,1000);
+      const status=byId('continuityStatusV195');
+      if(status) status.textContent='En marcha. Solo ocupate de este tramo.';
+    };
+    byId('continuityPauseV195').onclick=()=>{
+      if(!timerId) return;
+      const remaining=Math.max(0,endAt-Date.now());
+      clearInterval(timerId); timerId=null;
+      endAt=remaining; // temporarily store remaining
+      const status=byId('continuityStatusV195');
+      if(status) status.textContent='Pausado.';
+      // transform Start into resume behavior for next click
+      byId('continuityStartV195').onclick=()=>{
+        if(endAt>0 && endAt<10*60*1000) endAt=Date.now()+endAt;
+        else endAt=Date.now()+10*60*1000;
+        tick();
+        timerId=setInterval(tick,1000);
+        const st=byId('continuityStatusV195');
+        if(st) st.textContent='Continuamos desde donde quedaste.';
+      };
+    };
+    byId('continuityResetV195').onclick=()=>{
+      clearInterval(timerId); timerId=null; endAt=0;
+      const timer=byId('continuityTimerV195');
+      const status=byId('continuityStatusV195');
+      if(timer) timer.textContent='10:00';
+      if(status) status.textContent='Reiniciado.';
+      // restore normal start
+      byId('continuityStartV195').onclick=()=>{
+        clearInterval(timerId);
+        endAt=Date.now()+10*60*1000;
+        tick();
+        timerId=setInterval(tick,1000);
+        const st=byId('continuityStatusV195');
+        if(st) st.textContent='En marcha. Solo ocupate de este tramo.';
+      };
+    };
+    byId('continuitySaveV195').onclick=()=>{
+      const ta=byId('continuityPlanTextV195');
+      localStorage.setItem(PLAN_KEY,(ta?.value||'').trim());
+      const status=byId('continuityStatusV195');
+      if(status) status.textContent='💾 Plan guardado.';
+    };
+
+    return box;
+  }
+
+  function patchOpeners(){
+    // Any button/link that opens Faro de continuidad should ensure UI exists immediately.
+    document.addEventListener('click',function(e){
+      const t=e.target.closest('button,a');
+      if(!t) return;
+      if(/Faro de continuidad/i.test(t.textContent||'')){
+        setTimeout(ensurePlanUI,60);
+        setTimeout(ensurePlanUI,250);
+      }
+    },true);
+
+    // Also watch screen visibility changes.
+    const obs=new MutationObserver(()=>ensurePlanUI());
+    obs.observe(document.documentElement,{subtree:true,attributes:true,attributeFilter:['style','class']});
+  }
+
+  if(document.readyState==='loading'){
+    document.addEventListener('DOMContentLoaded',patchOpeners);
+  }else{
+    patchOpeners();
+  }
 })();
 </script>
 
