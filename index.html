@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
-<title>App Emocional V189 · Banda sonora emocional funcional</title>
+<title>App Emocional V190 · Audio estable Safari</title>
 
 <style>
 body {
@@ -18319,285 +18319,292 @@ function copyThresholdV90(){
 
 
 <script>
-// V189 - Banda sonora emocional funcional, sin archivos externos
-let soundtrackCtxV189 = null;
-let soundtrackMasterV189 = null;
-let soundtrackNodesV189 = [];
-let soundtrackTimersV189 = [];
+// V190 - Banda sonora emocional estable en Safari/iPhone
+// Regla principal: al pausar, detener o cambiar de ambiente se CIERRA por completo
+// el AudioContext anterior. Así Safari no puede dejar nodos anteriores sonando.
+let soundtrackCtxV190 = null;
+let soundtrackMasterV190 = null;
+let soundtrackNodesV190 = [];
+let soundtrackTimersV190 = [];
 let soundtrackCurrentV92 = null;
-let soundtrackPlayingV189 = false;
+let soundtrackPlayingV190 = false;
+let soundtrackGenerationV190 = 0;
+let soundtrackStartingV190 = false;
 
 const soundtrackMapV92 = {
-  oceano:{
-    emoji:'🌊',
-    title:'Mar tranquilo',
-    phrase:'Un oleaje amplio y lento para bajar la intensidad.',
-    note:'Ruido grave y suave que sube y baja como una respiración larga.'
-  },
-  lluvia:{
-    emoji:'🌧️',
-    title:'Lluvia suave',
-    phrase:'Una lluvia pareja para acompañar pensamientos.',
-    note:'Gotas finas y continuas, sin golpes bruscos.'
-  },
-  bosque:{
-    emoji:'🌲',
-    title:'Bosque respirando',
-    phrase:'Una escena verde, lenta y más terrestre.',
-    note:'Aire de bosque con pequeños tonos lejanos que aparecen de vez en cuando.'
-  },
-  brisa:{
-    emoji:'🍃',
-    title:'Brisa / amanecer suave',
-    phrase:'Un ambiente liviano para empezar despacio.',
-    note:'Una corriente de aire clara y ligera, distinta de la lluvia y del mar.'
-  },
-  fogata:{
-    emoji:'🔥',
-    title:'Fogata segura',
-    phrase:'Un sonido cálido para cerrar o quedarse.',
-    note:'Crepitar suave y cálido, pensado para momentos de descanso.'
-  }
+  oceano:{emoji:'🌊',title:'Mar tranquilo',phrase:'Un oleaje amplio y lento para bajar la intensidad.',note:'Ruido grave y suave que sube y baja como una respiración larga.'},
+  lluvia:{emoji:'🌧️',title:'Lluvia suave',phrase:'Una lluvia pareja para acompañar pensamientos.',note:'Gotas finas y continuas, sin golpes bruscos.'},
+  bosque:{emoji:'🌲',title:'Bosque respirando',phrase:'Una escena verde, lenta y más terrestre.',note:'Aire de bosque con pequeños tonos lejanos que aparecen de vez en cuando.'},
+  brisa:{emoji:'🍃',title:'Brisa / amanecer suave',phrase:'Un ambiente liviano para empezar despacio.',note:'Una corriente de aire clara y ligera, distinta de la lluvia y del mar.'},
+  fogata:{emoji:'🔥',title:'Fogata segura',phrase:'Un sonido cálido para cerrar o quedarse.',note:'Crepitar suave y cálido, pensado para momentos de descanso.'}
 };
 
-function createNoiseBufferV189(ctx, seconds){
-  const length = Math.max(1, Math.floor(ctx.sampleRate * seconds));
-  const buffer = ctx.createBuffer(1, length, ctx.sampleRate);
-  const data = buffer.getChannelData(0);
-  for(let i=0;i<length;i++) data[i] = Math.random()*2-1;
+function soundtrackHintV190(msg){
+  const el=document.getElementById('soundtrackHintV92');
+  if(el) el.textContent=msg;
+}
+
+function createNoiseBufferV190(ctx, seconds){
+  const length=Math.max(1,Math.floor(ctx.sampleRate*seconds));
+  const buffer=ctx.createBuffer(1,length,ctx.sampleRate);
+  const data=buffer.getChannelData(0);
+  for(let i=0;i<length;i++) data[i]=Math.random()*2-1;
   return buffer;
 }
 
-function rememberNodeV189(node){
-  soundtrackNodesV189.push(node);
+function rememberNodeV190(node){
+  soundtrackNodesV190.push(node);
   return node;
 }
 
-function clearSoundtrackEngineV189(){
-  soundtrackTimersV189.forEach(t=>clearInterval(t));
-  soundtrackTimersV189 = [];
-  soundtrackNodesV189.forEach(n=>{
-    try{ if(typeof n.stop==='function') n.stop(); }catch(e){}
-    try{ n.disconnect(); }catch(e){}
+async function destroySoundtrackEngineV190(){
+  soundtrackGenerationV190++;
+  soundtrackPlayingV190=false;
+  soundtrackStartingV190=false;
+
+  soundtrackTimersV190.forEach(t=>{
+    try{clearInterval(t);}catch(e){}
+    try{clearTimeout(t);}catch(e){}
   });
-  soundtrackNodesV189 = [];
-  if(soundtrackMasterV189){
-    try{ soundtrackMasterV189.disconnect(); }catch(e){}
-    soundtrackMasterV189 = null;
+  soundtrackTimersV190=[];
+
+  soundtrackNodesV190.forEach(n=>{
+    try{if(typeof n.stop==='function') n.stop(0);}catch(e){}
+    try{n.disconnect();}catch(e){}
+  });
+  soundtrackNodesV190=[];
+
+  if(soundtrackMasterV190){
+    try{soundtrackMasterV190.gain.value=0;}catch(e){}
+    try{soundtrackMasterV190.disconnect();}catch(e){}
+    soundtrackMasterV190=null;
+  }
+
+  const old=soundtrackCtxV190;
+  soundtrackCtxV190=null;
+  if(old){
+    try{
+      if(old.state!=='closed') await old.close();
+    }catch(e){}
   }
 }
 
-function ensureSoundtrackCtxV189(){
-  const AC = window.AudioContext || window.webkitAudioContext;
-  if(!AC) return null;
-  if(!soundtrackCtxV189) soundtrackCtxV189 = new AC();
-  if(soundtrackCtxV189.state === 'suspended'){
-    soundtrackCtxV189.resume().catch(()=>{});
-  }
-  return soundtrackCtxV189;
-}
-
-function makeMasterV189(ctx){
-  const master = ctx.createGain();
-  const slider = document.getElementById('soundtrackVolumeV92');
-  master.gain.value = slider ? Math.max(0, Math.min(1, Number(slider.value))) * 0.48 : 0.14;
+function makeMasterV190(ctx){
+  const master=ctx.createGain();
+  const slider=document.getElementById('soundtrackVolumeV92');
+  master.gain.value=(slider?Math.max(0,Math.min(1,Number(slider.value))):0.28)*0.48;
   master.connect(ctx.destination);
-  soundtrackMasterV189 = master;
+  soundtrackMasterV190=master;
   return master;
 }
 
-function startNoiseLayerV189(ctx, master, opts){
-  const src = rememberNodeV189(ctx.createBufferSource());
-  src.buffer = createNoiseBufferV189(ctx, 4);
-  src.loop = true;
-
-  const filter = rememberNodeV189(ctx.createBiquadFilter());
-  filter.type = opts.type || 'lowpass';
-  filter.frequency.value = opts.freq || 900;
-  filter.Q.value = opts.q || 0.5;
-
-  const gain = rememberNodeV189(ctx.createGain());
-  gain.gain.value = opts.gain || 0.08;
-
-  src.connect(filter);
-  filter.connect(gain);
-  gain.connect(master);
-  src.start();
-
-  return {src, filter, gain};
+function startNoiseLayerV190(ctx,master,opts){
+  const src=rememberNodeV190(ctx.createBufferSource());
+  src.buffer=createNoiseBufferV190(ctx,4);
+  src.loop=true;
+  const filter=rememberNodeV190(ctx.createBiquadFilter());
+  filter.type=opts.type||'lowpass';
+  filter.frequency.value=opts.freq||900;
+  filter.Q.value=opts.q||0.5;
+  const gain=rememberNodeV190(ctx.createGain());
+  gain.gain.value=opts.gain||0.08;
+  src.connect(filter); filter.connect(gain); gain.connect(master); src.start(0);
+  return {src,filter,gain};
 }
 
-function startOceanV189(ctx, master){
-  const layer = startNoiseLayerV189(ctx, master, {type:'lowpass', freq:520, q:0.7, gain:0.16});
-  const lfo = rememberNodeV189(ctx.createOscillator());
-  const lfoGain = rememberNodeV189(ctx.createGain());
-  lfo.frequency.value = 0.11;
-  lfoGain.gain.value = 0.075;
-  lfo.connect(lfoGain);
-  lfoGain.connect(layer.gain.gain);
-  lfo.start();
-
-  const hum = rememberNodeV189(ctx.createOscillator());
-  const humGain = rememberNodeV189(ctx.createGain());
-  hum.type='sine'; hum.frequency.value=74; humGain.gain.value=0.018;
-  hum.connect(humGain); humGain.connect(master); hum.start();
+function startOceanV190(ctx,master){
+  const layer=startNoiseLayerV190(ctx,master,{type:'lowpass',freq:520,q:0.7,gain:0.16});
+  const lfo=rememberNodeV190(ctx.createOscillator());
+  const lg=rememberNodeV190(ctx.createGain());
+  lfo.frequency.value=0.11; lg.gain.value=0.075;
+  lfo.connect(lg); lg.connect(layer.gain.gain); lfo.start(0);
+  const hum=rememberNodeV190(ctx.createOscillator());
+  const hg=rememberNodeV190(ctx.createGain());
+  hum.type='sine'; hum.frequency.value=74; hg.gain.value=0.018;
+  hum.connect(hg); hg.connect(master); hum.start(0);
 }
 
-function startRainV189(ctx, master){
-  startNoiseLayerV189(ctx, master, {type:'highpass', freq:1450, q:0.3, gain:0.085});
-  startNoiseLayerV189(ctx, master, {type:'bandpass', freq:3200, q:0.8, gain:0.035});
-
-  const timer = setInterval(()=>{
-    if(!soundtrackPlayingV189 || soundtrackCurrentV92!=='lluvia') return;
-    const osc = rememberNodeV189(ctx.createOscillator());
-    const g = rememberNodeV189(ctx.createGain());
-    osc.type='sine';
-    osc.frequency.value = 900 + Math.random()*1800;
-    g.gain.setValueAtTime(0.0001,ctx.currentTime);
-    g.gain.exponentialRampToValueAtTime(0.012,ctx.currentTime+0.01);
-    g.gain.exponentialRampToValueAtTime(0.0001,ctx.currentTime+0.08);
-    osc.connect(g); g.connect(master); osc.start(); osc.stop(ctx.currentTime+0.09);
-  }, 220);
-  soundtrackTimersV189.push(timer);
+function startRainV190(ctx,master,generation){
+  startNoiseLayerV190(ctx,master,{type:'highpass',freq:1450,q:0.3,gain:0.085});
+  startNoiseLayerV190(ctx,master,{type:'bandpass',freq:3200,q:0.8,gain:0.035});
+  const timer=setInterval(()=>{
+    if(!soundtrackPlayingV190 || generation!==soundtrackGenerationV190 || soundtrackCurrentV92!=='lluvia' || ctx.state==='closed') return;
+    const osc=rememberNodeV190(ctx.createOscillator());
+    const g=rememberNodeV190(ctx.createGain());
+    osc.frequency.value=900+Math.random()*1800;
+    const now=ctx.currentTime;
+    g.gain.setValueAtTime(0.0001,now);
+    g.gain.exponentialRampToValueAtTime(0.012,now+0.01);
+    g.gain.exponentialRampToValueAtTime(0.0001,now+0.08);
+    osc.connect(g); g.connect(master); osc.start(now); osc.stop(now+0.09);
+  },220);
+  soundtrackTimersV190.push(timer);
 }
 
-function startForestV189(ctx, master){
-  startNoiseLayerV189(ctx, master, {type:'lowpass', freq:1050, q:0.4, gain:0.055});
-  const base = rememberNodeV189(ctx.createOscillator());
-  const baseGain = rememberNodeV189(ctx.createGain());
-  base.type='sine'; base.frequency.value=174; baseGain.gain.value=0.012;
-  base.connect(baseGain); baseGain.connect(master); base.start();
+function startForestV190(ctx,master,generation){
+  startNoiseLayerV190(ctx,master,{type:'lowpass',freq:1050,q:0.4,gain:0.055});
+  const base=rememberNodeV190(ctx.createOscillator());
+  const bg=rememberNodeV190(ctx.createGain());
+  base.type='sine'; base.frequency.value=174; bg.gain.value=0.012;
+  base.connect(bg); bg.connect(master); base.start(0);
 
-  const chirp = ()=>{
-    if(!soundtrackPlayingV189 || soundtrackCurrentV92!=='bosque') return;
-    const o = rememberNodeV189(ctx.createOscillator());
-    const g = rememberNodeV189(ctx.createGain());
-    o.type='sine';
-    const start = ctx.currentTime;
-    o.frequency.setValueAtTime(1250+Math.random()*450,start);
-    o.frequency.exponentialRampToValueAtTime(1750+Math.random()*500,start+0.18);
-    g.gain.setValueAtTime(0.0001,start);
-    g.gain.exponentialRampToValueAtTime(0.018,start+0.03);
-    g.gain.exponentialRampToValueAtTime(0.0001,start+0.24);
-    o.connect(g); g.connect(master); o.start(start); o.stop(start+0.26);
+  const chirp=()=>{
+    if(!soundtrackPlayingV190 || generation!==soundtrackGenerationV190 || soundtrackCurrentV92!=='bosque' || ctx.state==='closed') return;
+    const o=rememberNodeV190(ctx.createOscillator());
+    const g=rememberNodeV190(ctx.createGain());
+    const now=ctx.currentTime;
+    o.frequency.setValueAtTime(1250+Math.random()*450,now);
+    o.frequency.exponentialRampToValueAtTime(1750+Math.random()*500,now+0.18);
+    g.gain.setValueAtTime(0.0001,now);
+    g.gain.exponentialRampToValueAtTime(0.018,now+0.03);
+    g.gain.exponentialRampToValueAtTime(0.0001,now+0.24);
+    o.connect(g); g.connect(master); o.start(now); o.stop(now+0.26);
   };
   chirp();
-  soundtrackTimersV189.push(setInterval(chirp, 2600));
+  soundtrackTimersV190.push(setInterval(chirp,2600));
 }
 
-function startBreezeV189(ctx, master){
-  const layer = startNoiseLayerV189(ctx, master, {type:'bandpass', freq:1150, q:0.45, gain:0.065});
-  const lfo = rememberNodeV189(ctx.createOscillator());
-  const lg = rememberNodeV189(ctx.createGain());
-  lfo.frequency.value=0.22;
-  lg.gain.value=0.035;
-  lfo.connect(lg); lg.connect(layer.gain.gain); lfo.start();
-
-  const tone = rememberNodeV189(ctx.createOscillator());
-  const tg = rememberNodeV189(ctx.createGain());
+function startBreezeV190(ctx,master){
+  const layer=startNoiseLayerV190(ctx,master,{type:'bandpass',freq:1150,q:0.45,gain:0.065});
+  const lfo=rememberNodeV190(ctx.createOscillator());
+  const lg=rememberNodeV190(ctx.createGain());
+  lfo.frequency.value=0.22; lg.gain.value=0.035;
+  lfo.connect(lg); lg.connect(layer.gain.gain); lfo.start(0);
+  const tone=rememberNodeV190(ctx.createOscillator());
+  const tg=rememberNodeV190(ctx.createGain());
   tone.type='sine'; tone.frequency.value=392; tg.gain.value=0.006;
-  tone.connect(tg); tg.connect(master); tone.start();
+  tone.connect(tg); tg.connect(master); tone.start(0);
 }
 
-function startFireV189(ctx, master){
-  startNoiseLayerV189(ctx, master, {type:'lowpass', freq:720, q:0.3, gain:0.065});
-  const timer = setInterval(()=>{
-    if(!soundtrackPlayingV189 || soundtrackCurrentV92!=='fogata') return;
-    const src = rememberNodeV189(ctx.createBufferSource());
-    src.buffer = createNoiseBufferV189(ctx, 0.09);
-    const filt = rememberNodeV189(ctx.createBiquadFilter());
-    filt.type='bandpass';
-    filt.frequency.value=900+Math.random()*1700;
-    filt.Q.value=1.2;
-    const g = rememberNodeV189(ctx.createGain());
-    const now=ctx.currentTime;
-    const peak=0.016+Math.random()*0.025;
+function startFireV190(ctx,master,generation){
+  startNoiseLayerV190(ctx,master,{type:'lowpass',freq:720,q:0.3,gain:0.065});
+  const timer=setInterval(()=>{
+    if(!soundtrackPlayingV190 || generation!==soundtrackGenerationV190 || soundtrackCurrentV92!=='fogata' || ctx.state==='closed') return;
+    const src=rememberNodeV190(ctx.createBufferSource());
+    src.buffer=createNoiseBufferV190(ctx,0.09);
+    const filt=rememberNodeV190(ctx.createBiquadFilter());
+    filt.type='bandpass'; filt.frequency.value=900+Math.random()*1700; filt.Q.value=1.2;
+    const g=rememberNodeV190(ctx.createGain());
+    const now=ctx.currentTime, peak=0.016+Math.random()*0.025;
     g.gain.setValueAtTime(0.0001,now);
     g.gain.exponentialRampToValueAtTime(peak,now+0.008);
     g.gain.exponentialRampToValueAtTime(0.0001,now+0.085);
     src.connect(filt); filt.connect(g); g.connect(master); src.start(now); src.stop(now+0.09);
-  }, 160);
-  soundtrackTimersV189.push(timer);
+  },160);
+  soundtrackTimersV190.push(timer);
 }
 
-function startSoundscapeV189(key){
-  const ctx = ensureSoundtrackCtxV189();
-  if(!ctx){
-    const hint=document.getElementById('soundtrackHintV92');
-    if(hint) hint.textContent='Este navegador no permite generar el audio en este dispositivo.';
+async function startSoundscapeV190(key){
+  if(soundtrackStartingV190) return;
+  soundtrackStartingV190=true;
+
+  await destroySoundtrackEngineV190();
+
+  const AC=window.AudioContext||window.webkitAudioContext;
+  if(!AC){
+    soundtrackHintV190('Este navegador no permite generar el audio en este dispositivo.');
+    soundtrackStartingV190=false;
     return;
   }
-  clearSoundtrackEngineV189();
-  const master=makeMasterV189(ctx);
-  soundtrackPlayingV189=true;
 
-  if(key==='oceano') startOceanV189(ctx,master);
-  else if(key==='lluvia') startRainV189(ctx,master);
-  else if(key==='bosque') startForestV189(ctx,master);
-  else if(key==='brisa') startBreezeV189(ctx,master);
-  else if(key==='fogata') startFireV189(ctx,master);
+  try{
+    const ctx=new AC();
+    soundtrackCtxV190=ctx;
+    if(ctx.state==='suspended') await ctx.resume();
+
+    const generation=++soundtrackGenerationV190;
+    const master=makeMasterV190(ctx);
+    soundtrackPlayingV190=true;
+    soundtrackStartingV190=false;
+
+    if(key==='oceano') startOceanV190(ctx,master);
+    else if(key==='lluvia') startRainV190(ctx,master,generation);
+    else if(key==='bosque') startForestV190(ctx,master,generation);
+    else if(key==='brisa') startBreezeV190(ctx,master);
+    else if(key==='fogata') startFireV190(ctx,master,generation);
+
+    const data=soundtrackMapV92[key]||soundtrackMapV92.oceano;
+    soundtrackHintV190('Reproduciendo '+data.title+'.');
+  }catch(e){
+    soundtrackStartingV190=false;
+    await destroySoundtrackEngineV190();
+    soundtrackHintV190('Safari no pudo iniciar el sonido. Tocá Reproducir una vez más.');
+  }
 }
 
 function openSoundtrackV92(){
   const s=document.getElementById('soundtrackScreenV92');
   if(s) s.style.display='block';
-  if(!soundtrackCurrentV92) chooseSoundtrackV92('oceano', false);
+  if(!soundtrackCurrentV92) chooseSoundtrackV92('oceano',false);
 }
 
-function closeSoundtrackV92(){
-  stopSoundtrackV92();
+async function closeSoundtrackV92(){
+  await destroySoundtrackEngineV190();
   const s=document.getElementById('soundtrackScreenV92');
   if(s) s.style.display='none';
 }
 
-function chooseSoundtrackV92(key, autoplay=true){
-  const data=soundtrackMapV92[key] || soundtrackMapV92.oceano;
+async function chooseSoundtrackV92(key,autoplay=true){
+  const data=soundtrackMapV92[key]||soundtrackMapV92.oceano;
   soundtrackCurrentV92=key;
 
   const emoji=document.getElementById('soundtrackSceneEmojiV92');
   const now=document.getElementById('soundtrackNowV92');
   const phrase=document.getElementById('soundtrackPhraseV92');
-  const hint=document.getElementById('soundtrackHintV92');
   const content=document.getElementById('soundtrackContentV92');
 
   if(emoji) emoji.textContent=data.emoji;
   if(now) now.textContent=data.title;
   if(phrase) phrase.textContent=data.phrase;
-  if(hint) hint.textContent=autoplay ? 'Reproduciendo '+data.title+'.' : 'Ambiente seleccionado. Tocá Reproducir cuando quieras.';
-  if(content) content.innerHTML='<div class="soundtrackCardV92"><strong>'+data.emoji+' '+data.title+'</strong><br><br>'+data.note+'<br><br><span class="soundtrackSmallV92">Cada ambiente tiene una textura sonora propia. El volumen arranca bajo a propósito.</span></div>';
+  if(content) content.innerHTML='<div class="soundtrackCardV92"><strong>'+data.emoji+' '+data.title+'</strong><br><br>'+data.note+'<br><br><span class="soundtrackSmallV92">Podés cambiar de ambiente en cualquier momento. El anterior se corta completamente antes de iniciar el nuevo.</span></div>';
 
-  if(autoplay) startSoundscapeV189(key);
-}
-
-function playSoundtrackV92(){
-  startSoundscapeV189(soundtrackCurrentV92 || 'oceano');
-  const data=soundtrackMapV92[soundtrackCurrentV92 || 'oceano'];
-  const hint=document.getElementById('soundtrackHintV92');
-  if(hint) hint.textContent='Reproduciendo '+data.title+'.';
-}
-
-function pauseSoundtrackV92(){
-  if(soundtrackCtxV189 && soundtrackCtxV189.state==='running'){
-    soundtrackCtxV189.suspend().catch(()=>{});
+  if(autoplay){
+    await startSoundscapeV190(key);
+  }else{
+    soundtrackHintV190('Ambiente seleccionado. Tocá Reproducir cuando quieras.');
   }
-  soundtrackPlayingV189=false;
-  const hint=document.getElementById('soundtrackHintV92');
-  if(hint) hint.textContent='Audio pausado.';
 }
 
-function stopSoundtrackV92(){
-  soundtrackPlayingV189=false;
-  clearSoundtrackEngineV189();
-  const hint=document.getElementById('soundtrackHintV92');
-  if(hint) hint.textContent='Audio detenido.';
+async function playSoundtrackV92(){
+  await startSoundscapeV190(soundtrackCurrentV92||'oceano');
+}
+
+async function pauseSoundtrackV92(){
+  // En V190 "Pausar" corta el motor por completo.
+  // Al tocar Reproducir vuelve a crear el mismo ambiente desde cero.
+  await destroySoundtrackEngineV190();
+  soundtrackHintV190('Audio pausado. Tocá Reproducir para continuar.');
+}
+
+async function stopSoundtrackV92(){
+  await destroySoundtrackEngineV190();
+  soundtrackHintV190('Audio detenido.');
 }
 
 function setSoundtrackVolumeV92(v){
-  if(soundtrackMasterV189 && soundtrackCtxV189){
-    const target=Math.max(0,Math.min(1,Number(v))) * 0.48;
-    soundtrackMasterV189.gain.setTargetAtTime(target,soundtrackCtxV189.currentTime,0.03);
+  if(soundtrackMasterV190 && soundtrackCtxV190 && soundtrackCtxV190.state==='running'){
+    const target=Math.max(0,Math.min(1,Number(v)))*0.48;
+    try{soundtrackMasterV190.gain.setTargetAtTime(target,soundtrackCtxV190.currentTime,0.03);}catch(e){}
   }
 }
+
+// Cortes de seguridad: si Safari oculta la página, se cambia de pantalla,
+// o el navegador manda la página a segundo plano, el audio se apaga.
+window.addEventListener('pagehide',()=>{ destroySoundtrackEngineV190(); });
+window.addEventListener('beforeunload',()=>{ destroySoundtrackEngineV190(); });
+document.addEventListener('visibilitychange',()=>{
+  if(document.hidden && soundtrackPlayingV190) destroySoundtrackEngineV190();
+});
+
+document.addEventListener('DOMContentLoaded',()=>{
+  const screen=document.getElementById('soundtrackScreenV92');
+  if(!screen || !window.MutationObserver) return;
+  const observer=new MutationObserver(()=>{
+    const hidden=getComputedStyle(screen).display==='none';
+    if(hidden && soundtrackPlayingV190) destroySoundtrackEngineV190();
+  });
+  observer.observe(screen,{attributes:true,attributeFilter:['style','class']});
+});
 </script>
 
 
