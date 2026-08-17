@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
-<title>App Emocional V193 · Sonidos ambientales reales</title>
+<title>App Emocional V194 · Puente de regreso con historial</title>
 
 <style>
 body {
@@ -6257,7 +6257,7 @@ Para esos momentos en los que te fuiste muy lejos por dentro. No busca forzarte 
 </div>
 <br>
 <button onclick="openBridgeWriterV85()" class="softButton">✍️ Escribir mi puente</button>
-<button onclick="showSavedBridgeV85()" class="softButton">🌉 Ver puente guardado</button>
+<button onclick="showSavedBridgeV85()" class="softButton">🌉 Ver mis puentes guardados</button>
 <button onclick="saveCurrentBridgeV85()" class="softButton">⭐ Guardar como favorito</button>
 <br>
 <button onclick="closeBridgeV85()" class="softButton">Volver</button>
@@ -7026,7 +7026,7 @@ function saveCurrentRefugeV84(){
 }
 
 
-// V85 - Puente de regreso
+// V194 - Puente de regreso con historial: guardar uno nuevo NO borra los anteriores
 let currentBridgeV85='';
 
 function openBridgeV85(){
@@ -7045,8 +7045,45 @@ function escapeBridgeV85(str){
 function getSavedBridgeV85(){
   try{ return JSON.parse(localStorage.getItem('returnBridgeV85')||'null'); }catch(e){ return null; }
 }
+function getBridgeHistoryV85(){
+  let arr=[];
+  try{
+    const raw=JSON.parse(localStorage.getItem('bridgesV85')||'[]');
+    if(Array.isArray(raw)) arr=raw;
+  }catch(e){}
+  return arr.filter(x=>x && (x.text || typeof x==='string')).map(x=>{
+    if(typeof x==='string') return {text:x,date:'',createdAt:''};
+    return x;
+  });
+}
+function setBridgeHistoryV85(arr){
+  localStorage.setItem('bridgesV85',JSON.stringify(arr));
+}
 function setSavedBridgeV85(obj){
   localStorage.setItem('returnBridgeV85', JSON.stringify(obj));
+  const history=getBridgeHistoryV85();
+  const duplicate=history.some(x=>
+    String(x.text||'').trim()===String(obj.text||'').trim() &&
+    String(x.createdAt||'')===String(obj.createdAt||'')
+  );
+  if(!duplicate){
+    history.push(obj);
+    setBridgeHistoryV85(history);
+  }
+}
+function bridgeHistoryHtmlV85(){
+  const history=getBridgeHistoryV85();
+  if(!history.length) return '';
+  return '<div class="bridgeCardV85"><strong>🌉 Mis puentes guardados</strong><br><br>'+
+    history.slice().reverse().map((x,i)=>{
+      const number=history.length-i;
+      return '<div class="bridgeStepV85" style="margin-bottom:10px;">'+
+        '<strong>Puente '+number+'</strong>'+
+        (x.date?'<br><span class="bridgeSmallV85">'+escapeBridgeV85(x.date)+'</span>':'')+
+        '<br>'+escapeBridgeV85(x.text||'')+
+      '</div>';
+    }).join('')+
+  '</div>';
 }
 function renderBridgeV85(){
   const saved=getSavedBridgeV85();
@@ -7057,9 +7094,9 @@ function renderBridgeV85(){
   if(writeBox) writeBox.style.display='none';
   if(saved && saved.text){
     currentBridgeV85='🌉 '+saved.text;
-    phrase.innerHTML='Tu puente guardado sigue acá.';
+    phrase.innerHTML='Tu último puente guardado sigue acá.';
     path.innerHTML='<div class="bridgeStepV85">1. No tengo que volver de golpe.</div><div class="bridgeStepV85">2. Puedo elegir una señal pequeña.</div><div class="bridgeStepV85">3. '+escapeBridgeV85(saved.text)+'</div>';
-    content.innerHTML='<div class="bridgeCardV85"><strong>🌉 Puente guardado</strong><br><br><span class="bridgeSmallV85">'+escapeBridgeV85(saved.date||'')+'</span><br>'+escapeBridgeV85(saved.text)+'</div>';
+    content.innerHTML='<div class="bridgeCardV85"><strong>🌉 Último puente guardado</strong><br><br><span class="bridgeSmallV85">'+escapeBridgeV85(saved.date||'')+'</span><br>'+escapeBridgeV85(saved.text)+'</div>';
   }else{
     currentBridgeV85='No tengo que volver de golpe. Un paso pequeño alcanza.';
     phrase.innerHTML='Podemos volver de a un paso.';
@@ -7084,34 +7121,57 @@ function openBridgeWriterV85(){
   const box=document.getElementById('bridgeWriteBoxV85');
   if(box) box.style.display='block';
   document.getElementById('bridgePhraseV85').innerHTML='Tu puente puede tener tus palabras.';
+  const input=document.getElementById('bridgeManualTextV85');
+  if(input) setTimeout(()=>{try{input.focus();}catch(e){}},80);
 }
 function saveManualBridgeV85(){
   const input=document.getElementById('bridgeManualTextV85');
-  const text=(input.value||'').trim();
-  if(!text){
+  const bridgeText=(input && input.value ? input.value : '').trim();
+  if(!bridgeText){
     document.getElementById('bridgePhraseV85').innerHTML='Una frase mínima alcanza para construirlo.';
     return;
   }
   const now=new Date();
-  const obj={text,date:now.toLocaleDateString('es-ES'),createdAt:now.toISOString()};
+  const obj={text:bridgeText,date:now.toLocaleDateString('es-ES'),createdAt:now.toISOString()};
   setSavedBridgeV85(obj);
-  input.value='';
-  currentBridgeV85='🌉 '+text;
-  renderBridgeV85();
+  if(input) input.value='';
+  currentBridgeV85='🌉 '+bridgeText;
+
+  const total=getBridgeHistoryV85().length;
+  document.getElementById('bridgePhraseV85').innerHTML='🌉 Puente guardado. Ya tenés '+total+(total===1?' puente guardado.':' puentes guardados.');
+  document.getElementById('bridgePathV85').innerHTML='<div class="bridgeStepV85">Tu puente quedó guardado sin borrar los anteriores.</div>';
+  document.getElementById('bridgeContentV85').innerHTML=
+    '<div class="bridgeCardV85"><strong>Último puente</strong><br><br>'+escapeBridgeV85(bridgeText)+'</div>'+
+    bridgeHistoryHtmlV85();
+
+  const box=document.getElementById('bridgeWriteBoxV85');
+  if(box) box.style.display='none';
   if(typeof renderDashboard==='function') renderDashboard();
 }
 function showSavedBridgeV85(){
-  const saved=getSavedBridgeV85();
-  if(!saved || !saved.text){
-    document.getElementById('bridgePhraseV85').innerHTML='Todavía no hay un puente escrito.';
+  let history=getBridgeHistoryV85();
+  const legacy=getSavedBridgeV85();
+  if(legacy && legacy.text && !history.some(x=>String(x.text||'')===String(legacy.text||''))){
+    history.push(legacy);
+    setBridgeHistoryV85(history);
+  }
+  history=getBridgeHistoryV85();
+
+  if(!history.length){
+    document.getElementById('bridgePhraseV85').innerHTML='Todavía no hay puentes escritos.';
     document.getElementById('bridgeContentV85').innerHTML='<div class="bridgeCardV85">Podés elegir una opción o escribir una frase propia para crear el primero.</div>';
     return;
   }
-  renderBridgeV85();
+
+  document.getElementById('bridgePhraseV85').innerHTML='Tus puentes anteriores siguen acá.';
+  document.getElementById('bridgePathV85').innerHTML='<div class="bridgeStepV85">Guardados: '+history.length+'</div>';
+  document.getElementById('bridgeContentV85').innerHTML=bridgeHistoryHtmlV85();
 }
 function saveCurrentBridgeV85(){
   if(!currentBridgeV85){ alert('Todavía no hay un puente para guardar.'); return; }
-  let favs=JSON.parse(localStorage.getItem('favoriteMemories')||'[]');
+  let favs=[];
+  try{favs=JSON.parse(localStorage.getItem('favoriteMemories')||'[]');}catch(e){}
+  if(!Array.isArray(favs)) favs=[];
   if(favs.includes(currentBridgeV85)){ alert('⭐ Este puente ya estaba en favoritos'); return; }
   favs.push(currentBridgeV85);
   localStorage.setItem('favoriteMemories', JSON.stringify(favs));
