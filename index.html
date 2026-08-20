@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
-<title>App Emocional V198 · Transformaciones funcional</title>
+<title>App Emocional V199 · Guardado de Transformaciones reparado</title>
 
 <style>
 body {
@@ -6417,11 +6417,12 @@ No compara para exigirte. Mira señales suaves de cambio: palabras, formas de vo
 <div id="transformContentV91" class="rememberCard"></div>
 <br>
 <button type="button" onclick="renderTransformationsV91()" class="softButton">Volver a mirar</button>
-<button type="button" onclick="saveTransformationNoteV91()" class="softButton">Guardar esta mirada</button>
-<button type="button" onclick="showTransformationHistoryV91()" class="softButton">Ver miradas guardadas</button>
+<button type="button" id="transformSaveButtonV199" class="softButton">Guardar esta mirada</button>
+<button type="button" id="transformHistoryButtonV199" class="softButton">Ver miradas guardadas</button>
 <br>
 <textarea id="transformationTextV91" class="textBox" style="margin-top:14px;" placeholder="Si querés, completá esta transformación con tus palabras..."></textarea>
 <div id="transformationResultV91" style="margin-top:14px;font-weight:bold;line-height:1.45;"></div>
+<div id="transformationHistoryV199" style="margin-top:14px;"></div>
 <br>
 <button onclick="closeTransformationsV91()" class="softButton">Volver</button>
 </div>
@@ -17753,6 +17754,170 @@ body:not(.v151CategoryOpen) .mainNavigationV154{
 
 
 
+
+
+<script id="v199-transform-save-controller">
+(function(){
+  'use strict';
+  if(window.__v199TransformSaveReady) return;
+  window.__v199TransformSaveReady=true;
+
+  var KEY='transformationNotesV91';
+
+  function el(id){ return document.getElementById(id); }
+
+  function esc(s){
+    return String(s||'').replace(/[&<>"']/g,function(c){
+      return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];
+    });
+  }
+
+  function read(){
+    try{
+      var raw=localStorage.getItem(KEY);
+      if(!raw) return [];
+      var parsed=JSON.parse(raw);
+      return Array.isArray(parsed) ? parsed : [];
+    }catch(e){
+      return [];
+    }
+  }
+
+  function write(list){
+    localStorage.setItem(KEY,JSON.stringify(list));
+    /* Verificación inmediata: no damos por guardado hasta poder releerlo. */
+    var check=read();
+    return check.length===list.length;
+  }
+
+  function status(msg,ok){
+    var box=el('transformationResultV91');
+    if(!box) return;
+    box.textContent=msg;
+    box.style.display='block';
+    box.style.padding='12px 14px';
+    box.style.borderRadius='16px';
+    box.style.marginTop='14px';
+    box.style.background=ok ? 'rgba(204,251,241,.92)' : 'rgba(254,226,226,.94)';
+    box.style.color=ok ? '#115e59' : '#991b1b';
+  }
+
+  function renderHistory(){
+    var box=el('transformationHistoryV199');
+    if(!box) return;
+    var list=read();
+
+    if(!list.length){
+      box.innerHTML='<div class="transformCardV91"><strong>🦋 Miradas guardadas</strong><br><br>Todavía no guardaste ninguna mirada.</div>';
+      return;
+    }
+
+    box.innerHTML='<div class="transformCardV91"><strong>🦋 Miradas guardadas ('+list.length+')</strong>'+
+      list.slice().reverse().map(function(item){
+        return '<div class="transformSignalV91" style="margin-top:10px;">'+
+          '<div class="transformSmallV91">'+esc(item.date||'')+
+          (item.time?' · '+esc(item.time):'')+'</div>'+
+          '<div style="margin-top:6px;">'+esc(item.text||'')+'</div>'+
+        '</div>';
+      }).join('')+
+    '</div>';
+  }
+
+  function save(){
+    var input=el('transformationTextV91');
+    var value=input ? String(input.value||'').trim() : '';
+
+    if(!value){
+      status('Escribí una mirada antes de guardarla.',false);
+      return;
+    }
+
+    var list=read();
+    var now=new Date();
+    list.push({
+      text:value,
+      date:now.toLocaleDateString('es-ES'),
+      time:now.toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'}),
+      createdAt:now.toISOString()
+    });
+
+    try{
+      if(!write(list)){
+        status('No pude confirmar el guardado. Probá nuevamente.',false);
+        return;
+      }
+    }catch(e){
+      status('No pude guardar esta mirada en el dispositivo.',false);
+      return;
+    }
+
+    if(input) input.value='';
+    status('✓ Mirada guardada. Total: '+read().length+'.',true);
+    renderHistory();
+
+    var box=el('transformationHistoryV199');
+    if(box){
+      try{box.scrollIntoView({behavior:'smooth',block:'nearest'});}catch(e){}
+    }
+  }
+
+  function showHistory(){
+    renderHistory();
+    var list=read();
+    status(list.length ? 'Mostrando '+list.length+' mirada'+(list.length===1?'':'s')+' guardada'+(list.length===1?'':'s')+'.' : 'Todavía no hay miradas guardadas.', !!list.length);
+    var box=el('transformationHistoryV199');
+    if(box){
+      try{box.scrollIntoView({behavior:'smooth',block:'center'});}catch(e){}
+    }
+  }
+
+  function bind(){
+    var saveBtn=el('transformSaveButtonV199');
+    var histBtn=el('transformHistoryButtonV199');
+
+    if(saveBtn && !saveBtn.dataset.v199Bound){
+      saveBtn.dataset.v199Bound='1';
+      saveBtn.addEventListener('click',function(e){
+        e.preventDefault();
+        e.stopPropagation();
+        save();
+      },false);
+    }
+
+    if(histBtn && !histBtn.dataset.v199Bound){
+      histBtn.dataset.v199Bound='1';
+      histBtn.addEventListener('click',function(e){
+        e.preventDefault();
+        e.stopPropagation();
+        showHistory();
+      },false);
+    }
+  }
+
+  /* También exponemos funciones globales por compatibilidad. */
+  window.saveTransformationNoteV91=save;
+  window.showTransformationHistoryV91=showHistory;
+
+  if(document.readyState==='loading'){
+    document.addEventListener('DOMContentLoaded',function(){
+      bind();
+      renderHistory();
+    });
+  }else{
+    bind();
+    renderHistory();
+  }
+
+  /* Si la pantalla se vuelve a abrir, los botones siguen siendo los mismos;
+     esta comprobación ligera evita depender de MutationObserver. */
+  document.addEventListener('click',function(e){
+    var t=e.target.closest('button,[onclick]');
+    if(t && /transform/i.test((t.getAttribute('onclick')||'')+' '+(t.textContent||''))){
+      setTimeout(function(){bind();renderHistory();},40);
+    }
+  },false);
+})();
+</script>
 
 </body>
 
