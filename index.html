@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
-<title>App Emocional V197 · Estabilidad real de navegación</title>
+<title>App Emocional V198 · Transformaciones funcional</title>
 
 <style>
 body {
@@ -6406,7 +6406,7 @@ Llegar hasta acá también es una señal. Este espacio reúne lo que fuiste deja
 
 
 
-<div id="transformationsScreenV91" class="fullscreen" style="background:linear-gradient(180deg,#ede9fe,#ccfbf1);overflow:auto;text-align:center;">
+<div id="transformationsScreenV91" class="fullscreen" data-v152-skip-intro="true" style="background:linear-gradient(180deg,#ede9fe,#ccfbf1);overflow:auto;text-align:center;">
 <h1>🦋</h1>
 <h2>Transformaciones</h2>
 <p style="font-size:17px;line-height:1.45;max-width:330px;margin:0 auto;">
@@ -6416,9 +6416,9 @@ No compara para exigirte. Mira señales suaves de cambio: palabras, formas de vo
 <div id="transformPhraseV91" class="transformPhraseV91">Estoy mirando tu recorrido con cuidado...</div>
 <div id="transformContentV91" class="rememberCard"></div>
 <br>
-<button onclick="renderTransformationsV91()" class="softButton">Volver a mirar</button>
-<button onclick="saveTransformationNoteV91()" class="softButton">Guardar esta mirada</button>
-<button onclick="showTransformationHistoryV91()" class="softButton">Ver miradas guardadas</button>
+<button type="button" onclick="renderTransformationsV91()" class="softButton">Volver a mirar</button>
+<button type="button" onclick="saveTransformationNoteV91()" class="softButton">Guardar esta mirada</button>
+<button type="button" onclick="showTransformationHistoryV91()" class="softButton">Ver miradas guardadas</button>
 <br>
 <textarea id="transformationTextV91" class="textBox" style="margin-top:14px;" placeholder="Si querés, completá esta transformación con tus palabras..."></textarea>
 <div id="transformationResultV91" style="margin-top:14px;font-weight:bold;line-height:1.45;"></div>
@@ -10461,121 +10461,229 @@ function closeGardenV80(){
 
 
 
-// V91 - Transformaciones
+// V198 - Transformaciones: módulo aislado, rápido y con guardado robusto
 let currentTransformationSummaryV91 = '';
+
+function transformElV198(id){
+  return document.getElementById(id);
+}
+function safeArrayV198(key){
+  try{
+    const value=JSON.parse(localStorage.getItem(key) || '[]');
+    return Array.isArray(value) ? value : [];
+  }catch(e){
+    return [];
+  }
+}
+function escapeTransformV91(str){
+  return String(str||'').replace(/[&<>"']/g,function(m){
+    return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m];
+  });
+}
+function getTransformationNotesV91(){
+  return safeArrayV198('transformationNotesV91');
+}
+function setTransformStatusV198(message,ok=true){
+  const result=transformElV198('transformationResultV91');
+  if(!result) return;
+  result.textContent=message;
+  result.style.color=ok?'#0f766e':'#b91c1c';
+  result.style.background=ok?'rgba(204,251,241,.78)':'rgba(254,226,226,.9)';
+  result.style.padding='12px 14px';
+  result.style.borderRadius='16px';
+}
+function scrollTransformToV198(el){
+  if(!el) return;
+  try{el.scrollIntoView({behavior:'smooth',block:'center'});}
+  catch(e){try{el.scrollIntoView();}catch(_){}}
+}
 function openTransformationsV91(){
-  document.getElementById('transformationsScreenV91').style.display='block';
+  const screen=transformElV198('transformationsScreenV91');
+  if(!screen) return;
+  screen.dataset.v152SkipIntro='true';
+  screen.dataset.v152Entered='true';
+  screen.querySelectorAll(':scope > .calmEntryV152').forEach(function(x){try{x.remove();}catch(e){}});
+  screen.style.display='block';
   renderTransformationsV91();
 }
 function closeTransformationsV91(){
-  document.getElementById('transformationsScreenV91').style.display='none';
-}
-function escapeTransformV91(str){
-  if(typeof escapeHTMLV563 === 'function') return escapeHTMLV563(str);
-  return String(str||'').replace(/[&<>"]/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]));
-}
-function getTransformationNotesV91(){
-  try{return JSON.parse(localStorage.getItem('transformationNotesV91') || '[]');}
-  catch(e){return [];}
+  const screen=transformElV198('transformationsScreenV91');
+  if(screen) screen.style.display='none';
 }
 function getTransformDiaryTextV91(entry){
   if(!entry) return '';
   return String(entry.text || entry.content || entry.message || entry.note || '');
 }
-function splitTransformWordsV91(text){
-  return String(text||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9ñáéíóúü\s]/gi,' ').split(/\s+/).filter(w=>w.length>3);
+function splitTransformWordsV91(value){
+  return String(value||'')
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g,'')
+    .replace(/[^a-z0-9ñ\s]/gi,' ')
+    .split(/\s+/)
+    .filter(function(w){return w.length>3;});
 }
 function countTransformWordsV91(entries){
-  const counts = {};
-  entries.forEach(e=>splitTransformWordsV91(getTransformDiaryTextV91(e)).forEach(w=>counts[w]=(counts[w]||0)+1));
+  const counts={};
+  entries.forEach(function(entry){
+    splitTransformWordsV91(getTransformDiaryTextV91(entry)).forEach(function(word){
+      counts[word]=(counts[word]||0)+1;
+    });
+  });
   return counts;
 }
 function topTransformWordsV91(counts){
-  return Object.entries(counts).sort((a,b)=>b[1]-a[1]).slice(0,6).map(x=>x[0]);
+  return Object.entries(counts)
+    .sort(function(a,b){return b[1]-a[1];})
+    .slice(0,6)
+    .map(function(x){return x[0];});
 }
+
 function renderTransformationsV91(){
-  const content = document.getElementById('transformContentV91');
-  const phrase = document.getElementById('transformPhraseV91');
+  const content=transformElV198('transformContentV91');
+  const phrase=transformElV198('transformPhraseV91');
   if(!content) return;
-  let entries=[];
-  try{entries = JSON.parse(localStorage.getItem('diaryEntries') || '[]'); if(!Array.isArray(entries)) entries=[]; if(entries.length>120) entries=entries.slice(-120);}catch(e){entries=[];}
-  let favs=[]; try{favs = JSON.parse(localStorage.getItem('favoriteMemories') || '[]');}catch(e){}
-  let treasures=[]; try{treasures = JSON.parse(localStorage.getItem('manualTreasuresV81') || '[]');}catch(e){}
-  let lights=[]; try{lights = JSON.parse(localStorage.getItem('lightMomentsV83') || '[]');}catch(e){}
-  let refuges=[]; try{refuges = JSON.parse(localStorage.getItem('refugesV84') || '[]');}catch(e){}
-  let bridges=[]; try{bridges = JSON.parse(localStorage.getItem('bridgesV85') || '[]');}catch(e){}
-  let pockets=[]; try{pockets = JSON.parse(localStorage.getItem('pocketCalmV86') || '[]');}catch(e){}
-  let rituals=[]; try{rituals = JSON.parse(localStorage.getItem('closingRitualsV88') || '[]');}catch(e){}
-  let tomorrows=[]; try{tomorrows = JSON.parse(localStorage.getItem('tomorrowSignalsV89') || '[]');}catch(e){}
-  const totalSignals = entries.length+favs.length+treasures.length+lights.length+refuges.length+bridges.length+pockets.length+rituals.length+tomorrows.length;
-  const first = entries.slice(0, Math.max(1, Math.ceil(entries.length/3)));
-  const recent = entries.slice(Math.max(0, entries.length-Math.max(1, Math.ceil(entries.length/3))));
-  const firstWords = topTransformWordsV91(countTransformWordsV91(first));
-  const recentWords = topTransformWordsV91(countTransformWordsV91(recent));
-  const firstAvg = first.length ? Math.round(first.reduce((a,e)=>a+getTransformDiaryTextV91(e).length,0)/first.length) : 0;
-  const recentAvg = recent.length ? Math.round(recent.reduce((a,e)=>a+getTransformDiaryTextV91(e).length,0)/recent.length) : 0;
 
-  let title = 'Toda transformación puede empezar con una señal pequeña.';
-  if(entries.length >= 6) title = 'Hay cambios suaves apareciendo en tu forma de expresarte.';
-  if(totalSignals >= 12) title = 'Tu recorrido ya no es solo registro: empieza a mostrar movimiento.';
-  if(phrase) phrase.innerHTML = title;
+  /* Solo toma una muestra reciente para que esta pantalla nunca congele la app. */
+  let entries=safeArrayV198('diaryEntries');
+  if(entries.length>80) entries=entries.slice(-80);
 
-  let html = '<div class="transformCardV91"><strong>🦋 Lectura suave</strong><br><br>';
-  html += totalSignals ? 'No es diagnóstico ni evaluación. Es una mirada poética sobre las señales que fuiste dejando.' : 'Todavía hay pocas señales guardadas. Aun así, abrir este espacio ya puede ser una primera transformación.';
-  html += '</div>';
+  const favs=safeArrayV198('favoriteMemories');
+  const treasures=safeArrayV198('manualTreasuresV81');
+  const lights=safeArrayV198('lightMomentsV83');
+  const refuges=safeArrayV198('refugesV84');
+  const bridges=safeArrayV198('bridgesV85');
+  const pockets=safeArrayV198('pocketCalmV86');
+  const rituals=safeArrayV198('closingRitualsV88');
+  const tomorrows=safeArrayV198('tomorrowSignalsV89');
 
-  if(entries.length >= 2){
-    html += '<div class="transformCardV91"><strong>📖 De antes a ahora</strong>';
-    html += '<div class="transformPairV91"><div class="transformBeforeV91"><strong>Antes aparecían palabras como:</strong><br>'+(firstWords.length?firstWords.map(w=>'<span class="transformChipV91">'+escapeTransformV91(w)+'</span>').join(''):'Todavía no hay suficientes palabras para mirar el inicio.')+'</div>';
-    html += '<div class="transformAfterV91"><strong>Ahora aparecen palabras como:</strong><br>'+(recentWords.length?recentWords.map(w=>'<span class="transformChipV91">'+escapeTransformV91(w)+'</span>').join(''):'Todavía no hay suficientes palabras recientes.')+'</div></div>';
-    if(recentAvg > firstAvg + 10) html += '<div class="transformSignalV91">Estás dejando más espacio para expresarte. Tus últimas entradas parecen más amplias.</div>';
-    else if(firstAvg > recentAvg + 10) html += '<div class="transformSignalV91">Tus últimas entradas son más breves. A veces decir menos también puede ser una forma de cuidado.</div>';
-    else html += '<div class="transformSignalV91">Tu forma de escribir se mantiene con una presencia parecida. Hay continuidad.</div>';
-    html += '</div>';
-  } else {
-    html += '<div class="transformCardV91">🌱 Cuando haya más entradas, este espacio podrá mostrar cambios entre tus primeras palabras y las más recientes.</div>';
+  const totalSignals=
+    entries.length+favs.length+treasures.length+lights.length+
+    refuges.length+bridges.length+pockets.length+rituals.length+tomorrows.length;
+
+  const sectionSize=Math.max(1,Math.ceil(entries.length/3));
+  const first=entries.slice(0,sectionSize);
+  const recent=entries.slice(Math.max(0,entries.length-sectionSize));
+  const firstWords=topTransformWordsV91(countTransformWordsV91(first));
+  const recentWords=topTransformWordsV91(countTransformWordsV91(recent));
+
+  let title='Toda transformación puede empezar con una señal pequeña.';
+  if(entries.length>=6) title='Hay cambios suaves apareciendo en tu forma de expresarte.';
+  if(totalSignals>=12) title='Tu recorrido ya empieza a mostrar movimiento.';
+  if(phrase) phrase.textContent=title;
+
+  let html='<div class="transformCardV91"><strong>🦋 Lectura suave</strong><br><br>'+
+    (totalSignals
+      ? 'Esta mirada usa las señales que fuiste guardando. No es una evaluación ni un diagnóstico.'
+      : 'Todavía hay pocas señales guardadas. Podés escribir con tus palabras qué cambio sentís, aunque sea mínimo.')+
+    '</div>';
+
+  if(entries.length>=2){
+    html+='<div class="transformCardV91"><strong>📖 De antes a ahora</strong>'+
+      '<div class="transformPairV91">'+
+      '<div class="transformBeforeV91"><strong>Antes aparecían:</strong><br>'+
+      (firstWords.length ? firstWords.map(function(w){return '<span class="transformChipV91">'+escapeTransformV91(w)+'</span>';}).join('') : 'Todavía no hay suficientes palabras.')+
+      '</div>'+
+      '<div class="transformAfterV91"><strong>Ahora aparecen:</strong><br>'+
+      (recentWords.length ? recentWords.map(function(w){return '<span class="transformChipV91">'+escapeTransformV91(w)+'</span>';}).join('') : 'Todavía no hay suficientes palabras recientes.')+
+      '</div></div></div>';
+  }else{
+    html+='<div class="transformCardV91">🌱 Cuando haya más entradas, acá se podrán comparar señales anteriores y recientes.</div>';
   }
 
   const signals=[];
-  if(lights.length) signals.push('✨ Aparecieron momentos de luz: no todo quedó contado desde el peso.');
-  if(refuges.length) signals.push('🏡 Construiste refugios internos: la calma empezó a tener lugar propio.');
-  if(bridges.length) signals.push('🌉 Usaste puentes de regreso: hubo intentos de volver a vos.');
-  if(pockets.length) signals.push('🧺 Guardaste recursos de calma: empezaste a llevar herramientas contigo.');
-  if(treasures.length) signals.push('💎 Guardaste tesoros: algo valioso pidió ser recordado.');
-  if(rituals.length) signals.push('🕯️ Cerraste momentos: apareció una forma más cuidadosa de terminar el día.');
-  if(tomorrows.length) signals.push('🌤️ Dejaste señales para mañana: tu yo futuro empezó a tener un lugar.');
-  if(favs.length) signals.push('⭐ Elegiste favoritos: reconociste qué recuerdos merecían volver.');
+  if(lights.length) signals.push('✨ Guardaste momentos de luz.');
+  if(refuges.length) signals.push('🏡 Construiste refugios internos.');
+  if(bridges.length) signals.push('🌉 Usaste puentes de regreso.');
+  if(pockets.length) signals.push('🧺 Guardaste recursos de calma.');
+  if(treasures.length) signals.push('💎 Recuperaste tesoros.');
+  if(rituals.length) signals.push('🕯️ Realizaste rituales de cierre.');
+  if(tomorrows.length) signals.push('🌤️ Dejaste señales para mañana.');
+  if(favs.length) signals.push('⭐ Elegiste recuerdos o recursos favoritos.');
+
   if(signals.length){
-    html += '<div class="transformCardV91"><strong>Señales de transformación</strong>' + signals.map(s=>'<div class="transformSignalV91">'+escapeTransformV91(s)+'</div>').join('') + '</div>';
+    html+='<div class="transformCardV91"><strong>Señales de transformación</strong>'+
+      signals.map(function(s){return '<div class="transformSignalV91">'+escapeTransformV91(s)+'</div>';}).join('')+
+      '</div>';
   }
 
-  const closing = totalSignals ? 'No necesitás cambiar de golpe. A veces transformarse es volver distinto al mismo lugar.' : 'La transformación también puede empezar en blanco, sin apuro y sin obligación de explicar nada.';
-  html += '<div class="transformPhraseV91">'+closing+'</div>';
-  currentTransformationSummaryV91 = 'Transformaciones V91\n\n' + title + '\n\n' + signals.join('\n') + '\n\n' + closing;
-  content.innerHTML = html;
-}
-function saveTransformationNoteV91(){
-  const input = document.getElementById('transformationTextV91');
-  const result = document.getElementById('transformationResultV91');
-  const text = (input && input.value ? input.value.trim() : 'Hoy miré mi transformación con suavidad.');
-  const list = getTransformationNotesV91();
-  list.push({text:text, summary:currentTransformationSummaryV91, date:new Date().toLocaleDateString(), time:new Date().toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'})});
-  localStorage.setItem('transformationNotesV91', JSON.stringify(list));
-  if(input) input.value='';
-  if(result) result.innerHTML='🦋 Mirada guardada. Esta transformación queda en tu recorrido.';
-  if(typeof addFootprintV79 === 'function') addFootprintV79('transformacion');
-  if(typeof renderDashboard === 'function') renderDashboard();
-}
-function showTransformationHistoryV91(){
-  const content = document.getElementById('transformContentV91');
-  const list = getTransformationNotesV91();
-  if(!content) return;
-  if(!list.length){ content.innerHTML='<div class="transformCardV91">Todavía no hay miradas guardadas.</div>'; return; }
-  content.innerHTML = '<div class="transformCardV91"><strong>🦋 Miradas guardadas</strong>' + list.slice().reverse().map(x=>
-    '<div class="transformSignalV91"><div class="transformSmallV91">'+escapeTransformV91(x.date||'')+' '+escapeTransformV91(x.time||'')+'</div><br>'+escapeTransformV91(x.text||'')+'</div>'
-  ).join('') + '</div>';
+  const closing=totalSignals
+    ? 'No necesitás cambiar de golpe. A veces transformarse es notar algo distinto donde antes no lo veías.'
+    : 'La transformación también puede empezar en blanco, sin apuro.';
+
+  html+='<div class="transformPhraseV91">'+escapeTransformV91(closing)+'</div>';
+  currentTransformationSummaryV91=title+'\n\n'+signals.join('\n')+'\n\n'+closing;
+  content.innerHTML=html;
+
+  const result=transformElV198('transformationResultV91');
+  if(result){
+    result.textContent='';
+    result.removeAttribute('style');
+    result.style.marginTop='14px';
+    result.style.fontWeight='bold';
+    result.style.lineHeight='1.45';
+  }
 }
 
+function saveTransformationNoteV91(){
+  const input=transformElV198('transformationTextV91');
+  const written=(input && input.value ? input.value.trim() : '');
+
+  if(!written){
+    setTransformStatusV198('Escribí una idea o una mirada antes de guardarla.',false);
+    scrollTransformToV198(transformElV198('transformationResultV91'));
+    return;
+  }
+
+  const list=getTransformationNotesV91();
+  const now=new Date();
+  list.push({
+    text:written,
+    summary:currentTransformationSummaryV91 || '',
+    date:now.toLocaleDateString('es-ES'),
+    time:now.toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'}),
+    createdAt:now.toISOString()
+  });
+
+  try{
+    localStorage.setItem('transformationNotesV91',JSON.stringify(list));
+  }catch(e){
+    setTransformStatusV198('No pude guardar esta mirada en el dispositivo. Probá nuevamente.',false);
+    scrollTransformToV198(transformElV198('transformationResultV91'));
+    return;
+  }
+
+  if(input) input.value='';
+  setTransformStatusV198('🦋 Mirada guardada. Podés verla en “Ver miradas guardadas”.',true);
+  scrollTransformToV198(transformElV198('transformationResultV91'));
+
+  /* No ejecutamos renderDashboard acá: era trabajo extra innecesario en el mismo toque. */
+  if(navigator.vibrate){
+    try{navigator.vibrate(35);}catch(e){}
+  }
+}
+
+function showTransformationHistoryV91(){
+  const content=transformElV198('transformContentV91');
+  const list=getTransformationNotesV91();
+  if(!content) return;
+
+  if(!list.length){
+    content.innerHTML='<div class="transformCardV91"><strong>🦋 Miradas guardadas</strong><br><br>Todavía no guardaste ninguna mirada.</div>';
+  }else{
+    content.innerHTML='<div class="transformCardV91"><strong>🦋 Miradas guardadas ('+list.length+')</strong>'+
+      list.slice().reverse().map(function(x){
+        return '<div class="transformSignalV91">'+
+          '<div class="transformSmallV91">'+escapeTransformV91(x.date||'')+' '+escapeTransformV91(x.time||'')+'</div>'+
+          '<br>'+escapeTransformV91(x.text||'')+
+          '</div>';
+      }).join('')+
+      '</div>';
+  }
+
+  setTransformStatusV198('Mostrando tus miradas guardadas.',true);
+  scrollTransformToV198(content);
+}
 </script>
 
 
