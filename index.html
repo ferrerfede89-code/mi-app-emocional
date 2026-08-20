@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
-<title>App Emocional V196 · Estabilidad general</title>
+<title>App Emocional V197 · Estabilidad real de navegación</title>
 
 <style>
 body {
@@ -4949,6 +4949,18 @@ body:not(.v151CategoryOpen) .v172CompanionAccessTitle { color:#334155 !important
 body:not(.v151CategoryOpen) .v172CompanionAccessSub { color:#64748b !important; opacity:1 !important; }
 body:not(.v151CategoryOpen) .mainDescriptionV154 { color:#5f6f82 !important; opacity:1 !important; }
 </style>
+
+<style id="v197-performance-css">
+#transformationsScreenV91:not([style*="display: block"]) .transformOrbV91,
+#energyScreenV104:not([style*="display: block"]) .energyBeamV104{
+  animation-play-state:paused !important;
+}
+.fullscreen[style*="display: none"],
+.fullscreen[style*="display:none"]{
+  pointer-events:none !important;
+}
+</style>
+
 </head>
 
 <body>
@@ -10486,7 +10498,7 @@ function renderTransformationsV91(){
   const phrase = document.getElementById('transformPhraseV91');
   if(!content) return;
   let entries=[];
-  try{entries = JSON.parse(localStorage.getItem('diaryEntries') || '[]');}catch(e){entries=[];}
+  try{entries = JSON.parse(localStorage.getItem('diaryEntries') || '[]'); if(!Array.isArray(entries)) entries=[]; if(entries.length>120) entries=entries.slice(-120);}catch(e){entries=[];}
   let favs=[]; try{favs = JSON.parse(localStorage.getItem('favoriteMemories') || '[]');}catch(e){}
   let treasures=[]; try{treasures = JSON.parse(localStorage.getItem('manualTreasuresV81') || '[]');}catch(e){}
   let lights=[]; try{lights = JSON.parse(localStorage.getItem('lightMomentsV83') || '[]');}catch(e){}
@@ -16214,100 +16226,91 @@ Tocá el botón para ver el estado final del proyecto.
 <script id="v152-progressive-disclosure-script">
 (function(){
   'use strict';
+  if(window.__v197ProgressiveReady) return;
+  window.__v197ProgressiveReady=true;
 
   function isVisibleV152(screen){
-    if(!screen) return false;
-    var style = window.getComputedStyle(screen);
-    return style.display !== 'none' && style.visibility !== 'hidden';
-  }
-
-  function cleanTitleV152(value){
-    return (value || 'Este espacio').replace(/\s+/g,' ').trim();
+    if(!screen || !screen.isConnected) return false;
+    var style=window.getComputedStyle(screen);
+    return style.display!=='none' && style.visibility!=='hidden';
   }
 
   function getTitleV152(screen){
-    var title = screen.querySelector('h2, h1, .screen-title, .section-title');
-    return cleanTitleV152(title ? title.textContent : 'Este espacio');
+    var title=screen.querySelector('h2,h1,.screen-title,.section-title');
+    return ((title ? title.textContent : 'Este espacio') || 'Este espacio').replace(/\s+/g,' ').trim();
+  }
+
+  function removeEntryV152(screen){
+    if(!screen) return;
+    var entries=screen.querySelectorAll(':scope > .calmEntryV152');
+    entries.forEach(function(x){ try{x.remove();}catch(e){} });
   }
 
   function closeScreenV152(screen){
-    var candidates = Array.from(screen.querySelectorAll('button'));
-
-    /* V174: "Ahora no" debe salir de la pantalla actual, nunca activar
-       acciones como "Volver a mirar" ni botones que abren otra sección
-       antes de cerrar el hub. Priorizamos el botón de salida visible. */
-    var closeButton = candidates.find(function(btn){
+    var buttons=[].slice.call(screen.querySelectorAll('button'));
+    var closeButton=buttons.find(function(btn){
       if(btn.closest('.calmEntryV152')) return false;
-      var action = (btn.getAttribute('onclick') || '').trim().toLowerCase();
-      var label = (btn.textContent || '').replace(/\s+/g,' ').trim().toLowerCase();
-      var exitLabel = label === 'volver' || label === 'volver despacio' || label === 'cerrar';
-      var pureCloseAction = /^(close|cerrar)[a-z0-9_$]*\s*\(/i.test(action);
-      return exitLabel && pureCloseAction;
+      var action=(btn.getAttribute('onclick')||'').trim();
+      var label=(btn.textContent||'').replace(/\s+/g,' ').trim().toLowerCase();
+      return /^(close|cerrar)[a-z0-9_$]*\s*\(/i.test(action) &&
+             (label==='volver' || label==='volver despacio' || label==='cerrar' || label==='ya terminé aquí');
     });
-
     if(!closeButton){
-      closeButton = candidates.find(function(btn){
+      closeButton=buttons.find(function(btn){
         if(btn.closest('.calmEntryV152')) return false;
-        var action = (btn.getAttribute('onclick') || '').trim();
-        return /^(close|cerrar)[a-z0-9_$]*\s*\(/i.test(action);
+        return /^(close|cerrar)[a-z0-9_$]*\s*\(/i.test((btn.getAttribute('onclick')||'').trim());
       });
     }
-
-    if(closeButton){ closeButton.click(); }
-    else { screen.style.display = 'none'; }
-    var entry = screen.querySelector('.calmEntryV152');
-    if(entry) entry.remove();
+    removeEntryV152(screen);
+    if(closeButton) closeButton.click();
+    else screen.style.display='none';
   }
 
-  function revealContentV152(screen, entry){
-    screen.dataset.v152Entered = 'true';
-    entry.style.opacity = '0';
-    entry.style.transition = 'opacity .2s ease';
-    window.setTimeout(function(){
-      entry.remove();
-      screen.classList.add('v152-content-entering');
-      window.setTimeout(function(){ screen.classList.remove('v152-content-entering'); }, 420);
-      var firstField = screen.querySelector('textarea, input:not([type="hidden"]), select');
-      if(firstField && window.innerWidth > 700){
-        try { firstField.focus({preventScroll:true}); } catch(e) {}
-      }
-    },200);
+  function revealContentV152(screen,entry){
+    screen.dataset.v152Entered='true';
+    if(entry){
+      entry.style.opacity='0';
+      entry.style.transition='opacity .16s ease';
+      window.setTimeout(function(){
+        try{entry.remove();}catch(e){}
+      },170);
+    }
   }
 
   function addCalmEntryV152(screen){
-    if(!screen || screen.querySelector(':scope > .calmEntryV152')) return;
-    if(screen.dataset.v152SkipIntro === 'true' || screen.dataset.v152Entered === 'true') return;
+    if(!screen || !isVisibleV152(screen)) return;
+    if(screen.dataset.v152SkipIntro==='true' || screen.dataset.v152Entered==='true') return;
+    if(screen.querySelector(':scope > .calmEntryV152')) return;
 
-    var entry = document.createElement('div');
-    entry.className = 'calmEntryV152';
+    var entry=document.createElement('div');
+    entry.className='calmEntryV152';
     entry.setAttribute('role','dialog');
     entry.setAttribute('aria-modal','true');
-    entry.setAttribute('aria-label','Introducción a ' + getTitleV152(screen));
 
-    var card = document.createElement('div');
-    card.className = 'calmEntryCardV152';
+    var card=document.createElement('div');
+    card.className='calmEntryCardV152';
 
-    var mark = document.createElement('div');
-    mark.className = 'calmEntryMarkV152';
-    mark.textContent = '✦';
+    var mark=document.createElement('div');
+    mark.className='calmEntryMarkV152';
+    mark.textContent='✦';
 
-    var title = document.createElement('h2');
-    title.textContent = getTitleV152(screen);
+    var title=document.createElement('h2');
+    title.textContent=getTitleV152(screen);
 
-    var description = document.createElement('p');
-    description.textContent = 'No hace falta mirar todo ahora. Entramos de a un paso, a tu ritmo.';
+    var description=document.createElement('p');
+    description.textContent='No hace falta mirar todo ahora. Entramos de a un paso, a tu ritmo.';
 
-    var start = document.createElement('button');
-    start.type = 'button';
-    start.className = 'calmEntryPrimaryV152';
-    start.textContent = 'Empezar paso a paso';
-    start.addEventListener('click',function(){ revealContentV152(screen,entry); });
+    var start=document.createElement('button');
+    start.type='button';
+    start.className='calmEntryPrimaryV152';
+    start.textContent='Empezar paso a paso';
+    start.onclick=function(){ revealContentV152(screen,entry); };
 
-    var back = document.createElement('button');
-    back.type = 'button';
-    back.className = 'calmEntrySecondaryV152';
-    back.textContent = 'Ahora no';
-    back.addEventListener('click',function(){ closeScreenV152(screen); });
+    var back=document.createElement('button');
+    back.type='button';
+    back.className='calmEntrySecondaryV152';
+    back.textContent='Ahora no';
+    back.onclick=function(){ closeScreenV152(screen); };
 
     card.appendChild(mark);
     card.appendChild(title);
@@ -16316,26 +16319,40 @@ Tocá el botón para ver el estado final del proyecto.
     card.appendChild(back);
     entry.appendChild(card);
     screen.appendChild(entry);
-    window.setTimeout(function(){ try{ start.focus(); }catch(e){} },30);
   }
 
-  function inspectV152(screen){
-    if(isVisibleV152(screen)) addCalmEntryV152(screen);
-    else {
-      var entry = screen.querySelector(':scope > .calmEntryV152');
-      if(entry) entry.remove();
-      delete screen.dataset.v152Entered;
-    }
-  }
-
-  document.addEventListener('DOMContentLoaded',function(){
-    var screens = Array.from(document.querySelectorAll('.fullscreen'));
-    screens.forEach(function(screen){
-      var observer = new MutationObserver(function(){ inspectV152(screen); });
-      observer.observe(screen,{attributes:true,attributeFilter:['style','class']});
-      inspectV152(screen);
+  function syncVisibleScreensV197(){
+    document.querySelectorAll('.fullscreen').forEach(function(screen){
+      if(isVisibleV152(screen)){
+        addCalmEntryV152(screen);
+      }else{
+        removeEntryV152(screen);
+        delete screen.dataset.v152Entered;
+      }
     });
+  }
+
+  /* Sin MutationObservers. Revisamos solo después de acciones reales del usuario. */
+  document.addEventListener('click',function(){
+    window.setTimeout(syncVisibleScreensV197,0);
+    window.setTimeout(syncVisibleScreensV197,180);
+  },false);
+
+  window.addEventListener('pageshow',function(){
+    window.setTimeout(syncVisibleScreensV197,80);
   });
+
+  document.addEventListener('visibilitychange',function(){
+    if(!document.hidden) window.setTimeout(syncVisibleScreensV197,60);
+  });
+
+  if(document.readyState==='loading'){
+    document.addEventListener('DOMContentLoaded',function(){
+      window.setTimeout(syncVisibleScreensV197,80);
+    });
+  }else{
+    window.setTimeout(syncVisibleScreensV197,80);
+  }
 })();
 </script>
 
@@ -17628,152 +17645,6 @@ body:not(.v151CategoryOpen) .mainNavigationV154{
 
 
 
-
-
-<style id="v196-stability-styles">
-.fullscreen[style*="display:none"],
-.fullscreen[style*="display: none"]{
-  pointer-events:none !important;
-}
-.fullscreen{
-  touch-action:manipulation;
-}
-button, .softButton, .action, [onclick]{
-  touch-action:manipulation;
-  -webkit-tap-highlight-color:rgba(0,0,0,0);
-}
-.v196-no-pointer{
-  pointer-events:none !important;
-}
-</style>
-
-<script id="v196-stability-script">
-(function(){
-  'use strict';
-  if(window.__v196StabilityReady) return;
-  window.__v196StabilityReady=true;
-
-  var lastTapAt=0;
-  var lastTapTarget=null;
-
-  function isVisible(el){
-    if(!el || !el.isConnected) return false;
-    var st;
-    try{ st=getComputedStyle(el); }catch(e){ return false; }
-    return st.display!=='none' && st.visibility!=='hidden' && st.pointerEvents!=='none';
-  }
-
-  function cleanHiddenFullscreen(){
-    document.querySelectorAll('.fullscreen').forEach(function(screen){
-      var st;
-      try{ st=getComputedStyle(screen); }catch(e){ return; }
-      if(st.display==='none' || st.visibility==='hidden'){
-        screen.classList.add('v196-no-pointer');
-        screen.setAttribute('aria-hidden','true');
-      }else{
-        screen.classList.remove('v196-no-pointer');
-        screen.removeAttribute('aria-hidden');
-      }
-    });
-  }
-
-  function cleanCalmEntries(){
-    document.querySelectorAll('.calmEntryV152').forEach(function(entry){
-      var parent=entry.parentElement;
-      if(!parent){
-        entry.remove();
-        return;
-      }
-      var pst;
-      try{ pst=getComputedStyle(parent); }catch(e){ return; }
-      if(pst.display==='none' || pst.visibility==='hidden'){
-        entry.remove();
-      }
-    });
-
-    document.querySelectorAll('.fullscreen').forEach(function(screen){
-      var entries=screen.querySelectorAll(':scope > .calmEntryV152');
-      if(entries.length>1){
-        for(var i=0;i<entries.length-1;i++) entries[i].remove();
-      }
-    });
-  }
-
-  function cleanOrphanOverlays(){
-    document.querySelectorAll('[style*="position:fixed"], [style*="position: fixed"]').forEach(function(el){
-      if(el.classList.contains('fullscreen') || el.classList.contains('calmEntryV152')) return;
-      if(el.id && /toast|dock|modal|overlay|screen/i.test(el.id)) return;
-      var st;
-      try{ st=getComputedStyle(el); }catch(e){ return; }
-      if(st.pointerEvents!=='none' && Number(st.opacity)===0 && !el.textContent.trim()){
-        el.style.pointerEvents='none';
-      }
-    });
-  }
-
-  function pauseHiddenMedia(){
-    document.querySelectorAll('audio,video').forEach(function(media){
-      if(media===window.soundtrackAudioV92) return;
-      var screen=media.closest('.fullscreen');
-      if(screen && !isVisible(screen)){
-        try{ media.pause(); }catch(e){}
-      }
-    });
-  }
-
-  function maintenance(){
-    cleanHiddenFullscreen();
-    cleanCalmEntries();
-    cleanOrphanOverlays();
-    pauseHiddenMedia();
-  }
-
-  document.addEventListener('click',function(e){
-    var target=e.target.closest('button,[onclick],a');
-    if(!target) return;
-    var now=Date.now();
-    if(target===lastTapTarget && now-lastTapAt<220){
-      e.preventDefault();
-      e.stopImmediatePropagation();
-      return;
-    }
-    lastTapTarget=target;
-    lastTapAt=now;
-    setTimeout(maintenance,30);
-    setTimeout(maintenance,250);
-  },true);
-
-  document.addEventListener('transitionend',function(){
-    setTimeout(maintenance,0);
-  },true);
-
-  document.addEventListener('visibilitychange',function(){
-    if(!document.hidden) setTimeout(maintenance,50);
-  });
-
-  window.addEventListener('pageshow',function(){
-    setTimeout(maintenance,80);
-  });
-
-  setInterval(maintenance,4000);
-
-  if(document.readyState==='loading'){
-    document.addEventListener('DOMContentLoaded',function(){ setTimeout(maintenance,120); });
-  }else{
-    setTimeout(maintenance,120);
-  }
-
-  window.v196StabilityCheck=function(){
-    var visibleScreens=[].slice.call(document.querySelectorAll('.fullscreen')).filter(isVisible);
-    var calm=[].slice.call(document.querySelectorAll('.calmEntryV152')).filter(isVisible);
-    return {
-      visibleScreens:visibleScreens.map(function(x){return x.id||x.className;}),
-      activeCalmEntries:calm.length,
-      audiosPlaying:[].slice.call(document.querySelectorAll('audio')).filter(function(a){return !a.paused;}).length
-    };
-  };
-})();
-</script>
 
 </body>
 
