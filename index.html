@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
-<title>App Emocional V199 · Guardado de Transformaciones reparado</title>
+<title>App Emocional V200 · Transformaciones completa y funcional</title>
 
 <style>
 body {
@@ -6416,7 +6416,7 @@ No compara para exigirte. Mira señales suaves de cambio: palabras, formas de vo
 <div id="transformPhraseV91" class="transformPhraseV91">Estoy mirando tu recorrido con cuidado...</div>
 <div id="transformContentV91" class="rememberCard"></div>
 <br>
-<button type="button" onclick="renderTransformationsV91()" class="softButton">Volver a mirar</button>
+<button type="button" id="transformRefreshButtonV200" class="softButton">Volver a mirar</button>
 <button type="button" id="transformSaveButtonV199" class="softButton">Guardar esta mirada</button>
 <button type="button" id="transformHistoryButtonV199" class="softButton">Ver miradas guardadas</button>
 <br>
@@ -17914,6 +17914,93 @@ body:not(.v151CategoryOpen) .mainNavigationV154{
     var t=e.target.closest('button,[onclick]');
     if(t && /transform/i.test((t.getAttribute('onclick')||'')+' '+(t.textContent||''))){
       setTimeout(function(){bind();renderHistory();},40);
+    }
+  },false);
+})();
+</script>
+
+
+<script id="v200-transform-refresh-controller">
+(function(){
+  'use strict';
+  if(window.__v200TransformRefreshReady) return;
+  window.__v200TransformRefreshReady=true;
+
+  function el(id){ return document.getElementById(id); }
+
+  function refreshTransformation(){
+    var before=el('transformContentV91');
+    var oldText=before ? before.textContent : '';
+
+    try{
+      if(typeof window.renderTransformationsV91==='function'){
+        window.renderTransformationsV91();
+      }
+    }catch(e){}
+
+    var phrase=el('transformPhraseV91');
+    var content=el('transformContentV91');
+    var status=el('transformationResultV91');
+
+    if(phrase){
+      phrase.textContent='Volvimos a mirar tus señales con lo que hay guardado hasta ahora.';
+    }
+
+    if(status){
+      status.textContent='↻ Mirada actualizada.';
+      status.style.display='block';
+      status.style.padding='12px 14px';
+      status.style.borderRadius='16px';
+      status.style.marginTop='14px';
+      status.style.background='rgba(224,242,254,.92)';
+      status.style.color='#075985';
+    }
+
+    /* Añade una señal visible de actualización incluso si el contenido base
+       coincide con la lectura anterior. */
+    if(content){
+      var stamp=document.createElement('div');
+      stamp.className='transformCardV91';
+      stamp.id='transformRefreshStampV200';
+      var now=new Date();
+      stamp.innerHTML='<strong>↻ Nueva mirada</strong><br><br>'+
+        'Actualizada a las '+now.toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'})+
+        '. La lectura usa lo que tenés guardado en este momento.';
+      var old=el('transformRefreshStampV200');
+      if(old) old.remove();
+      content.prepend(stamp);
+
+      try{
+        stamp.scrollIntoView({behavior:'smooth',block:'center'});
+      }catch(e){
+        try{stamp.scrollIntoView();}catch(_){}
+      }
+    }
+  }
+
+  function bind(){
+    var btn=el('transformRefreshButtonV200');
+    if(!btn || btn.dataset.v200Bound==='1') return;
+    btn.dataset.v200Bound='1';
+    btn.addEventListener('click',function(e){
+      e.preventDefault();
+      e.stopPropagation();
+      refreshTransformation();
+    },false);
+  }
+
+  window.refreshTransformationV200=refreshTransformation;
+
+  if(document.readyState==='loading'){
+    document.addEventListener('DOMContentLoaded',bind);
+  }else{
+    bind();
+  }
+
+  document.addEventListener('click',function(e){
+    var t=e.target.closest('button,[onclick]');
+    if(t && /transform/i.test((t.getAttribute('onclick')||'')+' '+(t.textContent||''))){
+      setTimeout(bind,30);
     }
   },false);
 })();
