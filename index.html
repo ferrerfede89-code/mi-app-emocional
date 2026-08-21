@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
-<title>App Emocional V208 · Quedarme respiración directa</title>
+<title>App Emocional V209 · Quedarme respiración acompañada</title>
 
 <style>
 body {
@@ -4969,8 +4969,11 @@ body:not(.v151CategoryOpen) .mainDescriptionV154 { color:#5f6f82 !important; opa
 }
 </style>
 
-<style id="v208-stay-fix">
-#stayBreathV208{animation:none !important;}
+<style id="v209-stay-fix">
+#stayBreathBallV209{
+  animation:none !important;
+  transition:none !important;
+}
 </style>
 </head>
 
@@ -5505,26 +5508,29 @@ overflow:hidden;
     Estoy acá.
   </div>
 
-  <button type="button" id="stayBreathV208" onclick="toggleStayBreathV208()" style="
+  <button type="button" id="stayBreathBallV209" onclick="toggleStayBreathV209()" aria-label="Iniciar respiración guiada" style="
       width:165px;
       height:165px;
       border-radius:50%;
       border:none;
       margin-top:42px;
       padding:0;
-      background:radial-gradient(circle,rgba(255,255,255,.96),rgba(147,197,253,.72));
+      background:radial-gradient(circle,rgba(255,255,255,.98),rgba(147,197,253,.72));
       box-shadow:0 22px 60px rgba(59,130,246,.25);
       display:flex;
       align-items:center;
       justify-content:center;
-      font-size:19px;
-      font-weight:650;
+      flex-direction:column;
       color:#334155;
       transform:scale(1);
-      transition:transform .45s ease, box-shadow .45s ease;
       -webkit-appearance:none;
       appearance:none;
-    ">Respirar</button>
+      cursor:pointer;
+      will-change:transform;
+    ">
+      <span id="stayBreathWordV209" style="font-size:20px;font-weight:700;pointer-events:none;">Respirar</span>
+      <span id="stayBreathCountV209" style="font-size:14px;margin-top:5px;opacity:.72;pointer-events:none;"></span>
+    </button>
 
   <div id="staySubMessage" style="
   margin-top:38px;
@@ -5533,7 +5539,7 @@ overflow:hidden;
   color:#475569;
   line-height:1.5;
   ">
-    Podés quedarte así o tocar la esfera para respirar conmigo.
+    Tocá la esfera y seguí su movimiento: cuando crece, inhalá; cuando baja, exhalá.
   </div>
 
   <button onclick="closeStay()" class="softButton" style="margin-top:45px;">
@@ -9525,134 +9531,155 @@ function openPreparedConnectionWhatsAppV205(){
   window.location.href = "https://wa.me/?text=" + encodeURIComponent(preparedConnectionTextV205);
 }
 
-let stayBreathTimerV208 = null;
-let stayBreathRunningV208 = false;
-let stayBreathPhaseV208 = 'idle';
+let stayBreathRunningV209 = false;
+let stayBreathRAFv209 = null;
+let stayBreathCycleStartV209 = 0;
 
-function clearStayBreathTimerV208(){
-  if(stayBreathTimerV208){
-    clearTimeout(stayBreathTimerV208);
-    stayBreathTimerV208 = null;
+/* 4 s inhalación + 6 s exhalación */
+const STAY_INHALE_MS_V209 = 4000;
+const STAY_EXHALE_MS_V209 = 6000;
+const STAY_CYCLE_MS_V209 = STAY_INHALE_MS_V209 + STAY_EXHALE_MS_V209;
+
+function easeInOutStayV209(t){
+  return t < 0.5
+    ? 2 * t * t
+    : 1 - Math.pow(-2 * t + 2, 2) / 2;
+}
+
+function cancelStayAnimationV209(){
+  if(stayBreathRAFv209 !== null){
+    cancelAnimationFrame(stayBreathRAFv209);
+    stayBreathRAFv209 = null;
   }
 }
 
-function resetStayBreathV208(showPauseMessage){
-  stayBreathRunningV208 = false;
-  stayBreathPhaseV208 = 'idle';
-  clearStayBreathTimerV208();
+function resetStayBreathV209(showPaused){
+  stayBreathRunningV209 = false;
+  cancelStayAnimationV209();
 
-  const ball = document.getElementById("stayBreathV208");
+  const ball = document.getElementById("stayBreathBallV209");
+  const word = document.getElementById("stayBreathWordV209");
+  const count = document.getElementById("stayBreathCountV209");
+  const msg = document.getElementById("stayMessage");
+  const sub = document.getElementById("staySubMessage");
+
   if(ball){
-    ball.innerText = "Respirar";
-    ball.style.transition = "transform .45s ease, box-shadow .45s ease";
     ball.style.transform = "scale(1)";
     ball.style.boxShadow = "0 22px 60px rgba(59,130,246,.25)";
+    ball.setAttribute("aria-label","Iniciar respiración guiada");
   }
+  if(word) word.textContent = "Respirar";
+  if(count) count.textContent = "";
 
-  if(showPauseMessage){
-    const msg = document.getElementById("stayMessage");
-    const sub = document.getElementById("staySubMessage");
-    if(msg) msg.innerText = "Estoy acá.";
-    if(sub) sub.innerText = "Respiración pausada. Tocá la esfera cuando quieras volver.";
+  if(showPaused){
+    if(msg) msg.textContent = "Estoy acá.";
+    if(sub) sub.textContent = "Respiración pausada. Tocá la esfera cuando quieras volver.";
   }
 }
 
-function stayInhaleV208(){
-  if(!stayBreathRunningV208) return;
+function renderStayBreathFrameV209(now){
+  if(!stayBreathRunningV209) return;
 
-  stayBreathPhaseV208 = 'inhale';
-
-  const ball = document.getElementById("stayBreathV208");
+  const ball = document.getElementById("stayBreathBallV209");
+  const word = document.getElementById("stayBreathWordV209");
+  const count = document.getElementById("stayBreathCountV209");
   const msg = document.getElementById("stayMessage");
   const sub = document.getElementById("staySubMessage");
 
-  if(ball){
-    ball.innerText = "Inhalar";
-    ball.style.transition = "transform 4s ease-in-out, box-shadow 4s ease-in-out";
-    /* Safari: forzamos un frame antes de cambiar el tamaño. */
-    requestAnimationFrame(function(){
-      requestAnimationFrame(function(){
-        if(!stayBreathRunningV208) return;
-        ball.style.transform = "scale(1.28)";
-        ball.style.boxShadow = "0 30px 78px rgba(59,130,246,.40)";
-      });
-    });
-  }
-
-  if(msg) msg.innerText = "Inhalá despacio.";
-  if(sub) sub.innerText = "La esfera crece durante 4 segundos.";
-
-  clearStayBreathTimerV208();
-  stayBreathTimerV208 = setTimeout(stayExhaleV208, 4100);
-}
-
-function stayExhaleV208(){
-  if(!stayBreathRunningV208) return;
-
-  stayBreathPhaseV208 = 'exhale';
-
-  const ball = document.getElementById("stayBreathV208");
-  const msg = document.getElementById("stayMessage");
-  const sub = document.getElementById("staySubMessage");
-
-  if(ball){
-    ball.innerText = "Exhalar";
-    ball.style.transition = "transform 6s ease-in-out, box-shadow 6s ease-in-out";
-    requestAnimationFrame(function(){
-      requestAnimationFrame(function(){
-        if(!stayBreathRunningV208) return;
-        ball.style.transform = "scale(.88)";
-        ball.style.boxShadow = "0 14px 38px rgba(59,130,246,.16)";
-      });
-    });
-  }
-
-  if(msg) msg.innerText = "Exhalá lento.";
-  if(sub) sub.innerText = "La esfera vuelve durante 6 segundos.";
-
-  clearStayBreathTimerV208();
-  stayBreathTimerV208 = setTimeout(stayInhaleV208, 6100);
-}
-
-function toggleStayBreathV208(){
-  if(stayBreathRunningV208){
-    resetStayBreathV208(true);
+  if(!ball){
+    resetStayBreathV209(false);
     return;
   }
 
-  stayBreathRunningV208 = true;
+  const elapsed = (now - stayBreathCycleStartV209) % STAY_CYCLE_MS_V209;
 
-  if(navigator.vibrate){
-    try{ navigator.vibrate(30); }catch(e){}
+  let scale;
+  let secondsLeft;
+
+  if(elapsed < STAY_INHALE_MS_V209){
+    const p = elapsed / STAY_INHALE_MS_V209;
+    const eased = easeInOutStayV209(p);
+
+    /* Crece progresivamente frame a frame: 1.00 -> 1.30 */
+    scale = 1 + (0.30 * eased);
+    secondsLeft = Math.max(0, (STAY_INHALE_MS_V209 - elapsed) / 1000);
+
+    if(word) word.textContent = "Inhalar";
+    if(count) count.textContent = secondsLeft.toFixed(1) + " s";
+    if(msg) msg.textContent = "Inhalá mientras la esfera crece.";
+    if(sub) sub.textContent = "Seguí el movimiento. No hace falta ir más rápido que la esfera.";
+
+    ball.style.boxShadow = "0 28px 75px rgba(59,130,246," + (0.25 + 0.18*eased).toFixed(2) + ")";
+  }else{
+    const exhaleElapsed = elapsed - STAY_INHALE_MS_V209;
+    const p = exhaleElapsed / STAY_EXHALE_MS_V209;
+    const eased = easeInOutStayV209(p);
+
+    /* Baja progresivamente frame a frame: 1.30 -> 0.90 */
+    scale = 1.30 - (0.40 * eased);
+    secondsLeft = Math.max(0, (STAY_EXHALE_MS_V209 - exhaleElapsed) / 1000);
+
+    if(word) word.textContent = "Exhalar";
+    if(count) count.textContent = secondsLeft.toFixed(1) + " s";
+    if(msg) msg.textContent = "Exhalá mientras la esfera se hace más pequeña.";
+    if(sub) sub.textContent = "Soltá el aire al ritmo de la esfera.";
+
+    ball.style.boxShadow = "0 18px 45px rgba(59,130,246," + (0.30 - 0.14*eased).toFixed(2) + ")";
   }
 
-  stayInhaleV208();
+  ball.style.transform = "scale(" + scale.toFixed(4) + ")";
+
+  stayBreathRAFv209 = requestAnimationFrame(renderStayBreathFrameV209);
+}
+
+function startStayBreathV209(){
+  if(stayBreathRunningV209) return;
+
+  const ball = document.getElementById("stayBreathBallV209");
+  if(!ball) return;
+
+  stayBreathRunningV209 = true;
+  stayBreathCycleStartV209 = performance.now();
+  ball.setAttribute("aria-label","Pausar respiración guiada");
+
+  if(navigator.vibrate){
+    try{navigator.vibrate(30);}catch(e){}
+  }
+
+  cancelStayAnimationV209();
+  stayBreathRAFv209 = requestAnimationFrame(renderStayBreathFrameV209);
+}
+
+function toggleStayBreathV209(){
+  if(stayBreathRunningV209){
+    resetStayBreathV209(true);
+  }else{
+    startStayBreathV209();
+  }
 }
 
 function openStay() {
-  /* No empieza ninguna respiración sola. */
-  resetStayBreathV208(false);
+  resetStayBreathV209(false);
 
   const screen = document.getElementById("stayScreen");
   if(screen) screen.style.display = "flex";
 
   const comp = getCompanion();
-
   const emoji = document.getElementById("stayEmoji");
   const msg = document.getElementById("stayMessage");
   const sub = document.getElementById("staySubMessage");
 
   if(emoji) emoji.innerText = comp ? comp.emoji : "🌊";
   if(msg) msg.innerText = "Estoy acá.";
-  if(sub) sub.innerText = "Podés quedarte así o tocar la esfera para respirar conmigo.";
+  if(sub) sub.innerText = "Tocá la esfera y seguí su movimiento: cuando crece, inhalá; cuando baja, exhalá.";
 
   if(navigator.vibrate){
-    try{ navigator.vibrate(35); }catch(e){}
+    try{navigator.vibrate(35);}catch(e){}
   }
 }
 
 function closeStay() {
-  resetStayBreathV208(false);
+  resetStayBreathV209(false);
 
   const screen = document.getElementById("stayScreen");
   if(screen) screen.style.display = "none";
@@ -18663,8 +18690,8 @@ body:not(.v151CategoryOpen) .mainNavigationV154{
 
 <script>
 document.addEventListener("visibilitychange",function(){
-  if(document.hidden && typeof resetStayBreathV208==="function"){
-    resetStayBreathV208(false);
+  if(document.hidden && typeof resetStayBreathV209==="function"){
+    resetStayBreathV209(false);
   }
 });
 </script>
