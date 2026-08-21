@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
-<title>App Emocional V201 · Qué te sostuvo funcional</title>
+<title>App Emocional V202 · Señal para mañana recuperable</title>
 
 <style>
 body {
@@ -615,7 +615,15 @@ body, .app, #circle, .action, .stats, .softButton, .moods button {
 }
 .gardenLegendV80{
   display:grid;
-  grid-template-columns:1fr 1fr;
+  gr
+  <div id="tomorrowSavedPreviewV202" class="tomorrowCardV89" style="margin-top:16px;">
+    <strong>🌤️ Mi señal para mañana</strong>
+    <div id="tomorrowSavedContentV202" class="tomorrowSmallV89" style="margin-top:10px;">
+      Todavía no hay una señal guardada para mañana.
+    </div>
+    <button type="button" id="tomorrowShowSavedV202" class="softButton" style="margin-top:12px;">Ver señal guardada</button>
+  </div>
+id-template-columns:1fr 1fr;
   gap:10px;
   margin-top:14px;
   font-size:14px;
@@ -18101,6 +18109,146 @@ body:not(.v151CategoryOpen) .mainNavigationV154{
       setTimeout(bind,40);
     }
   },false);
+})();
+</script>
+
+
+<script id="v202-tomorrow-signal-controller">
+(function(){
+  'use strict';
+  if(window.__v202TomorrowReady) return;
+  window.__v202TomorrowReady=true;
+
+  var KEY='tomorrowSignalsV89';
+
+  function q(id){ return document.getElementById(id); }
+
+  function readSignals(){
+    try{
+      var raw=localStorage.getItem(KEY);
+      if(!raw) return [];
+      var parsed=JSON.parse(raw);
+      return Array.isArray(parsed) ? parsed : [];
+    }catch(e){
+      return [];
+    }
+  }
+
+  function esc(s){
+    return String(s||'').replace(/[&<>"']/g,function(c){
+      return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];
+    });
+  }
+
+  function getSignalText(item){
+    if(!item) return '';
+    if(typeof item==='string') return item;
+    return item.text || item.signal || item.message || item.note || item.phrase || '';
+  }
+
+  function getSignalDate(item){
+    if(!item || typeof item==='string') return '';
+    return item.date || item.createdAt || item.day || '';
+  }
+
+  function renderSavedSignal(){
+    var box=q('tomorrowSavedContentV202');
+    if(!box) return;
+    var list=readSignals();
+
+    if(!list.length){
+      box.innerHTML='Todavía no hay una señal guardada para mañana.';
+      return;
+    }
+
+    var last=list[list.length-1];
+    var txt=getSignalText(last);
+    var date=getSignalDate(last);
+
+    box.innerHTML=
+      '<div class="tomorrowSignalV89"><strong>Última señal guardada</strong><br><br>'+
+      esc(txt || 'Señal guardada')+
+      (date ? '<br><br><span class="tomorrowSmallV89">'+esc(String(date))+'</span>' : '')+
+      '</div>'+
+      '<div class="tomorrowSmallV89" style="margin-top:8px;">Total de señales guardadas: '+list.length+'.</div>';
+  }
+
+  function showSavedSignal(){
+    renderSavedSignal();
+    var box=q('tomorrowSavedPreviewV202');
+    if(box){
+      try{box.scrollIntoView({behavior:'smooth',block:'center'});}
+      catch(e){try{box.scrollIntoView();}catch(_){}}
+    }
+  }
+
+  function bind(){
+    var btn=q('tomorrowShowSavedV202');
+    if(btn && btn.dataset.v202Bound!=='1'){
+      btn.dataset.v202Bound='1';
+      btn.addEventListener('click',function(e){
+        e.preventDefault();
+        e.stopPropagation();
+        showSavedSignal();
+      });
+    }
+  }
+
+  function decorateSaveFeedback(){
+    var list=readSignals();
+    if(!list.length) return;
+
+    var phrase=q('tomorrowPhraseV89');
+    if(phrase){
+      phrase.textContent='🌤️ Señal guardada. Vas a poder volver a verla acá cuando regreses.';
+    }
+
+    renderSavedSignal();
+  }
+
+  /* Enlazamos cualquier guardado de Señal para mañana sin reescribir el módulo original. */
+  var originals=[
+    'saveTomorrowSignalV89',
+    'saveTomorrowV89',
+    'saveTomorrowCustomV89'
+  ];
+  originals.forEach(function(name){
+    if(typeof window[name]==='function' && !window[name].__v202Wrapped){
+      var old=window[name];
+      var wrapped=function(){
+        var r=old.apply(this,arguments);
+        setTimeout(decorateSaveFeedback,30);
+        return r;
+      };
+      wrapped.__v202Wrapped=true;
+      window[name]=wrapped;
+    }
+  });
+
+  if(document.readyState==='loading'){
+    document.addEventListener('DOMContentLoaded',function(){
+      bind();
+      renderSavedSignal();
+    });
+  }else{
+    bind();
+    renderSavedSignal();
+  }
+
+  document.addEventListener('click',function(e){
+    var t=e.target.closest('button,[onclick]');
+    if(!t) return;
+    var label=(t.textContent||'');
+    var action=(t.getAttribute('onclick')||'');
+    if(/señal para mañana|guardar señal|tomorrow/i.test(label+' '+action)){
+      setTimeout(function(){
+        bind();
+        renderSavedSignal();
+      },50);
+    }
+  },false);
+
+  window.showSavedTomorrowSignalV202=showSavedSignal;
 })();
 </script>
 
