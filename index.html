@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
-<title>App Emocional V200 · Transformaciones completa y funcional</title>
+<title>App Emocional V201 · Qué te sostuvo funcional</title>
 
 <style>
 body {
@@ -6176,7 +6176,7 @@ No es un ranking. No mide rendimiento. Busca señales suaves de lo que estuvo ce
 <div id="supportedPhraseV82" class="supportedPhraseV82">Estoy buscando señales en tu recorrido...</div>
 <div id="supportedContentV82" class="rememberCard"></div>
 <br>
-<button onclick="renderSupportedV82()" class="softButton">Volver a mirar</button>
+<button onclick="renderSupportedV82()" class="softButton" id="supportedRefreshButtonV201">Volver a mirar</button>
 <button onclick="closeSupportedV82()" class="softButton">Volver</button>
 </div>
 
@@ -18001,6 +18001,104 @@ body:not(.v151CategoryOpen) .mainNavigationV154{
     var t=e.target.closest('button,[onclick]');
     if(t && /transform/i.test((t.getAttribute('onclick')||'')+' '+(t.textContent||''))){
       setTimeout(bind,30);
+    }
+  },false);
+})();
+</script>
+
+
+<script id="v201-supported-refresh-controller">
+(function(){
+  'use strict';
+  if(window.__v201SupportedRefreshReady) return;
+  window.__v201SupportedRefreshReady=true;
+
+  function q(id){ return document.getElementById(id); }
+
+  function findSupportedScreen(){
+    var ids=['supportedScreenV82','supportedScreen','whatSupportedScreenV82'];
+    for(var i=0;i<ids.length;i++){
+      var el=q(ids[i]);
+      if(el) return el;
+    }
+    var screens=[].slice.call(document.querySelectorAll('.fullscreen'));
+    return screens.find(function(s){ return /Qué te sostuvo/i.test(s.textContent||''); }) || null;
+  }
+
+  function findContent(screen){
+    if(!screen) return null;
+    return q('supportedContentV82') ||
+           q('supportedResultV82') ||
+           screen.querySelector('.supportedCardV82') ||
+           screen.querySelector('.supportedSignalV82') ||
+           screen;
+  }
+
+  function refreshSupported(){
+    var screen=findSupportedScreen();
+    var content=findContent(screen);
+
+    /* Ejecuta primero la lógica original, si existe. */
+    try{
+      if(typeof window.renderSupportedV82==='function') window.renderSupportedV82();
+      else if(typeof window.showSupportedV82==='function') window.showSupportedV82();
+      else if(typeof window.updateSupportedV82==='function') window.updateSupportedV82();
+    }catch(e){}
+
+    var phrase=q('supportedPhraseV82');
+    if(phrase){
+      phrase.textContent='Volvimos a mirar lo que te sostuvo con lo que tenés guardado hasta ahora.';
+    }
+
+    var old=q('supportedRefreshStatusV201');
+    if(old) old.remove();
+
+    var status=document.createElement('div');
+    status.id='supportedRefreshStatusV201';
+    status.className='supportedCardV82';
+    status.style.background='rgba(255,241,242,.96)';
+    status.style.textAlign='center';
+    status.innerHTML='<strong>↻ Mirada actualizada</strong><br><br>Revisamos nuevamente tus señales guardadas.';
+
+    if(content && content.parentNode){
+      content.parentNode.insertBefore(status, content);
+    }else if(screen){
+      screen.appendChild(status);
+    }
+
+    try{ status.scrollIntoView({behavior:'smooth',block:'center'}); }
+    catch(e){ try{status.scrollIntoView();}catch(_){} }
+  }
+
+  function bind(){
+    var btn=q('supportedRefreshButtonV201');
+    if(!btn) return;
+
+    if(btn.dataset.v201Bound==='1') return;
+    btn.dataset.v201Bound='1';
+
+    btn.type='button';
+    btn.removeAttribute('onclick');
+    btn.addEventListener('click',function(e){
+      e.preventDefault();
+      e.stopPropagation();
+      refreshSupported();
+    },false);
+  }
+
+  window.refreshSupportedV201=refreshSupported;
+
+  if(document.readyState==='loading'){
+    document.addEventListener('DOMContentLoaded',bind);
+  }else{
+    bind();
+  }
+
+  document.addEventListener('click',function(e){
+    var t=e.target.closest('button,[onclick]');
+    if(!t) return;
+    if(/qué te sostuvo/i.test((t.textContent||'')) || /supported/i.test((t.getAttribute('onclick')||''))){
+      setTimeout(bind,40);
     }
   },false);
 })();
