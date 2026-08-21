@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
-<title>App Emocional V205 · Conectar claro y sin borradores viejos</title>
+<title>App Emocional V206 · Quedarme con respiración guiada</title>
 
 <style>
 body {
@@ -5502,7 +5502,9 @@ overflow:hidden;
     Estoy acá.
   </div>
 
-  <div class="stayCircle"></div>
+  <button type="button" id="stayBreathingBallV206" class="stayCircle" onclick="toggleStayBreathingV206()" aria-label="Iniciar respiración guiada" style="border:none;padding:0;cursor:pointer;">
+      <span id="stayBreathingLabelV206" style="font-size:18px;color:#334155;font-weight:600;">Respirar</span>
+    </button>
 
   <div id="staySubMessage" style="
   margin-top:38px;
@@ -5511,7 +5513,7 @@ overflow:hidden;
   color:#475569;
   line-height:1.5;
   ">
-    No tenés que hacer nada.
+    Podés quedarte así o tocar la esfera para respirar conmigo.
   </div>
 
   <button onclick="closeStay()" class="softButton" style="margin-top:45px;">
@@ -18551,6 +18553,114 @@ body:not(.v151CategoryOpen) .mainNavigationV154{
   },false);
 
   window.showSavedTomorrowSignalV202=showSavedSignal;
+})();
+</script>
+
+
+<script id="v206-stay-breathing-controller">
+(function(){
+  'use strict';
+  if(window.__v206StayBreathingReady) return;
+  window.__v206StayBreathingReady=true;
+
+  var breathingTimerV206=null;
+  var phaseV206='idle';
+
+  function q(id){ return document.getElementById(id); }
+
+  function setBallV206(scale,label,transition){
+    var ball=q('stayBreathingBallV206');
+    var txt=q('stayBreathingLabelV206');
+    if(!ball) return;
+    ball.style.transition=transition || 'transform 4s ease, box-shadow 4s ease';
+    ball.style.transform='scale('+scale+')';
+    if(txt) txt.textContent=label;
+  }
+
+  function setStayTextV206(main,sub){
+    var m=q('stayMessage');
+    var s=q('staySubMessage');
+    if(m && main) m.textContent=main;
+    if(s && sub) s.textContent=sub;
+  }
+
+  function stopStayBreathingV206(){
+    if(breathingTimerV206){
+      clearTimeout(breathingTimerV206);
+      breathingTimerV206=null;
+    }
+    phaseV206='idle';
+    setBallV206(1,'Respirar','transform .5s ease, box-shadow .5s ease');
+    var ball=q('stayBreathingBallV206');
+    if(ball){
+      ball.setAttribute('aria-label','Iniciar respiración guiada');
+      ball.style.boxShadow='0 22px 60px rgba(59,130,246,.25)';
+    }
+  }
+
+  function inhaleV206(){
+    phaseV206='inhale';
+    setStayTextV206('Inhalá despacio.','No hace falta llenar del todo los pulmones.');
+    setBallV206(1.22,'Inhalar','transform 4s ease, box-shadow 4s ease');
+    var ball=q('stayBreathingBallV206');
+    if(ball) ball.style.boxShadow='0 28px 72px rgba(59,130,246,.38)';
+    breathingTimerV206=setTimeout(exhaleV206,4000);
+  }
+
+  function exhaleV206(){
+    phaseV206='exhale';
+    setStayTextV206('Exhalá lento.','Dejá que el cuerpo afloje apenas.');
+    setBallV206(0.96,'Exhalar','transform 6s ease, box-shadow 6s ease');
+    var ball=q('stayBreathingBallV206');
+    if(ball) ball.style.boxShadow='0 16px 42px rgba(59,130,246,.18)';
+    breathingTimerV206=setTimeout(inhaleV206,6000);
+  }
+
+  window.toggleStayBreathingV206=function(){
+    if(phaseV206!=='idle'){
+      stopStayBreathingV206();
+      setStayTextV206('Estoy acá.','Respiración pausada. Tocá la esfera cuando quieras volver.');
+      return;
+    }
+
+    var ball=q('stayBreathingBallV206');
+    if(ball) ball.setAttribute('aria-label','Pausar respiración guiada');
+
+    inhaleV206();
+
+    if(navigator.vibrate){
+      try{navigator.vibrate(35);}catch(e){}
+    }
+  };
+
+  window.stopStayBreathingV206=stopStayBreathingV206;
+
+  /* Conserva el comportamiento original de Quedarme y añade el reseteo respiratorio. */
+  var originalOpen=window.openStay;
+  if(typeof originalOpen==='function'){
+    window.openStay=function(){
+      stopStayBreathingV206();
+      originalOpen.apply(this,arguments);
+
+      var label=q('stayBreathingLabelV206');
+      if(label) label.textContent='Respirar';
+
+      var sub=q('staySubMessage');
+      if(sub) sub.textContent='Podés quedarte así o tocar la esfera para respirar conmigo.';
+    };
+  }
+
+  var originalClose=window.closeStay;
+  if(typeof originalClose==='function'){
+    window.closeStay=function(){
+      stopStayBreathingV206();
+      return originalClose.apply(this,arguments);
+    };
+  }
+
+  document.addEventListener('visibilitychange',function(){
+    if(document.hidden) stopStayBreathingV206();
+  });
 })();
 </script>
 
