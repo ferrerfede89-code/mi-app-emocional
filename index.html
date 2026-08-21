@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
-<title>App Emocional V202 · Señal para mañana recuperable</title>
+<title>App Emocional V203 · Resumen emocional claro y funcional</title>
 
 <style>
 body {
@@ -5159,7 +5159,7 @@ text-align:center;
 <button id="btnReflejoDiaV144" class="action" onclick="document.getElementById('pantallaReflejoDiaV144').style.display='block'">
   <span>🪞</span>Reflejo del día
 </button>
-<button id="btnResumenV141" class="action" onclick="document.getElementById('resumenV141').style.display='block'">
+<button id="btnResumenV141" class="action" onclick="openResumenV203()">
 <span>📊</span>Resumen emocional
 </button>
 
@@ -15944,37 +15944,128 @@ ref3.value=localStorage.getItem('ref3v140')||'';
 
 
 <div id="resumenV141" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:#eef7ff;z-index:999999;padding:24px;box-sizing:border-box;overflow:auto;">
-<button onclick="document.getElementById('resumenV141').style.display='none'" style="border:none;border-radius:18px;padding:12px 18px;">← Volver</button>
+<button type="button" onclick="closeResumenV203()" style="border:none;border-radius:18px;padding:12px 18px;">← Volver</button>
 
-<h1 style="text-align:center;">📊 Resumen emocional inteligente</h1>
+<h1 style="text-align:center;">📊 Resumen emocional</h1>
 
 <div style="background:white;border-radius:22px;padding:18px;margin-top:18px;line-height:1.6;">
-<div>😊 Días buenos registrados: <b id="good141">0</b></div>
-<div>😐 Días neutros registrados: <b id="neutral141">0</b></div>
-<div>😔 Días difíciles registrados: <b id="bad141">0</b></div>
+  <strong>¿De dónde salen estos datos?</strong><br><br>
+  Este resumen usa únicamente las veces que marcás <strong>🙂 Bien, 😐 Normal o 😔 Mal</strong>
+  en “¿Cómo estás ahora?” al inicio de la app.<br><br>
+  <span style="color:#64748b;font-size:14px;">
+    No analiza tu diario, tus mensajes ni tus textos personales. No hace falta llegar a una cantidad mínima:
+    desde el primer registro ya puede mostrar información.
+  </span>
+</div>
+
+<div style="background:white;border-radius:22px;padding:18px;margin-top:18px;line-height:1.7;">
+  <div>📝 Registros totales: <b id="total203">0</b></div>
+  <div>📅 Días con registros: <b id="days203">0</b></div>
+  <div style="margin-top:10px;">🙂 Bien: <b id="good141">0</b></div>
+  <div>😐 Normal: <b id="neutral141">0</b></div>
+  <div>😔 Mal: <b id="bad141">0</b></div>
 </div>
 
 <div id="mensaje141" style="background:white;border-radius:22px;padding:18px;margin-top:18px;line-height:1.6;font-size:18px;"></div>
+
+<div id="detail203" style="background:rgba(255,255,255,.78);border-radius:22px;padding:16px;margin-top:18px;line-height:1.55;color:#475569;font-size:14px;"></div>
 </div>
 
-<script>
-window.addEventListener("load",function(){
-let good=parseInt(localStorage.getItem("goodCount")||0);
-let neutral=parseInt(localStorage.getItem("normalCount")||0);
-let bad=parseInt(localStorage.getItem("badCount")||0);
+<script id="v203-resumen-emocional">
+(function(){
+  'use strict';
 
-if(document.getElementById("good141")){
-good141.innerText=good;
-neutral141.innerText=neutral;
-bad141.innerText=bad;
+  function q(id){ return document.getElementById(id); }
 
-let msg="Cada registro cuenta. Seguir apareciendo también es avanzar.";
-if(good>bad) msg="Tu registro muestra más días luminosos que difíciles últimamente.";
-else if(bad>good) msg="Hubo varios días pesados. Haber llegado hasta aquí también habla de fortaleza.";
-else if(good+neutral+bad===0) msg="Todavía no hay registros suficientes para construir el resumen.";
-mensaje141.innerText=msg;
-}
-});
+  function readMoodsV203(){
+    try{
+      var raw=JSON.parse(localStorage.getItem('moods') || '{}');
+      return raw && typeof raw==='object' && !Array.isArray(raw) ? raw : {};
+    }catch(e){
+      return {};
+    }
+  }
+
+  function calculateV203(){
+    var data=readMoodsV203();
+    var counts={bien:0,normal:0,mal:0};
+    var days=0;
+    var total=0;
+
+    Object.keys(data).forEach(function(day){
+      var values=Array.isArray(data[day]) ? data[day] : [];
+      var valid=values.filter(function(m){
+        return m==='bien' || m==='normal' || m==='mal';
+      });
+
+      if(valid.length) days++;
+
+      valid.forEach(function(mood){
+        counts[mood]++;
+        total++;
+      });
+    });
+
+    return {counts:counts,days:days,total:total};
+  }
+
+  function renderResumenV203(){
+    var stats=calculateV203();
+
+    if(q('good141')) q('good141').textContent=stats.counts.bien;
+    if(q('neutral141')) q('neutral141').textContent=stats.counts.normal;
+    if(q('bad141')) q('bad141').textContent=stats.counts.mal;
+    if(q('total203')) q('total203').textContent=stats.total;
+    if(q('days203')) q('days203').textContent=stats.days;
+
+    var msg=q('mensaje141');
+    if(msg){
+      if(stats.total===0){
+        msg.innerHTML='<strong>Todavía no hay registros.</strong><br><br>Cuando marques cómo estás en la pantalla de inicio, el primer registro aparecerá acá automáticamente.';
+      }else if(stats.total===1){
+        msg.innerHTML='<strong>Ya hay 1 registro.</strong><br><br>No alcanza para hablar de una tendencia, pero ya forma parte de tu recorrido.';
+      }else{
+        var max=Math.max(stats.counts.bien,stats.counts.normal,stats.counts.mal);
+        var leaders=[];
+        if(stats.counts.bien===max) leaders.push('bien');
+        if(stats.counts.normal===max) leaders.push('normal');
+        if(stats.counts.mal===max) leaders.push('mal');
+
+        if(leaders.length>1){
+          msg.innerHTML='<strong>Tu registro está bastante repartido.</strong><br><br>No hace falta convertirlo en una conclusión. Sirve para mirar cómo fueron apareciendo distintos estados.';
+        }else if(leaders[0]==='bien'){
+          msg.innerHTML='<strong>Hasta ahora aparecen más registros de “Bien”.</strong><br><br>Es una fotografía de tus registros, no una medida de cómo “deberías” sentirte.';
+        }else if(leaders[0]==='normal'){
+          msg.innerHTML='<strong>Hasta ahora aparecen más registros de “Normal”.</strong><br><br>Puede servirte como referencia para observar cambios con el tiempo.';
+        }else{
+          msg.innerHTML='<strong>Hasta ahora aparecen más registros de “Mal”.</strong><br><br>Esto solo refleja lo que marcaste. No es un diagnóstico ni una evaluación.';
+        }
+      }
+    }
+
+    var detail=q('detail203');
+    if(detail){
+      detail.innerHTML=
+        '<strong>Importante:</strong> si marcás tu estado varias veces el mismo día, cada toque cuenta como un registro. '+
+        'Por eso “registros totales” puede ser mayor que “días con registros”.';
+    }
+  }
+
+  window.openResumenV203=function(){
+    var screen=q('resumenV141');
+    if(!screen) return;
+    screen.style.display='block';
+    renderResumenV203();
+    try{screen.scrollTop=0;}catch(e){}
+  };
+
+  window.closeResumenV203=function(){
+    var screen=q('resumenV141');
+    if(screen) screen.style.display='none';
+  };
+
+  window.renderResumenV203=renderResumenV203;
+})();
 </script>
 
 
