@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
-<title>App Emocional V203 · Resumen emocional claro y funcional</title>
+<title>App Emocional V204 · Contactos refugio claros y accionables</title>
 
 <style>
 body {
@@ -5163,7 +5163,7 @@ text-align:center;
 <span>📊</span>Resumen emocional
 </button>
 
-<button id="btnRefugioV140" class="action" onclick="document.getElementById('contactosRefugioV140').style.display='block'">
+<button id="btnRefugioV140" class="action" onclick="openRefugeContactsV204()">
 <span>❤️</span>Contactos refugio
 </button>
 
@@ -15896,50 +15896,170 @@ function pasoDiaV139(){
 
 
 <div id="contactosRefugioV140" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:#fff7f7;z-index:999999;padding:25px;box-sizing:border-box;overflow:auto;">
-<button onclick="document.getElementById('contactosRefugioV140').style.display='none'" style="border:none;border-radius:18px;padding:12px 18px;">← Volver</button>
+<button type="button" onclick="closeRefugeContactsV204()" style="border:none;border-radius:18px;padding:12px 18px;">← Volver</button>
 
 <h1 style="font-size:36px;text-align:center;">❤️ Contactos refugio</h1>
 
-<div style="background:white;border-radius:24px;padding:18px;margin:18px 0;font-size:18px;line-height:1.5;">
-No hace falta atravesarlo todo en soledad.
+<div style="background:white;border-radius:24px;padding:18px;margin:18px 0;font-size:17px;line-height:1.55;">
+  Son personas que elegís para tener cerca cuando necesitás apoyo.<br><br>
+  <strong>Si guardás solamente el nombre</strong>, queda como recordatorio de a quién podés acudir.<br>
+  <strong>Si también agregás el teléfono</strong>, la app te permite llamar o abrir WhatsApp directamente.
 </div>
 
-<div style="background:white;border-radius:22px;padding:16px;margin:12px 0;">
-👤 Persona 1<br>
-<input id="ref1" placeholder="Nombre o teléfono" style="width:100%;padding:12px;border-radius:14px;border:1px solid #ddd;margin-top:10px;">
-</div>
+<div id="refugeContactsListV204"></div>
 
-<div style="background:white;border-radius:22px;padding:16px;margin:12px 0;">
-👤 Persona 2<br>
-<input id="ref2" placeholder="Nombre o teléfono" style="width:100%;padding:12px;border-radius:14px;border:1px solid #ddd;margin-top:10px;">
-</div>
+<button type="button" id="saveRefugeContactsV204" onclick="saveRefugeContactsV204()" style="width:100%;border:none;border-radius:20px;padding:16px;background:#fecdd3;font-size:18px;margin-top:18px;">
+  Guardar contactos refugio
+</button>
 
-<div style="background:white;border-radius:22px;padding:16px;margin:12px 0;">
-👤 Persona 3<br>
-<input id="ref3" placeholder="Nombre o teléfono" style="width:100%;padding:12px;border-radius:14px;border:1px solid #ddd;margin-top:10px;">
-</div>
+<div id="okRefV140" style="margin-top:20px;background:white;border-radius:22px;padding:18px;display:none;line-height:1.5;"></div>
 
-<button onclick="guardarRefugioV140()" style="width:100%;border:none;border-radius:20px;padding:16px;background:#fecdd3;font-size:18px;margin-top:18px;">Guardar contactos refugio</button>
-
-<div id="okRefV140" style="margin-top:20px;background:white;border-radius:22px;padding:18px;display:none;">
-✔️ Tus contactos refugio quedaron guardados en este dispositivo.
+<div style="margin-top:16px;color:#64748b;font-size:14px;line-height:1.45;">
+  Los datos quedan guardados únicamente en este dispositivo. La app no envía mensajes ni realiza llamadas sin que vos toques la acción correspondiente.
 </div>
 </div>
 
-<script>
-function guardarRefugioV140(){
-localStorage.setItem('ref1v140',document.getElementById('ref1').value);
-localStorage.setItem('ref2v140',document.getElementById('ref2').value);
-localStorage.setItem('ref3v140',document.getElementById('ref3').value);
-document.getElementById('okRefV140').style.display='block';
-}
-window.addEventListener('load',()=>{
-if(document.getElementById('ref1')){
-ref1.value=localStorage.getItem('ref1v140')||'';
-ref2.value=localStorage.getItem('ref2v140')||'';
-ref3.value=localStorage.getItem('ref3v140')||'';
-}
-});
+<script id="v204-refuge-contacts">
+(function(){
+  'use strict';
+
+  var CONTACTS=3;
+
+  function q(id){ return document.getElementById(id); }
+
+  function esc(s){
+    return String(s||'').replace(/[&<>"']/g,function(c){
+      return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];
+    });
+  }
+
+  function cleanPhone(raw){
+    return String(raw||'').replace(/[^\d+]/g,'').replace(/(?!^)\+/g,'');
+  }
+
+  function whatsappPhone(raw){
+    return String(raw||'').replace(/\D/g,'');
+  }
+
+  function readContact(i){
+    var name=localStorage.getItem('ref'+i+'NameV204') || '';
+    var phone=localStorage.getItem('ref'+i+'PhoneV204') || '';
+
+    /* Migración suave desde el formato viejo V140. */
+    if(!name && !phone){
+      var legacy=localStorage.getItem('ref'+i+'v140') || '';
+      if(legacy){
+        if(/^[+\d\s().-]{6,}$/.test(legacy)) phone=legacy;
+        else name=legacy;
+      }
+    }
+
+    return {name:name,phone:phone};
+  }
+
+  function saveContact(i,name,phone){
+    localStorage.setItem('ref'+i+'NameV204',name);
+    localStorage.setItem('ref'+i+'PhoneV204',phone);
+
+    /* Mantiene compatibilidad con módulos antiguos que solo leen ref1v140... */
+    localStorage.setItem('ref'+i+'v140',name || phone);
+  }
+
+  function cardHtml(i,data){
+    var hasPhone=!!cleanPhone(data.phone);
+    return '<div style="background:white;border-radius:22px;padding:16px;margin:12px 0;">'+
+      '<strong>👤 Persona '+i+'</strong><br>'+
+      '<input id="refNameV204_'+i+'" value="'+esc(data.name)+'" placeholder="Nombre" autocomplete="name" '+
+      'style="width:100%;padding:12px;border-radius:14px;border:1px solid #ddd;margin-top:12px;box-sizing:border-box;font-size:16px;">'+
+      '<input id="refPhoneV204_'+i+'" value="'+esc(data.phone)+'" placeholder="Teléfono con código de país, ej. +39..." inputmode="tel" autocomplete="tel" '+
+      'style="width:100%;padding:12px;border-radius:14px;border:1px solid #ddd;margin-top:10px;box-sizing:border-box;font-size:16px;">'+
+      '<div id="refActionsV204_'+i+'" style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;">'+
+        (hasPhone
+          ? '<button type="button" class="softButton" onclick="callRefugeContactV204('+i+')">📞 Llamar</button>'+
+            '<button type="button" class="softButton" onclick="whatsappRefugeContactV204('+i+')">💬 WhatsApp</button>'
+          : '<span style="color:#64748b;font-size:14px;">Agregá un teléfono y guardá para habilitar llamada y WhatsApp.</span>')+
+      '</div>'+
+    '</div>';
+  }
+
+  function render(){
+    var list=q('refugeContactsListV204');
+    if(!list) return;
+    var html='';
+    for(var i=1;i<=CONTACTS;i++) html+=cardHtml(i,readContact(i));
+    list.innerHTML=html;
+  }
+
+  window.openRefugeContactsV204=function(){
+    var screen=q('contactosRefugioV140');
+    if(!screen) return;
+    screen.style.display='block';
+    render();
+    try{screen.scrollTop=0;}catch(e){}
+  };
+
+  window.closeRefugeContactsV204=function(){
+    var screen=q('contactosRefugioV140');
+    if(screen) screen.style.display='none';
+  };
+
+  window.saveRefugeContactsV204=function(){
+    var saved=0;
+    for(var i=1;i<=CONTACTS;i++){
+      var nameEl=q('refNameV204_'+i);
+      var phoneEl=q('refPhoneV204_'+i);
+      var name=nameEl ? nameEl.value.trim() : '';
+      var phone=phoneEl ? phoneEl.value.trim() : '';
+      saveContact(i,name,phone);
+      if(name || phone) saved++;
+    }
+
+    var ok=q('okRefV140');
+    if(ok){
+      ok.style.display='block';
+      ok.innerHTML='✔️ Contactos guardados: <strong>'+saved+'</strong>.<br>'+
+        (saved
+          ? 'Si un contacto tiene teléfono, ahora vas a ver las opciones <strong>Llamar</strong> y <strong>WhatsApp</strong>.'
+          : 'Podés agregarlos cuando quieras.');
+    }
+
+    render();
+
+    if(ok){
+      try{ok.scrollIntoView({behavior:'smooth',block:'center'});}catch(e){}
+    }
+  };
+
+  window.callRefugeContactV204=function(i){
+    var data=readContact(i);
+    var phone=cleanPhone(data.phone);
+    if(!phone){
+      alert('Este contacto todavía no tiene un teléfono guardado.');
+      return;
+    }
+    window.location.href='tel:'+phone;
+  };
+
+  window.whatsappRefugeContactV204=function(i){
+    var data=readContact(i);
+    var phone=whatsappPhone(data.phone);
+    if(!phone){
+      alert('Este contacto todavía no tiene un teléfono guardado.');
+      return;
+    }
+    var message='Hola'+(data.name?', '+data.name:'')+'. Necesito hablar con alguien un momento.';
+    window.location.href='https://wa.me/'+phone+'?text='+encodeURIComponent(message);
+  };
+
+  /* Conserva el nombre histórico para cualquier código que todavía invoque guardarRefugioV140(). */
+  window.guardarRefugioV140=window.saveRefugeContactsV204;
+
+  if(document.readyState==='loading'){
+    document.addEventListener('DOMContentLoaded',render);
+  }else{
+    render();
+  }
+})();
 </script>
 
 
