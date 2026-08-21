@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
-<title>App Emocional V206 · Quedarme con respiración guiada</title>
+<title>App Emocional V207 · Quedarme respiración corregida</title>
 
 <style>
 body {
@@ -4969,6 +4969,42 @@ body:not(.v151CategoryOpen) .mainDescriptionV154 { color:#5f6f82 !important; opa
 }
 </style>
 
+
+<style id="v207-stay-breathing-css">
+.stayCircleV207{
+  border:none !important;
+  padding:0 !important;
+  cursor:pointer;
+  animation:none !important;
+  transform:scale(.96);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  transition:none !important;
+  -webkit-appearance:none;
+  appearance:none;
+}
+.stayCircleV207 #stayBreathingLabelV207{
+  font-size:18px;
+  color:#334155;
+  font-weight:650;
+  pointer-events:none;
+}
+.stayCircleV207.v207-breathing{
+  animation:stayBreathV207 10s infinite ease-in-out !important;
+}
+@keyframes stayBreathV207{
+  0%{transform:scale(.96);}
+  40%{transform:scale(1.22);}
+  100%{transform:scale(.96);}
+}
+@media (prefers-reduced-motion: reduce){
+  .stayCircleV207.v207-breathing{
+    animation-duration:10s !important;
+  }
+}
+</style>
+
 </head>
 
 <body>
@@ -5502,8 +5538,8 @@ overflow:hidden;
     Estoy acá.
   </div>
 
-  <button type="button" id="stayBreathingBallV206" class="stayCircle" onclick="toggleStayBreathingV206()" aria-label="Iniciar respiración guiada" style="border:none;padding:0;cursor:pointer;">
-      <span id="stayBreathingLabelV206" style="font-size:18px;color:#334155;font-weight:600;">Respirar</span>
+  <button type="button" id="stayBreathingBallV207" class="stayCircle stayCircleV207" onclick="toggleStayBreathingV207()" aria-label="Iniciar respiración guiada">
+      <span id="stayBreathingLabelV207">Respirar</span>
     </button>
 
   <div id="staySubMessage" style="
@@ -18557,109 +18593,124 @@ body:not(.v151CategoryOpen) .mainNavigationV154{
 </script>
 
 
-<script id="v206-stay-breathing-controller">
+
+
+
+<script id="v207-stay-breathing-controller">
 (function(){
   'use strict';
-  if(window.__v206StayBreathingReady) return;
-  window.__v206StayBreathingReady=true;
+  if(window.__v207StayBreathingReady) return;
+  window.__v207StayBreathingReady=true;
 
-  var breathingTimerV206=null;
-  var phaseV206='idle';
+  var running=false;
+  var phaseTimer=null;
 
   function q(id){ return document.getElementById(id); }
 
-  function setBallV206(scale,label,transition){
-    var ball=q('stayBreathingBallV206');
-    var txt=q('stayBreathingLabelV206');
-    if(!ball) return;
-    ball.style.transition=transition || 'transform 4s ease, box-shadow 4s ease';
-    ball.style.transform='scale('+scale+')';
-    if(txt) txt.textContent=label;
+  function clearPhaseTimer(){
+    if(phaseTimer){
+      clearTimeout(phaseTimer);
+      phaseTimer=null;
+    }
   }
 
-  function setStayTextV206(main,sub){
+  function setText(main,sub){
     var m=q('stayMessage');
     var s=q('staySubMessage');
-    if(m && main) m.textContent=main;
-    if(s && sub) s.textContent=sub;
+    if(m) m.textContent=main;
+    if(s) s.textContent=sub;
   }
 
-  function stopStayBreathingV206(){
-    if(breathingTimerV206){
-      clearTimeout(breathingTimerV206);
-      breathingTimerV206=null;
-    }
-    phaseV206='idle';
-    setBallV206(1,'Respirar','transform .5s ease, box-shadow .5s ease');
-    var ball=q('stayBreathingBallV206');
-    if(ball){
-      ball.setAttribute('aria-label','Iniciar respiración guiada');
-      ball.style.boxShadow='0 22px 60px rgba(59,130,246,.25)';
-    }
+  function setLabel(label){
+    var el=q('stayBreathingLabelV207');
+    if(el) el.textContent=label;
   }
 
-  function inhaleV206(){
-    phaseV206='inhale';
-    setStayTextV206('Inhalá despacio.','No hace falta llenar del todo los pulmones.');
-    setBallV206(1.22,'Inhalar','transform 4s ease, box-shadow 4s ease');
-    var ball=q('stayBreathingBallV206');
-    if(ball) ball.style.boxShadow='0 28px 72px rgba(59,130,246,.38)';
-    breathingTimerV206=setTimeout(exhaleV206,4000);
+  function setPhaseInhale(){
+    if(!running) return;
+    setLabel('Inhalar');
+    setText('Inhalá despacio.','Mirá cómo la esfera se expande con vos.');
+    clearPhaseTimer();
+    phaseTimer=setTimeout(setPhaseExhale,4000);
   }
 
-  function exhaleV206(){
-    phaseV206='exhale';
-    setStayTextV206('Exhalá lento.','Dejá que el cuerpo afloje apenas.');
-    setBallV206(0.96,'Exhalar','transform 6s ease, box-shadow 6s ease');
-    var ball=q('stayBreathingBallV206');
-    if(ball) ball.style.boxShadow='0 16px 42px rgba(59,130,246,.18)';
-    breathingTimerV206=setTimeout(inhaleV206,6000);
+  function setPhaseExhale(){
+    if(!running) return;
+    setLabel('Exhalar');
+    setText('Exhalá lento.','La esfera vuelve despacio. No hace falta apurarse.');
+    clearPhaseTimer();
+    phaseTimer=setTimeout(setPhaseInhale,6000);
   }
 
-  window.toggleStayBreathingV206=function(){
-    if(phaseV206!=='idle'){
-      stopStayBreathingV206();
-      setStayTextV206('Estoy acá.','Respiración pausada. Tocá la esfera cuando quieras volver.');
-      return;
-    }
+  function start(){
+    var ball=q('stayBreathingBallV207');
+    if(!ball) return;
 
-    var ball=q('stayBreathingBallV206');
-    if(ball) ball.setAttribute('aria-label','Pausar respiración guiada');
+    running=true;
+    clearPhaseTimer();
 
-    inhaleV206();
+    /* Reinicia la animación desde el principio de forma fiable en Safari. */
+    ball.classList.remove('v207-breathing');
+    void ball.offsetWidth;
+    ball.classList.add('v207-breathing');
+    ball.setAttribute('aria-label','Pausar respiración guiada');
+
+    setPhaseInhale();
 
     if(navigator.vibrate){
-      try{navigator.vibrate(35);}catch(e){}
+      try{navigator.vibrate(30);}catch(e){}
     }
+  }
+
+  function stop(showMessage){
+    running=false;
+    clearPhaseTimer();
+
+    var ball=q('stayBreathingBallV207');
+    if(ball){
+      ball.classList.remove('v207-breathing');
+      ball.setAttribute('aria-label','Iniciar respiración guiada');
+    }
+
+    setLabel('Respirar');
+
+    if(showMessage){
+      setText('Estoy acá.','Respiración pausada. Tocá la esfera cuando quieras volver.');
+    }
+  }
+
+  window.toggleStayBreathingV207=function(){
+    if(running) stop(true);
+    else start();
   };
 
-  window.stopStayBreathingV206=stopStayBreathingV206;
+  window.stopStayBreathingV207=function(){
+    stop(false);
+  };
 
-  /* Conserva el comportamiento original de Quedarme y añade el reseteo respiratorio. */
+  /* Reemplaza el comportamiento anterior de abrir/cerrar Quedarme
+     solo para asegurar que la respiración NO empiece sola. */
   var originalOpen=window.openStay;
   if(typeof originalOpen==='function'){
     window.openStay=function(){
-      stopStayBreathingV206();
+      stop(false);
       originalOpen.apply(this,arguments);
 
-      var label=q('stayBreathingLabelV206');
-      if(label) label.textContent='Respirar';
-
-      var sub=q('staySubMessage');
-      if(sub) sub.textContent='Podés quedarte así o tocar la esfera para respirar conmigo.';
+      setLabel('Respirar');
+      setText('Estoy acá.','Podés quedarte así o tocar la esfera para respirar conmigo.');
     };
   }
 
   var originalClose=window.closeStay;
   if(typeof originalClose==='function'){
     window.closeStay=function(){
-      stopStayBreathingV206();
+      stop(false);
       return originalClose.apply(this,arguments);
     };
   }
 
   document.addEventListener('visibilitychange',function(){
-    if(document.hidden) stopStayBreathingV206();
+    if(document.hidden) stop(false);
   });
 })();
 </script>
