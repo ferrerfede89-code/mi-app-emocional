@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
-<title>App Emocional V204 · Contactos refugio claros y accionables</title>
+<title>App Emocional V205 · Conectar claro y sin borradores viejos</title>
 
 <style>
 body {
@@ -5477,7 +5477,7 @@ text-align:center;
 
   <button onclick="prepareConnection()" class="softButton" style="margin-top:20px;">Preparar mensaje</button>
 
-  <div id="connectResult" style="margin-top:25px;font-size:19px;font-weight:bold;"></div>
+  <div id="connectResult" style="margin-top:25px;font-size:17px;line-height:1.5;"></div>
 
   <br><br>
   <button onclick="closeConnect()" class="softButton">Volver</button>
@@ -9373,43 +9373,134 @@ function releaseThought() {
   }
 }
 
+function resetConnectV205(){
+  selectedPerson = "";
+  selectedNeed = "";
+
+  const person = document.getElementById("selectedPerson");
+  const need = document.getElementById("selectedNeed");
+  const input = document.getElementById("connectText");
+  const result = document.getElementById("connectResult");
+
+  if(person) person.innerText = "";
+  if(need) need.innerText = "";
+  if(input) input.value = "";
+  if(result) result.innerHTML = "";
+}
+
 function openConnect() {
+  resetConnectV205();
+
   const comp = getCompanion();
-  document.getElementById("connectTitle").innerText =
-    comp ? comp.connect : "¿Quién te hace sentir seguro?";
-  document.getElementById("connectScreen").style.display = "block";
+  const title = document.getElementById("connectTitle");
+  if(title){
+    title.innerText = comp ? comp.connect : "¿Quién te hace sentir seguro?";
+  }
+
+  const screen = document.getElementById("connectScreen");
+  if(screen){
+    screen.style.display = "block";
+    try{ screen.scrollTop = 0; }catch(e){}
+  }
 }
 
 function closeConnect() {
-  document.getElementById("connectScreen").style.display = "none";
+  resetConnectV205();
+  const screen = document.getElementById("connectScreen");
+  if(screen) screen.style.display = "none";
 }
 
 function choosePerson(person) {
   selectedPerson = person;
-  document.getElementById("selectedPerson").innerText =
-    "Elegiste: " + person;
+  const box = document.getElementById("selectedPerson");
+  if(box) box.innerText = "Elegiste: " + person;
 }
 
 function chooseNeed(need) {
   selectedNeed = need;
-  document.getElementById("selectedNeed").innerText =
-    "Necesitás: " + need;
+  const box = document.getElementById("selectedNeed");
+  if(box) box.innerText = "Necesitás: " + need;
+}
+
+let preparedConnectionTextV205 = "";
+
+function escapeConnectV205(str){
+  return String(str || "").replace(/[&<>"']/g,function(c){
+    return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];
+  });
+}
+
+function buildConnectionMessageV205(){
+  const input = document.getElementById("connectText");
+  const custom = input ? input.value.trim() : "";
+
+  if(custom) return custom;
+
+  if(selectedNeed === "Quiero hablar"){
+    return "Hoy me está costando un poco. ¿Podemos hablar cuando puedas?";
+  }
+  if(selectedNeed === "Quiero compañía"){
+    return "Hoy me vendría bien un poco de compañía. ¿Podés estar cerca?";
+  }
+  if(selectedNeed === "Solo quiero que sepa que hoy me cuesta"){
+    return "Solo quería contarte que hoy me está costando un poco. No hace falta que soluciones nada.";
+  }
+
+  return "";
 }
 
 function prepareConnection() {
-  const text = document.getElementById("connectText").value;
+  const result = document.getElementById("connectResult");
+  if(!result) return;
 
-  let result = "No tenés que atravesarlo solo.";
+  const message = buildConnectionMessageV205();
 
-  if (selectedPerson || selectedNeed || text.trim() !== "") {
-    result = "Ya diste el primer paso: ponerlo en palabras.";
+  if(!selectedPerson && !selectedNeed && !message){
+    result.innerHTML =
+      '<div style="background:rgba(255,255,255,.78);border-radius:18px;padding:14px;">'+
+      'Elegí una persona, una necesidad o escribí algo antes de preparar el mensaje.'+
+      '</div>';
+    return;
   }
 
-  document.getElementById("connectResult").innerText = result;
+  preparedConnectionTextV205 = message || "Hoy me está costando un poco. ¿Podemos hablar?";
 
-  if (navigator.vibrate) {
-    navigator.vibrate([80,40,80]);
+  result.innerHTML =
+    '<div style="background:rgba(255,255,255,.88);border-radius:20px;padding:16px;text-align:left;">'+
+      '<strong>💬 Mensaje preparado</strong>'+
+      (selectedPerson ? '<div style="margin-top:8px;color:#64748b;">Para: '+escapeConnectV205(selectedPerson)+'</div>' : '')+
+      (selectedNeed ? '<div style="margin-top:4px;color:#64748b;">Necesito: '+escapeConnectV205(selectedNeed)+'</div>' : '')+
+      '<div style="margin-top:14px;font-size:18px;">“'+escapeConnectV205(preparedConnectionTextV205)+'”</div>'+
+      '<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:14px;">'+
+        '<button type="button" class="softButton" onclick="copyPreparedConnectionV205()">Copiar mensaje</button>'+
+        '<button type="button" class="softButton" onclick="openPreparedConnectionWhatsAppV205()">Abrir WhatsApp</button>'+
+      '</div>'+
+      '<div id="connectActionStatusV205" style="margin-top:10px;color:#64748b;font-size:14px;"></div>'+
+    '</div>';
+
+  if(navigator.vibrate){
+    try{ navigator.vibrate([80,40,80]); }catch(e){}
   }
+}
+
+function copyPreparedConnectionV205(){
+  const status = document.getElementById("connectActionStatusV205");
+  if(!preparedConnectionTextV205) return;
+
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(preparedConnectionTextV205).then(function(){
+      if(status) status.innerText = "✓ Mensaje copiado.";
+    }).catch(function(){
+      if(status) status.innerText = "Mantené presionado el mensaje para copiarlo.";
+    });
+  }else{
+    if(status) status.innerText = "Mantené presionado el mensaje para copiarlo.";
+  }
+}
+
+function openPreparedConnectionWhatsAppV205(){
+  if(!preparedConnectionTextV205) return;
+  window.location.href = "https://wa.me/?text=" + encodeURIComponent(preparedConnectionTextV205);
 }
 
 function openStay() {
