@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
-<title>App Emocional V211 · Refugio de crisis con puentes directos</title>
+<title>App Emocional V212 · Plan de emergencia con accesos directos</title>
 
 <style>
 body {
@@ -18751,6 +18751,58 @@ document.addEventListener("visibilitychange",function(){
 })();
 </script>
 
+
+<script id="v212-emergency-direct-actions">
+(function(){
+  'use strict';
+  if(window.__v212EmergencyDirectReady) return;
+  window.__v212EmergencyDirectReady=true;
+
+  function q(id){ return document.getElementById(id); }
+
+  function clearIntro(screen){
+    if(!screen) return;
+    screen.querySelectorAll(':scope > .calmEntryV152').forEach(function(x){
+      try{x.remove();}catch(e){}
+    });
+    screen.dataset.v152Entered='true';
+    try{screen.scrollTop=0;}catch(e){}
+  }
+
+  function closeEmergency(){
+    if(typeof window.closeEmergencyV129==='function'){
+      window.closeEmergencyV129();
+    }else{
+      var overlay=q('emergencyV129Overlay');
+      if(overlay) overlay.style.display='none';
+    }
+  }
+
+  window.goEmergencyActionV212=function(kind){
+    closeEmergency();
+
+    requestAnimationFrame(function(){
+      setTimeout(function(){
+        if(kind==='rest'){
+          if(typeof window.openRestV128==='function'){
+            window.openRestV128();
+            clearIntro(q('restV128Overlay'));
+          }
+          return;
+        }
+
+        if(kind==='plan10'){
+          if(typeof window.openPlanV125==='function'){
+            window.openPlanV125();
+            clearIntro(q('planV125Overlay'));
+          }
+        }
+      },40);
+    });
+  };
+})();
+</script>
+
 </body>
 
 <script id="v57_2_final_diary_fix">
@@ -20770,7 +20822,7 @@ document.addEventListener('DOMContentLoaded',function(){
     <div class="continuityV127Grid">
       <button class="continuityV127Btn primary" onclick="refreshContinuityV127()">Nueva señal</button>
       <button class="continuityV127Btn" onclick="saveContinuityV127()">Guardar faro</button>
-      <button class="continuityV127Btn" onclick="openPlanV125 && openPlanV125()">Plan 10 minutos</button>
+      <button class="continuityV127Btn" onclick="goEmergencyActionV212('plan10')">Plan 10 minutos</button>
       <button class="continuityV127Btn" onclick="closeContinuityV127()">Volver</button>
     </div>
     <div class="continuityV127Small">No mide rendimiento. Sólo reúne pequeñas pruebas de continuidad emocional.</div>
@@ -21030,8 +21082,8 @@ document.addEventListener('DOMContentLoaded',function(){
       <div id="emergencyV129Steps"></div>
       <div class="emergencyV129Grid">
         <button class="emergencyV129Btn primary" onclick="copyEmergencyMessageV129()">Copiar mensaje</button>
-        <button class="emergencyV129Btn" onclick="openRestV128 && openRestV128()">Descanso rápido</button>
-        <button class="emergencyV129Btn" onclick="openPlanV125 && openPlanV125()">Plan 10 minutos</button>
+        <button class="emergencyV129Btn" onclick="goEmergencyActionV212('rest')">Descanso rápido</button>
+        <button class="emergencyV129Btn" onclick="goEmergencyActionV212('plan10')">Plan 10 minutos</button>
         <button class="emergencyV129Btn" onclick="showEmergencySetupV129()">Editar plan</button>
       </div>
       <p id="emergencyV129Copy" class="emergencyV129Small"></p>
