@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
-<title>App Emocional V210 · Personas a las que acompañaste</title>
+<title>App Emocional V211 · Refugio de crisis con puentes directos</title>
 
 <style>
 body {
@@ -15627,9 +15627,9 @@ function closeClimateV126(){ document.getElementById('climateV126Overlay').style
 
   <div class="crisisV131Card">
     <strong>Puentes disponibles</strong><br><br>
-    <button class="softButton" onclick="closeCrisisRefugeV131(); if(typeof breathe==='function') breathe();">Respirar</button>
-    <button class="softButton" onclick="closeCrisisRefugeV131(); if(typeof connect==='function') connect();">Conectar</button>
-    <button class="softButton" onclick="closeCrisisRefugeV131(); if(typeof openEmergencyPlanV130==='function') openEmergencyPlanV130();">Plan de emergencia</button>
+    <button type="button" class="softButton" onclick="goFromCrisisV211('respirar')">🫁 Respirar</button>
+    <button type="button" class="softButton" onclick="goFromCrisisV211('conectar')">🫂 Conectar</button>
+    <button type="button" class="softButton" onclick="goFromCrisisV211('emergencia')">🛟 Plan de emergencia</button>
   </div>
 
   <p class="crisisV131Small">Si sentís que estás en peligro inmediato, buscá ayuda real ahora: una persona cercana, emergencias locales o un servicio de crisis.</p>
@@ -18695,6 +18695,62 @@ document.addEventListener("visibilitychange",function(){
   }
 });
 </script>
+
+<script id="v211-crisis-bridges-controller">
+(function(){
+  'use strict';
+  if(window.__v211CrisisBridgesReady) return;
+  window.__v211CrisisBridgesReady=true;
+
+  function q(id){ return document.getElementById(id); }
+
+  function clearIntroLayerV211(screen){
+    if(!screen) return;
+    screen.querySelectorAll(':scope > .calmEntryV152').forEach(function(layer){
+      try{layer.remove();}catch(e){}
+    });
+    screen.dataset.v152Entered='true';
+    try{screen.scrollTop=0;}catch(e){}
+  }
+
+  function closeCrisisFirstV211(){
+    if(typeof window.closeCrisisRefugeV131==='function'){
+      window.closeCrisisRefugeV131();
+    }else{
+      var crisis=q('crisisRefugeScreenV131');
+      if(crisis) crisis.style.display='none';
+    }
+  }
+
+  window.goFromCrisisV211=function(kind){
+    closeCrisisFirstV211();
+
+    /* Esperamos al próximo cuadro para que Safari cierre una capa antes
+       de abrir la siguiente. Evita quedarse visualmente en Refugio de crisis. */
+    requestAnimationFrame(function(){
+      setTimeout(function(){
+        if(kind==='respirar'){
+          window.openBreathing();
+          clearIntroLayerV211(q('breathingScreen'));
+          return;
+        }
+
+        if(kind==='conectar'){
+          window.openConnect();
+          clearIntroLayerV211(q('connectScreen'));
+          return;
+        }
+
+        if(kind==='emergencia'){
+          window.openEmergencyV129();
+          clearIntroLayerV211(q('emergencyV129Overlay'));
+        }
+      },40);
+    });
+  };
+})();
+</script>
+
 </body>
 
 <script id="v57_2_final_diary_fix">
