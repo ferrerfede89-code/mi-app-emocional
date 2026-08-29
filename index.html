@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
-<title>App Emocional V219 · Museo de tus avances navegación corregida</title>
+<title>App Emocional V220 · Apoyo rápido llamadas corregidas</title>
 
 <style>
 body {
@@ -5658,14 +5658,14 @@ overflow:auto;
   <div class="supportCard">
     <h3>📞 Llamar</h3>
     <p>Si necesitás escuchar una voz, podés llamar a alguien cercano.</p>
-    <button onclick="prepareCall()" class="softButton">Prepararme para llamar</button>
+    <button onclick="prepareCall()" class="softButton">📞 Elegir a quién llamar</button>
     <div id="callResult" style="font-weight:bold;margin-top:10px;"></div>
   </div>
 
   <div class="supportCard">
     <h3>🚑 Emergencia</h3>
     <p>Si estás en peligro inmediato o sentís que no podés mantenerte a salvo, contactá emergencias de tu país.</p>
-    <button onclick="showEmergency()" class="softButton">Mostrar recordatorio</button>
+    <button onclick="showEmergency()" class="softButton">🚑 Ver qué hacer en una emergencia</button>
     <div id="emergencyResult" style="font-weight:bold;margin-top:10px;"></div>
   </div>
 
@@ -9898,13 +9898,85 @@ function openWhatsApp() {
 }
 
 function prepareCall() {
-  document.getElementById("callResult").innerText =
-    "No tenés que explicar todo. Podés empezar con: ¿podés hablar un momento?";
+  const result = document.getElementById("callResult");
+  if(!result) return;
+
+  function escSupportV220(value){
+    return String(value || "").replace(/[&<>"']/g,function(c){
+      return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];
+    });
+  }
+
+  function cleanSupportPhoneV220(value){
+    return String(value || "").replace(/[^\d+]/g,"").replace(/(?!^)\+/g,"");
+  }
+
+  const contacts=[];
+  for(let i=1;i<=3;i++){
+    let name=localStorage.getItem("ref"+i+"NameV204") || "";
+    let phone=localStorage.getItem("ref"+i+"PhoneV204") || "";
+
+    if(!name && !phone){
+      const legacy=localStorage.getItem("ref"+i+"v140") || "";
+      if(legacy){
+        if(/^[+\d\s().-]{6,}$/.test(legacy)) phone=legacy;
+        else name=legacy;
+      }
+    }
+
+    const cleanPhone=cleanSupportPhoneV220(phone);
+    if(name || cleanPhone){
+      contacts.push({index:i,name:name,phone:cleanPhone});
+    }
+  }
+
+  const callable=contacts.filter(c=>c.phone);
+
+  if(callable.length){
+    result.innerHTML =
+      '<div style="margin-top:10px;line-height:1.5;">'+
+        '<div style="margin-bottom:10px;">No tenés que explicar todo. Podés empezar con: <strong>“¿Podés hablar un momento?”</strong></div>'+
+        callable.map(function(c){
+          const label=c.name ? escSupportV220(c.name) : 'Contacto '+c.index;
+          return '<a href="tel:'+encodeURIComponent(c.phone)+'" class="softButton" '+
+                 'style="display:block;text-decoration:none;text-align:center;margin:8px 0;">📞 Llamar a '+label+'</a>';
+        }).join('')+
+      '</div>';
+  }else{
+    result.innerHTML =
+      '<div style="line-height:1.5;">'+
+        'Todavía no hay un teléfono guardado en <strong>Contactos refugio</strong>.<br><br>'+
+        '<button type="button" class="softButton" onclick="openSupportContactsV220()">❤️ Abrir Contactos refugio</button>'+
+      '</div>';
+  }
+
+  if(navigator.vibrate){
+    try{ navigator.vibrate(35); }catch(e){}
+  }
+}
+
+function openSupportContactsV220(){
+  const support=document.getElementById("supportScreen");
+  if(support) support.style.display="none";
+
+  if(typeof openRefugeContactsV204==="function"){
+    openRefugeContactsV204();
+  }else{
+    const contacts=document.getElementById("contactosRefugioV140");
+    if(contacts) contacts.style.display="block";
+  }
 }
 
 function showEmergency() {
-  document.getElementById("emergencyResult").innerText =
-    "Si hay peligro inmediato, llamá al número local de emergencias. En Italia y la Unión Europea es 112.";
+  const result=document.getElementById("emergencyResult");
+  if(!result) return;
+
+  result.innerHTML =
+    '<div style="line-height:1.55;">'+
+      '<strong>Este botón no realiza una llamada.</strong><br><br>'+
+      'Si hay peligro inmediato o no podés mantenerte a salvo, llamá ahora al número oficial de emergencias de tu país. '+
+      'En la Unión Europea, el número general de emergencias es <strong>112</strong>.'+
+    '</div>';
 }
 
 
