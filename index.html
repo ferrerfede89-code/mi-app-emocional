@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
-<title>App Emocional V212 · Plan de emergencia con accesos directos</title>
+<title>App Emocional V213 · Plan de emergencia navegación corregida</title>
 
 <style>
 body {
@@ -18752,54 +18752,122 @@ document.addEventListener("visibilitychange",function(){
 </script>
 
 
-<script id="v212-emergency-direct-actions">
+
+
+
+<script id="v213-emergency-direct-actions">
 (function(){
   'use strict';
-  if(window.__v212EmergencyDirectReady) return;
-  window.__v212EmergencyDirectReady=true;
+  if(window.__v213EmergencyDirectReady) return;
+  window.__v213EmergencyDirectReady=true;
 
   function q(id){ return document.getElementById(id); }
 
-  function clearIntro(screen){
+  function hardHideEmergencyV213(){
+    var overlay=q('emergencyV129Overlay');
+    if(!overlay) return;
+
+    overlay.style.setProperty('display','none','important');
+    overlay.style.setProperty('visibility','hidden','important');
+    overlay.style.setProperty('pointer-events','none','important');
+  }
+
+  function restoreEmergencyV213(){
+    var overlay=q('emergencyV129Overlay');
+    if(!overlay) return;
+
+    overlay.style.removeProperty('visibility');
+    overlay.style.removeProperty('pointer-events');
+    overlay.style.removeProperty('display');
+  }
+
+  function clearProgressiveLayerV213(screen){
     if(!screen) return;
-    screen.querySelectorAll(':scope > .calmEntryV152').forEach(function(x){
-      try{x.remove();}catch(e){}
+    screen.querySelectorAll(':scope > .calmEntryV152').forEach(function(layer){
+      try{layer.remove();}catch(e){}
     });
     screen.dataset.v152Entered='true';
+  }
+
+  function showDestinationV213(screen,displayType){
+    if(!screen) return;
+
+    clearProgressiveLayerV213(screen);
+
+    screen.style.setProperty('z-index','1000005','important');
+    screen.style.setProperty('visibility','visible','important');
+    screen.style.setProperty('pointer-events','auto','important');
+    screen.style.setProperty('display',displayType || 'block','important');
+
     try{screen.scrollTop=0;}catch(e){}
   }
 
-  function closeEmergency(){
-    if(typeof window.closeEmergencyV129==='function'){
-      window.closeEmergencyV129();
-    }else{
-      var overlay=q('emergencyV129Overlay');
-      if(overlay) overlay.style.display='none';
-    }
-  }
-
   window.goEmergencyActionV212=function(kind){
-    closeEmergency();
+    hardHideEmergencyV213();
 
     requestAnimationFrame(function(){
-      setTimeout(function(){
+      requestAnimationFrame(function(){
         if(kind==='rest'){
           if(typeof window.openRestV128==='function'){
             window.openRestV128();
-            clearIntro(q('restV128Overlay'));
           }
+          showDestinationV213(q('restV128Overlay'),'block');
           return;
         }
 
         if(kind==='plan10'){
           if(typeof window.openPlanV125==='function'){
             window.openPlanV125();
-            clearIntro(q('planV125Overlay'));
           }
+          showDestinationV213(q('planV125Overlay'),'block');
         }
-      },40);
+      });
     });
   };
+
+  /* La próxima vez que se abra Plan de emergencia, restauramos el overlay
+     antes de ejecutar su lógica normal. */
+  var originalOpenEmergencyV213=window.openEmergencyV129;
+  if(typeof originalOpenEmergencyV213==='function'){
+    window.openEmergencyV129=function(){
+      restoreEmergencyV213();
+      var overlay=q('emergencyV129Overlay');
+      if(overlay){
+        overlay.style.removeProperty('z-index');
+      }
+      return originalOpenEmergencyV213.apply(this,arguments);
+    };
+  }
+
+  /* Al cerrar los destinos, quitamos el z-index forzado para no contaminar
+     otras pantallas futuras. */
+  var originalCloseRestV213=window.closeRestV128;
+  if(typeof originalCloseRestV213==='function'){
+    window.closeRestV128=function(){
+      var screen=q('restV128Overlay');
+      if(screen){
+        screen.style.removeProperty('z-index');
+        screen.style.removeProperty('visibility');
+        screen.style.removeProperty('pointer-events');
+        screen.style.removeProperty('display');
+      }
+      return originalCloseRestV213.apply(this,arguments);
+    };
+  }
+
+  var originalClosePlanV213=window.closePlanV125;
+  if(typeof originalClosePlanV213==='function'){
+    window.closePlanV125=function(){
+      var screen=q('planV125Overlay');
+      if(screen){
+        screen.style.removeProperty('z-index');
+        screen.style.removeProperty('visibility');
+        screen.style.removeProperty('pointer-events');
+        screen.style.removeProperty('display');
+      }
+      return originalClosePlanV213.apply(this,arguments);
+    };
+  }
 })();
 </script>
 
