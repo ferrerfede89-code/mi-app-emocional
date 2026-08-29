@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
-<title>App Emocional V217 · Umbral de etapa corregido</title>
+<title>App Emocional V218 · Biblioteca de aprendizajes actualizable</title>
 
 <style>
 body {
@@ -13653,7 +13653,8 @@ function saveSeedTextV77(){
     <div id="libraryListV112"></div>
   </div>
 
-  <button onclick="renderLibraryV112()" class="softButton">Actualizar biblioteca</button>
+  <button id="libraryRefreshButtonV218" onclick="refreshLibraryV218()" class="softButton">Actualizar biblioteca</button>
+  <div id="libraryRefreshMessageV218" class="librarySmallV112" style="margin-top:10px;text-align:center;"></div>
   <button onclick="closeLibraryV112()" class="softButton">Volver despacio</button>
 </div>
 
@@ -18887,6 +18888,52 @@ document.addEventListener("visibilitychange",function(){
 </script>
 
 
+
+
+<script id="v218-library-refresh-controller">
+(function(){
+  'use strict';
+  if(window.__v218LibraryRefreshReady) return;
+  window.__v218LibraryRefreshReady=true;
+
+  window.refreshLibraryV218=function(){
+    if(typeof window.renderLibraryV112==='function'){
+      window.renderLibraryV112();
+    }
+
+    var screen=document.getElementById('libraryScreenV112');
+    var shelf=document.querySelector('#libraryScreenV112 .libraryShelfV112');
+    var msg=document.getElementById('libraryRefreshMessageV218');
+    var counter=document.getElementById('libraryCounterV112');
+
+    if(msg){
+      var countText=counter ? counter.textContent.trim() : '';
+      msg.textContent='✓ Biblioteca actualizada' + (countText ? ' · '+countText : '');
+    }
+
+    if(screen && shelf){
+      var top=Math.max(0, shelf.offsetTop-20);
+      screen.scrollTop=top;
+      requestAnimationFrame(function(){
+        screen.scrollTop=top;
+        setTimeout(function(){screen.scrollTop=top;},50);
+      });
+
+      shelf.style.transition='transform .18s ease, box-shadow .18s ease';
+      shelf.style.transform='scale(1.012)';
+      shelf.style.boxShadow='0 0 0 3px rgba(245,158,11,.14),0 14px 34px rgba(0,0,0,.07)';
+      setTimeout(function(){
+        shelf.style.transform='';
+        shelf.style.boxShadow='';
+      },650);
+    }
+
+    if(navigator.vibrate){
+      try{navigator.vibrate(35);}catch(e){}
+    }
+  };
+})();
+</script>
 
 </body>
 
