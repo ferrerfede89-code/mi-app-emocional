@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
-<title>App Emocional V213 · Plan de emergencia navegación corregida</title>
+<title>App Emocional V214 · Plan de emergencia reingreso corregido</title>
 
 <style>
 body {
@@ -18755,33 +18755,16 @@ document.addEventListener("visibilitychange",function(){
 
 
 
-<script id="v213-emergency-direct-actions">
+
+<script id="v214-emergency-direct-actions">
 (function(){
   'use strict';
-  if(window.__v213EmergencyDirectReady) return;
-  window.__v213EmergencyDirectReady=true;
+  if(window.__v214EmergencyDirectReady) return;
+  window.__v214EmergencyDirectReady=true;
 
   function q(id){ return document.getElementById(id); }
 
-  function hardHideEmergencyV213(){
-    var overlay=q('emergencyV129Overlay');
-    if(!overlay) return;
-
-    overlay.style.setProperty('display','none','important');
-    overlay.style.setProperty('visibility','hidden','important');
-    overlay.style.setProperty('pointer-events','none','important');
-  }
-
-  function restoreEmergencyV213(){
-    var overlay=q('emergencyV129Overlay');
-    if(!overlay) return;
-
-    overlay.style.removeProperty('visibility');
-    overlay.style.removeProperty('pointer-events');
-    overlay.style.removeProperty('display');
-  }
-
-  function clearProgressiveLayerV213(screen){
+  function clearIntroV214(screen){
     if(!screen) return;
     screen.querySelectorAll(':scope > .calmEntryV152').forEach(function(layer){
       try{layer.remove();}catch(e){}
@@ -18789,21 +18772,38 @@ document.addEventListener("visibilitychange",function(){
     screen.dataset.v152Entered='true';
   }
 
-  function showDestinationV213(screen,displayType){
+  function hideEmergencyV214(){
+    var overlay=q('emergencyV129Overlay');
+    if(!overlay) return;
+
+    /* Ocultamos sólo mientras se abre el destino.
+       No dejamos visibility/pointer-events bloqueados de forma persistente. */
+    overlay.style.setProperty('display','none','important');
+  }
+
+  function unlockEmergencyV214(){
+    var overlay=q('emergencyV129Overlay');
+    if(!overlay) return;
+
+    /* Importantísimo para permitir volver a entrar después. */
+    overlay.style.removeProperty('display');
+    overlay.style.removeProperty('visibility');
+    overlay.style.removeProperty('pointer-events');
+    overlay.style.removeProperty('z-index');
+  }
+
+  function showDestinationV214(screen, displayType){
     if(!screen) return;
 
-    clearProgressiveLayerV213(screen);
-
+    clearIntroV214(screen);
     screen.style.setProperty('z-index','1000005','important');
-    screen.style.setProperty('visibility','visible','important');
-    screen.style.setProperty('pointer-events','auto','important');
     screen.style.setProperty('display',displayType || 'block','important');
 
     try{screen.scrollTop=0;}catch(e){}
   }
 
   window.goEmergencyActionV212=function(kind){
-    hardHideEmergencyV213();
+    hideEmergencyV214();
 
     requestAnimationFrame(function(){
       requestAnimationFrame(function(){
@@ -18811,7 +18811,7 @@ document.addEventListener("visibilitychange",function(){
           if(typeof window.openRestV128==='function'){
             window.openRestV128();
           }
-          showDestinationV213(q('restV128Overlay'),'block');
+          showDestinationV214(q('restV128Overlay'),'block');
           return;
         }
 
@@ -18819,57 +18819,73 @@ document.addEventListener("visibilitychange",function(){
           if(typeof window.openPlanV125==='function'){
             window.openPlanV125();
           }
-          showDestinationV213(q('planV125Overlay'),'block');
+          showDestinationV214(q('planV125Overlay'),'block');
         }
       });
     });
   };
 
-  /* La próxima vez que se abra Plan de emergencia, restauramos el overlay
-     antes de ejecutar su lógica normal. */
-  var originalOpenEmergencyV213=window.openEmergencyV129;
-  if(typeof originalOpenEmergencyV213==='function'){
+  /* Guardamos las funciones originales. */
+  var originalOpenEmergencyV214 = window.openEmergencyV129;
+  var originalCloseRestV214 = window.closeRestV128;
+  var originalClosePlanV214 = window.closePlanV125;
+
+  /* Cada vez que se abre Plan de emergencia, primero eliminamos cualquier
+     bloqueo temporal que haya quedado de una navegación anterior. */
+  if(typeof originalOpenEmergencyV214==='function'){
     window.openEmergencyV129=function(){
-      restoreEmergencyV213();
-      var overlay=q('emergencyV129Overlay');
-      if(overlay){
-        overlay.style.removeProperty('z-index');
-      }
-      return originalOpenEmergencyV213.apply(this,arguments);
+      unlockEmergencyV214();
+      return originalOpenEmergencyV214.apply(this,arguments);
     };
   }
 
-  /* Al cerrar los destinos, quitamos el z-index forzado para no contaminar
-     otras pantallas futuras. */
-  var originalCloseRestV213=window.closeRestV128;
-  if(typeof originalCloseRestV213==='function'){
+  /* Al salir de Descanso rápido, limpiamos el z-index y desbloqueamos
+     Plan de emergencia para que su botón pueda abrirlo nuevamente. */
+  if(typeof originalCloseRestV214==='function'){
     window.closeRestV128=function(){
       var screen=q('restV128Overlay');
       if(screen){
         screen.style.removeProperty('z-index');
-        screen.style.removeProperty('visibility');
-        screen.style.removeProperty('pointer-events');
         screen.style.removeProperty('display');
       }
-      return originalCloseRestV213.apply(this,arguments);
+
+      var result = originalCloseRestV214.apply(this,arguments);
+      unlockEmergencyV214();
+      return result;
     };
   }
 
-  var originalClosePlanV213=window.closePlanV125;
-  if(typeof originalClosePlanV213==='function'){
+  /* Igual para Plan 10 minutos. */
+  if(typeof originalClosePlanV214==='function'){
     window.closePlanV125=function(){
       var screen=q('planV125Overlay');
       if(screen){
         screen.style.removeProperty('z-index');
-        screen.style.removeProperty('visibility');
-        screen.style.removeProperty('pointer-events');
         screen.style.removeProperty('display');
       }
-      return originalClosePlanV213.apply(this,arguments);
+
+      var result = originalClosePlanV214.apply(this,arguments);
+      unlockEmergencyV214();
+      return result;
     };
   }
+
+  /* Si Safari vuelve desde segundo plano, no conservar un bloqueo viejo. */
+  document.addEventListener('visibilitychange',function(){
+    if(!document.hidden){
+      var rest=q('restV128Overlay');
+      var plan=q('planV125Overlay');
+      var restVisible=rest && getComputedStyle(rest).display!=='none';
+      var planVisible=plan && getComputedStyle(plan).display!=='none';
+
+      if(!restVisible && !planVisible){
+        unlockEmergencyV214();
+      }
+    }
+  });
 })();
 </script>
+
 
 </body>
 
