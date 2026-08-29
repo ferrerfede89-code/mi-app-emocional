@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
-<title>App Emocional V221 · Anclajes guardados visibles</title>
+<title>App Emocional V222 · Refugios guardados e indicador de favoritos</title>
 
 <style>
 body {
@@ -6277,7 +6277,7 @@ Un lugar imaginario para bajar un poco el ruido. No exige explicar nada: solo el
 </div>
 <br>
 <button type="button" onclick="openRefugeWriterV84()" class="softButton">✍️ Escribir mi refugio</button>
-<button type="button" onclick="showSavedRefugeV84()" class="softButton">🧺 Ver refugio guardado</button>
+<button type="button" onclick="showSavedRefugeV84()" class="softButton">🧺 Ver refugios guardados</button>
 <button type="button" onclick="saveCurrentRefugeV84()" class="softButton">⭐ Guardar como favorito</button>
 <br>
 <button type="button" onclick="closeRefugeV84()" class="softButton">Volver</button>
@@ -6993,8 +6993,39 @@ function escapeRefugeV84(str){
 function getSavedRefugeV84(){
   try{ return JSON.parse(localStorage.getItem('internalRefugeV84')||'null'); }catch(e){ return null; }
 }
+function getRefugeHistoryV222(){
+  let history=[];
+  try{
+    const raw=JSON.parse(localStorage.getItem('internalRefugeHistoryV222')||'[]');
+    if(Array.isArray(raw)) history=raw;
+  }catch(e){}
+
+  /* Migración: si ya existía un refugio de versiones anteriores, conservarlo. */
+  const legacy=getSavedRefugeV84();
+  if(legacy && legacy.text){
+    const exists=history.some(x=>
+      String(x.text||'').trim()===String(legacy.text||'').trim() &&
+      String(x.createdAt||'')===String(legacy.createdAt||'')
+    );
+    if(!exists){
+      history.push(legacy);
+      localStorage.setItem('internalRefugeHistoryV222',JSON.stringify(history));
+    }
+  }
+  return history;
+}
 function setSavedRefugeV84(obj){
   localStorage.setItem('internalRefugeV84', JSON.stringify(obj));
+
+  const history=getRefugeHistoryV222();
+  const duplicate=history.some(x=>
+    String(x.text||'').trim()===String(obj.text||'').trim() &&
+    String(x.createdAt||'')===String(obj.createdAt||'')
+  );
+  if(!duplicate){
+    history.push(obj);
+    localStorage.setItem('internalRefugeHistoryV222',JSON.stringify(history));
+  }
 }
 function renderRefugeV84(){
   const saved=getSavedRefugeV84();
@@ -7060,21 +7091,78 @@ function saveManualRefugeV84(){
   if(typeof renderDashboard==='function') renderDashboard();
 }
 function showSavedRefugeV84(){
-  const saved=getSavedRefugeV84();
-  if(!saved || !saved.text){
-    document.getElementById('refugePhraseV84').innerHTML='Todavía no hay un refugio escrito.';
-    document.getElementById('refugeContentV84').innerHTML='<div class="refugeCardV84">Podés elegir una sensación o escribir una frase para crear el primero.</div>';
-    return;
+  const history=getRefugeHistoryV222();
+  const screen=document.getElementById('refugeScreenV84');
+  const content=document.getElementById('refugeContentV84');
+  const phrase=document.getElementById('refugePhraseV84');
+
+  if(!content) return;
+
+  if(!history.length){
+    if(phrase) phrase.innerHTML='Todavía no hay refugios escritos.';
+    content.innerHTML='<div class="refugeCardV84">Podés elegir una sensación o escribir una frase para crear el primero.</div>';
+  }else{
+    if(phrase) phrase.innerHTML='Tus refugios siguen disponibles.';
+    content.innerHTML=
+      '<div class="refugeCardV84"><strong>🧺 Mis refugios guardados · '+history.length+'</strong><br><br>'+
+      history.slice().reverse().map((x,i)=>{
+        const number=history.length-i;
+        return '<div style="background:rgba(255,255,255,.78);border-radius:18px;padding:13px;margin:10px 0;line-height:1.45;">'+
+          '<strong>Refugio '+number+'</strong>'+
+          (x.date?'<br><span class="refugeSmallV84">'+escapeRefugeV84(x.date)+'</span>':'')+
+          '<br>'+escapeRefugeV84(x.text||'')+
+        '</div>';
+      }).join('')+
+      '</div>';
   }
-  renderRefugeV84();
+
+  if(screen){
+    const top=Math.max(0,content.offsetTop-20);
+    screen.scrollTop=top;
+    requestAnimationFrame(function(){
+      screen.scrollTop=top;
+      setTimeout(function(){screen.scrollTop=top;},50);
+    });
+  }
 }
 function saveCurrentRefugeV84(){
-  if(!currentRefugeV84){ alert('Todavía no hay un refugio para guardar.'); return; }
-  let favs=JSON.parse(localStorage.getItem('favoriteMemories')||'[]');
-  if(favs.includes(currentRefugeV84)){ alert('⭐ Este refugio ya estaba en favoritos'); return; }
-  favs.push(currentRefugeV84);
-  localStorage.setItem('favoriteMemories', JSON.stringify(favs));
-  alert('🏡 Refugio guardado como favorito');
+  const content=document.getElementById('refugeContentV84');
+  if(!currentRefugeV84){
+    if(content) content.innerHTML='<div class="refugeCardV84">Todavía no hay un refugio para guardar como favorito.</div>';
+    return;
+  }
+
+  let favs=[];
+  try{
+    const raw=JSON.parse(localStorage.getItem('favoriteMemories')||'[]');
+    if(Array.isArray(raw)) favs=raw;
+  }catch(e){}
+
+  const already=favs.includes(currentRefugeV84);
+  if(!already){
+    favs.push(currentRefugeV84);
+    localStorage.setItem('favoriteMemories', JSON.stringify(favs));
+  }
+
+  if(content){
+    content.innerHTML=
+      '<div class="refugeCardV84" style="text-align:center;">'+
+        (already
+          ? '<strong>⭐ Este refugio ya estaba en Favoritos.</strong>'
+          : '<strong>⭐ Refugio agregado a Favoritos.</strong>')+
+        '<br><br><span class="refugeSmallV84">Podés volver a encontrarlo en <strong>Mi recorrido → Favoritos</strong>.</span>'+
+      '</div>';
+  }
+
+  const screen=document.getElementById('refugeScreenV84');
+  if(screen && content){
+    const top=Math.max(0,content.offsetTop-20);
+    screen.scrollTop=top;
+  }
+
+  if(navigator.vibrate){
+    try{navigator.vibrate(35);}catch(e){}
+  }
   if(typeof renderDashboard==='function') renderDashboard();
 }
 
