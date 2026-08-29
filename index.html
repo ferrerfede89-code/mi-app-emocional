@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
-<title>App Emocional V214 · Plan de emergencia reingreso corregido</title>
+<title>App Emocional V215 · Tesoros olvidados navegación corregida</title>
 
 <style>
 body {
@@ -18886,6 +18886,54 @@ document.addEventListener("visibilitychange",function(){
 })();
 </script>
 
+
+
+<script id="v215-treasures-scroll-fix">
+(function(){
+  'use strict';
+  if(window.__v215TreasuresScrollReady) return;
+  window.__v215TreasuresScrollReady=true;
+
+  var originalShowAnotherTreasureV215=window.showAnotherTreasureV81;
+  if(typeof originalShowAnotherTreasureV215!=='function') return;
+
+  window.showAnotherTreasureV81=function(){
+    var result=originalShowAnotherTreasureV215.apply(this,arguments);
+
+    requestAnimationFrame(function(){
+      var screen=document.getElementById('treasuresScreenV81');
+      var phrase=document.getElementById('treasurePhraseV81');
+      var content=document.getElementById('treasureContentV81');
+      var target=phrase || content;
+
+      if(screen && target){
+        /* Scroll interno del fullscreen: Safari no siempre responde bien
+           a scrollIntoView dentro de una capa fixed. */
+        var screenRect=screen.getBoundingClientRect();
+        var targetRect=target.getBoundingClientRect();
+        var destination=screen.scrollTop + (targetRect.top-screenRect.top) - 24;
+
+        try{
+          screen.scrollTo({top:Math.max(0,destination),behavior:'smooth'});
+        }catch(e){
+          screen.scrollTop=Math.max(0,destination);
+        }
+
+        /* Señal visual breve para que quede claro dónde cambió el tesoro. */
+        target.style.transition='transform .18s ease, box-shadow .18s ease';
+        target.style.transform='scale(1.018)';
+        target.style.boxShadow='0 0 0 3px rgba(124,58,237,.12)';
+        setTimeout(function(){
+          target.style.transform='';
+          target.style.boxShadow='';
+        },650);
+      }
+    });
+
+    return result;
+  };
+})();
+</script>
 
 </body>
 
