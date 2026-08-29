@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
-<title>App Emocional V216 · Tesoros olvidados desplazamiento directo</title>
+<title>App Emocional V217 · Umbral de etapa corregido</title>
 
 <style>
 body {
@@ -19615,7 +19615,7 @@ function renderThresholdV90(){
   const closing = totalSignals > 0 ? 'No tenés que demostrar que avanzaste. Haber vuelto a mirar ya es una forma de continuidad.' : 'No hay apuro. La primera señal también puede ser simplemente abrir este espacio.';
   html += '<div class="thresholdPhraseV90">'+closing+'</div>';
 
-  currentThresholdSummaryV90 = 'Umbral de etapa V90\n\n' + mini.map(m=>m[0]+': '+m[1]).join('\n') + '\n\n' + seals.join('\n') + '\n\n' + closing;
+  currentThresholdSummaryV90 = 'Umbral de etapa\n\n' + mini.map(m=>m[0]+': '+m[1]).join('\n') + '\n\n' + seals.join('\n') + '\n\n' + closing;
   if(content) content.innerHTML = html;
 }
 function saveThresholdReflectionV90(){
@@ -19634,15 +19634,28 @@ function saveThresholdReflectionV90(){
 }
 function showThresholdHistoryV90(){
   const content = document.getElementById('thresholdContentV90');
+  const screen = document.getElementById('thresholdScreenV90');
   const list = getThresholdReflectionsV90();
   if(!content) return;
+
   if(!list.length){
     content.innerHTML = '<div class="thresholdCardV90">Todavía no hay cierres guardados. Podés escribir uno ahora.</div>';
-    return;
+  } else {
+    content.innerHTML = '<div class="thresholdCardV90"><strong>📜 Cierres guardados</strong>' + list.slice().reverse().map(x=>
+      '<div class="thresholdSealV90"><div class="thresholdSmallV90">'+escapeThresholdV90(x.date||'')+' '+escapeThresholdV90(x.time||'')+'</div><br>“'+escapeThresholdV90(x.text)+'”</div>'
+    ).join('') + '</div>';
   }
-  content.innerHTML = '<div class="thresholdCardV90"><strong>📜 Cierres guardados</strong>' + list.slice().reverse().map(x=>
-    '<div class="thresholdSealV90"><div class="thresholdSmallV90">'+escapeThresholdV90(x.date||'')+' '+escapeThresholdV90(x.time||'')+'</div><br>“'+escapeThresholdV90(x.text)+'”</div>'
-  ).join('') + '</div>';
+
+  /* V217: el historial se renderiza arriba del botón.
+     En Safari/iPhone forzamos el scroll del fullscreen hasta ese contenido. */
+  if(screen){
+    const targetTop = Math.max(0, content.offsetTop - 20);
+    screen.scrollTop = targetTop;
+    requestAnimationFrame(function(){
+      screen.scrollTop = targetTop;
+      setTimeout(function(){ screen.scrollTop = targetTop; }, 50);
+    });
+  }
 }
 function copyThresholdV90(){
   if(!currentThresholdSummaryV90) renderThresholdV90();
