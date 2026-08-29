@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
-<title>App Emocional V218 · Biblioteca de aprendizajes actualizable</title>
+<title>App Emocional V219 · Museo de tus avances navegación corregida</title>
 
 <style>
 body {
@@ -20473,20 +20473,35 @@ function showLifeMapZoneV94(key){
   window.openAdvancesMuseumRoomV114=function(id){
     var room=roomsV114().filter(function(r){ return r.id===id; })[0];
     var detail=byId('museum114Detail');
+    var screen=byId('advancesMuseumScreenV114');
     if(!room || !detail) return;
 
     if(!room.items.length){
       detail.innerHTML='<h3>'+room.icon+' '+escapeHtmlV114(room.title)+'</h3><p class="museum114Small">Esta sala todavía está vacía. Seguí usando la app y volverá a llenarse con señales reales.</p>';
-      return;
+    }else{
+      detail.innerHTML='<h3>'+room.icon+' '+escapeHtmlV114(room.title)+'</h3>'+
+        '<p class="museum114Small">'+escapeHtmlV114(room.subtitle)+'</p>'+
+        room.items.map(function(item,index){
+          return '<div class="museum114Memory"><strong>'+escapeHtmlV114(shortTextV114(item.text,240))+'</strong>'+
+            (item.date ? '<span class="museum114MemoryDate">'+escapeHtmlV114(item.date)+'</span>' : '')+
+          '</div>';
+        }).join('');
     }
 
-    detail.innerHTML='<h3>'+room.icon+' '+escapeHtmlV114(room.title)+'</h3>'+
-      '<p class="museum114Small">'+escapeHtmlV114(room.subtitle)+'</p>'+
-      room.items.map(function(item,index){
-        return '<div class="museum114Memory"><strong>'+escapeHtmlV114(shortTextV114(item.text,240))+'</strong>'+
-          (item.date ? '<span class="museum114MemoryDate">'+escapeHtmlV114(item.date)+'</span>' : '')+
-        '</div>';
-      }).join('');
+    /* V219: al tocar una sala, llevar la vista al contenido que acaba de abrirse.
+       Se usa el scroll interno del fullscreen para que funcione bien en Safari/iPhone. */
+    if(screen){
+      var top=Math.max(0, detail.offsetTop-20);
+      screen.scrollTop=top;
+      requestAnimationFrame(function(){
+        screen.scrollTop=top;
+        setTimeout(function(){ screen.scrollTop=top; },50);
+      });
+    }
+
+    detail.style.transition='transform .18s ease, box-shadow .18s ease';
+    detail.style.transform='scale(1.012)';
+    setTimeout(function(){ detail.style.transform=''; },500);
   };
 })();
 </script>
