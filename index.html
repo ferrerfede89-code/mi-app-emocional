@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
-<title>App Emocional V220 · Apoyo rápido llamadas corregidas</title>
+<title>App Emocional V221 · Anclajes guardados visibles</title>
 
 <style>
 body {
@@ -6126,6 +6126,10 @@ Para cuando abrís la app y todavía no querés registrar nada. Solo volver un p
 <textarea id="anchorTextV78" class="textBox" style="margin-top:18px;display:none;" placeholder="Estoy acá. En este momento siento... / necesito... / puedo... "></textarea>
 <button id="anchorSaveButtonV78" onclick="saveAnchorV78()" class="softButton" style="margin-top:12px;display:none;">Guardar anclaje</button>
 <div id="anchorResultV78" style="margin-top:16px;font-weight:bold;line-height:1.45;"></div>
+
+<button id="anchorHistoryButtonV221" onclick="showSavedAnchorsV221()" class="softButton" style="margin-top:18px;">⚓ Ver anclajes guardados</button>
+<div id="anchorHistoryV221" class="rememberCard" style="display:none;text-align:left;margin-top:14px;"></div>
+
 <br>
 <button onclick="closeAnchorV78()" class="softButton">Volver</button>
 </div>
@@ -19004,6 +19008,87 @@ document.addEventListener("visibilitychange",function(){
       try{navigator.vibrate(35);}catch(e){}
     }
   };
+})();
+</script>
+
+
+<script id="v221-anchor-history-controller">
+(function(){
+  'use strict';
+
+  function q(id){ return document.getElementById(id); }
+
+  function escV221(value){
+    return String(value || '').replace(/[&<>"']/g,function(c){
+      return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];
+    });
+  }
+
+  function readAnchorsV221(){
+    var entries=[];
+    try{
+      var raw=JSON.parse(localStorage.getItem('diaryEntries') || '[]');
+      if(Array.isArray(raw)) entries=raw;
+    }catch(e){ entries=[]; }
+
+    return entries.filter(function(item){
+      if(!item) return false;
+      var text=String(item.text || '');
+      return item.source==='anchorV78' || text.indexOf('⚓ Anclaje rápido:')===0;
+    });
+  }
+
+  window.showSavedAnchorsV221=function(){
+    var screen=q('anchorScreenV78');
+    var box=q('anchorHistoryV221');
+    var button=q('anchorHistoryButtonV221');
+    if(!box) return;
+
+    var items=readAnchorsV221();
+
+    if(!items.length){
+      box.innerHTML=
+        '<strong>⚓ Anclajes guardados</strong><br><br>'+
+        '<span class="small">Todavía no guardaste ningún anclaje. Tocá “Guardar este momento” para crear el primero.</span>';
+    }else{
+      box.innerHTML=
+        '<strong>⚓ Anclajes guardados · '+items.length+'</strong>'+
+        items.slice().reverse().map(function(item){
+          var text=String(item.text || '').replace(/^⚓\s*Anclaje rápido:\s*/,'');
+          var date=item.date ? '<div class="small" style="margin-top:5px;">'+escV221(item.date)+'</div>' : '';
+          return '<div style="background:rgba(255,255,255,.78);border-radius:18px;padding:13px;margin-top:10px;line-height:1.45;">'+
+                   escV221(text)+date+
+                 '</div>';
+        }).join('');
+    }
+
+    box.style.display='block';
+    if(button) button.textContent='⚓ Anclajes guardados ('+items.length+')';
+
+    if(screen){
+      var top=Math.max(0, box.offsetTop-20);
+      screen.scrollTop=top;
+      requestAnimationFrame(function(){
+        screen.scrollTop=top;
+        setTimeout(function(){screen.scrollTop=top;},50);
+      });
+    }
+  };
+
+  /* Después de guardar, actualizar el contador sin abrir el historial automáticamente. */
+  if(typeof window.saveAnchorV78==='function'){
+    var originalSaveAnchorV221=window.saveAnchorV78;
+    window.saveAnchorV78=function(){
+      var before=readAnchorsV221().length;
+      var result=originalSaveAnchorV221.apply(this,arguments);
+      var after=readAnchorsV221().length;
+      var button=q('anchorHistoryButtonV221');
+      if(button && after!==before){
+        button.textContent='⚓ Ver anclajes guardados ('+after+')';
+      }
+      return result;
+    };
+  }
 })();
 </script>
 
