@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
-<title>App Emocional V225 · Empezar reordenado</title>
+<title>App Emocional V226 · Ver ceremonias corregido</title>
 
 <style>
 body {
@@ -6534,7 +6534,7 @@ Pequeños rituales para soltar, agradecer, reconocer o dejar descansar algo. No 
   <strong id="ceremonyWriteTitleV93">Escribí una frase mínima</strong><br><br>
   <textarea id="ceremonyTextV93" class="textBox" placeholder="Hoy quiero dejar escrito..."></textarea>
   <button onclick="saveCeremonyV93()" class="softButton">Guardar ceremonia</button>
-  <button onclick="renderCeremonyHistoryV93()" class="softButton">📜 Ver ceremonias</button>
+  <button onclick="renderCeremonyHistoryV93(true)" class="softButton">📜 Ver ceremonias</button>
   <div id="ceremonyResultV93" style="margin-top:14px;font-weight:bold;line-height:1.45;"></div>
 </div>
 
@@ -20182,16 +20182,34 @@ function saveCeremonyV93(){
 }
 function renderCeremonyHistoryV93(force){
   const content=document.getElementById('ceremonyContentV93');
+  const screen=document.getElementById('ceremoniesScreenV93');
   if(!content) return;
   const list=getCeremoniesV93();
+
   if(!list.length){
     content.innerHTML='<div class="ceremonyCardV93">Todavía no hay ceremonias guardadas. Podés empezar con una frase muy simple.</div>';
-    return;
+  }else{
+    const last=list.slice().reverse().slice(0,8);
+    content.innerHTML='<div class="ceremonyCardV93"><strong>📜 Mis ceremonias</strong><br><br>'+last.map(x=>
+      '<div class="ceremonyHistoryItemV93"><div class="ceremonySmallV93">'+escapeCeremonyV93(x.date)+' '+escapeCeremonyV93(x.time)+'</div><strong>'+escapeCeremonyV93(x.emoji)+' '+escapeCeremonyV93(x.title)+'</strong><br><br>“'+escapeCeremonyV93(x.text)+'”<br><br><span class="ceremonySmallV93">'+escapeCeremonyV93(x.final)+'</span></div>'
+    ).join('')+'</div>';
   }
-  const last=list.slice().reverse().slice(0,8);
-  content.innerHTML='<div class="ceremonyCardV93"><strong>📜 Mis ceremonias</strong><br><br>'+last.map(x=>
-    '<div class="ceremonyHistoryItemV93"><div class="ceremonySmallV93">'+escapeCeremonyV93(x.date)+' '+escapeCeremonyV93(x.time)+'</div><strong>'+escapeCeremonyV93(x.emoji)+' '+escapeCeremonyV93(x.title)+'</strong><br><br>“'+escapeCeremonyV93(x.text)+'”<br><br><span class="ceremonySmallV93">'+escapeCeremonyV93(x.final)+'</span></div>'
-  ).join('')+'</div>';
+
+  /* V226: cuando la persona toca “Ver ceremonias” o guarda una nueva,
+     llevar la vista directamente al historial. */
+  if(force && screen){
+    const top=Math.max(0,content.offsetTop-20);
+    screen.scrollTop=top;
+    requestAnimationFrame(function(){
+      screen.scrollTop=top;
+      setTimeout(function(){
+        screen.scrollTop=top;
+        content.style.transition='transform .18s ease';
+        content.style.transform='scale(1.01)';
+        setTimeout(function(){content.style.transform='';},450);
+      },50);
+    });
+  }
 }
 </script>
 
