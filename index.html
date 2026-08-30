@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
-<title>App Emocional V226 · Ver ceremonias corregido</title>
+<title>App Emocional V227 · Recordar corregido</title>
 
 <style>
 body {
@@ -5912,9 +5912,15 @@ text-align:center;
     Tocá el botón para traer un recuerdo.
   </div>
 
-  <button onclick="showSmartMemory()" class="softButton" style="margin-top:18px;">
-    Traer un recuerdo
+  <button onclick="showSmartMemory(true)" class="softButton" style="margin-top:18px;">
+    🧠 Traer otro recuerdo
   </button>
+
+  <button onclick="openSearchFromRememberV227()" class="softButton" style="margin-top:10px;">
+    🔎 Buscar entre mis recuerdos
+  </button>
+
+  <div id="rememberActionV227" class="small" style="margin-top:12px;min-height:20px;"></div>
 
   <br>
   <button onclick="favoriteCurrentMemory()" class="softButton" style="margin-top:10px;">
@@ -8479,13 +8485,28 @@ function openRemember() {
   const comp = getCompanion();
   document.getElementById("rememberEmoji").innerText = comp ? comp.emoji : "🧠";
 
-  showSmartMemory();
+  const action=document.getElementById("rememberActionV227");
+  if(action) action.innerHTML="";
+  showSmartMemory(false);
 
   if (navigator.vibrate) navigator.vibrate(60);
 }
 
 function closeRemember() {
   document.getElementById("rememberScreen").style.display = "none";
+}
+
+function openSearchFromRememberV227(){
+  closeRemember();
+  if(typeof openSearch==='function'){
+    openSearch();
+    const input=document.getElementById('memorySearchInput');
+    if(input){
+      setTimeout(function(){
+        try{ input.focus({preventScroll:true}); }catch(e){ try{input.focus();}catch(_){} }
+      },120);
+    }
+  }
 }
 
 
@@ -8501,7 +8522,7 @@ function favoriteCurrentMemory(){
  toggleFavoriteMemory(text);
 }
 
-function showSmartMemory() {
+function showSmartMemory(userRequested) {
   const entries = JSON.parse(localStorage.getItem("diaryEntries")) || [];
   const moods = JSON.parse(localStorage.getItem("moods")) || {};
   const key = localStorage.getItem("companion") || "brote";
@@ -8538,11 +8559,27 @@ function showSmartMemory() {
 
   scoredEntries.sort((a, b) => b.score - a.score);
 
-  const top = scoredEntries.slice(0, Math.min(4, scoredEntries.length));
-  const selected = top[Math.floor(Math.random() * top.length)];
+  const top = scoredEntries.slice(0, Math.min(8, scoredEntries.length));
+
+  let selected=null;
+  if(top.length===1){
+    selected=top[0];
+  }else{
+    const currentText=String(currentRememberedText||'');
+    const alternatives=top.filter(item=>String((item.entry&&item.entry.text)||'')!==currentText);
+    const pool=alternatives.length ? alternatives : top;
+    selected=pool[Math.floor(Math.random()*pool.length)];
+  }
 
   const entry = selected.entry;
-currentRememberedText = entry.text || '';
+  currentRememberedText = entry.text || '';
+
+  const action=document.getElementById("rememberActionV227");
+  if(action && userRequested){
+    action.innerHTML = top.length===1
+      ? 'Tenés <strong>1 recuerdo</strong> disponible por ahora. Por eso aparece el mismo.'
+      : '↻ Traje otro de tus recuerdos guardados.';
+  }
   const entryDate = parseDiaryDate(entry.date);
   const timeText = humanTimeAgo(entryDate);
   const moodAnalysis = analyzeMoodEvolution(selected.relatedMoods, key);
