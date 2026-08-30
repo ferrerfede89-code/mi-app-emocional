@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
-<title>App Emocional V223 · Faro de continuidad corregido</title>
+<title>App Emocional V224 · Nueva señal visible</title>
 
 <style>
 body {
@@ -21351,7 +21351,26 @@ document.addEventListener('DOMContentLoaded',function(){
     var overlay=document.getElementById('continuityV127Overlay');
     if(overlay){overlay.style.display='none';}
   };
-  window.refreshContinuityV127=function(){renderContinuityV127();};
+  window.refreshContinuityV127=function(){
+    renderContinuityV127();
+    var overlay=document.getElementById('continuityV127Overlay');
+    var signal=document.getElementById('continuityV127Signal');
+    var saved=document.getElementById('continuityV223Saved');
+    if(saved) saved.innerHTML='↻ Nueva señal generada arriba.';
+    if(overlay && signal){
+      var top=Math.max(0,signal.offsetTop-18);
+      overlay.scrollTop=top;
+      requestAnimationFrame(function(){
+        overlay.scrollTop=top;
+        setTimeout(function(){
+          overlay.scrollTop=top;
+          signal.style.transition='transform .18s ease, box-shadow .18s ease';
+          signal.style.transform='scale(1.018)';
+          setTimeout(function(){signal.style.transform='';},500);
+        },50);
+      });
+    }
+  };
   function getSavedContinuityV223(){
     try{
       var raw=JSON.parse(localStorage.getItem('continuitySavedV223') || '[]');
