@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
-<title>App Emocional V222 · Refugios guardados e indicador de favoritos</title>
+<title>App Emocional V223 · Faro de continuidad corregido</title>
 
 <style>
 body {
@@ -21243,7 +21243,7 @@ document.addEventListener('DOMContentLoaded',function(){
 
 <div id="continuityV127Overlay" class="continuityV127Overlay">
   <div class="continuityV127Box">
-    <div style="font-size:15px;color:#64748b;margin-bottom:8px;text-align:center;">V127 · Faro de continuidad</div>
+    <div style="font-size:15px;color:#64748b;margin-bottom:8px;text-align:center;">Una señal para recordar lo que ya venís sosteniendo</div>
     <div class="continuityV127Orb">🕯️</div>
     <h2 style="text-align:center;margin:8px 0 6px;">Faro de continuidad</h2>
     <div class="continuityV127Intro">
@@ -21253,11 +21253,14 @@ document.addEventListener('DOMContentLoaded',function(){
     <div id="continuityV127Cards"></div>
     <div class="continuityV127Grid">
       <button class="continuityV127Btn primary" onclick="refreshContinuityV127()">Nueva señal</button>
-      <button class="continuityV127Btn" onclick="saveContinuityV127()">Guardar faro</button>
+      <button class="continuityV127Btn" onclick="saveContinuityV127()">Guardar este faro</button>
       <button class="continuityV127Btn" onclick="goEmergencyActionV212('plan10')">Plan 10 minutos</button>
-      <button class="continuityV127Btn" onclick="closeContinuityV127()">Volver</button>
+      <button class="continuityV127Btn" onclick="showSavedContinuityV223()">Ver faros guardados</button>
+      <button class="continuityV127Btn" onclick="closeContinuityV127()" style="grid-column:1/3;">Volver</button>
     </div>
-    <div class="continuityV127Small">No mide rendimiento. Sólo reúne pequeñas pruebas de continuidad emocional.</div>
+    <div id="continuityV223Saved" class="continuityV127Small" style="margin-top:12px;"></div>
+    <div id="continuityV223History" style="display:none;margin-top:14px;"></div>
+    <div class="continuityV127Small" style="margin-top:12px;">No mide rendimiento. Reúne únicamente señales que la app puede verificar en este dispositivo.</div>
   </div>
 </div>
 
@@ -21313,14 +21316,14 @@ document.addEventListener('DOMContentLoaded',function(){
 
   function buildCardsV127(){
     var diary = getCountV127('diaryEntries');
-    var treasures = getCountV127('treasuresV81');
-    var ceremonies = getCountV127('ceremonyHistoryV93');
-    var planDone = localStorage.getItem('planV125LastCompleted') ? 'Sí' : 'Aún no';
+    var treasures = getCountV127('manualTreasuresV81');
+    var ceremonies = getCountV127('ceremoniesV93');
+    var planDone = !!localStorage.getItem('planV125LastCompleted');
     return [
-      {icon:'📓',title:'Registros guardados',text: diary ? diary + ' momentos escritos en tu diario emocional.' : 'Todavía podés escribir un primer registro cuando lo necesites.'},
-      {icon:'💎',title:'Tesoros recuperados',text: treasures ? treasures + ' tesoros aparecen como recordatorio interno.' : 'Tu próximo tesoro puede ser algo simple que antes te sostuvo.'},
-      {icon:'🕯️',title:'Ceremonias realizadas',text: ceremonies ? ceremonies + ' rituales personales quedaron guardados.' : 'Un pequeño cierre también puede ordenar el día.'},
-      {icon:'⏱️',title:'Plan de emergencia suave',text: planDone==='Sí' ? 'Ya completaste alguna vez el plan de 10 minutos.' : 'Disponible para cuando necesites atravesar sólo los próximos minutos.'}
+      {icon:'📓',title:'Registros del diario',text: diary ? diary + ' '+(diary===1?'registro guardado':'registros guardados')+' en este dispositivo.' : 'Todavía no hay registros del diario guardados.'},
+      {icon:'💎',title:'Tesoros escritos por vos',text: treasures ? treasures + ' '+(treasures===1?'tesoro guardado':'tesoros guardados')+'.' : 'Todavía no escribiste tesoros propios.'},
+      {icon:'🕯️',title:'Ceremonias guardadas',text: ceremonies ? ceremonies + ' '+(ceremonies===1?'ceremonia guardada':'ceremonias guardadas')+'.' : 'Todavía no hay ceremonias guardadas.'},
+      {icon:'⏱️',title:'Plan de 10 minutos',text: planDone ? 'La app registra que ya completaste alguna vez el plan de 10 minutos.' : 'Todavía no hay un plan de 10 minutos marcado como completado.'}
     ];
   }
 
@@ -21337,18 +21340,85 @@ document.addEventListener('DOMContentLoaded',function(){
 
   window.openContinuityV127=function(){
     renderContinuityV127();
+    var saved=document.getElementById('continuityV223Saved');
+    var history=document.getElementById('continuityV223History');
+    if(saved) saved.innerHTML='';
+    if(history){ history.style.display='none'; history.innerHTML=''; }
     var overlay=document.getElementById('continuityV127Overlay');
-    if(overlay){overlay.style.display='block';}
+    if(overlay){overlay.style.display='block'; overlay.scrollTop=0;}
   };
   window.closeContinuityV127=function(){
     var overlay=document.getElementById('continuityV127Overlay');
     if(overlay){overlay.style.display='none';}
   };
   window.refreshContinuityV127=function(){renderContinuityV127();};
+  function getSavedContinuityV223(){
+    try{
+      var raw=JSON.parse(localStorage.getItem('continuitySavedV223') || '[]');
+      return Array.isArray(raw) ? raw : [];
+    }catch(e){ return []; }
+  }
+
+  function escapeContinuityV223(value){
+    return String(value || '').replace(/[&<>"']/g,function(c){
+      return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];
+    });
+  }
+
   window.saveContinuityV127=function(){
-    try{localStorage.setItem('continuityV127LastSaved', new Date().toISOString());}catch(e){}
     var signal=document.getElementById('continuityV127Signal');
-    if(signal){signal.textContent='Faro guardado. Hoy no tuviste que resolver todo para seguir.';}
+    var text=signal ? signal.textContent.trim() : '';
+    if(!text) return;
+
+    var items=getSavedContinuityV223();
+    var now=new Date();
+    items.push({
+      text:text,
+      date:now.toLocaleString('es-ES'),
+      createdAt:now.toISOString()
+    });
+    try{
+      localStorage.setItem('continuitySavedV223',JSON.stringify(items.slice(-50)));
+      localStorage.setItem('continuityV127LastSaved',now.toISOString());
+    }catch(e){}
+
+    var saved=document.getElementById('continuityV223Saved');
+    if(saved){
+      saved.innerHTML='✓ Faro guardado. Podés recuperarlo desde <strong>Ver faros guardados</strong>.';
+    }
+    if(navigator.vibrate){
+      try{navigator.vibrate(35);}catch(e){}
+    }
+  };
+
+  window.showSavedContinuityV223=function(){
+    var history=document.getElementById('continuityV223History');
+    var overlay=document.getElementById('continuityV127Overlay');
+    if(!history) return;
+
+    var items=getSavedContinuityV223();
+    if(!items.length){
+      history.innerHTML='<div class="continuityV127Card"><strong>🕯️ Faros guardados</strong>Todavía no guardaste ninguno.</div>';
+    }else{
+      history.innerHTML='<div class="continuityV127Card"><strong>🕯️ Faros guardados · '+items.length+'</strong>'+
+        items.slice().reverse().map(function(item){
+          return '<div style="background:rgba(255,255,255,.82);border-radius:16px;padding:12px;margin-top:10px;">'+
+            escapeContinuityV223(item.text)+
+            '<div class="continuityV127Small" style="margin-top:6px;text-align:left;">'+escapeContinuityV223(item.date || '')+'</div>'+
+          '</div>';
+        }).join('')+
+      '</div>';
+    }
+    history.style.display='block';
+
+    if(overlay){
+      var top=Math.max(0,history.offsetTop-18);
+      overlay.scrollTop=top;
+      requestAnimationFrame(function(){
+        overlay.scrollTop=top;
+        setTimeout(function(){overlay.scrollTop=top;},50);
+      });
+    }
   };
 
   document.addEventListener('DOMContentLoaded',function(){
