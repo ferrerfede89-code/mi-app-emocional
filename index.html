@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
-<title>App Emocional V227 · Recordar corregido</title>
+<title>App Emocional V228 · Estabilidad global</title>
 
 <style>
 body {
@@ -23044,37 +23044,16 @@ html[data-app-release="V172-C1"]{--v172-correction-ready:1;}
       document.body.setAttribute('data-release-candidate',RELEASE_CHANNEL);
     }
     var badge=document.getElementById('v161VersionBadge');
-    if(badge) badge.textContent='V173 · corrección estable';
+    if(badge) badge.textContent='V228 · estabilidad global';
 
+    /* V228: conserva la preparación inicial de las pantallas, pero elimina
+       la vigilancia permanente de V173. La versión antigua creaba un
+       MutationObserver por cada fullscreen más otro global, haciendo trabajo
+       repetido cada vez que cambiaba contenido dentro de cualquier módulo. */
     var screens=Array.prototype.slice.call(document.querySelectorAll('.fullscreen'));
     screens.forEach(function(screen){
       lockScreenForEntryV173(screen);
-      var obs=new MutationObserver(function(records){
-        var childChanged=false;
-        for(var i=0;i<records.length;i++){
-          if(records[i].type==='childList'){ childChanged=true; break; }
-        }
-        if(childChanged) lockScreenForEntryV173(screen);
-      });
-      obs.observe(screen,{childList:true});
     });
-
-    /* Detecta pantallas que puedan agregarse más tarde, sin tocar clases ni navegación. */
-    var rootObs=new MutationObserver(function(records){
-      records.forEach(function(record){
-        Array.prototype.forEach.call(record.addedNodes||[],function(node){
-          if(!node || node.nodeType!==1) return;
-          if(node.classList && node.classList.contains('fullscreen')) lockScreenForEntryV173(node);
-          if(node.querySelectorAll){
-            Array.prototype.forEach.call(node.querySelectorAll('.fullscreen'),lockScreenForEntryV173);
-          }
-          if(node.classList && node.classList.contains('calmEntryV152')){
-            lockScreenForEntryV173(node.parentElement);
-          }
-        });
-      });
-    });
-    rootObs.observe(document.body,{subtree:true,childList:true});
   }
 
   if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',installV173,{once:true});
