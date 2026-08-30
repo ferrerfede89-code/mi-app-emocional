@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
-<title>App Emocional V224 · Nueva señal visible</title>
+<title>App Emocional V225 · Empezar reordenado</title>
 
 <style>
 body {
@@ -17168,6 +17168,7 @@ Tocá el botón para ver el estado final del proyecto.
     'anclaje rápido':'Una práctica corta para volver al presente cuando todo se acelera.',
     'ambiente':'Elegí un sonido suave para acompañar este momento.',
     'dormir':'Un espacio tranquilo para preparar el descanso.',
+    'empezar':'Elegí una intención simple para comenzar el día sin exigirte de más.',
     'recordar ⭐':'Recuperá algo valioso que tu mente quizá dejó lejos por un rato.'
   };
 
@@ -17232,6 +17233,31 @@ Tocá el botón para ver el estado final del proyecto.
       return child.matches&&child.matches('button')&&child.style.display!=='none';
     });
     toolsV155=buttons.map(getButtonDataV155);
+
+    /* V225: en “Empezar ahora”, la herramienta Empezar queda junto a
+       “Primer paso del día”, en lugar de aparecer mucho más adelante. */
+    if(category==='ahora'){
+      const priorityV225=[
+        'respirar',
+        'anclaje rápido',
+        'primer paso del día',
+        'empezar'
+      ];
+      toolsV155.sort(function(a,b){
+        const aKey=normalizeV155(a.title);
+        const bKey=normalizeV155(b.title);
+        const ai=priorityV225.indexOf(aKey);
+        const bi=priorityV225.indexOf(bKey);
+
+        if(ai!==-1 && bi!==-1) return ai-bi;
+        if(ai!==-1) return -1;
+        if(bi!==-1) return 1;
+
+        /* Conserva el orden previo del resto de las herramientas. */
+        return buttons.indexOf(a.button)-buttons.indexOf(b.button);
+      });
+    }
+
     currentToolV155=0;
     const labelsV158={
       ahora:'Empezar ahora',
