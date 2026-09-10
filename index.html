@@ -4975,6 +4975,10 @@ body:not(.v151CategoryOpen) .mainDescriptionV154 { color:#5f6f82 !important; opa
   transition:none !important;
 }
 </style>
+
+<style id="v229-hide-internal-version-badge">
+#v161VersionBadge{display:none!important;visibility:hidden!important;height:0!important;min-height:0!important;margin:0!important;padding:0!important;overflow:hidden!important;}
+</style>
 </head>
 
 <body>
@@ -17381,7 +17385,7 @@ Tocá el botón para ver el estado final del proyecto.
 <script id="v158-version-label-script">
 document.addEventListener('DOMContentLoaded',function(){
   var badge=document.querySelector('.premiumBadgeV105');
-  if(badge) badge.textContent='V166 · audio contextual';
+  if(badge) badge.textContent='';
 });
 </script>
 
@@ -18417,7 +18421,7 @@ body:not(.v151CategoryOpen) .mainNavigationV154{
   function install(){
     $('v187AchBack').addEventListener('click',close);$('v187AchSaveNote').addEventListener('click',saveNote);$('v187AchRefresh').addEventListener('click',refresh);$('v187AchSaveSummary').addEventListener('click',saveSummary);
     window.openAchievementsV120=open;window.closeAchievementsV120=close;window.refreshAchievementsV120=refresh;window.saveAchievementsSnapshotV120=saveSummary;
-    var badge=document.getElementById('v161VersionBadge');if(badge)badge.textContent='V187 · logros funcionales';
+    var badge=document.getElementById('v161VersionBadge');if(badge)badge.textContent='';
     document.body.setAttribute('data-app-version','V187');
   }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',install,{once:true});else install();
@@ -22813,7 +22817,7 @@ html[data-app-release="V170-RC1"]{--v170-release-ready:1;}
         if(!badge && el.children.length===0 && /V166\s*[·•]\s*audio contextual/i.test((el.textContent||'').trim())) badge=el;
       });
     }
-    if(badge) badge.textContent='V178 · RC1';
+    if(badge) badge.textContent='';
   }
 
   document.addEventListener('visibilitychange',function(){
@@ -22982,7 +22986,7 @@ html[data-app-release="V172-C1"]{--v172-correction-ready:1;}
       document.body.setAttribute('data-release-candidate',RELEASE_CHANNEL);
     }
     var badge=document.getElementById('v161VersionBadge');
-    if(badge) badge.textContent='V172 · corrección 1';
+    if(badge) badge.textContent='';
     installMoodFix();
     installCompanionAccess();
   }
@@ -23044,7 +23048,7 @@ html[data-app-release="V172-C1"]{--v172-correction-ready:1;}
       document.body.setAttribute('data-release-candidate',RELEASE_CHANNEL);
     }
     var badge=document.getElementById('v161VersionBadge');
-    if(badge) badge.textContent='V228 · estabilidad global';
+    if(badge) badge.textContent='';
 
     /* V228: conserva la preparación inicial de las pantallas, pero elimina
        la vigilancia permanente de V173. La versión antigua creaba un
