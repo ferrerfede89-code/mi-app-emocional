@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
-<title>ANICCA · V237</title>
+<title>ANICCA · V238</title>
 
 <style>
 body {
@@ -10036,12 +10036,39 @@ function playAmbient() {
   });
 }
 
-function pauseAmbient() {
+
+function focusPlanTimerV238(){
+  var overlay=document.getElementById('planV125Overlay');
+  var timer=document.getElementById('planV125Timer');
+  if(!overlay || !timer) return;
+
+  function goToPlanTimerV238(){
+    var top=Math.max(0,timer.offsetTop-24);
+    overlay.scrollTop=top;
+  }
+
+  goToPlanTimerV238();
+  if(typeof requestAnimationFrame==='function'){
+    requestAnimationFrame(goToPlanTimerV238);
+  }
+  setTimeout(goToPlanTimerV238,50);
+
+  timer.style.transition='transform .25s ease';
+  timer.style.transform='scale(1.025)';
+  setTimeout(function(){timer.style.transform='';},420);
+}
+
+function pauseAmbientBaseV238() {
   const audio = document.getElementById("ambientAudio");
   audio.pause();
 
   document.getElementById("soundResult").innerText =
     "Ambiente pausado.";
+}
+
+function pauseAmbient(){
+  pauseAmbientBaseV238();
+  focusPlanTimerV238();
 }
 
 function openSupport() {
@@ -10634,11 +10661,16 @@ function playSleepSoundV184() {
   }
 }
 
-function pauseSleepSoundV184() {
+function pauseSleepSoundV184BaseV238() {
   const audio = document.getElementById("ambientAudio");
   const status = document.getElementById("sleepAudioStatusV184");
   if (audio) audio.pause();
   if (status) status.innerText = "⏸️ Sonido pausado. Podés volver a reproducirlo cuando quieras.";
+}
+
+function pauseSleepSoundV184(){
+  pauseSleepSoundV184BaseV238();
+  focusPlanTimerV238();
 }
 
 function closeSleep() {
@@ -15692,7 +15724,7 @@ document.addEventListener("DOMContentLoaded",function(){
     if(overlay){ overlay.style.display="none"; }
   };
 
-  window.startPlanV125=function(){
+  window.startPlanV125BaseV238=function(){
     if(timerV125)return;
     timerV125 = setInterval(function(){
       leftV125 = Math.max(0,leftV125-1);
@@ -15708,18 +15740,33 @@ document.addEventListener("DOMContentLoaded",function(){
     },1000);
   };
 
-  window.pausePlanV125=function(){
+window.startPlanV125=function(){
+  window.startPlanV125BaseV238();
+  focusPlanTimerV238();
+};
+
+  window.pausePlanV125BaseV238=function(){
     if(timerV125){
       clearInterval(timerV125);
       timerV125=null;
     }
   };
 
-  window.resetPlanV125=function(){
+window.pausePlanV125=function(){
+  window.pausePlanV125BaseV238();
+  focusPlanTimerV238();
+};
+
+  window.resetPlanV125BaseV238=function(){
     pausePlanV125();
     leftV125=600;
     renderPlanV125();
   };
+
+window.resetPlanV125=function(){
+  window.resetPlanV125BaseV238();
+  focusPlanTimerV238();
+};
 
   document.addEventListener("DOMContentLoaded",function(){
     var actions=document.querySelector(".actions");
@@ -16008,7 +16055,7 @@ function closeClimateV126(){ document.getElementById('climateV126Overlay').style
     if(navigator.vibrate) navigator.vibrate(35);
   };
 
-  window.startCrisisBreathV131=function(){
+  window.startCrisisBreathV131BaseV238=function(){
     var el=document.getElementById('crisisV131Breath');
     if(!el) return;
     if(crisisTimerV131) clearInterval(crisisTimerV131);
@@ -16030,6 +16077,11 @@ function closeClimateV126(){ document.getElementById('climateV126Overlay').style
       }
     },1000);
   };
+
+window.startCrisisBreathV131=function(){
+  window.startCrisisBreathV131BaseV238();
+  focusPlanTimerV238();
+};
 
   window.crisisAnswerV131=function(kind){
     var result=document.getElementById('crisisV131Result');
@@ -20314,9 +20366,14 @@ async function playSoundtrackV92(){
   }
 }
 
-function pauseSoundtrackV92(){
+function pauseSoundtrackV92BaseV238(){
   hardStopSoundtrackV191(false);
   soundtrackHintV191('Audio pausado.');
+}
+
+function pauseSoundtrackV92(){
+  pauseSoundtrackV92BaseV238();
+  focusPlanTimerV238();
 }
 
 function stopSoundtrackV92(){
