@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
-<title>ANICCA · V236</title>
+<title>ANICCA · V237</title>
 
 <style>
 body {
@@ -15825,7 +15825,30 @@ function closeClimateV126(){ document.getElementById('climateV126Overlay').style
     var overlay=document.getElementById('restV128Overlay');
     if(overlay){overlay.style.display='none';}
   };
-  window.refreshRestV128=function(){pickRestPhraseV128();};
+  window.refreshRestV128BaseV237=function(){pickRestPhraseV128();};
+
+  window.refreshRestV128=function(){
+    window.refreshRestV128BaseV237();
+
+    var overlay=document.getElementById('restV128Overlay');
+    var phrase=document.getElementById('restV128Phrase');
+    if(!overlay || !phrase) return;
+
+    function goToRestPhraseV237(){
+      var top=Math.max(0,phrase.offsetTop-22);
+      overlay.scrollTop=top;
+    }
+
+    goToRestPhraseV237();
+    if(typeof requestAnimationFrame==='function'){
+      requestAnimationFrame(goToRestPhraseV237);
+    }
+    setTimeout(goToRestPhraseV237,50);
+
+    phrase.style.transition='transform .25s ease';
+    phrase.style.transform='scale(1.012)';
+    setTimeout(function(){ phrase.style.transform=''; },420);
+  };
   window.saveRestV128=function(){
     try{
       var list=JSON.parse(localStorage.getItem('restV128History')||'[]');
