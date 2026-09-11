@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
-<title>App Emocional V231 · Señales guardadas visibles</title>
+<title>ANICCA · V233</title>
 
 <style>
 body {
@@ -6369,7 +6369,7 @@ No son datos sueltos. Son puntos de luz de tu recorrido: tesoros, momentos, refu
 <div id="constellationSkyV87" class="constellationSkyV87"></div>
 <div id="constellationContentV87" class="rememberCard" style="color:#1f2937;"></div>
 <br>
-<button onclick="renderConstellationV87()" class="softButton">Volver a mirar el cielo</button>
+<button onclick="refreshConstellationV233()" class="softButton">Volver a mirar el cielo</button>
 <button onclick="saveCurrentConstellationV87()" class="softButton">⭐ Guardar estrella actual</button>
 <br>
 <button onclick="closeConstellationV87()" class="softButton">Volver</button>
@@ -7517,6 +7517,32 @@ function renderConstellationV87(){
   currentConstellationV87=brightest.emoji+' '+brightest.text;
   content.innerHTML='<div class="constellationCardV87"><strong>🌌 Tu cielo de hoy</strong><br><br>Aparecieron <strong>'+chosen.length+'</strong> puntos de luz. Tocá una estrella para ver qué recuerdo, frase o señal está guardada ahí.<br><br><span class="constellationSmallV87">Las estrellas más brillantes vienen de favoritos, tesoros y momentos de luz.</span></div>';
 }
+
+function refreshConstellationV233(){
+  renderConstellationV87();
+
+  const screen=document.getElementById('constellationScreenV87');
+  const sky=document.getElementById('constellationSkyV87');
+  if(!screen || !sky) return;
+
+  function goToSkyV233(){
+    const top=Math.max(0, sky.offsetTop-18);
+    screen.scrollTop=top;
+  }
+
+  goToSkyV233();
+  if(typeof requestAnimationFrame==='function'){
+    requestAnimationFrame(goToSkyV233);
+  }
+  setTimeout(goToSkyV233,50);
+
+  sky.style.transition='transform .25s ease';
+  sky.style.transform='scale(1.008)';
+  setTimeout(function(){
+    sky.style.transform='';
+  },420);
+}
+
 function showConstellationStarV87(index){
   const pieces=getConstellationPiecesV87().slice(-18);
   const p=pieces[index];
@@ -19693,7 +19719,7 @@ function treasureIsLightV81(text){
   return words.some(w => t.includes(w));
 }
 
-function renderTreasuresV81(){
+function renderTreasuresV81(forceAllV232){
   const box = document.getElementById('treasureContentV81');
   const phrase = document.getElementById('treasurePhraseV81');
   if(!box || !phrase) return;
@@ -19720,7 +19746,9 @@ function renderTreasuresV81(){
   }
 
   const preferred = sources.filter(x => treasureIsLightV81(x.text));
-  const pool = preferred.length ? preferred : sources;
+  /* V232: al pedir explícitamente “otro tesoro”, recorrer todas las fuentes.
+     Antes, si existía una sola frase “con luz”, el botón podía volver a mostrar siempre la misma. */
+  const pool = forceAllV232 ? sources : (preferred.length ? preferred : sources);
   const sorted = pool.slice().sort((a,b)=>a.score-b.score);
   const chosen = sorted[currentTreasureIndexV81 % sorted.length];
   currentTreasureV81 = chosen.icon + ' ' + chosen.text;
@@ -19766,38 +19794,64 @@ function closeTreasuresV81(){
 function showAnotherTreasureV81(){
   const sources = getTreasureSourcesV81();
   const screen = document.getElementById('treasuresScreenV81');
+  const phrase = document.getElementById('treasurePhraseV81');
+  const content = document.getElementById('treasureContentV81');
 
   if(sources.length <= 1){
     openTreasureWriterV81();
-    const phrase = document.getElementById('treasurePhraseV81');
     if(phrase) phrase.innerHTML = 'Por ahora hay un solo tesoro. Podés escribir otro para que el cofre empiece a crecer.';
-
-    /* V216: llevar inmediatamente la vista al lugar donde está el resultado. */
     if(screen){
       screen.scrollTop = 0;
-      setTimeout(function(){ screen.scrollTop = 0; }, 40);
+      requestAnimationFrame(function(){ screen.scrollTop = 0; });
+      setTimeout(function(){ screen.scrollTop = 0; }, 50);
     }
     return;
   }
 
-  currentTreasureIndexV81++;
-  renderTreasuresV81();
+  /* V232: elegir realmente un registro distinto al que se está viendo.
+     Recorremos TODAS las fuentes, no solo las frases clasificadas “con luz”. */
+  const sorted = sources.slice().sort((a,b)=>a.score-b.score);
+  const currentKey = String(currentTreasureV81 || '');
+  let currentPos = sorted.findIndex(function(item){
+    return (item.icon + ' ' + item.text) === currentKey;
+  });
+  if(currentPos < 0) currentPos = currentTreasureIndexV81 % sorted.length;
 
-  /* V216: Safari/iPhone.
-     El contenido cambia arriba, por eso forzamos el scroll del fullscreen
-     al inicio después de renderizar. No depende de scrollIntoView. */
+  let nextPos = (currentPos + 1) % sorted.length;
+  for(let step=0; step<sorted.length; step++){
+    const candidate = sorted[nextPos];
+    if((candidate.icon + ' ' + candidate.text) !== currentKey) break;
+    nextPos = (nextPos + 1) % sorted.length;
+  }
+
+  currentTreasureIndexV81 = nextPos;
+  renderTreasuresV81(true);
+
+  if(phrase) phrase.innerHTML = '↻ Te muestro otro de tus tesoros guardados.';
+
+  /* Feedback visual breve para que el cambio sea evidente incluso con textos parecidos. */
+  if(content){
+    content.style.transition = 'transform .22s ease, opacity .22s ease';
+    content.style.transform = 'scale(1.015)';
+    content.style.opacity = '.82';
+    setTimeout(function(){
+      content.style.transform = 'scale(1)';
+      content.style.opacity = '1';
+    }, 220);
+  }
+
+  /* Safari/iPhone: llevar la vista al resultado recién cambiado. */
   if(screen){
     screen.scrollTop = 0;
     requestAnimationFrame(function(){
       screen.scrollTop = 0;
       setTimeout(function(){
         screen.scrollTop = 0;
-        const target = document.getElementById('treasurePhraseV81');
-        if(target){
-          target.setAttribute('tabindex','-1');
-          try{ target.focus({preventScroll:true}); }catch(e){}
+        if(phrase){
+          phrase.setAttribute('tabindex','-1');
+          try{ phrase.focus({preventScroll:true}); }catch(e){}
         }
-      },60);
+      },50);
     });
   }
 }
