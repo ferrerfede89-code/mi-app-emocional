@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
-<title>ANICCA · Esto también cambiará</title>
+<title>App Emocional V231 · Señales guardadas visibles</title>
 
 <style>
 body {
@@ -7743,14 +7743,29 @@ function saveTomorrowV89(){
 function showTomorrowHistoryV89(){
   const items=getTomorrowsV89().slice(-8).reverse();
   const content=document.getElementById('tomorrowContentV89');
+  const screen=document.getElementById('tomorrowScreenV89');
+  if(!content) return;
   if(!items.length){
     content.innerHTML='<div class="tomorrowCardV89"><strong>🌤️ Todavía no hay señales guardadas</strong><br><br>Podés empezar con algo simple: “mañana solo necesito dar un paso”.</div>';
-    return;
+  }else{
+    content.innerHTML=items.map(function(x){
+      return '<div class="tomorrowCardV89"><div class="tomorrowSignalV89">'+escapeTomorrowV89(x.text)+'</div><span class="tomorrowSmallV89">'+escapeTomorrowV89(x.date||'')+'</span></div>';
+    }).join('');
+    document.getElementById('tomorrowPhraseV89').innerHTML='Estas son pequeñas luces que preparaste para volver.';
   }
-  content.innerHTML=items.map(function(x){
-    return '<div class="tomorrowCardV89"><div class="tomorrowSignalV89">'+escapeTomorrowV89(x.text)+'</div><span class="tomorrowSmallV89">'+escapeTomorrowV89(x.date||'')+'</span></div>';
-  }).join('');
-  document.getElementById('tomorrowPhraseV89').innerHTML='Estas son pequeñas luces que preparaste para volver.';
+
+  // V231: después de mostrar las señales, llevar la vista exactamente a la zona renderizada.
+  if(screen){
+    const go=function(){
+      const top=Math.max(0, content.offsetTop-18);
+      try{ screen.scrollTop=top; }catch(e){}
+    };
+    go();
+    requestAnimationFrame(go);
+    setTimeout(go,50);
+  }else{
+    try{ content.scrollIntoView({behavior:'auto',block:'start'}); }catch(e){ try{content.scrollIntoView();}catch(_){} }
+  }
 }
 function saveCurrentTomorrowV89(){
   if(!currentTomorrowV89) currentTomorrowV89='🌤️ Mañana alcanza con aparecer de nuevo.';
