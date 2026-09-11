@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
-<title>ANICCA · V233</title>
+<title>ANICCA · V234</title>
 
 <style>
 body {
@@ -6447,7 +6447,7 @@ Llegar hasta acá también es una señal. Este espacio reúne lo que fuiste deja
   <div id="thresholdResultV90" style="margin-top:14px;font-weight:bold;line-height:1.45;"></div>
 </div>
 
-<button onclick="renderThresholdV90()" class="softButton">🌌 Volver a mirar</button>
+<button onclick="refreshThresholdV234()" class="softButton">🌌 Volver a mirar</button>
 <button onclick="showThresholdHistoryV90()" class="softButton">📜 Ver cierres guardados</button>
 <button onclick="copyThresholdV90()" class="softButton">📋 Copiar resumen</button>
 <br>
@@ -20046,6 +20046,32 @@ function renderThresholdV90(){
   currentThresholdSummaryV90 = 'Umbral de etapa\n\n' + mini.map(m=>m[0]+': '+m[1]).join('\n') + '\n\n' + seals.join('\n') + '\n\n' + closing;
   if(content) content.innerHTML = html;
 }
+
+function refreshThresholdV234(){
+  renderThresholdV90();
+
+  const screen=document.getElementById('thresholdScreenV90');
+  const content=document.getElementById('thresholdContentV90');
+  if(!screen || !content) return;
+
+  function goToThresholdV234(){
+    const top=Math.max(0, content.offsetTop-20);
+    screen.scrollTop=top;
+  }
+
+  goToThresholdV234();
+  if(typeof requestAnimationFrame==='function'){
+    requestAnimationFrame(goToThresholdV234);
+  }
+  setTimeout(goToThresholdV234,50);
+
+  content.style.transition='transform .25s ease';
+  content.style.transform='scale(1.008)';
+  setTimeout(function(){
+    content.style.transform='';
+  },420);
+}
+
 function saveThresholdReflectionV90(){
   const input = document.getElementById('thresholdTextV90');
   const result = document.getElementById('thresholdResultV90');
