@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
-<title>ANICCA · V234</title>
+<title>ANICCA · V235</title>
 
 <style>
 body {
@@ -13845,21 +13845,39 @@ function saveSeedTextV77(){
     var rooms=museumRooms();
     var room=rooms.find(function(r){ return r.id===id; });
     var detail=byId('museumDetailV111');
+    var screen=byId('museumScreenV111');
     if(!room || !detail) return;
 
     if(!room.items.length){
       detail.innerHTML =
         '<h3>'+room.icon+' '+escapeHtml(room.title)+'</h3>'+
         '<p class="museumSmallV111">Todavía no hay recuerdos en esta sala. Podés seguir usando la app y volver más adelante.</p>';
-      return;
+    }else{
+      detail.innerHTML =
+        '<h3>'+room.icon+' '+escapeHtml(room.title)+'</h3>'+
+        '<p class="museumSmallV111">'+escapeHtml(room.subtitle)+'</p>'+
+        room.items.map(function(item){
+          return '<div class="museumMemoryV111">'+escapeHtml(shortText(item,220))+'</div>';
+        }).join('');
     }
 
-    detail.innerHTML =
-      '<h3>'+room.icon+' '+escapeHtml(room.title)+'</h3>'+
-      '<p class="museumSmallV111">'+escapeHtml(room.subtitle)+'</p>'+
-      room.items.map(function(item){
-        return '<div class="museumMemoryV111">'+escapeHtml(shortText(item,220))+'</div>';
-      }).join('');
+    if(screen){
+      function goToMuseumDetailV235(){
+        var top=Math.max(0, detail.offsetTop-18);
+        screen.scrollTop=top;
+      }
+      goToMuseumDetailV235();
+      if(typeof requestAnimationFrame==='function'){
+        requestAnimationFrame(goToMuseumDetailV235);
+      }
+      setTimeout(goToMuseumDetailV235,50);
+    }
+
+    detail.style.transition='transform .25s ease';
+    detail.style.transform='scale(1.008)';
+    setTimeout(function(){
+      detail.style.transform='';
+    },420);
   };
 })();
 </script>
