@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
-<title>ANICCA · V235</title>
+<title>ANICCA · V236</title>
 
 <style>
 body {
@@ -15816,8 +15816,10 @@ function closeClimateV126(){ document.getElementById('climateV126Overlay').style
     pickRestPhraseV128();
     var saved=document.getElementById('restV128Saved');
     if(saved){saved.textContent='';}
+    var history=document.getElementById('restV236History');
+    if(history){history.style.display='none';history.innerHTML='';}
     var overlay=document.getElementById('restV128Overlay');
-    if(overlay){overlay.style.display='block';}
+    if(overlay){overlay.style.display='block';overlay.scrollTop=0;}
   };
   window.closeRestV128=function(){
     var overlay=document.getElementById('restV128Overlay');
@@ -15828,10 +15830,55 @@ function closeClimateV126(){ document.getElementById('climateV126Overlay').style
     try{
       var list=JSON.parse(localStorage.getItem('restV128History')||'[]');
       list.push({date:new Date().toISOString(),phrase:(document.getElementById('restV128Phrase')||{}).textContent||''});
+      if(list.length>50){list=list.slice(-50);}
       localStorage.setItem('restV128History',JSON.stringify(list));
     }catch(e){}
     var saved=document.getElementById('restV128Saved');
-    if(saved){saved.textContent='Descanso guardado. No hizo falta hacer más que esto.';}
+    if(saved){
+      saved.innerHTML='✓ Descanso guardado. Podés volver a verlo desde <strong>Ver descansos guardados</strong>.';
+    }
+  };
+
+  window.showRestHistoryV236=function(){
+    var box=document.getElementById('restV236History');
+    var overlay=document.getElementById('restV128Overlay');
+    if(!box)return;
+
+    var list=[];
+    try{
+      list=JSON.parse(localStorage.getItem('restV128History')||'[]');
+      if(!Array.isArray(list))list=[];
+    }catch(e){list=[];}
+
+    if(!list.length){
+      box.style.display='block';
+      box.innerHTML='<div class="restV128Card"><strong>🌙 Descansos guardados</strong><p class="restV128Small" style="margin-bottom:0;">Todavía no guardaste ningún descanso.</p></div>';
+    }else{
+      var recent=list.slice().reverse();
+      box.style.display='block';
+      box.innerHTML='<div class="restV128Card"><strong>🌙 Descansos guardados</strong>'+
+        recent.map(function(item){
+          var date='';
+          try{
+            date=new Date(item.date).toLocaleString('es-AR',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'});
+          }catch(e){}
+          var phrase=(item && item.phrase) ? String(item.phrase) : 'Descanso guardado';
+          return '<div class="restV128Step" style="margin-top:10px;"><strong>'+date+'</strong><br>'+phrase+'</div>';
+        }).join('')+
+        '</div>';
+    }
+
+    if(overlay){
+      function goToRestHistoryV236(){
+        var top=Math.max(0,box.offsetTop-18);
+        overlay.scrollTop=top;
+      }
+      goToRestHistoryV236();
+      if(typeof requestAnimationFrame==='function'){
+        requestAnimationFrame(goToRestHistoryV236);
+      }
+      setTimeout(goToRestHistoryV236,50);
+    }
   };
 
   document.addEventListener('DOMContentLoaded',function(){
@@ -21484,8 +21531,10 @@ document.addEventListener('DOMContentLoaded',function(){
 
   <button class="softButton" onclick="refreshRestV128()">Dame otra frase</button>
   <button class="softButton" onclick="saveRestV128()">Guardar este descanso</button>
+  <button class="softButton" onclick="showRestHistoryV236()">Ver descansos guardados</button>
 
   <p id="restV128Saved" class="restV128Small"></p>
+  <div id="restV236History" style="display:none;margin-top:14px;"></div>
 </div>
 
 <script id="v127-faro-continuidad-script">
